@@ -33,49 +33,18 @@ void set_mode(byte mode)
   regs.h.al = mode;
   int86( VIDEO_INT, &regs, &regs );
 }
-void put_pixels(){
 
- union REGS regs;
-  regs.h.ah = 0x0c;
-  regs.h.al = 4;
-  regs.x.cx = x;
-  regs.x.dx = y;
-  int86( VIDEO_INT, &regs, &regs );
-
-
-
-}
 
 void default_scene(){
 
 
   for( y = 0; y < height; ++y ) {
     for( x = 0; x < width; ++x ) {
-  
-
-     // SETPIX( x , *VGA^2*i&y&x, i&y );
+ 
        SETPIX( *VGA^1&i&y, *VGA^6^i*x^y, tan(i&y));
-      //  SETPIX(  *VGA&height,*VGA^height*x, tan(height));
-    // SETPIX( x, y, y );
+ 
     }
   }
-}
-void scene2(){
-
-
-  for( y = 0; y < height; ++y ) {
-    for( x = 0; x < width; ++x ) {
-      x=sin(y);
-      SETPIX( x,*VGA^2*i&y&x , i*cos(y) );
-   //    SETPIX( x, *VGA^2*i, i *(sin(y) );
-     // SETPIX( x, y, y );
-    }
-  }
-}
-
-
-
-
 
 
 
