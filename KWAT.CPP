@@ -86,18 +86,7 @@ void default_scene2(){
 }
 
 }
-void scene2(){
 
-
-  for( y = 0; y < height; ++y ) {
-    for( x = 0; x < width; ++x ) {
-      x=sin(y);
-     // SETPIX( x,*VGA^2*i&y&x , i*cos(y) );
-   //    SETPIX( x, *VGA^2*i, i *(sin(y) );
-     // SETPIX( x, y, y );
-    }
-  }
-}
 
 
 void roll(){
@@ -145,12 +134,7 @@ int main()
   selec();
   default_scene2();
 
-//  default_scene();
 
-     //	height=i*10;
-
-
-     //	i++;
 
        l++;
 
