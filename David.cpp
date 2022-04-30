@@ -82,8 +82,8 @@ void default_scene(){
 
 
      // SETPIX( x , *VGA^2*i&y&x, i&y );
-	    SETPIX( i&y&x, 20^i*x^y, tan(i^height));
-	    SETPIX( *VGA^i&y&x, *VGA^5^i&x^y, tan(i&height));
+	    SETPIX( i&y&x, 10^i*x^y, tan(i^height));
+	    SETPIX( *VGA^i&y&x, *VGA^1^i&x^y, tan(i&height&x));
       //  SETPIX(  *VGA&height,*VGA^height*x, tan(height));
     // SETPIX( x, y, y );
     }
