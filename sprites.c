@@ -30,6 +30,7 @@ int ti4;
 int swi=1;
 int swi2=0;
  int k;
+ int tx=1;
 int f;
 int shift;
 int incdec=1;
@@ -46,6 +47,31 @@ int lenght;
 
     BITMAP *sprsheet;
     BITMAP *spr1;
+
+int spr01[]={
+0,0,0,0,0,0,0,0,0,7,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,3,3,3,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,3,7,7,7,3,3,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,3,7,5,7,3,3,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,3,7,3,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,2,2,2,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,3,3,3,3,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,3,7,7,7,3,3,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,7,7,9,7,7,0,5,5,0,0,0,0,0,
+0,0,0,0,0,0,3,3,7,7,7,3,0,0,5,0,0,0,0,0,
+0,0,0,0,0,5,0,0,3,7,3,0,0,0,0,0,0,0,0,0,
+0,0,0,0,5,5,0,0,3,3,3,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,3,3,3,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,3,3,3,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,3,0,3,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,8,0,0,3,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,8,0,0,8,8,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,8,8,0,0,8,8,8,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+
+
+};
 int map[]={
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -475,12 +501,33 @@ int bg(){
 
 
 }
+
+void spritefunction(){
+    int j=0;
+    int k=0;
+   
+   for (int i=0;i<=400;i++){
+      putpixel(spr1, k, j ,spr01[i]+4);
+   k++;
+   if (k>=20){j++;k=0;}
+
+       if (j>=20){j=0;}
+
+                      }
+
+
+
+
+
+
+
+}
 int mapfunc(){
 
- clear_to_color(screen,7);
+ clear_to_color(screen,4);
 
 
-
+            tx=1;
        vertical=0;
 
 
@@ -491,7 +538,9 @@ int mapfunc(){
            i++;
 
       if (map[k]!=0) {
+
         blit( sprsheet,screen, map[k]*10,120,i*10,vertical ,10, 10);}
+
 
 
        if (map[k]==8) {
@@ -512,11 +561,11 @@ void keyboard(){
 
 
    if (key[KEY_UP]) {    if (plus>9400){plus==0;}
-     plus=plus+t;mapfunc(); }
-    if (key[KEY_LEFT]) {plus-=1;mapfunc();}
+     plus=plus-t;mapfunc(); }
+    if (key[KEY_LEFT]) {plus-=tx;mapfunc();}
 
-    if (key[KEY_RIGHT]) {plus+=1;mapfunc();}
-   if (key[KEY_DOWN]) {if (plus<0){plus==9400;}   plus-=27;mapfunc(); }
+    if (key[KEY_RIGHT]) {plus+=tx;mapfunc();}
+   if (key[KEY_DOWN]) {if (plus<0){plus==9400;}   plus+=t;mapfunc(); }
 
 
 
@@ -566,10 +615,12 @@ bitmapbuffer="metal.bmp";
    sprsheet=load_bitmap("spritesheet.bmp",the_palette);
       set_palette(the_palette);
     the_block1= load_bitmap("block1.bmp",the_palette2);
-     spr1=create_bitmap(10,10);
+     spr1=create_bitmap(20,20);
+       spritefunction();
     mapfunc();
 //   set_palette(the_palette);
-    t=39;
+
+    t=33;
     int i;
     i=1;
     plus=0;
@@ -578,7 +629,7 @@ bitmapbuffer="metal.bmp";
                   ti2+=10;  if (ti2>200){ti2=0;}
 
 
-                  ti3++;        if (ti3>=100){ti3=0;lenght++;   if (lenght >20000){lenght=0;  keyboard(); poll_keyboard();   }}
+                  ti3++;        if (ti3>=100){ti3=0;lenght++;   if (lenght >20000){lenght=0;  keyboard(); poll_keyboard();  blit( spr1,screen,0 ,0,100,100 ,20, 20);   }}
 
 
 
