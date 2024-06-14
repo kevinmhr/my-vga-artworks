@@ -20,17 +20,20 @@ int y;
 int k;
 int x;
 int t;
-
+int t2;
 int x2;
 int k;
 int ti;
 int ti2;
 int ti3=1;
 int ti4;
+int colx,coly;
+
 int swi=1;
 int swi2=0;
  int k;
  int tx=1;
+ int tx2=0;
 int f;
 int shift;
 int incdec=1;
@@ -527,7 +530,7 @@ int mapfunc(){
  clear_to_color(screen,4);
 
 
-            tx=1;
+
        vertical=0;
 
 
@@ -539,6 +542,9 @@ int mapfunc(){
 
       if (map[k]!=0) {
 
+
+        
+        
         blit( sprsheet,screen, map[k]*10,120,i*10,vertical ,10, 10);}
 
 
@@ -546,7 +552,6 @@ int mapfunc(){
        if (map[k]==8) {
         blit( sprsheet,screen, ti2,40,i*10,vertical ,10, 10);
                                         }
-
 
 
 
@@ -559,15 +564,48 @@ int mapfunc(){
 
 void keyboard(){
 
+          tx=1;
+            tx2=1;
+            t=33;
+            t2=33;
+
+        colx=getpixel(screen,120,110);
+
+             if (colx!=4){tx=0;}
+             colx=getpixel(screen,120,90);
+
+             if (colx!=4){tx=0;}
+             colx=getpixel(screen,90,100);
+
+             if (colx!=4){tx2=0;}
+              colx=getpixel(screen,90,110);
+
+             if (colx!=4){tx2=0;}
+             colx=getpixel(screen,110,120);
+
+             if (colx!=4){t=0;}
+                 colx=getpixel(screen,100,120);
+
+             if (colx!=4){t=0;}
+
+              colx=getpixel(screen,110,80);
+
+             if (colx!=4){t2=0;}
+                 colx=getpixel(screen,100,80);
+
+             if (colx!=4){t2=0;}
+
 
    if (key[KEY_UP]) {    if (plus>9400){plus==0;}
-     plus=plus-t;mapfunc(); }
-    if (key[KEY_LEFT]) {plus-=tx;mapfunc();}
+     plus=plus-t2;mapfunc(); }
+    if (key[KEY_LEFT]) {plus-=tx2;mapfunc();}
 
-    if (key[KEY_RIGHT]) {plus+=tx;mapfunc();}
+    if (key[KEY_RIGHT]) {         plus+=tx;mapfunc();   }
    if (key[KEY_DOWN]) {if (plus<0){plus==9400;}   plus+=t;mapfunc(); }
 
 
+
+                    
 
 
 
