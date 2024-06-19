@@ -53,10 +53,10 @@ int lenght;
    PALETTE the_palette2;
    BITMAP *walkingspr;
    BITMAP *sprites;
-
+     BITMAP *surface;
     BITMAP *sprsheet;
     BITMAP *spr1;
-
+char spritebuf[256];
 int spr01[]={
 0,0,0,0,0,0,0,230,230,230,230,230,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,230,249,249,249,249,230,0,0,0,0,0,0,0,0,
@@ -379,7 +379,7 @@ int keyboard(){
 
     if (key[KEY_LEFT]) {  plus-=tx2; z--; framex=framex-25; framey=30; ; frame=frame+400;   if (frame>800){frame=0;} }
 
-                               if (framex>100){framex=0;}     if (framex<0){framex=100;}
+                               if (framex>100){framex=0;}     if (framex<0){framex=75;}
     if (key[KEY_RIGHT]) {   plus+=tx; z++; framex=framex+25; framey=0;  frame=frame+400;     if (frame>800){frame=0;}   }
          if (key[KEY_UP]) {plus-=t2+t2; frame=frame+400;   if (frame>800){frame=0;}
 
@@ -416,8 +416,8 @@ int keyboard(){
 
 
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
+
 
 
    int x=1;
@@ -437,21 +437,26 @@ int main(int argc, char *argv[])
        set_gfx_mode(GFX_TEXT, 0, 0, 0, 0);
          allegro_message("Unable to set any graphic mode\n%s\n", allegro_error);
  return 1;
-      }
-   }
-
-bitmapbuffer="metal.bmp";
+      }   }
+   //  drawing_mode(DRAW_MODE_TRANS, NULL,0,0);
+//set_multiply_blender(0, 0, 0, 0);
+  //     set_color_depth(8);
+   //set_write_alpha_blender();
+//bitmapbuffer="metal.bmp";
    /* read in the bitmap file */
 
-   the_image= load_bitmap(bitmapbuffer, the_palette1);
-   sprsheet=load_bitmap("spritesheet.bmp",the_palette);
+       //   solid_mode();
+  // the_image= load_bitmap(bitmapbuffer, the_palette1);
+   sprsheet=load_bitmap("spritesheet.bmp",the_palette2);
    //   set_palette(the_palette);
-    the_block1= load_bitmap("block1.bmp",the_palette2);
-     spr1=create_bitmap(20,20);
+//    the_block1= load_bitmap("block1.bmp",the_palette2);
+     spr1=create_bitmap(320,240);
+  surface=create_bitmap(320,240);
  //      spritefunction();
-       walkingspr=load_pcx("walking.pcx",the_palette2);
+       walkingspr=load_pcx("walking.pcx",the_palette);
     mapfunc();
-//   set_palette(the_palette);
+//   set_palette(the_palette2);
+//    set_alpha_blender();
 
     t=33;
     int i;
@@ -459,13 +464,15 @@ bitmapbuffer="metal.bmp";
     plus=0;
      while (i!=0){
 
-                  ti2+=10;  if (ti2>200){ti2=0;}
-
-
-                  ti3++;        if (ti3>=140){ti3=0;lenght++;   if (lenght >20000){lenght=0;  keyboard(); poll_keyboard();  blit( walkingspr,screen,framex ,framey,playerx,playery,25, 30);   }}
 
 
 
+                  ti3++;            if (ti3>=300){ti3=0;lenght++;   if (lenght >1000){lenght=0;  ti2+=10;  if (ti2>200){ti2=0;} keyboard(); poll_keyboard(); draw_sprite(surface,walkingspr,0,0); }
+                                                                                                                            //  draw_trans_sprite(spr1,walkingspr,0,0);
+
+
+                                                                                                                              blit(surface,screen,framex ,framey,playerx,playery,25, 30); 
+                                                                                                                                  }
 
     }
 
