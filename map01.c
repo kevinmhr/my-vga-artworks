@@ -14,21 +14,34 @@
 #include <stdio.h>
 char *bitmapbuffer;
 int vertices[]={50,50,70,100,150,50};
+int pixdrivex;
+int pixdrivey;
+ int invx=1;
+                   int invy=1;
+int pixstep;
+int  pixstepsxmin;
+int pixstepsymin;
+int  pixstepsxmax;
+int pixstepsymax;
 
 int orient[]={10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,160,150,140,130,120,110,100,90,80,70,60,50,40,30,20,10};
 int z;
 int dirx=0;
-int stepx;
-int stepy;
+double pixdirx=10;
+double pixdiry=33;
+double stepx=0;
+double stepy=0;
 int diry=0;
 int roll=0;
 int hit=0;
 int keytrig=0;
 int color;
-int y;
+int y=60;
 int framex,framey;
 int k;
-int x;
+int x=103;
+int pixx=10;
+int pixy=52;
 double t;
 double t2;
 int x2;
@@ -46,6 +59,10 @@ int playerx=0;
 int playery=0;
 int swi=1;
 int swi2=0;
+int blockx;
+int blocky;
+ int pixhitx=1;
+ int pixhity=1;
  int frame;
  int k;
  float camerax;
@@ -55,7 +72,19 @@ int swi2=0;
  int tx2=0;
 int f;
 int walltall;
+int colmap2[]={1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,
+               4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
+               7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
+               10,10,10,10,10,10,10,10,10,10.10,10,10,10,10,10,10,10,10,10};
+int colmap[]={1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,
+              4,4,4,4,4,4,4,4,4,4,5,5,5,5,5,5,5,5,5,5,6,6,6,6,6,6,6,6,6,6,
+              7,7,7,7,7,7,7,7,7,7,8,8,8,8,8,8,8,8,8,8,9,9,9,9,9,9,9,9,9,9,
+               10,10,10,10,10,10,10,10,10,10};
+
+               
 int incdec=1;
+
+
   int vertical=0;
    int plus1=0;
      int plus2=0;
@@ -138,16 +167,16 @@ int spr01[]={
 0,0,0,0,0,0,230,240,0,0,0,0,230,230,230,230,0,0,0,0,
 
 };
-int map[10][10]= {
+int map[10][10]={
 {1,1,1,1,1,1,1,1,1,1},
-{1,0,1,0,0,0,1,0,0,1},
-{1,0,0,0,1,0,0,1,0,1},
+{1,0,1,1,0,0,1,0,0,1},
+{1,0,0,0,1,0,0,0,0,1},
+{1,0,1,0,0,0,0,0,0,1},
+{1,0,0,0,0,0,0,1,1,1},
+{1,0,0,1,0,1,0,0,0,1},
 {1,0,0,0,0,0,0,0,0,1},
-{1,1,0,0,1,0,0,0,0,1},
+{1,1,0,0,1,1,0,1,0,1},
 {1,0,0,0,0,0,0,0,0,1},
-{1,1,0,0,1,0,0,1,0,1},
-{1,0,0,0,0,0,0,0,0,1},
-{1,1,0,0,1,0,0,0,0,1},
 {1,1,1,1,1,1,1,1,1,1},};
 int timer(){
 
@@ -272,19 +301,99 @@ void spritefunction(){
 
 int mapfunc(){
 
+        int i=1;
 
-              int y;
 
-                 // dirx=(int)camerax;
-                  //if (plus1=200){plus1=0;}
 
-                    dirx=(stepx)*10;
-                    diry=(stepy)*10;
+            if (key[KEY_LEFT]) { blockx--;   stepx=1;  }
+
+
+             if (key[KEY_RIGHT]) { blockx++;  stepx=-1;   }
+             if (key[KEY_UP]) {  blocky--;    stepy=-1;    }
+             if (key[KEY_DOWN]) { blocky++;   stepy=1;    }
+
+              poll_keyboard();
+
+
+                     putpixel(screen,pixstepsxmin,pixstepsymin,3);
+                        if (pixx>20 | pixx<30){pixstep=3;}
+
+
+
+
+
+                      // invx=1;
+
+
+                    pixstepsxmin=sqrt((pixx)/10);
+                     pixstepsymin=sqrt((pixy)/10);
+
+                     pixstepsxmax=sqrt((pixx+10)/10);
+                   pixstepsymax=sqrt((pixy+10)/10);
+
+
+
+
+
+                  //   if (pixx<10){  invx=1;}
+                   //     if (pixx>80){  invx=-1;}
+                    //       if (pixy<10){  invy=1;}
+                     //   if (pixy>80){  invy=-1;}
+
+
+
+                  if (map[pixstepsymin][pixstepsxmin]>0){
+                          stepx=-1;  stepy=1;        // pixx++;
+                                                i=1;
+                         }
+                  if (map[pixstepsymax][pixstepsxmax]>0){
+                          stepx=1;  stepy=-1; i=1;  //  pixx++;
+
+                                                   }
+                  if (map[pixstepsymin][pixstepsxmax]>0){
+                         stepx=-1;       stepy=-1;   i=1; //pixx++;
+
+                                                   }
+                  if (map[pixstepsymax][pixstepsxmin]>0){
+                         stepx=1;       stepy=1;    i=1; // pixx++;
+
+                         }
+                    pixx=pixx+stepx;
+                    pixy=pixy-stepy;
+                  //  pixx+=;
+                  //  pixy+=;
+               //        x=x*invx;
+              //  y=y*invy;
+                 //  x=stepx;
+                 //  y=stepy;
+
+
+                    //   if (pixx<50){invx=-invx;}
+
+
+                 //     if (x>1){x=1;}
+                  //  if (y>1){y=1;}
+                   //  if (x<-1){x=-1;}
+                  //  if (y<-1){y=-1;}
+
+               //   else {invx=1;  invy=-1;}
+
+
+                         
+
+
+
+                //   pixx+=((pixdirx*sin(x))/(pixdiry*cos(x)))/2;
+                //   pixy+=((pixdirx*sin(y))/(pixdiry*cos(y)))/2;
+
+                    dirx=(blockx)*10;
+                    diry=(blocky)*10;
                  hit=0;
 
+                 if (map[blockx][blocky]==1){
 
-               if (map[stepx][stepy]==1){
-              hit=1;   }
+              hit=1;
+              }
 
       //     for (int k=0;k<320;k=k+1){
                  //     dirx=7;
@@ -294,8 +403,7 @@ int mapfunc(){
 
 
 
-
-               
+                    putpixel(screen,pixx+100,pixy+50,8);
 
 
 
@@ -310,20 +418,20 @@ int mapfunc(){
           //   planex2 =(camerax)-(cameray);
 
 
-                      posx++;
+                 //    posx++;
 
-                                    z++;
+                   //                 z++;
 
             if (z>320){z=0;}
                                        int w=1;
                               for (int i=0;i<100;i=i+10){
                               for (int j=0;j<100;j=j+10){
-                            if (map[i/10][j/10]==1){  rectfill(screen,i+100+stepx,j+50+stepy,i+110+stepx,j+60+stepy,3);             }
+                            if (map[i/10][j/10]==1){  rectfill(screen,i+100,j+50,i+110,j+60,3);             }
 
                              // hline(screen,i,j,j+10,5 )
-                              line(screen,i+100+stepx,j+stepy+50,i+100+stepx,j+60+stepy,4);    line(screen,i+100+stepx,j+stepy+50,i+110+stepx,j+stepy+50,4);  } }
+                              line(screen,i+100,j+50,i+100,j+60,1);    line(screen,i+100,j+50,i+110,j+50,1);  } }
 
-                              rect(screen,dirx+100+stepx,diry+50+stepy,dirx+110+stepx,diry+60+stepy,8);
+                              rect(screen,dirx+100,diry+50,dirx+110,diry+60,8);
                               
               if (hit==1) {
                 //  cameray=dirx;
@@ -334,7 +442,7 @@ int mapfunc(){
 
 
 
-                           rectfill(screen,dirx+100+stepx,diry+50+stepy,dirx+110+stepx,diry+60+stepy,5);
+                           rectfill(screen,dirx+100,diry+50,dirx+110,diry+60,5);
 
 
                                               //  }
@@ -357,100 +465,6 @@ int mapfunc(){
 }
 
 
-int keyboard(){
-
-
-          tx=1;
-            tx2=1;
-            t=0.3;
-               t2=0.1;
-
-
-
-                 colx=getpixel(screen,playerx+10,playery+30);
-
-            // if (colx!=4){t=0;}
-                 colx=getpixel(screen,playerx-10,playery+30);
-
-           //  if (colx!=4){t=0;}
-
-
-
-                 colx=getpixel(screen,playerx-10,playery-20);
-
-           //  if (colx!=4){t2=0;}
-                  colx=getpixel(screen,playerx+10,playery-20);
-
-           //  if (colx!=4){t2=0;}
-                   colx=getpixel(screen,playerx,playery-20);
-
-            // if (colx!=4){t2=0;}
-
-
-
-
-
-             colx=getpixel(screen,playerx+30,playery+10);
-
-          //   if (colx!=4){tx=0;}
-               colx=getpixel(screen,playerx+30,playery+20);
-
-           //  if (colx!=4){tx=0;}
-
-              colx=getpixel(screen,playerx-10,playery+20);
-
-            // if (colx!=4){tx2=0;}
-
-              colx=getpixel(screen,playerx-20,playery);
-
-            // if (colx!=4){tx2=0;}
-
-                    colx=getpixel(screen,playerx-20,playery+10);
-
-            // if (colx!=4){tx2=0;}
-
-        if (key[KEY_LEFT]) { stepx--;  }
-
-
-    if (key[KEY_RIGHT]) { stepx++;    }
-         if (key[KEY_UP]) { stepy--;  }
-   if (key[KEY_DOWN]) { stepy++;     }
-if  (plus1<0){plus1==9400;}
-
-                    // if (playery>100){playery=0;}
-                                                // dirx=abs(camerax+cameray);
-                    //   if (playerx=100){playerx=0;}
-
-
-                   //    if (camerax<0);{xoffset-=1;camerax=9;}
-                     //  if (cameray>10);{playery+=t;cameray=100;}
-
-
-      //  if (key[KEY_UP]) if (key[KEY_RIGHT]){z++;}
-      //  if (key[KEY_UP]) if (key[KEY_LEFT]){z--;}
-       //  if (key[KEY_LEFT]) if (key[KEY_RIGHT]){z++;}
-       // if (key[KEY_LEFT]) if (key[KEY_LEFT]){z--;}
-
-
-
-  //  if (plus>9400){plus==0;}
-
-
-
-                         //  plus+=t;
-
-
-                             mapfunc();
-
-     // spritefunction();
-
-   
-
-}
-
-
-
-
 
 
 
@@ -458,7 +472,10 @@ if  (plus1<0){plus1==9400;}
 
 
 int main(int argc, char *argv[]) {
+              pixx=40;
+              pixy=40;
 
+              
                 disy=140;
               disx=40;
 
@@ -512,7 +529,7 @@ int main(int argc, char *argv[]) {
 
 
 
-                  ti3++;            if (ti3>=2000){ti3=0;lenght++;   if (lenght >3000){lenght=0;  clear_to_color(screen,0);   ti2+=10;  if (ti2>200){ti2=0;}keyboard();   poll_keyboard();   draw_sprite(surface,walkingspr,0,0); }
+                  ti3++;            if (ti3>=2000){ti3=0;lenght++;   if (lenght >3000){lenght=0;  clear_to_color(screen,0);   ti2+=10;  if (ti2>200){ti2=0;} mapfunc();   draw_sprite(surface,walkingspr,0,0); }
                                                                                                                             //  draw_trans_sprite(spr1,walkingspr,0,0);
 
 
@@ -527,7 +544,6 @@ int main(int argc, char *argv[]) {
    
    readkey();
 //   return 0;
-}
-END_OF_MAIN()
+}END_OF_MAIN()
 
 
