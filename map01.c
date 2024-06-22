@@ -40,8 +40,8 @@ int y=60;
 int framex,framey;
 int k;
 int x=103;
-int pixx=10;
-int pixy=52;
+double pixx;
+double pixy;
 double t;
 double t2;
 int x2;
@@ -305,18 +305,19 @@ int mapfunc(){
 
 
 
-            if (key[KEY_LEFT]) { blockx--;   stepx=1;  }
+            if (key[KEY_LEFT]) { blockx--;   stepx=0.1;  }
 
 
-             if (key[KEY_RIGHT]) { blockx++;  stepx=-1;   }
-             if (key[KEY_UP]) {  blocky--;    stepy=-1;    }
-             if (key[KEY_DOWN]) { blocky++;   stepy=1;    }
+             if (key[KEY_RIGHT]) { blockx++;  stepx=-0.1;   }
+             if (key[KEY_UP]) {  blocky--;    stepy=-0.1;    }
+             if (key[KEY_DOWN]) { blocky++;   stepy=0.1;    }
 
               poll_keyboard();
 
 
-                     putpixel(screen,pixstepsxmin,pixstepsymin,3);
-                        if (pixx>20 | pixx<30){pixstep=3;}
+
+
+                //        if (pixx>20 | pixx<30){pixstep=3;}
 
 
 
@@ -325,15 +326,16 @@ int mapfunc(){
                       // invx=1;
 
 
-                    pixstepsxmin=sqrt((pixx)/10);
-                     pixstepsymin=sqrt((pixy)/10);
+                    pixstepsxmin=((int)(pixx));
+                     pixstepsymin=((int)(pixy));
 
-                     pixstepsxmax=sqrt((pixx+10)/10);
-                   pixstepsymax=sqrt((pixy+10)/10);
-
-
+                     pixstepsxmax=((int)(pixx-0.1));
+                   pixstepsymax=((int)(pixy-0.1));
 
 
+
+                     putpixel(screen,pixstepsxmin*10,pixstepsymin*10,5);
+                       putpixel(screen,pixstepsxmax*10,pixstepsymax*10,5);
 
                   //   if (pixx<10){  invx=1;}
                    //     if (pixx>80){  invx=-1;}
@@ -341,25 +343,31 @@ int mapfunc(){
                      //   if (pixy>80){  invy=-1;}
 
 
-
-                  if (map[pixstepsymin][pixstepsxmin]>0){
-                          stepx=-1;  stepy=1;        // pixx++;
+                  if (map[pixstepsxmin][pixstepsymin]>0){
+                          stepx=-0.1;  stepy=0.1;        // pixx++;
                                                 i=1;
                          }
-                  if (map[pixstepsymax][pixstepsxmax]>0){
-                          stepx=1;  stepy=-1; i=1;  //  pixx++;
+                  if (map[pixstepsxmax][pixstepsymax]>0){
+
+
+
+                          stepx=0.1;  stepy=-0.1; i=1;  //  pixx++;
 
                                                    }
-                  if (map[pixstepsymin][pixstepsxmax]>0){
-                         stepx=-1;       stepy=-1;   i=1; //pixx++;
+                  if (map[pixstepsxmin][pixstepsymax]>0){
+
+                         stepx=-0.1;       stepy=-0.1;   i=-1; //pixx++;
 
                                                    }
-                  if (map[pixstepsymax][pixstepsxmin]>0){
-                         stepx=1;       stepy=1;    i=1; // pixx++;
+                  if (map[pixstepsxmax][pixstepsymin]>0){
 
-                         }
-                    pixx=pixx+stepx;
-                    pixy=pixy-stepy;
+
+
+                         stepx=0.1;       stepy=0.1;    i=1; // pixx++;
+
+                        }
+                    pixx=(pixx+stepx);
+                    pixy=(pixy-stepy);
                   //  pixx+=;
                   //  pixy+=;
                //        x=x*invx;
@@ -403,7 +411,7 @@ int mapfunc(){
 
 
 
-                    putpixel(screen,pixx+100,pixy+50,8);
+                    putpixel(screen,(pixx*10)+100,(pixy*10)+50,8);
 
 
 
@@ -472,8 +480,8 @@ int mapfunc(){
 
 
 int main(int argc, char *argv[]) {
-              pixx=40;
-              pixy=40;
+              pixx=4.0;
+              pixy=4.0;
 
               
                 disy=140;
