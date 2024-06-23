@@ -29,8 +29,8 @@ int z;
 int dirx=0;
 double pixdirx=10;
 double pixdiry=33;
-double stepx=0;
-double stepy=0;
+double stepx=0.1;
+double stepy=-0.1;
 int diry=0;
 int roll=0;
 int hit=0;
@@ -301,8 +301,8 @@ void spritefunction(){
 
 int mapfunc(){
 
-        int i=1;
-
+        double i=1;
+        double j=0.1;
 
 
             if (key[KEY_LEFT]) { blockx--;   stepx=0.1;  }
@@ -326,11 +326,12 @@ int mapfunc(){
                       // invx=1;
 
 
-                    pixstepsxmin=((int)(pixx));
-                     pixstepsymin=((int)(pixy));
+                    pixstepsxmin=((int)(pixx+0.1));
+                     pixstepsymin=((int)(pixy+0.1));
 
-                     pixstepsxmax=((int)(pixx-0.1));
-                   pixstepsymax=((int)(pixy-0.1));
+
+                 //    pixstepsxmax=((int)(pixx));
+               //    pixstepsymax=((int)(pixy));
 
 
 
@@ -344,30 +345,54 @@ int mapfunc(){
 
 
                   if (map[pixstepsxmin][pixstepsymin]>0){
-                          stepx=-0.1;  stepy=0.1;        // pixx++;
-                                                i=1;
+                       //i=-i;
+                        if ((pixx)-pixstepsxmin>0.5){ if ((pixy)-pixstepsymin>0.5){
+
+                                    stepx=-stepx;    stepy=-stepy;
+                        }   }
+
+                          if ((pixx)-pixstepsxmin>0.5){ if ((pixy)-pixstepsymin<0.5)  {
+                                    stepx=-stepx;    stepy=stepy;
+
+                        }    }
+
+
+                       if ((pixx)-pixstepsxmin<0.5){ if ((pixy)-pixstepsymin<0.5) {
+                                      stepx=stepx;    stepy=stepy;
+
+                        }     }
+                         if ((pixx)-pixstepsxmin<0.5){ if ((pixy)-pixstepsymin>0.5) {
+                                      stepx=stepx;    stepy=-stepy;
+
+                        }      }
+
+
+
+
+
                          }
-                  if (map[pixstepsxmax][pixstepsymax]>0){
+
+                //  if (map[pixstepsxmax][pixstepsymax]>0){
 
 
 
-                          stepx=0.1;  stepy=-0.1; i=1;  //  pixx++;
+                    //      stepx=0.1;  stepy=-0.1;  //  pixx++;
 
-                                                   }
-                  if (map[pixstepsxmin][pixstepsymax]>0){
+                  //                                 }
+                //  if (map[pixstepsxmin][pixstepsymax]>0){
 
-                         stepx=-0.1;       stepy=-0.1;   i=-1; //pixx++;
+                    //     stepx=-0.1;     stepy=-0.1;   //pixx++;
 
-                                                   }
-                  if (map[pixstepsxmax][pixstepsymin]>0){
+                  //                                 }
+                //  if (map[pixstepsxmax][pixstepsymin]>0){
 
 
 
-                         stepx=0.1;       stepy=0.1;    i=1; // pixx++;
+                 //        stepx=0.1;       stepy=0.1;   // pixx++;
 
-                        }
+                //        }
                     pixx=(pixx+stepx);
-                    pixy=(pixy-stepy);
+                    pixy=(pixy+stepy);
                   //  pixx+=;
                   //  pixy+=;
                //        x=x*invx;
