@@ -40,14 +40,15 @@ int y=60;
 int framex,framey;
 int k;
 int x=103;
-double pixx;
-double pixy;
+double pixx[10];
+double pixy[10];
 double t;
 double t2;
 int x2;
  double planex;
  double planex2;
  int posx=0;             int planey;
+int r=0;;
 int k;
 int ti;
 int ti2;
@@ -305,15 +306,6 @@ int mapfunc(){
         double j=0.1;
 
 
-            if (key[KEY_LEFT]) { blockx--;   stepx=0.1;  }
-
-
-             if (key[KEY_RIGHT]) { blockx++;  stepx=-0.1;   }
-             if (key[KEY_UP]) {  blocky--;    stepy=-0.1;    }
-             if (key[KEY_DOWN]) { blocky++;   stepy=0.1;    }
-
-              poll_keyboard();
-
 
 
 
@@ -326,8 +318,8 @@ int mapfunc(){
                       // invx=1;
 
 
-                    pixstepsxmin=((int)(pixx+0.1));
-                     pixstepsymin=((int)(pixy+0.1));
+                    pixstepsxmin=((int)(pixx[0]));
+                     pixstepsymin=((int)(pixy[0]));
 
 
                  //    pixstepsxmax=((int)(pixx));
@@ -342,29 +334,42 @@ int mapfunc(){
                    //     if (pixx>80){  invx=-1;}
                     //       if (pixy<10){  invy=1;}
                      //   if (pixy>80){  invy=-1;}
+                                     if (key[KEY_LEFT]) {  blockx--;   stepx=0.1;  }
+
+
+             if (key[KEY_RIGHT]) {  blockx++;  stepx=-0.1;   }
+             if (key[KEY_UP]) {  blocky--;    stepy=-0.1;    }
+             if (key[KEY_DOWN]) { blocky++;   stepy=0.1;    }
+
+              poll_keyboard();
 
 
                   if (map[pixstepsxmin][pixstepsymin]>0){
                        //i=-i;
-                        if ((pixx)-pixstepsxmin>0.5){ if ((pixy)-pixstepsymin>0.5){
 
-                                    stepx=-stepx;    stepy=-stepy;
+                             if ((pixx[r])-pixstepsxmin<0.5){ if ((pixy[r])-pixstepsymin>0.5) {
+                                      stepx=-stepx;    stepy=stepy;
+
+                        }      }
+                             if ((pixx[r])-pixstepsxmin>0.5){ if ((pixy[r])-pixstepsymin<0.5) {
+                                      stepx=-stepx;    stepy=-stepy;
+
+                        }      }
+
+
+                        if ((pixx[r])-pixstepsxmin>0.5){ if ((pixy[r])-pixstepsymin>0.5){
+
+                                    stepx=-stepx;    stepy=stepy;
                         }   }
 
-                          if ((pixx)-pixstepsxmin>0.5){ if ((pixy)-pixstepsymin<0.5)  {
-                                    stepx=-stepx;    stepy=stepy;
+                          if ((pixx[r])-pixstepsxmin<0.5){ if ((pixy[r])-pixstepsymin<0.5)  {
+                                    stepx=stepx;    stepy=-stepy;
 
                         }    }
 
 
-                       if ((pixx)-pixstepsxmin<0.5){ if ((pixy)-pixstepsymin<0.5) {
-                                      stepx=stepx;    stepy=stepy;
 
-                        }     }
-                         if ((pixx)-pixstepsxmin<0.5){ if ((pixy)-pixstepsymin>0.5) {
-                                      stepx=stepx;    stepy=-stepy;
 
-                        }      }
 
 
 
@@ -391,8 +396,20 @@ int mapfunc(){
                  //        stepx=0.1;       stepy=0.1;   // pixx++;
 
                 //        }
-                    pixx=(pixx+stepx);
-                    pixy=(pixy+stepy);
+                    pixx[r]=pixx[r]+1.0*(stepx);
+                    pixy[r]=pixy[r]+1.0*(stepy);
+
+
+
+
+
+
+
+
+
+
+
+
                   //  pixx+=;
                   //  pixy+=;
                //        x=x*invx;
@@ -432,11 +449,7 @@ int mapfunc(){
                  //     dirx=7;
                   //    diry=4;
                    //   hit=0;
-
-
-
-
-                    putpixel(screen,(pixx*10)+100,(pixy*10)+50,8);
+      putpixel(screen,(pixx[r]*10)+100,(pixy[r]*10)+50,9);
 
 
 
@@ -505,10 +518,8 @@ int mapfunc(){
 
 
 int main(int argc, char *argv[]) {
-              pixx=4.0;
-              pixy=4.0;
-
-              
+              pixx[r]=4.0;
+              pixy[r]=4.0;
                 disy=140;
               disx=40;
 
@@ -562,7 +573,7 @@ int main(int argc, char *argv[]) {
 
 
 
-                  ti3++;            if (ti3>=2000){ti3=0;lenght++;   if (lenght >3000){lenght=0;  clear_to_color(screen,0);   ti2+=10;  if (ti2>200){ti2=0;} mapfunc();   draw_sprite(surface,walkingspr,0,0); }
+                  ti3++;            if (ti3>=1000){ti3=0;lenght++;   if (lenght >3500){lenght=0;  clear_to_color(screen,0);   ti2+=10;  if (ti2>200){ti2=0;} mapfunc();   draw_sprite(surface,walkingspr,0,0); }
                                                                                                                             //  draw_trans_sprite(spr1,walkingspr,0,0);
 
 
