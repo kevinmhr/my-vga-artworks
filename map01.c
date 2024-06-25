@@ -30,7 +30,7 @@ int dirx=0;
 double pixdirx=10;
 double pixdiry=33;
 double stepx=0.1;
-double stepy=-0.1;
+double stepy=0.1;
 int diry=0;
 int roll=0;
 int hit=0;
@@ -307,6 +307,10 @@ int mapfunc(){
 
 
 
+                              if (pixx[r]>=12){pixx[r]=4.0;pixy[r]=4.0;     }
+                                 if (pixx[r]<=-2){pixx[r]=4.0;pixy[r]=4.0;  }
+                                 if (pixy[r]>=12){pixy[r]=4.0;pixx[r]=4.0;    }
+                                  if (pixy[r]<=-2){pixy[r]=4.0;pixx[r]=4.0;       }
 
 
                 //        if (pixx>20 | pixx<30){pixstep=3;}
@@ -318,8 +322,6 @@ int mapfunc(){
                       // invx=1;
 
 
-                    pixstepsxmin=((int)(pixx[0]));
-                     pixstepsymin=((int)(pixy[0]));
 
 
                  //    pixstepsxmax=((int)(pixx));
@@ -334,38 +336,39 @@ int mapfunc(){
                    //     if (pixx>80){  invx=-1;}
                     //       if (pixy<10){  invy=1;}
                      //   if (pixy>80){  invy=-1;}
-                                     if (key[KEY_LEFT]) {  blockx--;   stepx=0.1;  }
+                    pixstepsxmin=((int)(pixx[0]+0.1));
+                     pixstepsymin=((int)(pixy[0]+0.1));
 
 
-             if (key[KEY_RIGHT]) {  blockx++;  stepx=-0.1;   }
-             if (key[KEY_UP]) {  blocky--;    stepy=-0.1;    }
-             if (key[KEY_DOWN]) { blocky++;   stepy=0.1;    }
 
-              poll_keyboard();
 
 
                   if (map[pixstepsxmin][pixstepsymin]>0){
                        //i=-i;
 
-                             if ((pixx[r])-pixstepsxmin<0.5){ if ((pixy[r])-pixstepsymin>0.5) {
+                                   if ((pixx[r])-pixstepsxmin>0.5){ if ((pixy[r])-pixstepsymin>0.5){
+                                                           stepx=-stepx;    stepy=-stepy;     }}
+
+
+                                     if ((pixx[r])-pixstepsxmin>0.5){ if ((pixy[r])-pixstepsymin<0.5) {
                                       stepx=-stepx;    stepy=stepy;
 
                         }      }
-                             if ((pixx[r])-pixstepsxmin>0.5){ if ((pixy[r])-pixstepsymin<0.5) {
-                                      stepx=-stepx;    stepy=-stepy;
+
+
+
+                          if ((pixx[r])-pixstepsxmin<0.5){ if ((pixy[r])-pixstepsymin<0.5)  {
+                                    stepx=-stepx;    stepy=stepy;
+
+                        }    }
+
+                             if ((pixx[r])-pixstepsxmin<0.5){ if ((pixy[r])-pixstepsymin>0.5) {
+
+                                      stepx=stepx;    stepy=-stepy;
 
                         }      }
 
 
-                        if ((pixx[r])-pixstepsxmin>0.5){ if ((pixy[r])-pixstepsymin>0.5){
-
-                                    stepx=-stepx;    stepy=stepy;
-                        }   }
-
-                          if ((pixx[r])-pixstepsxmin<0.5){ if ((pixy[r])-pixstepsymin<0.5)  {
-                                    stepx=stepx;    stepy=-stepy;
-
-                        }    }
 
 
 
@@ -377,35 +380,22 @@ int mapfunc(){
 
                          }
 
-                //  if (map[pixstepsxmax][pixstepsymax]>0){
-
-
-
-                    //      stepx=0.1;  stepy=-0.1;  //  pixx++;
-
-                  //                                 }
-                //  if (map[pixstepsxmin][pixstepsymax]>0){
-
-                    //     stepx=-0.1;     stepy=-0.1;   //pixx++;
-
-                  //                                 }
-                //  if (map[pixstepsxmax][pixstepsymin]>0){
-
-
-
-                 //        stepx=0.1;       stepy=0.1;   // pixx++;
-
-                //        }
-                    pixx[r]=pixx[r]+1.0*(stepx);
-                    pixy[r]=pixy[r]+1.0*(stepy);
+                             pixx[r]=pixx[r]+(0.05*stepx);
+                            pixy[r]=pixy[r]+(0.05*stepy);
 
 
 
 
 
 
+                                     if (key[KEY_LEFT]) {  blockx--;   stepx=0.1;  }
 
 
+             if (key[KEY_RIGHT]) {  blockx++;  stepx=-0.1;   }
+             if (key[KEY_UP]) {  blocky--;    stepy=-0.1;    }
+             if (key[KEY_DOWN]) { blocky++;   stepy=0.1;    }
+
+              poll_keyboard();
 
 
 
@@ -468,7 +458,7 @@ int mapfunc(){
 
                    //                 z++;
 
-            if (z>320){z=0;}
+
                                        int w=1;
                               for (int i=0;i<100;i=i+10){
                               for (int j=0;j<100;j=j+10){
@@ -490,7 +480,7 @@ int mapfunc(){
 
                            rectfill(screen,dirx+100,diry+50,dirx+110,diry+60,5);
 
-
+                                              }
                                               //  }
 
 
@@ -505,7 +495,7 @@ int mapfunc(){
 
    //  rectfill(screen,50,50,100,100,8);
 
-                              }
+
 
                       // if (dirx>=100){dirx=0;}
 }
@@ -572,18 +562,19 @@ int main(int argc, char *argv[]) {
 
 
 
+                                         ti2++;  if (ti2>1000){ti2=0;ti3++;   mapfunc();
+                                 if (ti3>=100){ti3=0;clear_to_color(screen,0);     }  }
 
-                  ti3++;            if (ti3>=1000){ti3=0;lenght++;   if (lenght >3500){lenght=0;  clear_to_color(screen,0);   ti2+=10;  if (ti2>200){ti2=0;} mapfunc();   draw_sprite(surface,walkingspr,0,0); }
                                                                                                                             //  draw_trans_sprite(spr1,walkingspr,0,0);
 
 
                                                                                                                           //    blit(surface,screen,framex ,framey,playerx,playery,25, 30);
                                                                                                                                  }
 
-    }
 
 
- destroy_bitmap(screen); destroy_bitmap(the_image);
+
+destroy_bitmap(screen); destroy_bitmap(the_image);
 
    
    readkey();
