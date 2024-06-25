@@ -1,13 +1,7 @@
-/*
- *    Example program for the Allegro library, by Shawn Hargreaves.
- *
- *    This program demonstrates how to load and display a bitmap
- *    file.  You have to use this example from the command line to
- *    specify as first parameter a graphic file in one of Allegro's
- *    supported formats.  If the file is loaded successfully,
- *    it will be displayed until you press a key.
- */
 
+//keyvan mehrbakhsh 2024
+// note : it's a progressive attempt so it's not to be the same as time passes
+// till it getting to some reasonable point maybe or maybe not :D .
 
 #include <allegro.h>
 #include <math.h>
@@ -345,7 +339,7 @@ int mapfunc(){
 
                   if (map[pixstepsxmin][pixstepsymin]>0){
                        //i=-i;
-
+                                 color++;if (color>10){color=1;}
                                    if ((pixx[r])-pixstepsxmin>0.5){ if ((pixy[r])-pixstepsymin>0.5){
                                                            stepx=-stepx;    stepy=-stepy;     }}
 
@@ -439,7 +433,7 @@ int mapfunc(){
                  //     dirx=7;
                   //    diry=4;
                    //   hit=0;
-      putpixel(screen,(pixx[r]*10)+100,(pixy[r]*10)+50,9);
+      putpixel(screen,(pixx[r]*10)+100,(pixy[r]*10)+50,color);
 
 
 
@@ -508,8 +502,8 @@ int mapfunc(){
 
 
 int main(int argc, char *argv[]) {
-              pixx[r]=4.0;
-              pixy[r]=4.0;
+              pixx[r]=6.5;
+              pixy[r]=5.0;
                 disy=140;
               disx=40;
 
@@ -562,8 +556,8 @@ int main(int argc, char *argv[]) {
 
 
 
-                                         ti2++;  if (ti2>1000){ti2=0;ti3++;   mapfunc();
-                                 if (ti3>=100){ti3=0;clear_to_color(screen,0);     }  }
+                                         ti2++;  if (ti2>2000){ti2=0;ti3++;   mapfunc();
+                                 if (ti3>=300+(color*50)){ti3=0;clear_to_color(screen,0);     }  }
 
                                                                                                                             //  draw_trans_sprite(spr1,walkingspr,0,0);
 
