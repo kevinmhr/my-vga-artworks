@@ -11,20 +11,21 @@ int vertices[]={50,50,70,100,150,50};
 int pixdrivex;
 int pixdrivey;
  int invx=1;
-                   int invy=1;
+        double i=0.1;              int invy=1;
+double times=1;
 int pixstep;
 int  pixstepsxmin;
 int pixstepsymin;
 int  pixstepsxmax;
 int pixstepsymax;
-
+  double j=0.1;
 int orient[]={10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,160,150,140,130,120,110,100,90,80,70,60,50,40,30,20,10};
 int z;
 int dirx=0;
 double pixdirx=10;
 double pixdiry=33;
-double stepx=0.1;
-double stepy=0.1;
+double stepx=0.01;
+double stepy=0.01;
 int diry=0;
 int roll=0;
 int hit=0;
@@ -296,10 +297,16 @@ void spritefunction(){
 
 int mapfunc(){
 
-        double i=1;
-        double j=0.1;
 
 
+
+
+          if (key[KEY_LEFT]) {  blockx--;   times=times+1;i=i+0.001; }
+
+
+             if (key[KEY_RIGHT]) {  blockx++;  times=times-1;  i=i-0.001;  }
+             if (key[KEY_UP]) {  blocky--;   j=j+0.001;   }
+             if (key[KEY_DOWN]) { blocky++;   j=j-0.001;     }
 
                               if (pixx[r]>=12){pixx[r]=4.0;pixy[r]=4.0;     }
                                  if (pixx[r]<=-2){pixx[r]=4.0;pixy[r]=4.0;  }
@@ -330,6 +337,9 @@ int mapfunc(){
                    //     if (pixx>80){  invx=-1;}
                     //       if (pixy<10){  invy=1;}
                      //   if (pixy>80){  invy=-1;}
+
+
+
                     pixstepsxmin=((int)(pixx[0]+0.1));
                      pixstepsymin=((int)(pixy[0]+0.1));
 
@@ -374,22 +384,15 @@ int mapfunc(){
 
                          }
 
-                             pixx[r]=pixx[r]+(0.05*stepx);
-                            pixy[r]=pixy[r]+(0.05*stepy);
+                             pixx[r]=pixx[r]+i*(stepx);
+                            pixy[r]=pixy[r]+j*(stepy);
 
 
 
 
 
 
-                                     if (key[KEY_LEFT]) {  blockx--;   stepx=0.1;  }
 
-
-             if (key[KEY_RIGHT]) {  blockx++;  stepx=-0.1;   }
-             if (key[KEY_UP]) {  blocky--;    stepy=-0.1;    }
-             if (key[KEY_DOWN]) { blocky++;   stepy=0.1;    }
-
-              poll_keyboard();
 
 
 
@@ -472,7 +475,7 @@ int mapfunc(){
 
 
 
-                           rectfill(screen,dirx+100,diry+50,dirx+110,diry+60,5);
+                           rectfill(screen,dirx+100,diry+50,dirx+110,diry+60,1);
 
                                               }
                                               //  }
@@ -551,12 +554,20 @@ int main(int argc, char *argv[]) {
     plus1=0;
      xoffset=0;
      camerax=0;
+
      while (i!=0){
 
 
 
+                                         ti2++;  if (ti2>2000){ti2=0;ti3++;           mapfunc();
 
-                                         ti2++;  if (ti2>2000){ti2=0;ti3++;   mapfunc();
+
+              poll_keyboard();
+
+
+
+
+
                                  if (ti3>=300+(color*50)){ti3=0;clear_to_color(screen,0);     }  }
 
                                                                                                                             //  draw_trans_sprite(spr1,walkingspr,0,0);
