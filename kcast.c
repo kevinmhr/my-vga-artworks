@@ -11,6 +11,7 @@ char *bitmapbuffer;
 int vertices[]={50,50,70,100,150,50};
 int pixdrivex;
 int pixdrivey;
+ double anglevalue=0;
  int invx=1;
   double raydiry;
   double raydirx;
@@ -330,13 +331,11 @@ int mapfunc(){
        
                     //   if (map[pixstepsxmin][pixstepsymin]=0){
 
-                                  double camerax=(k)/(double)w-1;
+                                  double camerax=(k*2)/(double)w-1;
                                       int   mapx= (pixx[r]);
                                     int   mapy=(pixy[r]);
-
-                                   raydirx=(dirrx*sin(5)-dirry*cos(5))+(planex*sin(5)-planey*cos(5))*camerax;
-
-                                    raydiry=(dirry*cos(5)+dirrx*sin(5))+(planey*cos(5)+planex*sin(5))*camerax;
+                                  raydirx=dirrx+planex*camerax;
+                                  raydiry=dirry+planey*camerax;
                         //         rayy[r]=pixy[r];
                                                          //   (raydirx=0);
 
@@ -393,7 +392,7 @@ int mapfunc(){
 
                                    if (side==0) {perpwalldist=(sidedistx-deltadistx);}
                           else  {  perpwalldist=(sidedisty-deltadisty);}
-                        int lhight=(int)800/perpwalldist;
+                        int lhight=(int)400/perpwalldist;
 
 
 
@@ -539,15 +538,24 @@ int draw(){
 }
 int keyboard(){
 
+      if (key[KEY_LEFT]) {   pixx[r]-=0.01;dirx--; }
 
-      if (key[KEY_LEFT]) {   pixx[r]-=0.01; }
 
 
-             if (key[KEY_RIGHT]) {  pixx[r]+=0.01; }
+             if (key[KEY_RIGHT]) {  pixx[r]+=0.01; dirx++;}
              if (key[KEY_UP]) {        pixy[r]+=0.01;   }
              if (key[KEY_DOWN])  { pixy[r]-=0.01;          }
-                if (key[KEY_Q]) {  dirry-=5;dirrx+=5; planex-=1;  planey+=1;  }
-             if (key[KEY_A]) {     dirry+=5;dirrx-=5; planex+=1; planey-=1; }
+                if (key[KEY_Q]) { anglevalue=1000;   dirrx+=5*sin(anglevalue);
+                                                       dirry+=5*cos(anglevalue);
+                                                       planex+=5*sin(anglevalue);
+                                                       planey+=5*cos(anglevalue);
+
+                                                                                 }
+                 if (key[KEY_A]) {    anglevalue=1000;    dirrx-=5*sin(-anglevalue);
+                                                            dirry-=5*cos(-anglevalue);
+                                                            planex-=5*sin(-anglevalue);
+                                                            planey-=5*cos(-anglevalue);
+                                                                                   }
 
               poll_keyboard();
 
