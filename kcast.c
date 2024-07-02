@@ -11,10 +11,10 @@ char *bitmapbuffer;
 int vertices[]={50,50,70,100,150,50};
 int pixdrivex;
 int pixdrivey;
- double anglevalue=0;
+ float anglevalue=0;
  int invx=1;
-  double raydiry;
-  double raydirx;
+  float raydiry;
+  float raydirx;
   double speed;
 int lhight;
         double i=0.1;              int invy=1;
@@ -27,8 +27,8 @@ int scanpixx=1;
 int scanpixy=1;
 int  mapx;
 int mapy;
-double dirrx;
-double dirry;
+float dirrx=-1;
+float dirry=0;
 int  pixstepsxmax;
 int pixstepsymax;
   double j=0.1;
@@ -49,14 +49,14 @@ int y=60;
 int framex,framey;
 int k;
 int x=103;
-double pixx[1];
-double pixy[1];
+float pixx[1];
+float pixy[1];
 double t;
 double t2;
 int x2;
- double planex=1;
+ float planex=0;
  double planex2;
- int posx=0;             double planey=1;
+ int posx=0;             float planey=0.66;
 double angle;
 int r=0;;
 int k;
@@ -318,7 +318,7 @@ int mapfunc(){
                      putpixel(screen,mapx*10,mapx*10,5);
                    //    putpixel(screen,pixstepsxmax*10,pixstepsymax*10,5);
                                          int h=200;
-     double w=640;
+     float w=320;
 
                                  if (ti3>=50){ti3=0;  ; clear_to_color(screen,0);    }
                              for (int k=0;k<w;k=k+1){
@@ -331,17 +331,20 @@ int mapfunc(){
        
                     //   if (map[pixstepsxmin][pixstepsymin]=0){
 
-                                  double camerax=(k*2)/(double)w-1;
+                                  double camerax=(k-1*2)/w-1;
                                       int   mapx= (pixx[r]);
                                     int   mapy=(pixy[r]);
-                                  raydirx=dirrx+planex*camerax;
-                                  raydiry=dirry+planey*camerax;
+                                  raydirx=dirrx+planex*(camerax/1000);
+                                  raydiry=dirry+planey*(camerax/1000);
                         //         rayy[r]=pixy[r];
                                                          //   (raydirx=0);
 
                                                         //    (raydiry=0);
-                                                        deltadistx=sqrt(1+(raydiry*raydiry)/(raydirx*raydirx))*2;
-                                                        deltadisty=sqrt(1+(raydirx*raydirx)/(raydiry*raydiry))*2;
+
+                                                         //   deltadistx=abs(1+raydirx);
+                                                         //   deltadisty=abs(1+raydiry);
+                                                       deltadistx=(sqrt((1+raydiry*raydiry))/(raydirx*raydirx));
+                                                       deltadisty=(sqrt((1+raydirx*raydirx))/(raydiry*raydiry));
                                             speed=0.001;
 
                                      int stepx;
@@ -354,7 +357,7 @@ int mapfunc(){
              sidedistx=(pixx[r]-mapx)*deltadistx;}
 
               else {   stepx=1;
-             sidedistx=(mapx+1.0 -pixx[r])*deltadistx;}
+             sidedistx=(mapx+1 -pixx[r])*deltadistx;}
 
              
                 if (raydiry<0){   stepy=-1;
@@ -362,7 +365,7 @@ int mapfunc(){
 
              
                 else{   stepy=1;
-             sidedisty=(mapy+1.0 -pixy[r])*deltadisty;}
+             sidedisty=(mapy+1 -pixy[r])*deltadisty;}
              
 
 
@@ -390,9 +393,9 @@ int mapfunc(){
                       if (side==0){color=4;}
 
 
-                                   if (side==0) {perpwalldist=(sidedistx-deltadistx);}
-                          else  {  perpwalldist=(sidedisty-deltadisty);}
-                        int lhight=(int)400/perpwalldist;
+                                   if (side==0) perpwalldist=(sidedistx-deltadistx);
+                          else    perpwalldist=(sidedisty-deltadisty);
+                        int lhight=(50/perpwalldist);
 
 
 
@@ -538,24 +541,48 @@ int draw(){
 }
 int keyboard(){
 
-      if (key[KEY_LEFT]) {   pixx[r]-=0.01;dirx--; }
+      if (key[KEY_A]) {   pixx[r]-=0.01; }
 
 
 
-             if (key[KEY_RIGHT]) {  pixx[r]+=0.01; dirx++;}
+             if (key[KEY_Q]) {  pixx[r]+=0.01; }
              if (key[KEY_UP]) {        pixy[r]+=0.01;   }
              if (key[KEY_DOWN])  { pixy[r]-=0.01;          }
-                if (key[KEY_Q]) { anglevalue=1000;   dirrx+=5*sin(anglevalue);
-                                                       dirry+=5*cos(anglevalue);
-                                                       planex+=5*sin(anglevalue);
-                                                       planey+=5*cos(anglevalue);
+                if (key[KEY_RIGHT]) {
+
+
+                                                     anglevalue=0.01;
+                                                 //      dirrx=45;
+                                                  //     dirry=45;
+                                                   //    planex=45;
+                                                     float olddirx=dirx;
+                                                       dirrx=(dirrx*cos(-anglevalue)-dirry*sin(-anglevalue));
+                                                       dirry=(olddirx*sin(-anglevalue)+dirry*cos(-anglevalue));
+                                                              float oldplanex=planex;
+                                                           planex=(planex*cos(-anglevalue)-planey*sin(-anglevalue));
+                                                       planey=(oldplanex*sin(-anglevalue)+planey*cos(-anglevalue));
+
+
+
 
                                                                                  }
-                 if (key[KEY_A]) {    anglevalue=1000;    dirrx-=5*sin(-anglevalue);
-                                                            dirry-=5*cos(-anglevalue);
-                                                            planex-=5*sin(-anglevalue);
-                                                            planey-=5*cos(-anglevalue);
-                                                                                   }
+                 if (key[KEY_LEFT]) {
+
+                                                          anglevalue=-0.01;
+                                                     //  dirrx=59600;
+
+                                                   // dirry=0;
+                                                     //   planex=59600;
+                                                     //  planey=0;
+                                                        float olddirx=dirrx;
+
+                                                       dirrx=dirrx*cos(anglevalue)-dirry*sin(anglevalue);
+                                                       dirry=olddirx*sin(anglevalue)+dirry*cos(anglevalue);
+                                                              float oldplanex=planex;
+                                                           planex=planex*cos(anglevalue)-planey*sin(anglevalue);
+                                                       planey=oldplanex*sin(anglevalue)+planey*cos(anglevalue);
+
+                                                                                    }
 
               poll_keyboard();
 
@@ -573,38 +600,6 @@ int keyboard(){
 
 
 
-int keyboard2(){
-
-            double olddirrx=dirrx;
-             double oldplanex=planex;
-      if (key[KEY_LEFT]) {
-
-      dirrx= dirrx*cos(-speed)-dirry*sin(-speed);
-     dirry= olddirrx*sin(-speed)+dirry*cos(-speed);
-
-     planex= planex*cos(-speed)-planey*sin(-speed);
-     planey= oldplanex*sin(-speed)+planey*cos(-speed);
-
-
-
-
-
-
-
-     }
-
-             if (key[KEY_RIGHT]) {
-
-
-     dirrx= dirrx*cos(-speed)-dirry*sin(-speed);
-     dirry= olddirrx*sin(-speed)+dirry*cos(-speed);
-
-     planex= planex*cos(-speed)-planey*sin(-speed);
-     planey= oldplanex*sin(-speed)+planey*cos(-speed);
-
-              }
-
-             }
 
 
 int main(int argc, char *argv[]) {
