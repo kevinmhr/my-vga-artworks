@@ -349,7 +349,9 @@ int mapfunc(){
 
                   if (map[pixstepsxmin][pixstepsymin]>0){
                        //i=-i;
-                                 color++;if (color>10){color=1;}
+                                 color++;if (color>=10){color=1;}
+                                 map[pixstepsxmin][pixstepsymin]=color;
+
                                    if ((pixx[r])-pixstepsxmin>0.5){ if ((pixy[r])-pixstepsymin>0.5){
                                                            stepx=-stepx;    stepy=-stepy;     }}
 
@@ -459,7 +461,7 @@ int mapfunc(){
                                        int w=1;
                               for (int i=0;i<100;i=i+10){
                               for (int j=0;j<100;j=j+10){
-                            if (map[i/10][j/10]==1){  rectfill(screen,i+100,j+50,i+110,j+60,3);             }
+                            if (map[i/10][j/10]>0){  rectfill(screen,i+100,j+50,i+110,j+60,map[i/10][j/10]);             }
 
                              // hline(screen,i,j,j+10,5 )
                               line(screen,i+100,j+50,i+100,j+60,1);    line(screen,i+100,j+50,i+110,j+50,1);  } }
