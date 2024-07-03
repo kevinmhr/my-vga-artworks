@@ -11,14 +11,15 @@ int vertices[]={50,50,70,100,150,50};
 int pixdrivex;
 int pixdrivey;
  int invx=1;
-        double i=0.1;              int invy=1;
+               int invy=1;
 double times=1;
 int pixstep;
 int  pixstepsxmin;
 int pixstepsymin;
 int  pixstepsxmax;
 int pixstepsymax;
-  double j=0.1;
+  double j=0.5;
+  double i=0.5;
 int orient[]={10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,160,150,140,130,120,110,100,90,80,70,60,50,40,30,20,10};
 int z;
 int dirx=0;
@@ -349,8 +350,8 @@ int mapfunc(){
 
                   if (map[pixstepsxmin][pixstepsymin]>0){
                        //i=-i;
-                                 color++;if (color>=10){color=1;}
-                                 map[pixstepsxmin][pixstepsymin]=color;
+
+
 
                                    if ((pixx[r])-pixstepsxmin>0.5){ if ((pixy[r])-pixstepsymin>0.5){
                                                            stepx=-stepx;    stepy=-stepy;     }}
@@ -381,9 +382,6 @@ int mapfunc(){
 
 
 
-
-
-
                          }
 
                              pixx[r]=pixx[r]+i*(stepx);
@@ -392,10 +390,15 @@ int mapfunc(){
 
 
 
+                  if (map[pixstepsxmin][pixstepsymin]>=1){
+          
 
 
+                                                                          color++;if (color>250){color=1;}
+                                 map[pixstepsxmin][pixstepsymin]=color;
 
 
+                   }
 
 
 
@@ -438,7 +441,7 @@ int mapfunc(){
                  //     dirx=7;
                   //    diry=4;
                    //   hit=0;
-      putpixel(screen,(pixx[r]*10)+100,(pixy[r]*10)+50,color);
+      putpixel(screen,(pixx[r]*10)+100,(pixy[r]*10)+50,55);
 
 
 
@@ -461,12 +464,12 @@ int mapfunc(){
                                        int w=1;
                               for (int i=0;i<100;i=i+10){
                               for (int j=0;j<100;j=j+10){
-                            if (map[i/10][j/10]>0){  rectfill(screen,i+100,j+50,i+110,j+60,map[i/10][j/10]);             }
+                            if (map[i/10][j/10]>0){  rectfill(screen,i+100,j+50,i+110,(j+60),map[i/10][j/10]);       blit(sprsheet,screen,(map[i/10][j/10]*10),(map[i/10][j/10]*10),i+100,j+50,10,10);            }
 
                              // hline(screen,i,j,j+10,5 )
                               line(screen,i+100,j+50,i+100,j+60,1);    line(screen,i+100,j+50,i+110,j+50,1);  } }
 
-                              rect(screen,dirx+100,diry+50,dirx+110,diry+60,8);
+                          //    rect(screen,dirx+100,diry+50,dirx+110,diry+60,8);
                               
               if (hit==1) {
                 //  cameray=dirx;
@@ -532,7 +535,7 @@ int main(int argc, char *argv[]) {
       }   }
    //  drawing_mode(DRAW_MODE_TRANS, NULL,0,0);
 //set_multiply_blender(0, 0, 0, 0);
-  //     set_color_depth(8);
+       set_color_depth(8);
    //set_write_alpha_blender();
 //bitmapbuffer="metal.bmp";
    /* read in the bitmap file */
@@ -540,28 +543,29 @@ int main(int argc, char *argv[]) {
        //   solid_mode();
   // the_image= load_bitmap(bitmapbuffer, the_palette1);
    sprsheet=load_bitmap("spritesheet.bmp",the_palette2);
-   //   set_palette(the_palette);
+     set_palette(the_palette2);
 //    the_block1= load_bitmap("block1.bmp",the_palette2);
-     spr1=create_bitmap(320,240);
+     spr1=create_bitmap(20,20);
   surface=create_bitmap(320,240);
- //      spritefunction();
+
        walkingspr=load_pcx("walking.pcx",the_palette);
    // mapfunc();
 //   set_palette(the_palette2);
 //    set_alpha_blender();
 
     t=1;
-    int i;
-    i=1;
+
     plus1=0;
      xoffset=0;
      camerax=0;
-
+   //   frame=0;
+  //      spritefunction();
      while (i!=0){
 
 
 
-                                         ti2++;  if (ti2>2000){ti2=0;ti3++;           mapfunc();
+
+                                         ti2++;  if (ti2>200){ti2=0;ti3++;           mapfunc();
 
 
               poll_keyboard();
@@ -570,9 +574,9 @@ int main(int argc, char *argv[]) {
 
 
 
-                                 if (ti3>=300+(color*50)){ti3=0;clear_to_color(screen,0);     }  }
-
-                                                                                                                            //  draw_trans_sprite(spr1,walkingspr,0,0);
+                                 if (ti3>=200){ti3=0;clear_to_color(screen,0);
+                                            }
+                                                                                  }                                          //  draw_trans_sprite(spr1,walkingspr,0,0);
 
 
                                                                                                                           //    blit(surface,screen,framex ,framey,playerx,playery,25, 30);
@@ -585,7 +589,6 @@ destroy_bitmap(screen); destroy_bitmap(the_image);
 
    
    readkey();
-//   return 0;
-}END_OF_MAIN()
+   return 0;}END_OF_MAIN()
 
 
