@@ -169,10 +169,10 @@ int map[10][10]={
 {1,0,1,1,0,0,1,0,0,1},
 {1,0,0,0,1,0,0,0,0,1},
 {1,0,1,0,0,0,0,0,0,1},
-{1,0,0,0,0,0,0,1,1,1},
+{1,0,0,0,0,0,0,1,0,1},
 {1,0,0,1,0,1,0,0,0,1},
-{1,0,0,0,0,0,0,0,0,1},
-{1,1,0,0,1,1,0,1,0,1},
+{1,0,0,0,0,1,0,0,0,1},
+{1,0,0,0,0,0,0,1,0,1},
 {1,0,0,0,0,0,0,0,0,1},
 {1,1,1,1,1,1,1,1,1,1},};
 int timer(){
@@ -346,26 +346,61 @@ int mapfunc(){
 
 
 
-
+                         if (color>245){map[pixstepsxmin+1][pixstepsymin]=color; }
 
                   if (map[pixstepsxmin][pixstepsymin]>0){
                        //i=-i;
+                                 //   if (pixstepsxmin<1){     pixy[0]=pixy[0]+0.01;  pixx[0]=pixx[0]+0.01 ; }
+                             //  if (pixstepsymin<1){     pixx[0]=pixx[0]+0.01;   pixy[0]=pixy[0]+0.01;      }
+
+                             //  if (pixstepsxmin>9){    pixx[0]=pixx[0]+0.01;    pixy[0]=pixy[0]+0.01;}
+                               
+                             //  if (pixstepsymin>9){ pixx[0]=pixx[0]+0.01  ;     pixy[0]=pixy[0]+0.01;   }
 
 
 
                                    if ((pixx[r])-pixstepsxmin>0.5){ if ((pixy[r])-pixstepsymin>0.5){
-                                                           stepx=-stepx;    stepy=-stepy;     }}
+                                                           stepx=-stepx;    stepy=-stepy;
+                                          if (pixstepsxmin>0){if (pixstepsymin>0){ if (pixstepsxmin<9){if (pixstepsymin<9){
+                                          map[pixstepsxmin+1][pixstepsymin]=map[pixstepsxmin][pixstepsymin];
+                                          map[pixstepsxmin][pixstepsymin]=0;                            map[pixstepsxmin+5][pixstepsymin]=color;   map[pixstepsxmin-5][pixstepsymin]=color;
+                              }                                 }}                       }}
+                                                           }
 
 
                                      if ((pixx[r])-pixstepsxmin>0.5){ if ((pixy[r])-pixstepsymin<0.5) {
                                       stepx=-stepx;    stepy=stepy;
 
-                        }      }
+
+                                                         if (pixstepsxmin>0){if (pixstepsymin>0){ if (pixstepsxmin<9){if (pixstepsymin<9){
+                                          map[pixstepsxmin-1][pixstepsymin]=map[pixstepsxmin][pixstepsymin];
+                                          map[pixstepsxmin][pixstepsymin]=0;        map[pixstepsxmin-5][pixstepsymin]=color;   map[pixstepsxmin+5][pixstepsymin]=color;
+                              }                                 }}                       }}
 
 
+
+
+
+
+
+
+
+                                                             }
 
                           if ((pixx[r])-pixstepsxmin<0.5){ if ((pixy[r])-pixstepsymin<0.5)  {
                                     stepx=-stepx;    stepy=stepy;
+
+                                       if (pixstepsxmin>0){if (pixstepsymin>0){ if (pixstepsxmin<9){if (pixstepsymin<9){
+                                          map[pixstepsxmin][pixstepsymin+1]=map[pixstepsxmin][pixstepsymin];
+                                          map[pixstepsxmin][pixstepsymin]=0;                        map[pixstepsxmin][pixstepsymin+5]=color;   map[pixstepsxmin][pixstepsymin-5]=color;
+                              }                                 }}                       }
+
+
+
+
+
+                                    
+
 
                         }    }
 
@@ -373,8 +408,18 @@ int mapfunc(){
 
                                       stepx=stepx;    stepy=-stepy;
 
-                        }      }
+                                             if (pixstepsxmin>0){if (pixstepsymin>0){ if (pixstepsxmin<9){if (pixstepsymin<9){
+                                          map[pixstepsxmin][pixstepsymin-1]=map[pixstepsxmin][pixstepsymin];
+                                          map[pixstepsxmin][pixstepsymin]=0;        map[pixstepsxmin][pixstepsymin+5]=color;      map[pixstepsxmin][pixstepsymin-5]=color;
+                              }                                 }}                       }
 
+
+
+
+
+
+
+                        }      }
 
 
 
