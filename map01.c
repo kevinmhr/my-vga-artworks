@@ -509,7 +509,7 @@ int mapfunc(){
                                        int w=1;
                               for (int i=0;i<100;i=i+10){
                               for (int j=0;j<100;j=j+10){
-                            if (map[i/10][j/10]>0){  rectfill(screen,i+100,j+50,i+110,(j+60),map[i/10][j/10]);       blit(sprsheet,screen,(map[i/10][j/10]*10),(map[i/10][j/10]*10),i+100,j+50,10,10);            }
+                            if (map[i/10][j/10]>0){  rectfill(screen,i+100,j+50,i+110,(j+60),map[i/10][j/10]);       blit(sprsheet,screen,i,j,i+100,j+50,10,10);            }
 
                              // hline(screen,i,j,j+10,5 )
                               line(screen,i+100,j+50,i+100,j+60,1);    line(screen,i+100,j+50,i+110,j+50,1);  } }
