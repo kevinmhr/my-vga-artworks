@@ -307,6 +307,39 @@ void spritefunction(){
 
 }
 
+void spritefunction2(){
+    int j=0;
+    int k=0;
+    int l=0;
+    int m=0;
+   for (int i=0;i<40000;i++){
+      k++;
+   if (k>=200){j++;k=0;}
+
+       if (j>=200){j=0;}
+      putpixel(spr1, m, l ,map[m/10][l/10]);
+
+
+
+
+
+   m++;
+
+   if (l>200){l=0;}
+     if (m>200){m=0;l++;}
+
+
+                      }
+
+
+
+
+
+
+
+}
+
+
 int mapfunc(){
                         if (key[KEY_LEFT]) {  blockx--;   times=times+1;i=i+0.01; }
 
@@ -366,14 +399,14 @@ int mapfunc(){
                                
                              //  if (pixstepsymin>9){ pixx[0]=pixx[0]+0.01  ;     pixy[0]=pixy[0]+0.01;   }
 
-
+                                          spritefunction2();
 
                                    if ((pixx[r])-pixstepsxmin>0.5){ if ((pixy[r])-pixstepsymin>0.5){
                                                            stepx=-stepx;    stepy=-stepy;
                                           if (pixstepsxmin>0){if (pixstepsymin>0){ if (pixstepsxmin<19){if (pixstepsymin<19){
                                           map[pixstepsxmin+1][pixstepsymin]=map[pixstepsxmin][pixstepsymin];
                                           map[pixstepsxmin][pixstepsymin]=0;            if (pixstepsxmin>10){map[pixstepsxmin-10][pixstepsymin]=color;}    if (pixstepsxmin<10){map[pixstepsxmin+10][pixstepsymin]=color;}
-                                             if (pixstepsymin>10){map[pixstepsxmin][pixstepsymin-10]=color;}    if (pixstepsymin<10){map[pixstepsxmin][pixstepsymin+10]=color;}
+                                       //      if (pixstepsymin>10){map[pixstepsxmin][pixstepsymin-10]=color;}    if (pixstepsymin<10){map[pixstepsxmin][pixstepsymin+10]=color;}
                               }                                 }}                       }}
                                                            }
 
@@ -385,7 +418,7 @@ int mapfunc(){
                                                          if (pixstepsxmin>0){if (pixstepsymin>0){ if (pixstepsxmin<19){if (pixstepsymin<19){
                                           map[pixstepsxmin-1][pixstepsymin]=map[pixstepsxmin][pixstepsymin];
                                           map[pixstepsxmin][pixstepsymin]=0;        if (pixstepsxmin>10){map[pixstepsxmin-10][pixstepsymin]=color;}    if (pixstepsxmin<10){map[pixstepsxmin+10][pixstepsymin]=color;}
-                                             if (pixstepsymin>10){map[pixstepsxmin][pixstepsymin-10]=color;}    if (pixstepsymin<10){map[pixstepsxmin][pixstepsymin+10]=color;}
+                                          //   if (pixstepsymin>10){map[pixstepsxmin][pixstepsymin-10]=color;}    if (pixstepsymin<10){map[pixstepsxmin][pixstepsymin+10]=color;}
                               }                                 }}                       }}
 
 
@@ -404,7 +437,7 @@ int mapfunc(){
                                        if (pixstepsxmin>0){if (pixstepsymin>0){ if (pixstepsxmin<19){if (pixstepsymin<19){
                                           map[pixstepsxmin][pixstepsymin+1]=map[pixstepsxmin][pixstepsymin];
                                           map[pixstepsxmin][pixstepsymin]=0;          if (pixstepsxmin>10){map[pixstepsxmin-10][pixstepsymin]=color;}    if (pixstepsxmin<10){map[pixstepsxmin+10][pixstepsymin]=color;}
-                                              if (pixstepsymin>10){map[pixstepsxmin][pixstepsymin-10]=color;}    if (pixstepsymin<10){map[pixstepsxmin][pixstepsymin+10]=color;}
+                                         //     if (pixstepsymin>10){map[pixstepsxmin][pixstepsymin-10]=color;}    if (pixstepsymin<10){map[pixstepsxmin][pixstepsymin+10]=color;}
                               }                                 }}                       }
 
 
@@ -423,7 +456,7 @@ int mapfunc(){
                                              if (pixstepsxmin>0){if (pixstepsymin>0){ if (pixstepsxmin<19){if (pixstepsymin<19){
                                           map[pixstepsxmin][pixstepsymin-1]=map[pixstepsxmin][pixstepsymin];
                                           map[pixstepsxmin][pixstepsymin]=0;         if (pixstepsxmin>10){map[pixstepsxmin-10][pixstepsymin]=color;}    if (pixstepsxmin<10){map[pixstepsxmin+10][pixstepsymin]=color;}
-                                           if (pixstepsymin>10){map[pixstepsxmin][pixstepsymin-10]=color;}    if (pixstepsymin<10){map[pixstepsxmin][pixstepsymin+10]=color;}
+                                       //    if (pixstepsymin>10){map[pixstepsxmin][pixstepsymin-10]=color;}    if (pixstepsymin<10){map[pixstepsxmin][pixstepsymin+10]=color;}
                               }                                 }}                       }
 
 
@@ -479,7 +512,7 @@ int mapfunc(){
 
 
                             rectfill(surface,(i)+50,(j),(i)+60,(j)+10,map[i/10][j/10]);
-                                                      blit(sprsheet,surface,map[i/10][j/10]+(i)/4,map[i/10][j/10]+(j)/4,(i)+50,(j),10,10);            }
+                                                      blit(spr1,surface,(map[i/10][j/10]),(map[i/10][j/10]),(i)+50,(j),10,10);            }
 
 
                              // hline(screen,i,j,j+10,5 )
@@ -543,10 +576,10 @@ int main(int argc, char *argv[]) {
 
        //   solid_mode();
   // the_image= load_bitmap(bitmapbuffer, the_palette1);
-   sprsheet=load_bitmap("spritesheet.bmp",the_palette2);
-     set_palette(the_palette2);
+   sprsheet=create_bitmap(200,200);;
+//     set_palette(the_palette2);
 //    the_block1= load_bitmap("block1.bmp",the_palette2);
-     spr1=create_bitmap(20,20);
+     spr1=create_bitmap(200,200);
   surface=create_bitmap(320,240);
 
        walkingspr=load_pcx("walking.pcx",the_palette);
