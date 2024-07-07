@@ -308,24 +308,21 @@ void spritefunction(){
 }
 
 int mapfunc(){
-
-
-
-
-          if (key[KEY_LEFT]) {  blockx--;   times=times+1;i=i+0.01; }
+                        if (key[KEY_LEFT]) {  blockx--;   times=times+1;i=i+0.01; }
 
 
              if (key[KEY_RIGHT]) {  blockx++;  times=times-1;  i=i-0.01;  }
              if (key[KEY_UP]) {  blocky--;   j=j+0.01;   }
              if (key[KEY_DOWN]) { blocky++;   j=j-0.01;     }
 
+
+
                            //   if (pixx[r]>=12){pixx[r]=4.0;pixy[r]=4.0;     }
                             //     if (pixx[r]<=-2){pixx[r]=4.0;pixy[r]=4.0;  }
                              //    if (pixy[r]>=12){pixy[r]=4.0;pixx[r]=4.0;    }
                               //    if (pixy[r]<=-2){pixy[r]=4.0;pixx[r]=4.0;       }
 
-                    if (ti3>=500){ti3=0;      clear_to_color(screen,0);
-                                            }
+
                 //        if (pixx>20 | pixx<30){pixstep=3;}
 
 
@@ -342,8 +339,8 @@ int mapfunc(){
 
 
 
-                     putpixel(screen,pixstepsxmin*10,pixstepsymin*10,5);
-                       putpixel(screen,pixstepsxmax*10,pixstepsymax*10,5);
+                     putpixel(surface,pixstepsxmin*10,pixstepsymin*10,7);
+                       putpixel(surface,pixstepsxmax*10,pixstepsymax*10,7);
 
                   //   if (pixx<10){  invx=1;}
                    //     if (pixx>80){  invx=-1;}
@@ -457,34 +454,6 @@ int mapfunc(){
 
                    }
 
-
-
-                  //  pixx+=;
-                  //  pixy+=;
-               //        x=x*invx;
-              //  y=y*invy;
-                 //  x=stepx;
-                 //  y=stepy;
-
-
-                    //   if (pixx<50){invx=-invx;}
-
-
-                 //     if (x>1){x=1;}
-                  //  if (y>1){y=1;}
-                   //  if (x<-1){x=-1;}
-                  //  if (y<-1){y=-1;}
-
-               //   else {invx=1;  invy=-1;}
-
-
-                         
-
-
-
-                //   pixx+=((pixdirx*sin(x))/(pixdiry*cos(x)))/2;
-                //   pixy+=((pixdirx*sin(y))/(pixdiry*cos(y)))/2;
-
                     dirx=(blockx)*10;
                     diry=(blocky)*10;
                  hit=0;
@@ -494,52 +463,33 @@ int mapfunc(){
               hit=1;
               }
 
-      //     for (int k=0;k<320;k=k+1){
-                 //     dirx=7;
-                  //    diry=4;
-                   //   hit=0;
-
-
-
-
-
-
-
-                       //    if (posx<0){posx=100;}
-
-
-            // int dirx=abs(1/camerax);
-
-          //   planex2 =(camerax)-(cameray);
-
-
-                 //    posx++;
-
-                   //                 z++;
 
 
                                        int w=1;
                               for (int i=0;i<20;i=i+1){
                               for (int j=0;j<20;j=j+1){
-                            if (map[i][j]>0){  rectfill(screen,(i*10)+10,(j*10)+10,(i*10)+20,((j*10)+20),map[i][j]);       blit(sprsheet,screen,map[i][j]+(i*10)/4,map[i][j]+(j*10)/4,(i*10)+10,(j*10)+10,10,10);            }
+
+                             //   rectfill(screen,i*10,j*10,(i*10)+10,(j*10)+10,1);
+                            if (map[i][j]>0){
+
+
+
+                            rectfill(surface,(i*10)+10,(j*10)+10,(i*10)+20,((j*10)+20),map[i][j]);
+                                                      blit(sprsheet,surface,map[i][j]+(i*10)/4,map[i][j]+(j*10)/4,(i*10)+10,(j*10)+10,10,10);            }
+
 
                              // hline(screen,i,j,j+10,5 )
-                              line(screen,(i*10)+10,(j*10)+10,(i*10)+10,(j*10)+20,1);    line(screen,(i*10)+10,(j*10)+10,(i*10)+20,(j*10)+10,1);  } }
+                              line(surface,(i*10)+10,(j*10)+10,(i*10)+10,(j*10)+20,1);    line(surface,(i*10)+10,(j*10)+10,(i*10)+20,(j*10)+10,1);
 
-                          //    rect(screen,dirx+100,diry+50,dirx+110,diry+60,8);
-                              
-              if (hit==1) {
-                //  cameray=dirx;
-                      planey++;
-
-                     // if (posx>40){posx=0;}
+                             // rect(screen,dirx+10,diry+10,dirx+10,diry+20,8);
+                    }        }
+           //   if (hit==1) {
 
 
 
+               //
 
-                           rectfill(screen,dirx+10,diry+10,dirx+20,diry+20,1);
-
-                                              }
+             //                                 }
                                               //  }
 
 
@@ -547,11 +497,6 @@ int mapfunc(){
 
 
 
-   //  rectfill(screen,50,50,100,100,8);
-
-
-
-                      // if (dirx>=100){dirx=0;}
 }
 
 
@@ -617,29 +562,32 @@ int main(int argc, char *argv[]) {
 
 
 
-                                         ti2++;  if (ti2>20){ti2=0;  mapfunc();         putpixel(screen,(pixx[r]*10)+10,(pixy[r]*10)+10,55);
 
-                                }
+
+                                         ti2++;  if (ti2>10000){
+
          //     poll_keyboard();
+                                                      ti2=0;ti++;if (ti>100){ ti=0; rectfill(surface,0,0,320,240,0); mapfunc();         putpixel(surface,(pixx[r]*10)+10,(pixy[r]*10)+10,55);        ti3++; blit(surface,screen,0,0,0,0,320,240);
+                                                                           ti3++;   if (ti3>=50){ti3=0;}  //   clear_to_color(screen,0);}
+                                                    }                          }
 
 
 
-                              ti3++;
+
+
 
 
                                                                                                                            //  draw_trans_sprite(spr1,walkingspr,0,0);
 
 
-                                                                                                                          //    blit(surface,screen,framex ,framey,playerx,playery,25, 30);
-                                                                                                                                 }
+                                                                                                                          //    blit(surface,screen,framex ,framey,playerx,playery,25, 30);                                                                                                                                 }
 
 
 
 
-destroy_bitmap(screen); destroy_bitmap(the_image);
+//destroy_bitmap(screen); destroy_bitmap(the_image);
 
    
-   readkey();
-   return 0;}END_OF_MAIN()
+   readkey();   return 0;}END_OF_MAIN()
 
 
