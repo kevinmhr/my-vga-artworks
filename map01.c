@@ -580,14 +580,16 @@ int main(int argc, char *argv[]) {
                                                                                                                            //  draw_trans_sprite(spr1,walkingspr,0,0);
 
 
-                                                                                                                          //    blit(surface,screen,framex ,framey,playerx,playery,25, 30);                                                                                                                                 }
+                                                                                                                          //    blit(surface,screen,framex ,framey,playerx,playery,25, 30);
+                                                                                                                                 }
 
 
 
 
-//destroy_bitmap(screen); destroy_bitmap(the_image);
+destroy_bitmap(screen); destroy_bitmap(surface);
 
    
-   readkey();   return 0;}END_OF_MAIN()
+   readkey();
+   return 0;}END_OF_MAIN()
 
 
