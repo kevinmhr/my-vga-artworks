@@ -341,7 +341,7 @@ int mapfunc(){
 
                      putpixel(surface,pixstepsxmin*10,pixstepsymin*10,7);
                        putpixel(surface,pixstepsxmax*10,pixstepsymax*10,7);
-                    putpixel(surface,(pixx[r]*10)+10,(pixy[r]*10)+10,55);
+                    putpixel(surface,(pixx[r]*10)+50,(pixy[r]*10),55);
                   //   if (pixx<10){  invx=1;}
                    //     if (pixx>80){  invx=-1;}
                     //       if (pixy<10){  invy=1;}
@@ -470,20 +470,20 @@ int mapfunc(){
 
 
                                        int w=1;
-                              for (int i=0;i<20;i=i+1){
-                              for (int j=0;j<20;j=j+1){
+                              for (int i=0;i<200;i=i+10){
+                              for (int j=0;j<200;j=j+10){
 
                              //   rectfill(screen,i*10,j*10,(i*10)+10,(j*10)+10,1);
-                            if (map[i][j]>0){
+                            if (map[i/10][j/10]>0){
 
 
 
-                            rectfill(surface,(i*10)+10,(j*10)+10,(i*10)+20,((j*10)+20),map[i][j]);
-                                                      blit(sprsheet,surface,map[i][j]+(i*10)/4,map[i][j]+(j*10)/4,(i*10)+10,(j*10)+10,10,10);            }
+                            rectfill(surface,(i)+50,(j),(i)+60,(j)+10,map[i/10][j/10]);
+                                                      blit(sprsheet,surface,map[i/10][j/10]+(i)/4,map[i/10][j/10]+(j)/4,(i)+50,(j),10,10);            }
 
 
                              // hline(screen,i,j,j+10,5 )
-                              line(surface,(i*10)+10,(j*10)+10,(i*10)+10,(j*10)+20,1);    line(surface,(i*10)+10,(j*10)+10,(i*10)+20,(j*10)+10,1);
+                              line(surface,(i)+50,(j),(i)+50,(j)+10,1);    line(surface,(i)+50,(j),(i)+60,(j),1);
 
                              // rect(screen,dirx+10,diry+10,dirx+10,diry+20,8);
                     }        }
