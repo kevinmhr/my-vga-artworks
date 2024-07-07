@@ -18,8 +18,8 @@ int  pixstepsxmin;
 int pixstepsymin;
 int  pixstepsxmax;
 int pixstepsymax;
-  double j=22.0;
-  double i=23.0;
+  double j=12.0;
+  double i=13.0;
 int orient[]={10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,160,150,140,130,120,110,100,90,80,70,60,50,40,30,20,10};
 int z;
 int dirx=0;
@@ -341,7 +341,7 @@ int mapfunc(){
 
                      putpixel(surface,pixstepsxmin*10,pixstepsymin*10,7);
                        putpixel(surface,pixstepsxmax*10,pixstepsymax*10,7);
-
+                    putpixel(surface,(pixx[r]*10)+10,(pixy[r]*10)+10,55);
                   //   if (pixx<10){  invx=1;}
                    //     if (pixx>80){  invx=-1;}
                     //       if (pixy<10){  invy=1;}
@@ -372,7 +372,8 @@ int mapfunc(){
                                                            stepx=-stepx;    stepy=-stepy;
                                           if (pixstepsxmin>0){if (pixstepsymin>0){ if (pixstepsxmin<19){if (pixstepsymin<19){
                                           map[pixstepsxmin+1][pixstepsymin]=map[pixstepsxmin][pixstepsymin];
-                                          map[pixstepsxmin][pixstepsymin]=0;                            map[pixstepsxmin+15][pixstepsymin]=color;   map[pixstepsxmin-15][pixstepsymin]=color;
+                                          map[pixstepsxmin][pixstepsymin]=0;            if (pixstepsxmin>10){map[pixstepsxmin-10][pixstepsymin]=color;}    if (pixstepsxmin<10){map[pixstepsxmin+10][pixstepsymin]=color;}
+                                             if (pixstepsymin>10){map[pixstepsxmin][pixstepsymin-10]=color;}    if (pixstepsymin<10){map[pixstepsxmin][pixstepsymin+10]=color;}
                               }                                 }}                       }}
                                                            }
 
@@ -383,7 +384,8 @@ int mapfunc(){
 
                                                          if (pixstepsxmin>0){if (pixstepsymin>0){ if (pixstepsxmin<19){if (pixstepsymin<19){
                                           map[pixstepsxmin-1][pixstepsymin]=map[pixstepsxmin][pixstepsymin];
-                                          map[pixstepsxmin][pixstepsymin]=0;        map[pixstepsxmin-15][pixstepsymin]=color;   map[pixstepsxmin+15][pixstepsymin]=color;
+                                          map[pixstepsxmin][pixstepsymin]=0;        if (pixstepsxmin>10){map[pixstepsxmin-10][pixstepsymin]=color;}    if (pixstepsxmin<10){map[pixstepsxmin+10][pixstepsymin]=color;}
+                                             if (pixstepsymin>10){map[pixstepsxmin][pixstepsymin-10]=color;}    if (pixstepsymin<10){map[pixstepsxmin][pixstepsymin+10]=color;}
                               }                                 }}                       }}
 
 
@@ -401,7 +403,8 @@ int mapfunc(){
 
                                        if (pixstepsxmin>0){if (pixstepsymin>0){ if (pixstepsxmin<19){if (pixstepsymin<19){
                                           map[pixstepsxmin][pixstepsymin+1]=map[pixstepsxmin][pixstepsymin];
-                                          map[pixstepsxmin][pixstepsymin]=0;                        map[pixstepsxmin][pixstepsymin+15]=color;   map[pixstepsxmin][pixstepsymin-15]=color;
+                                          map[pixstepsxmin][pixstepsymin]=0;          if (pixstepsxmin>10){map[pixstepsxmin-10][pixstepsymin]=color;}    if (pixstepsxmin<10){map[pixstepsxmin+10][pixstepsymin]=color;}
+                                              if (pixstepsymin>10){map[pixstepsxmin][pixstepsymin-10]=color;}    if (pixstepsymin<10){map[pixstepsxmin][pixstepsymin+10]=color;}
                               }                                 }}                       }
 
 
@@ -419,7 +422,8 @@ int mapfunc(){
 
                                              if (pixstepsxmin>0){if (pixstepsymin>0){ if (pixstepsxmin<19){if (pixstepsymin<19){
                                           map[pixstepsxmin][pixstepsymin-1]=map[pixstepsxmin][pixstepsymin];
-                                          map[pixstepsxmin][pixstepsymin]=0;        map[pixstepsxmin][pixstepsymin+15]=color;      map[pixstepsxmin][pixstepsymin-15]=color;
+                                          map[pixstepsxmin][pixstepsymin]=0;         if (pixstepsxmin>10){map[pixstepsxmin-10][pixstepsymin]=color;}    if (pixstepsxmin<10){map[pixstepsxmin+10][pixstepsymin]=color;}
+                                           if (pixstepsymin>10){map[pixstepsxmin][pixstepsymin-10]=color;}    if (pixstepsymin<10){map[pixstepsxmin][pixstepsymin+10]=color;}
                               }                                 }}                       }
 
 
@@ -564,10 +568,10 @@ int main(int argc, char *argv[]) {
 
 
 
-                                         ti2++;  if (ti2>10000){
+                                         ti2++;  if (ti2>100){
 
          //     poll_keyboard();
-                                                      ti2=0;ti++;if (ti>100){ ti=0; rectfill(surface,0,0,320,240,0); mapfunc();         putpixel(surface,(pixx[r]*10)+10,(pixy[r]*10)+10,55);        ti3++; blit(surface,screen,0,0,0,0,320,240);
+                                                      ti2=0;ti++;if (ti>100){ ti=0; rectfill(surface,0,0,320,240,0); mapfunc();               ti3++; blit(surface,screen,0,0,0,0,320,240);
                                                                            ti3++;   if (ti3>=50){ti3=0;}  //   clear_to_color(screen,0);}
                                                     }                          }
 
