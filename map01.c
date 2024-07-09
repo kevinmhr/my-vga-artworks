@@ -18,8 +18,8 @@ int  pixstepsxmin;
 int pixstepsymin;
 int  pixstepsxmax;
 int pixstepsymax;
-  double j=12.0;
-  double i=13.0;
+  double j=8.0;
+  double i=8.5;
 int orient[]={10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,160,150,140,130,120,110,100,90,80,70,60,50,40,30,20,10};
 int z;
 int dirx=0;
@@ -31,7 +31,7 @@ int diry=0;
 int roll=0;
 int hit=0;
 int keytrig=0;
-int color;
+int color=50;
 int y=60;
 int framex,framey;
 int k;
@@ -96,6 +96,8 @@ int lenght;
      BITMAP *surface;
     BITMAP *sprsheet;
     BITMAP *spr1;
+SAMPLE *snd;
+MIDI *midsnd;
 char spritebuf[256];
 int spr01[]={
 0,0,0,0,0,0,0,230,230,230,230,230,0,0,0,0,0,0,0,0,
@@ -314,10 +316,10 @@ void spritefunction2(){
     int m=0;
    for (int i=0;i<40000;i++){
       k++;
-   if (k>=200){j++;k=0;}
+   if (k+(m/10)>=20){k=m/10+1;j++;}
 
-       if (j>=200){j=0;}
-      putpixel(spr1, m, l ,map[m/10][l/10]);
+       if (j+(l/10)+1>20){j=l/10+1;}
+      putpixel(spr1, m, l ,map[k][j]);
 
 
 
@@ -374,7 +376,7 @@ int mapfunc(){
 
                      putpixel(surface,pixstepsxmin*10,pixstepsymin*10,7);
                        putpixel(surface,pixstepsxmax*10,pixstepsymax*10,7);
-                    putpixel(surface,(pixx[r]*10)+50,(pixy[r]*10),55);
+                    circlefill(surface,(pixx[r]*10)+50,(pixy[r]*10),2,55);
                   //   if (pixx<10){  invx=1;}
                    //     if (pixx>80){  invx=-1;}
                     //       if (pixy<10){  invy=1;}
@@ -384,15 +386,15 @@ int mapfunc(){
 
                     pixstepsxmin=((int)(pixx[0]+0.1));
                      pixstepsymin=((int)(pixy[0]+0.1));
-
-
-
-                         if (color>250){map[pixstepsxmin+1][pixstepsymin]=color; }
-
                   if (map[pixstepsxmin][pixstepsymin]>0){
 
-                       //i=-i;
+
+                            play_sample(snd, 255, 128,map[pixstepsxmin][pixstepsymin]*10 , TRUE);
+
+
+                         //                    midi_seek(map[pixstepsxmin][pixstepsymin]);
                                  //   if (pixstepsxmin<1){     pixy[0]=pixy[0]+0.01;  pixx[0]=pixx[0]+0.01 ; }
+
                              //  if (pixstepsymin<1){     pixx[0]=pixx[0]+0.01;   pixy[0]=pixy[0]+0.01;      }
 
                              //  if (pixstepsxmin>9){    pixx[0]=pixx[0]+0.01;    pixy[0]=pixy[0]+0.01;}
@@ -480,13 +482,15 @@ int mapfunc(){
 
 
 
+                     if (color>240){if ( map[pixstepsxmin][pixstepsymin]>15){ map[pixstepsxmin+1][pixstepsymin]=color-45;} }
+                       if (color>240){if ( map[pixstepsxmin][pixstepsymin]<15){ map[pixstepsxmin-1][pixstepsymin]=color-45;}}
+
 
                   if (map[pixstepsxmin][pixstepsymin]>=1){
           
 
-
-                                                                          color++;if (color>256){color=1;}
-                                 map[pixstepsxmin][pixstepsymin]=color;
+                                                                          color++;if (color>250){color=50;}
+                                 map[pixstepsxmin][pixstepsymin]=color-45;
 
 
                    }
@@ -507,16 +511,18 @@ int mapfunc(){
                               for (int j=0;j<200;j=j+10){
 
                              //   rectfill(screen,i*10,j*10,(i*10)+10,(j*10)+10,1);
+                               line(surface,(i)+50,(j),(i)+50,(j)+10,1);    line(surface,(i)+50,(j),(i)+60,(j),1);
+
                             if (map[i/10][j/10]>0){
 
 
 
                             rectfill(surface,(i)+50,(j),(i)+60,(j)+10,map[i/10][j/10]);
-                                                      blit(spr1,surface,(map[i/10][j/10]),(map[i/10][j/10]),(i)+50,(j),10,10);            }
+
+                                                      blit(spr1,surface,(map[i/10][j/10])+10,(map[i/10][j/10]),(i)+50,(j),10,10);            }
 
 
                              // hline(screen,i,j,j+10,5 )
-                              line(surface,(i)+50,(j),(i)+50,(j)+10,1);    line(surface,(i)+50,(j),(i)+60,(j),1);
 
                              // rect(screen,dirx+10,diry+10,dirx+10,diry+20,8);
                     }        }
@@ -567,7 +573,12 @@ int main(int argc, char *argv[]) {
          allegro_message("Unable to set any graphic mode\n%s\n", allegro_error);
  return 1;
       }   }
-   //  drawing_mode(DRAW_MODE_TRANS, NULL,0,0);
+      if (install_sound(DIGI_AUTODETECT, MIDI_AUTODETECT, NULL) != 0) {
+      allegro_message("Error initialising sound system\n%s\n", allegro_error);
+      return 1;
+   }
+
+   //  drawing_mod;e(DRAW_MODE_TRANS, NULL,0,0);
 //set_multiply_blender(0, 0, 0, 0);
        set_color_depth(8);
    //set_write_alpha_blender();
@@ -581,7 +592,9 @@ int main(int argc, char *argv[]) {
 //    the_block1= load_bitmap("block1.bmp",the_palette2);
      spr1=create_bitmap(200,200);
   surface=create_bitmap(320,240);
-
+ snd=load_sample("sound.wav");
+midsnd=load_midi("midsmp.mid");
+ 
        walkingspr=load_pcx("walking.pcx",the_palette);
    // mapfunc();
 //   set_palette(the_palette2);
@@ -594,6 +607,7 @@ int main(int argc, char *argv[]) {
      camerax=0;
    //   frame=0;
   //      spritefunction();
+//         play_midi(midsnd,TRUE);
      while (i!=0){
 
 
