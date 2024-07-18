@@ -9,60 +9,60 @@
 
 char *bitmapbuffer;
 int vertices[]={50,50,70,100,150,50};
-int pixdrivex;
-int pixdrivey;
- float anglevalue=0;
+float dirrx=-1;
+float dirry=0;
+int drawstart,drawend;
+double olddirx;
+double oldplanex;
+ double anglevalue=0.001;
  int invx=1;
   float raydiry;
   float raydirx;
   double speed;
-int lhight;
-        double i=0.1;              int invy=1;
-double times=1;
+double lhight;
+
+double times=1;  
 int vlinemin=50;
 int vlinemax=100;
                                 
-int pixstep;
-int scanpixx=1;
-int scanpixy=1;
+
+
+
 int  mapx;
 int mapy;
-float dirrx=-1;
-float dirry=0;
-int  pixstepsxmax;
-int pixstepsymax;
+
   double j=0.1;
 int orient[]={10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,160,150,140,130,120,110,100,90,80,70,60,50,40,30,20,10};
 int z;
-int dirx=0;
+
 double pixdirx=10;
 double pixdiry=33;
 double stepx=0.01;
 double stepy=0.01;
-int diry=0;
-int roll=0;
+
+
 int hit=0;
-double rayx[10],rayy[10];
-int keytrig=0;
+double frame=0;
+
 int color;
 int y=60;
-int framex,framey;
 int k;
 int x=103;
-float pixx[1];
+float   pixx[1];
 float pixy[1];
 double t;
 double t2;
 int x2;
- float planex=0;
+ float planex=1;
  double planex2;
  int posx=0;             float planey=0.66;
 double angle;
-int r=0;;
+int r=1;;
 int k;
 int ti;
 int ti2;
 int ti3=1;
+  int vertlines;
 int ti4;
 int colx,coly;
 int xoffset=0;
@@ -74,7 +74,7 @@ int blockx;
 int blocky;
  int pixhitx=1;
  int pixhity=1;
- int frame;
+ double frame;
  int k;
  double camerax;
 
@@ -310,7 +310,28 @@ void spritefunction(){
 
 
 }
+int raycast(){
 
+
+
+
+
+                                 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
 int mapfunc(){
 
 
@@ -318,104 +339,8 @@ int mapfunc(){
 
                      putpixel(screen,mapx*10,mapx*10,5);
                    //    putpixel(screen,pixstepsxmax*10,pixstepsymax*10,5);
-                                         int h=200;
-     float w=320;
-                                         keyboard();
-                                 if (ti3>=50){ti3=0;  ; clear_to_color(screen,0);    }
-                             for (int k=0;k<w;k=k+1){
-
-                    //   if (map[pixstepsxmin][pixstepsymin]=0){
-
-                                 double camerax=(k-1)/(w-1);
-
-                                    float deltadistx=0;
-                                   float deltadisty=0;
-
-                                             double sidedistx=0;
-                                    float sidedisty=0;
-       
-                                      int   mapx=(int) (pixx[r]);
-                                    int   mapy=(int)(pixy[r]);
-                                  raydirx=dirrx+planex*(camerax)/1000;
-                                  raydiry=dirry+planey*(camerax)/1000;
-                                 // dirry= -dirry;
-                                  // dirrx= -dirrx;
-                        //         rayy[r]=pixy[r];
-
-                                                         //   (raydirx=0);
-
-                                                        //    (raydiry=0);
-
-                                                        //    deltadistx=abs(1-raydirx);
-                                                      //      deltadisty=abs(1-raydiry);
-                                                       deltadistx=sqrt(1+raydiry*raydiry)/(raydirx*raydirx);
-                                                       deltadisty=sqrt(1+raydirx*raydirx)/(raydiry*raydiry);
 
 
-                                            speed=0.001;
-
-                                     int stepx=0;
-                                     int stepy=0;
-
-                                        int side;
-                                 int rayhit=0;
-                                    float perpwalldist;
-             if (raydirx<0){   stepx=-1;
-             sidedistx=(pixx[r]-mapx)*deltadistx;}
-
-              else {   stepx=1;
-             sidedistx=(mapx+1 -pixx[r])*deltadistx;}
-
-             
-                if (raydiry<0){   stepy=-1;
-             sidedisty=(pixy[r]-mapy)*deltadisty;}
-
-             
-                else{   stepy=1;
-             sidedisty=(mapy+1 -pixy[r])*deltadisty;}
-             
-
-
-
-
-
-                   while(  rayhit==0){
-
-                   if( sidedistx<sidedisty)
-                   {sidedistx=sidedistx+deltadistx;
-                   mapx+= stepx;
-                   side=0;
-                   }
-                   else
-                   { sidedisty=sidedisty+ deltadisty;
-                   mapy+= stepy;
-                   side =1;
-                   }
-
-                     if (map[mapx][mapy]>0){ rayhit=1;}
-
-                
-                       } 
-                      if (side==1){color=5;}
-                      if (side==0){color=4;}
-
-
-                                   if (side==0) perpwalldist=(sidedistx-deltadistx);
-                          else    perpwalldist=(sidedisty-deltadisty);
-                        int lhight=(50/perpwalldist);
-
-
-
-
-                  int drawstart= -lhight/2+h/2;
-                if (drawstart <0){ drawstart=0; }
-                int drawend= lhight/2+h/2;
-                if (drawend>h){ drawend=h; }
-
-
-                          vline(screen,k-1,drawstart,drawend,color);
-
-                 }
 
                             putpixel(screen,(pixx[r]*10)+100,(pixy[r]*10)+50,3);
 
@@ -456,7 +381,7 @@ int mapfunc(){
                          
 
 
-
+                 int dirx,diry;
                 //   pixx+=((pixdirx*sin(x))/(pixdiry*cos(x)))/2;
                 //   pixy+=((pixdirx*sin(y))/(pixdiry*cos(y)))/2;
 
@@ -495,6 +420,7 @@ int mapfunc(){
                                       // int w=1;
                               for (int i=0;i<100;i=i+10){
                               for (int j=0;j<100;j=j+10){
+
                             if (map[i/10][j/10]==1){  rectfill(screen,i+100,j+50,i+110,j+60,3);             }
 
                              // hline(screen,i,j,j+10,5 )
@@ -514,10 +440,7 @@ int mapfunc(){
                            rectfill(screen,dirx+100,diry+50,dirx+110,diry+60,1);
 
                                               }
-                                              //  }
 
-
-                 planex2 =(posx)+70;
 
 
     // if (map[planey]>0){
@@ -537,85 +460,214 @@ int mapfunc(){
 
 
 int draw(){
+int w=320;
+         double camerax;
+            clear_to_color(surface,0);
+         frame=0;
+     double deltadistx;
+     double deltadisty;
+     double sidedistx;
+     double sidedisty;
+
+         for (double vertlines=1;vertlines<=320;vertlines++){
 
 
 
+               camerax=((vertlines)/320.0-1.0)*0.0001;
+             //    if (camerax<0){camerax=0;}
+
+             //   camerax=frame/(float)w-1;
+ //   for (int vertlines=0;vertlines<=w;vertlines=vertlines+1){
+
+
+                                  frame=vertlines;
+                                //  vertlines++;
+
+
+     int h=200;
+
+
+                    //   if (map[pixstepsxmin][pixstepsymin]=0){
+                //   for (vertlines=0;vertlines<320;vertlines=vertlines+1;)
+                 //                 raycast()
+                                  raydirx=dirrx+planex*camerax;
+                                  raydiry=dirry+planey*camerax;
+                                            anglevalue=0.01;
+
+                                      int mapx=0;
+                                      int mapy=0;
+                                      mapx=(int) (pixx[r]);
+                                       mapy=(int)(pixy[r]);
+                                  deltadistx=sqrt((1+raydiry*raydiry)/(raydirx*raydirx));
+                                  deltadisty=sqrt((1+raydirx*raydirx)/(raydiry*raydiry));
+                                            speed=0.001;
+                                                int rayhit=0;
+                                     int stepx;
+                                     int stepy;
+
+
+
+
+
+
+
+
+
+
+                                                   //              else {vertlines=0;}
+
+                                                                                    
+
+
+             if (raydirx<0){   stepx=-1;
+             sidedistx=(pixx[r]-mapx)*deltadistx;}
+
+              else {   stepx=1;
+             sidedistx=(mapx+1.0 -pixx[r])*deltadistx;}
+
+             
+                if (raydiry<0){   stepy=-1;
+             sidedisty=(pixy[r]-mapy)*deltadisty;}
+
+             
+                else{   stepy=1;
+             sidedisty=(mapy+1.0 -pixy[r])*deltadisty;}
+             
+                     int side;
+                          float perpwalldist;
+                   while(  rayhit==0){
+                   if( sidedistx<sidedisty)
+                   {sidedistx=deltadistx+sidedistx;
+                   mapx+= stepx;
+                   side=0;
+                   }
+                   else
+                   { sidedisty= deltadisty+sidedisty;
+                   mapy+= stepy;
+                   side =1;
+
+
+                   }
+
+                     if (map[mapx][mapy]>0){ rayhit=1;
+
+
+
+
+
+
+
+                     }
+
+
+                       }
+
+
+                                   if (side==0) perpwalldist=sidedistx-deltadistx;
+                          if( side==1)    perpwalldist=sidedisty-deltadisty;
+                        int lhight=(100/perpwalldist);
+                         if (side==1){color=9;}
+                      if (side==0){color=7;}
+                  //    else (color=map[mapx][mapy]);
+
+
+                                   drawstart= (-(lhight)/2)+h/2;
+                if (drawstart <0){ drawstart=0; }
+                 drawend= lhight/2+h/2;
+                if (drawend>h){ drawend=h; }
+
+
+
+
+
+                      vline(surface,vertlines,drawstart,drawend,color);
+
+
+
+
+
+
+
+
+
+                     //           vertlines++;
+
+                                          }
+
+
+
+                   blit(surface,screen,0,0,0,0,320,240);
+    
 
 
 
 
 
 }
+
+
+
+void render(){
+
+
+                      }
+
+
+
 int keyboard(){
 
-      if (key[KEY_A]) {   pixx[r]-=0.01; }
+if (key[KEY_A]) {         pixx[r]-=0.01;     draw();        }
+           if (key[KEY_Q]) {      pixx[r]+=0.01;      draw();   }
+             if (key[KEY_UP]) {     pixy[r]-=0.01;     draw(); }
 
+             if (key[KEY_DOWN])  {    pixy[r]+=0.01;    draw();     }
 
-
-             if (key[KEY_Q]) {  pixx[r]+=0.01; }
-             if (key[KEY_UP]) {        pixy[r]+=0.01;   }
-             if (key[KEY_DOWN])  { pixy[r]-=0.01;          }
                 if (key[KEY_RIGHT]) {
+                                                       olddirx=dirrx;
+
+                                        oldplanex=planex;
 
 
+                                                       dirrx=(dirrx*cos(anglevalue))+(dirry*sin(anglevalue));
+                                                       dirry=(-olddirx*sin(anglevalue))+(dirry*cos(anglevalue));
+
+                                                           planex=(planex*cos(anglevalue))+(planey*sin(anglevalue));
+                                                       planey=(-oldplanex*sin(anglevalue))+(planey*cos(anglevalue));
 
 
-                                                     anglevalue=0.01;
-                                                 //      dirrx=45;
-                                                  //     dirry=45;
-                                                   //    planex=45;
-                                                             float olddirx=dirrx;
-
-                                                       dirrx=-dirrx*cos(anglevalue)+dirry*sin(anglevalue);
-                                                       dirry=-olddirx*sin(anglevalue)-dirry*cos(anglevalue);
-                                                              float oldplanex=planex;
-                                                           planex=-planex*cos(anglevalue)+planey*sin(anglevalue);
-                                                       planey=-oldplanex*sin(anglevalue)-planey*cos(anglevalue);
-
-
+                                                             draw();
 
 
                                                                                  }
+
                  if (key[KEY_LEFT]) {
-                                                          anglevalue=0.01;
-                                                     //  dirrx=59600;
+                                                      olddirx=dirrx;
 
-                                                   // dirry=0;
-                                                     //   planex=59600;
-                                                     //  planey=0;
-                                                        float olddirx=dirrx;
+                                        oldplanex=planex;
 
-                                                       dirrx=dirrx*cos(-anglevalue)-dirry*sin(-anglevalue);
-                                                       dirry=olddirx*sin(-anglevalue)+dirry*cos(-anglevalue);
-                                                              float oldplanex=planex;
-                                                           planex=planex*cos(-anglevalue)-planey*sin(-anglevalue);
-                                                       planey=oldplanex*sin(-anglevalue)+planey*cos(-anglevalue);
+                                                       dirrx=(dirrx*cos(-anglevalue))+(dirry*sin(-anglevalue));
+                                                       dirry=(-olddirx*sin(-anglevalue))+(dirry*cos(-anglevalue));
 
-                                                                                    }
-
-              poll_keyboard();
+                                                           planex=(planex*cos(-anglevalue))+(planey*sin(-anglevalue));
+                                                       planey=(-oldplanex*sin(-anglevalue))+(planey*cos(-anglevalue));
+                                                             draw();
 
 
 
 
 
 
-
-
-
-
+                                               }
+                                  else {camerax=0;}
 }
-
-
-
 
 
 
 int main(int argc, char *argv[]) {
-              pixx[r]=6.5;
-              pixy[r]=5.0;
-                disy=140;
-              disx=40;
+
+               pixx[r]=6;
+       pixy[r]=4.5;
+
 
    int x=1;
    int *dots;
@@ -659,12 +711,27 @@ int main(int argc, char *argv[]) {
     int i;
     i=1;
     plus1=0;
-     xoffset=0;
-     camerax=0;
-           rayx[r]=pixx[r];
-          rayy[r]=-5;
+
+
+   draw();
+
      while (i!=0){
-                             ti2++;  if (ti2>20000){ti2=0;ti3++;           mapfunc();
+                             ti2++;  if (ti2>100){ti2=0;ti3++;   mapfunc();           keyboard();
+
+
+
+
+
+
+
+                                 if (ti3>=500){ti3=0;     }
+
+
+
+
+
+
+
                           }
 
 
