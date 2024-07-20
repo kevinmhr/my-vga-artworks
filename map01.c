@@ -364,32 +364,14 @@ int mapfunc(){
 
 
 
-
-                           //     pixy[r]=i;
-                            //    pixx[r]=j;
-                      /*
-                            for (pixx[r]=0;pixx[r]<320;pixx[r]=pixx[r]+10){
-                            for (pixy[r]=0;pixy[r]<200;pixy[r]=pixy[r]+10){
-
-
-
-                                        for (i2=1;i2<30;i2=i2+1){
-                                         for (j2=1;j2<30;j2=j2+1){
-
-
-
-                                            if (i<10){i=10;}
-                                        if (j<10){j=10;}
-                                      i2+=i*10/100;
-
-                                j2+=j*10/100;
-                                     putpixel(surface,pixx[r]+i2-(i),pixy[r]+j2-(j),9);
-
-                                      }                        } }
-                                                                        }
-                        */
                               pixstepsxmin=((int)(pixx[r]));
                      pixstepsymin=((int)(pixy[r]));
+
+
+
+
+
+                              int q;
 
                       if (map[pixstepsxmin][pixstepsymin]!=0){
 
@@ -401,14 +383,6 @@ int mapfunc(){
 
 
                          //                    midi_seek(map[pixstepsxmin][pixstepsymin]);
-                                 //   if (pixstepsxmin<1){     pixy[0]=pixy[0]+0.01;  pixx[0]=pixx[0]+0.01 ; }
-
-                             //  if (pixstepsymin<1){     pixx[0]=pixx[0]+0.01;   pixy[0]=pixy[0]+0.01;      }
-
-                             //  if (pixstepsxmin>9){    pixx[0]=pixx[0]+0.01;    pixy[0]=pixy[0]+0.01;}
-                               
-                             //  if (pixstepsymin>9){ pixx[0]=pixx[0]+0.01  ;     pixy[0]=pixy[0]+0.01;   }
-
 
 
                                    if ((pixx[r])-pixstepsxmin>blocksize/10){ if ((pixy[r])-pixstepsymin>blocksize/10){
@@ -485,10 +459,6 @@ int mapfunc(){
 
                            spritefunction2();
 
-                             //     if (pixx[r]>1){stepx[r]=-stepx[r];  }
-                             //    if (pixx[r]<19){stepx[r]=-stepx[r];  }
-                             //   if (pixy[r]<19){stepy[r]=-stepy[r];}
-                              //  if (pixy[r]>1){stepy[r]=-stepy[r];;   }
                            pixx[r]=pixx[r]+i*(stepx[r]);
                             pixy[r]=pixy[r]+j*(stepy[r]);
 
@@ -497,7 +467,7 @@ int mapfunc(){
                        if (color>r+248){if ( map[pixstepsxmin][pixstepsymin]<15){ map[pixstepsxmin-1][pixstepsymin]=color;}}
 
                   if (map[pixstepsxmin][pixstepsymin]>0){
-                                     color=color+map[pixstepsxmin][pixstepsymin];
+                                     color=color+map[pixstepsxmin][pixstepsymin]+1;
                                               if (color>250){color=1;}
 
                                  map[pixstepsxmin][pixstepsymin]=color;
@@ -523,6 +493,17 @@ int mapfunc(){
                                        int w=1;
 
                                        int y=0;
+
+                                                            for (int i=0;i<20;i++){
+                       map[i][0]=30;
+                       map[i][19]=30;
+                       map[0][i]=30;
+                       map[19][i]=30;
+                       }
+
+
+
+
                                        for(int i=0;i<200;i=i+10){
                                        for (int j=0;j<200;j=j+10){
 
