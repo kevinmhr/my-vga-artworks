@@ -368,7 +368,8 @@ int mapfunc(){
                      pixstepsymin=((int)(pixy[r]));
 
            if (map[pixstepsxmin][pixstepsymin]!=0){
-
+                     int tempstepx;
+                     int tempstepy;
                                if (pixx[r]>18.5){stepx[r]=-stepx[r];}
                             if (pixx[r]<1.5){stepx[r]=-stepx[r];}
                              if (pixy[r]>18.5){stepy[r]=-stepy[r];}
@@ -388,8 +389,8 @@ int mapfunc(){
 
 
 
-
-
+                                   tempstepy=stepy[r];
+                                    tempstepx=stepx[r];
 
 
                                    if ((pixy[r])-pixstepsymin<0.1){
@@ -418,7 +419,7 @@ int mapfunc(){
                                                          if (pixstepsxmin>0){
                                                          if (pixstepsymin>0){
                                                          if (pixstepsxmin<19){
-                                                         if (pixstepsymin<19){     stepx[r]=-stepx[r];
+                                                         if (pixstepsymin<19){     stepx[r]=-stepx[r];    if (tempstepy!=stepy[r]){stepx[r]=-stepx[r];}
                                                stepy[r]=stepy[r];
                                           map[pixstepsxmin+1][pixstepsymin]=map[pixstepsxmin][pixstepsymin];
                                           map[pixstepsxmin][pixstepsymin]=0;
@@ -439,6 +440,7 @@ int mapfunc(){
                                                       //       }
 
 
+                            int tempstepx2=stepx[r];
 
 
 
@@ -447,7 +449,7 @@ int mapfunc(){
 
 
 
-                             if ((pixx[r])-pixstepsxmin>0.9){
+                             if ((pixx[r])-pixstepsxmin>0.8){
                            //   if ((pixx[r])-pixstepsxmin>-blocksize/10){
 
 
@@ -461,7 +463,8 @@ int mapfunc(){
                                              if (pixstepsymin>0){
                                              if (pixstepsxmin<19){
                                              if (pixstepsymin<19){
-                                             stepx[r]=-stepx[r];    stepy[r]=stepy[r];
+                                             stepx[r]=-stepx[r];   if (tempstepx!=tempstepx2){stepx[r]=-stepx[r];}
+                                                                    if (tempstepy=stepy[r]){stepx[r]=-stepx[r];}                     stepy[r]=stepy[r];
                                           map[pixstepsxmin-1][pixstepsymin]=map[pixstepsxmin][pixstepsymin];
                                           map[pixstepsxmin][pixstepsymin]=0;
                                           if (pixstepsxmin>15){map[pixstepsxmin-18][pixstepsymin]=color;}
@@ -479,7 +482,7 @@ int mapfunc(){
 
 
 
-                                                              if ((pixy[r])-pixstepsymin>0.9){
+                                                              if ((pixy[r])-pixstepsymin>0.8){
 
 
 
@@ -487,7 +490,8 @@ int mapfunc(){
                                        if (pixstepsymin>0){
                                        if (pixstepsxmin<19){
                                        if (pixstepsymin<19){    stepx[r]=stepx[r];
-                                               stepy[r]=-stepy[r];
+                                               stepy[r]=-stepy[r];  if (tempstepy=stepy[r]){stepy[r]=-stepy[r];}
+                                               if (tempstepx2!=stepx[r]){stepy[r]=-stepy[r];}
                                           map[pixstepsxmin][pixstepsymin-1]=map[pixstepsxmin][pixstepsymin];
                                           map[pixstepsxmin][pixstepsymin]=0;
                                           if (pixstepsxmin>15){map[pixstepsxmin-18][pixstepsymin]=color;}
