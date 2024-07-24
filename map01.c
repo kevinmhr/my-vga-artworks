@@ -19,16 +19,16 @@ int  pixstepsxmin;
 int pixstepsymin;
 int  pixstepsxmax;
 int pixstepsymax;
-  double j=10;
-  double i=13;
+  double j=15;
+  double i=15;
 double i2,j2;
 int orient[]={10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,160,150,140,130,120,110,100,90,80,70,60,50,40,30,20,10};
 int z;
 int dirx=0;
 double pixdirx=10;
 double pixdiry=33;
-double stepx[5];
-double stepy[5];
+double stepx[10];
+double stepy[10];
 int diry=0;
 int roll=0;
 int hit=0;
@@ -38,8 +38,8 @@ int y=60;
 int framex,framey;
 int k;
 int x=103;
-double pixx[100];
-double pixy[100];
+double pixx[10];
+double pixy[10];
 double t;
 double t2;
 int x2;
@@ -102,10 +102,12 @@ int lenght;
    PALETTE the_palette;
    PALETTE the_palette2;
    BITMAP *walkingspr;
+   BITMAP *cube;
    BITMAP *sprites;
      BITMAP *surface;
     BITMAP *sprsheet;
     BITMAP *spr1;
+    BITMAP *bgrd;
 SAMPLE *snd;
 MIDI *midsnd;
 char spritebuf[256];
@@ -362,7 +364,12 @@ int mapfunc(){
                     circlefill(surface,(pixx[r]*10)+50,(pixy[r]*10),2,r*20);
 
 
-
+                      line(surface,pixx[0],pixy[0],pixx[1],pixy[1],1);
+                       line(surface,pixx[1],pixy[1],pixx[2],pixy[2],1);
+                        line(surface,pixx[2],pixy[2],pixx[3],pixy[3],1);
+                         line(surface,pixx[3],pixy[3],pixx[4],pixy[4],1);
+                          line(surface,pixx[4],pixy[4],pixx[5],pixy[5],1);
+                           line(surface,pixx[5],pixy[5],pixx[0],pixy[0],1);
 
                      pixstepsxmin=((int)(pixx[r]));
                      pixstepsymin=((int)(pixy[r]));
@@ -571,21 +578,39 @@ int mapfunc(){
                        }
 
 
+                                       for(int i=0;i<200;i=i+10){
+                                       for (int j=0;j<200;j=j+10){
 
+                                                rect(surface,(i)+50,(j),(i)+60,(j)+10,1);
 
+                                       }}
                                        for(int i=0;i<200;i=i+10){
                                        for (int j=0;j<200;j=j+10){
 
 
 
+                           int co;
+
 
                                 //  rectfill(screen,i*10,j*10,(i*10)+10,(j*10)+10,1);
-                               line(surface,(i)+50,(j),(i)+50,(j)+10,1);    line(surface,(i)+50,(j),(i)+60,(j),1);
 
                             if (map[i/10][j/10]>0){
 
-      rectfill(surface,(i)+50,(j),(i)+60,(j)+10,map[i/10][j/10]);
 
+                           co++;
+      rectfill(surface,(i)+50,(j),(i)+60,(j)+10,map[i/10][j/10]);
+           clear_to_color(cube,0);
+   rectfill(cube,3,3,12,12,17);
+   rectfill(cube,0,0,8,8,13);
+ 
+  rect(cube,0,0,8,8,map[i/10][j/10]);
+  rect(cube,3,3,11,11,map[i/10][j/10]);
+  line(cube,0,0,3,3,map[i/10][j/10]);
+  line(cube,8,0,12,5,map[i/10][j/10]);
+  line(cube,0,8,5,12,map[i/10][j/10]);
+  line(cube,8,8,12,12,map[i/10][j/10]);
+
+         blit(cube,surface,0,0,i+50,j,12,12);
                                                          }
 
                             //  hline(screen,i,j,j+10,5 )
@@ -662,6 +687,8 @@ int main(int argc, char *argv[]) {
 //     set_palette(the_palette2);
 //    the_block1= load_bitmap("block1.bmp",the_palette2);
      spr1=create_bitmap(20,20);
+  cube=create_bitmap(15,15);
+  bgrd=create_bitmap(320,240);
   surface=create_bitmap(320,240);
  snd=load_sample("sound.wav");
 midsnd=load_midi("midsmp.mid");
@@ -679,8 +706,7 @@ midsnd=load_midi("midsmp.mid");
    //   frame=0;
   //      spritefunction();
 //         play_midi(midsnd,TRUE);
-      clear_to_color(spr1,9);
-     while (i!=0){
+      clear_to_color(spr1,9); while (i!=0){
 
 
 
@@ -690,10 +716,10 @@ midsnd=load_midi("midsmp.mid");
                                          ti2++;  if (ti2>10){
 
          //     poll_keyboard();
-                                                      ti2=0;ti++;if (ti>100){ ti=0; rectfill(surface,0,0,320,240,0);  rectfill(surface,50,0,250,200,240);
+                                                      ti2=0;ti++;if (ti>100){ ti=0; rectfill(surface,0,0,320,240,0);  rectfill(surface,50,0,250,200,0);
 
                mapfunc();
-            ti3++;               blit(surface,screen,0,0,0,0,320,240);
+            ti3++;            blit(surface,screen,0,0,0,0,320,240);
                                                                            ti3++;   if (ti3>=50){ti3=0;
 
      }  //   clear_to_color(screen,0);}
