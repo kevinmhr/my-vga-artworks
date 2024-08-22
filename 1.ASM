@@ -34,25 +34,54 @@ nextword:
 
 
 
-     push cs
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ ;     push cs
+
+
 
       inc cs:wordstartpos
-	inc cs:wordstartpos
+      inc cs:wordstartpos
 
-	push si
-	push di
-     mov si,cs:wordstartpos
-     mov di,1
 
-printit:
 
-      inc si
-      inc di
+
+
+  push si
+
+ mov si,cs:wordstartpos
+
+
 
      push bp
 
 
-      mov bp,offset cs:textmain[si]
+
+     mov bp,0
+
+printit:
+
+      inc si
+      inc bp
+
+
+
+
+ ;     mov bp,offset cs:textmain[si]
       mov al,cs:textmain[si]
 
 
@@ -60,25 +89,26 @@ printit:
 	  je nextrow
 
 
-      mov [cs:textstr+di],al
+      mov [cs:textstr+bp],al
       cmp al,"*"
       jne printit
 
 
 
 
-	mov lenght,si
+	mov lenght,bp
 
 
 	 mov cs:wordstartpos,si
 
 	 pop bp
+	 pop si
+
+;      pop es
 
 
-      pop es
 
-      pop si
-      pop di
+
 
 
 
@@ -86,13 +116,32 @@ printit:
 
 
 printstr:
+erasestr:
+     mov ah,0
+      mov al,1
+      mov bx,0
+
+     mov bl,rownum
+
+     mov cx,40
+     mov dl,0
+     mov dh,rownum
+    mov bp,offset blanc
+     mov ah,13h
+    int 10h
+
+
+
+
+
+
 
 
 
      mov di,0
 
-     push ax
-     push bx
+
+
 
 
 
@@ -126,35 +175,24 @@ printstr:
      mov ah,13h
 
     int 10h
-
-	  push si
-	  mov si,0
-erasure:
-	  inc si
-	  mov al," "
-	  mov [cs:textstr+si],al
-	  cmp si,lenght
-	  jne erasure
-	  pop si
+      push bp
+     mov bp,0
 
 
 
 
 
 
+	   push ax
 
 
+	 mov ah,0
 
-    push ax
 
-
-	     mov ah,0
-	mov dx,0
-	mov bx,0
-       mov dx,0
-	int 16h
-	 cmp al,13
-	   je nextword
+       mov ax,0
+       int 16h
+       cmp al,13
+       je nextword
 
 	 pop ax
 
@@ -178,20 +216,21 @@ jump1:
 	    wordstartpos dw 0
  lenght dw 0
 
-      rownum db 2
+      blanc db "                                                 "
+      rownum db 0
 
       horpos db 0
       textmain db "    this*  is*  just*  some*  characters*  but*   is it?*   & "
 
 	 writingspc db ""
      writingend:
-	     textstr db "                                               "
 
 
 
 
 
 
+	  textstr db "                                                                              "
 
 
 
