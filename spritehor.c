@@ -50,6 +50,7 @@ int jmptrig=0;
 int jmptimer=0;
  BITMAP *the_image;
  BITMAP *themap;
+   BITMAP *collisionpad;
    BITMAP *the_block1;
    PALETTE the_palette1;
    PALETTE the_palette;
@@ -306,10 +307,23 @@ putpixel(sprites,i,j,col);  }
 }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 int mapfunc(){
 
  clear_to_color(screen,4);
-
+  clear_to_color(collisionpad,1);
 
 
 
@@ -326,7 +340,7 @@ int mapfunc(){
 
         
 
-        blit( sprsheet,screen, map[k]*10,100,(i*10),vertical ,10, 10);}
+                 blit( sprsheet,screen, map[k]*10,100,(i*10),vertical ,10, 10);    blit( sprsheet,collisionpad, 0,0,(i*10),vertical+1 ,11,11);            }
 
 
 
@@ -344,69 +358,63 @@ int mapfunc(){
 }
 
 int keyboard(){
-
-
           tx=1;
             tx2=1;
             t=160;
                t2=160;
+     
 
 
+           for (int y=0;y<30;y++){
+                        colx=getpixel(screen,playerx+30,playery+y);
+                        
 
-                 colx=getpixel(screen,playerx+10,playery+30);
+             if (colx>4){tx=0;jmptrig=0;}
+              colx=getpixel(screen,playerx-1,playery+y);
+                        
 
-             if (colx!=4){t=0;jmptrig=0;}
-                 colx=getpixel(screen,playerx-10,playery+30);
-
-             if (colx!=4){t=0;jmptrig=0;}
-
-
-
-                 colx=getpixel(screen,playerx-10,playery-20);
-
-             if (colx!=4){t2=0;}
-                  colx=getpixel(screen,playerx+10,playery-20);
-
-             if (colx!=4){t2=0;}
-                   colx=getpixel(screen,playerx,playery-20);
-
-             if (colx!=4){t2=0;}
+             if (colx>4){tx2=0;jmptrig=0;}
+                                          }
 
 
 
 
 
-             colx=getpixel(screen,playerx+30,playery+10);
 
-             if (colx!=4){tx=0;}
-               colx=getpixel(screen,playerx+30,playery+20);
+         for (int x=0;x<30;x++){
+                        colx=getpixel(screen,playerx+x,playery+31);
+                        
 
-             if (colx!=4){tx=0;}
+             if (colx>4){t=0;jmptrig=0;}
+              colx=getpixel(screen,playerx+x,playery-1);
+                        
 
-              colx=getpixel(screen,playerx-10,playery+20);
+             if (colx>4){t2=0;jmptrig=0;}
+                                          }
+         
 
-             if (colx!=4){tx2=0;}
 
-              colx=getpixel(screen,playerx-20,playery);
+                              if (jmptrig<1){
 
-             if (colx!=4){tx2=0;}
+                     if (jmptimer>5){jmptrig=2;jmptimer=0;}  jmptimer++;
+         if (key[KEY_UP]) {plus-=t2+t2; frame=frame+400;   if (frame>800){frame=0;}
 
-                    colx=getpixel(screen,playerx-20,playery+10);
+                    }
 
-             if (colx!=4){tx2=0;}
+
+             
+             
+
 
             if (plus<0){plus==9400;}
 
 
 
-     if (jmptrig<1){
-                       if (jmptimer>5){jmptrig=2;jmptimer=0;}  jmptimer++;
-         if (key[KEY_UP]) {plus-=t2+t2; frame=frame+400;   if (frame>800){frame=0;}
-                    }
+
     if (key[KEY_LEFT]) {    plus-=tx2; z--; framex=framex-25; framey=30; ; frame=frame+400;   if (frame>800){frame=0;} }
 
                                if (framex>100){framex=0;}     if (framex<0){framex=75;}
-    if (key[KEY_RIGHT]) {    plus+=tx; z++; framex=framex+25; framey=0;  frame=frame+400;     if (frame>800){frame=0;}   }
+    if (key[KEY_RIGHT]) {    plus+=tx; z++; framex=framex+25; framey=0;  frame=frame+400;     if (frame>800){frame=0;} }
 
 
 //   if (key[KEY_DOWN]) {plus+=t; }
@@ -422,8 +430,9 @@ int keyboard(){
 
 
                                }
-                           plus+=t;
-                           mapfunc();
+                              plus+=t;
+
+                              mapfunc();
 
 
 
@@ -432,7 +441,6 @@ int keyboard(){
    
 
 }
-
 
 
 
@@ -470,6 +478,7 @@ int main(int argc, char *argv[]) {
    //set_write_alpha_blender();
 //bitmapbuffer="metal.bmp";
    /* read in the bitmap file */
+ collisionpad=create_bitmap(320,240);
 
        //   solid_mode();
   // the_image= load_bitmap(bitmapbuffer, the_palette1);
@@ -479,6 +488,7 @@ int main(int argc, char *argv[]) {
      spr1=create_bitmap(320,240);
   surface=create_bitmap(320,240);
  themap=create_bitmap (320,240);
+rectfill(sprsheet,0,0,10,10,100);
  //      spritefunction();
        walkingspr=load_pcx("walking.pcx",the_palette);
     mapfunc();
@@ -491,15 +501,16 @@ int main(int argc, char *argv[]) {
     plus=0;
      blittingtosprite();
      while (i!=0){
+      
+
+                int col;
 
 
-
-
-                  ti3++;            if (ti3>=300){ti3=0;lenght++;   if (lenght >1000){lenght=0;  ti2+=10;  if (ti2>2000){ti2=0;} keyboard(); poll_keyboard(); }
+                  ti3++;            if (ti3>=300){ti3=0;lenght++;   if (lenght >1000){lenght=0;  ti2+=10; keyboard(); poll_keyboard(); if (ti2>2000){ti2=0;}  }
                                                                                                                             //  draw_trans_sprite(spr1,walkingspr,0,0);
 
-                                                                                                                            //   blit(sprites,surface,0,0,0,0,320,240);
-                                                                                                                              blit(sprites,screen,framex ,framey,playerx,playery,25, 30);
+           // blit(collisionpad,screen,0,0,0,0,320,240);                                                                                                                //   blit(sprites,surface,0,0,0,0,320,240);
+                                                                                                                              blit(sprites,screen,framex,framey,playerx,playery,30, 30);
                                                                                                                                   }
 
     }
