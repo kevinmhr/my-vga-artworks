@@ -1,4 +1,3 @@
-
 .model tiny
 .486
 .stack 2000h
@@ -11,54 +10,19 @@ org 00h
 
 
 start:
+mov ax,1112h
+int 10h
+
+
 startsort:
 
 getstring:
+add rownum,1
 
-nextrow: add rownum,1
 	mov  cs:wordstartpos,0
 
 
-
-
-
-
-
-
-
-
-
-nextword:
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- ;     push cs
-
-
-
-      inc cs:wordstartpos
-      inc cs:wordstartpos
-
-
-
+wordadded:
 
 
   push si
@@ -73,6 +37,12 @@ nextword:
 
      mov bp,0
 
+
+
+
+
+
+
 printit:
 
       inc si
@@ -85,8 +55,12 @@ printit:
       mov al,cs:textmain[si]
 
 
+
 	 cmp al,"&"
 	  je nextrow
+	mov al,cs:textmain[si]
+	 cmp al,")"
+	  je beginningofsent
 
 
       mov [cs:textstr+bp],al
@@ -211,6 +185,8 @@ erasestr:
 	   jmp printit
 
 jump1:
+     horpos db 0
+    line dw 0
     time dw 0
 
 	    wordstartpos dw 0
@@ -219,8 +195,9 @@ jump1:
       blanc db "                                                 "
       rownum db 0
 
-      horpos db 0
-      textmain db "    this*  is*  just*  some*  characters*  but*   is it?*   & "
+
+      textmain db "  this*  is*  just*  some*  characters*  but*  is it?*  you*  might*  know*  what*  to do*  &anyway*  there*  are*  more*  to*  discover*  of course*  &"
+      textmain2 db " and*  you*  can*  search*  and*  discover*  it*  all*  as*  long*  as*  you*  want*  )"
 
 	 writingspc db ""
      writingend:
@@ -242,7 +219,17 @@ jump1:
 
 
 
+
 done:
+nextword:
+
+
+ ;     push cs
+
+
+
+      inc cs:wordstartpos
+      inc cs:wordstartpos
 
 
 
@@ -251,6 +238,22 @@ done:
 
 
 
+jmp wordadded
+
+nextrow:
+      add line,1
+      add rownum,1
+	push bx
+	mov bx,line
+	add  cs:wordstartpos,bx
+	  pop bx
+jmp wordadded
+
+beginningofsent:
+mov line,0
+mov cs:wordstartpos,1
+ add rownum,1
+jmp wordadded
 END start
 
 
