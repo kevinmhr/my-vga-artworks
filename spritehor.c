@@ -16,7 +16,7 @@ int vertices[]={50,50,70,100,150,50};
 
 int orient[]={10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,160,150,140,130,120,110,100,90,80,70,60,50,40,30,20,10};
 int z;
-
+double curenemix;
 int roll=0;
 int keytrig=0;
 int y;
@@ -44,12 +44,26 @@ int f;
 int shift;
 int incdec=1;
   int vertical=0;
-   int plus;
+   double plus;
 int lenght;
 int jmptrig=0;
 int jmptimer=0;
+int enemixt1=2;
+int enemiyt1=2;
+typedef struct OBJECT{
+double x;
+double y;
+
+
+
+}OBJECT;
+
+
+
+
  BITMAP *the_image;
  BITMAP *themap;
+   BITMAP *enemies;
    BITMAP *collisionpad;
    BITMAP *the_block1;
    PALETTE the_palette1;
@@ -60,7 +74,8 @@ int jmptimer=0;
      BITMAP *surface;
     BITMAP *sprsheet;
     BITMAP *spr1;
-char spritebuf[256];
+     OBJECT enemii;
+//char spritebuf[256];
 int spr01[]={
 0,0,0,0,0,0,0,230,230,230,230,230,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,230,249,249,249,249,230,0,0,0,0,0,0,0,0,
@@ -207,7 +222,69 @@ int timer(){
 
 
 }
+int enemies_func(){
 
+          int colx;
+
+        for (int y=1;y<10;y++){
+                        colx=getpixel(collisionpad,enemii.x+10,enemii.y+y);
+                        
+
+             if (colx>4){enemixt1=0;}
+              colx=getpixel(collisionpad,enemii.x-2,enemii.y+y);
+                        
+
+             if (colx>4){enemixt1=1;}
+                                          }
+
+
+
+
+
+
+         for (int x=1;x<10;x++){
+                        colx=getpixel(collisionpad,enemii.x,enemii.y+10);
+                        
+
+             if (colx>4){enemiyt1=0;}
+              colx=getpixel(collisionpad,enemii.x,enemii.y-5);
+                        
+
+             if (colx>4){enemiyt1=0;}
+                                          }
+         
+
+
+
+
+if (enemii.y<10){enemiyt1=2;}
+if (enemii.y>200){enemiyt1=-1;}
+
+if (enemiyt1>=1){enemii.y=enemii.y+0.001;}
+if (enemiyt1<=0){enemii.y=enemii.y-0.001;}
+
+
+if (enemii.x<10){enemixt1=2;}
+if (enemii.x>320){enemixt1=-1;}
+
+if (enemixt1>=1){enemii.x=enemii.x+0.01;}
+if (enemixt1<=0){enemii.x=enemii.x-0.01;}
+
+
+blit(enemies,screen,enemii.x,enemii.y,enemii.x,enemii.y,2,2);
+
+
+
+
+
+
+
+
+
+
+
+
+}
 
 int drawroad (){
 
@@ -488,7 +565,7 @@ int main(int argc, char *argv[]) {
 //    the_block1= load_bitmap("block1.bmp",the_palette2);
      spr1=create_bitmap(320,240);
   surface=create_bitmap(320,240);
-
+   enemies=create_bitmap(320,240);
  themap=create_bitmap (320,240);
 rectfill(sprsheet,0,0,10,10,100);
  //      spritefunction();
@@ -496,6 +573,7 @@ rectfill(sprsheet,0,0,10,10,100);
     mapfunc();
  set_palette(the_palette2);
 //    set_alpha_blender();
+
     sprites=create_bitmap(320,240);
     t=33;
     int i;
@@ -510,9 +588,8 @@ rectfill(sprsheet,0,0,10,10,100);
 
                   ti3++;            if (ti3>=1000){ti3=0;lenght++;   if (lenght >1000){lenght=0;  ti2+=10; keyboard(); poll_keyboard();blit(surface,screen,0 ,0,0,0,320, 240); if (ti2>2000){ti2=0;}  }
                                                                                                                             //  draw_trans_sprite(spr1,walkingspr,0,0);
-
-           // blit(collisionpad,screen,0,0,0,0,320,240);                                                                                                                //   blit(sprites,surface,0,0,0,0,320,240);
-                                                                                                                              blit(sprites,screen,framex,framey,playerx,playery,30, 30);
+                                                                                                                                                 enemies_func();
+                                                                                                                            blit(sprites,screen,framex,framey,playerx,playery,30, 30);
                                                                                                                                   }
 
     }
