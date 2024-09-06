@@ -37,6 +37,7 @@ int playery=150;
 int mapposx,mapposy;
 int swi=1;
 int swi2=0;
+int bgscrol;
  int frame;
  int k;
  int tx=1;
@@ -64,7 +65,9 @@ double y;
 
  BITMAP *the_image;
  BITMAP *themap;
+   BITMAP *bgsurface;
    BITMAP *enemies;
+   BITMAP *levelbg;
    BITMAP *collisionpad;
    BITMAP *the_block1;
    PALETTE the_palette1;
@@ -390,21 +393,22 @@ int enemies_func(  ){
 if (enemii.y<10){enemiyt1=2;}
 if (enemii.y>200){enemiyt1=-1;}
 
-if (enemiyt1>=1){enemii.y=enemii.y+0.001;}
-if (enemiyt1<=0){enemii.y=enemii.y-0.001;}
+if (enemiyt1>=1){enemii.y=enemii.y+0.1;}
+if (enemiyt1<=0){enemii.y=enemii.y-0.1;}
 
 
 if (enemii.x<10){enemixt1=2;}
 if (enemii.x>320){enemixt1=-1;}
 
-if (enemixt1>=1){enemii.x=enemii.x+0.01;}
-if (enemixt1<=0){enemii.x=enemii.x-0.01;}
+if (enemixt1>=1){enemii.x=enemii.x+0.1;}
+if (enemixt1<=0){enemii.x=enemii.x-0.1;}
 
 
-blit(enemies,screen,enemii.x,enemii.y,enemii.x,enemii.y,2,2);
+rectfill(surface,enemii.x,enemii.y,enemii.x+10,enemii.y+10,2);
+rect(surface,enemii.x,enemii.y,enemii.x+10,enemii.y+10,3);
 
 
-
+   //  blit(enemiesbuf,screen,0,0,0,0,320,240);
 
 
 
@@ -499,15 +503,15 @@ int blittingtosprite(){
 int i=0;
 int j=0;
 int col=0;
- clear_to_color(sprites,4);
-for (int k=0;k<80000;k++){
+// clear_to_color(sprites,4);
+for (int k=0;k<900;k++){
 
 
-i++;if (i>640){i=0;j++;}
-if (j>480){j=0;}
-col=getpixel(walkingspr,i,j);
-if (col!=1){
-putpixel(sprites,i,j,col);  }
+i++;if (i>30){i=0;j++;}
+if (j>30){j=0;}
+col=getpixel(walkingspr,i+framex,j+framey);
+if (col!=getpixel(walkingspr,1,1)){
+putpixel(surface,i+playerx,j+playery,col+230);  }
 
 
 
@@ -529,7 +533,8 @@ putpixel(sprites,i,j,col);  }
 
 int mapfunc(){
 
- clear_to_color(surface,4);
+           blit(levelbg,surface,bgscrol,0,0,0,320,240);
+
   clear_to_color(collisionpad,1);
 
 
@@ -604,7 +609,8 @@ int keyboard(){
 
 
 
-             
+
+
              
 
 
@@ -614,10 +620,10 @@ int keyboard(){
 
 
 
-    if (key[KEY_LEFT]) {    plus-=tx2; z--; framex=framex-25; framey=30; ; frame=frame+400;   if (frame>800){frame=0;} }
+    if (key[KEY_LEFT]) {  if (bgscrol<0){bgscrol=0;} bgscrol=bgscrol-(double)tx2;   plus-=tx2; z--; framex=framex-25; framey=30; ; frame=frame+400;   if (frame>800){frame=0;} }
 
                                if (framex>100){framex=0;}     if (framex<0){framex=75;}
-    if (key[KEY_RIGHT]) {    plus+=tx; z++; framex=framex+25; framey=0;  frame=frame+400;     if (frame>800){frame=0;} }
+    if (key[KEY_RIGHT]) {  if (bgscrol>400){bgscrol=400;}  bgscrol=bgscrol+(double)tx;   plus+=tx; z++; framex=framex+25; framey=0;  frame=frame+400;     if (frame>800){frame=0;} }
                       if (key[KEY_UP]) {plus-=t2; frame=frame+400;   if (frame>800){frame=0;}
 
 
@@ -692,6 +698,7 @@ int main(int argc, char *argv[]) {
        //   solid_mode();
   // the_image= load_bitmap(bitmapbuffer, the_palette1);
    sprsheet=load_bitmap("spritesheet.bmp",the_palette2);
+   levelbg=load_bitmap("levbg1.bmp",the_palette);
    //   set_palette(the_palette);
 //    the_block1= load_bitmap("block1.bmp",the_palette2);
      spr1=create_bitmap(320,240);
@@ -704,23 +711,25 @@ rectfill(sprsheet,0,0,10,10,100);
 //    mapfunc();
  set_palette(the_palette2);
 //    set_alpha_blender();
-
     sprites=create_bitmap(320,240);
     t=33;
     int i;
     i=1;
     plus=12000;
-     blittingtosprite();
+
      while (i!=0){
       
 
 
 
 
-                  ti3++;            if (ti3>=1000){ti3=0;lenght++;     if (lenght >1000){lenght=0;  ti2+=10; keyboard(); poll_keyboard();blit(surface,screen,0 ,0,0,0,320, 240); if (ti2>2000){ti2=0;}  }
+                  ti3++;            if (ti3>=10){ti3=0;lenght++;     if (lenght >10){lenght=0;  ti2+=10; keyboard(); poll_keyboard(); if (ti2>2000){ti2=0;}  }
                                                                                                                             //  draw_trans_sprite(spr1,walkingspr,0,0);
-                                                                                                                                       enemies_func();
-                                                                                                                            blit(sprites,screen,framex,framey,playerx,playery,30, 30);
+                                                                                                                                    enemies_func();
+
+                                                                                                                              blittingtosprite();
+                                                                                                                                 blit(surface,screen,0,0,0,0,320,240);
+                                                                                               //   blit(sprites,screen,framex,framey,playerx,playery,30, 30);
                                                                                                                                   }
 
     }
