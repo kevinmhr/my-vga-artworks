@@ -18,6 +18,7 @@ int orient[]={10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,160,150
 int z;
 double curenemix;
 int roll=0;
+  int jmpbypass;
 int keytrig=0;
 int y;
 int framex,framey;
@@ -589,45 +590,45 @@ int i;
 }
 
 int keyboard(){
-          tplayer=0.5;
-          t2player=0.5;
-          tx=1;
-            tx2=1;
+             tplayer=1.0;
             t=160;
                t2=160;
      
 
+           tx2=0;
+           tx=0;
 
 
 
 
 
+         for (int x=7;x<22;x++){
+                        colx=getpixel(collisionpad,playerx+x,playery+31);
+                if (colx>4){t=0;tplayer=0;  jmptimer--;
+          t2player=1.5;
+          tx=1;
+            tx2=1;    }
 
-
-         for (int x=5;x<25;x++){
-                        colx=getpixel(collisionpad,playerx+x,playery+32);
+              colx=getpixel(collisionpad,playerx+x,playery-1);
                         
 
-             if (colx>4){t=0;tplayer=0;t2player=0;if (key[KEY_UP]){jmptrig=0;jmptimer=0;}}
-
-              colx=getpixel(collisionpad,playerx+x,playery+1);
-                        
-
-             if (colx>4){t2=0;t2player=0;tplayer=0;jmptrig=0;jmptimer=0;}
+             if (colx>4){t2=0;t2player=0;  jmptimer--; }
+                else  tx=1;
+            tx2=1; 
                                           }
 
 
 
 
-           for (int y=0;y<28;y++){
-                        colx=getpixel(collisionpad,playerx+28,playery+y-1);
+           for (int y=1;y<30;y++){
+                        colx=getpixel(collisionpad,playerx+22,playery+y);
                         
 
-             if (colx>4){tx=0;jmptrig=0;}
-              colx=getpixel(collisionpad,playerx,playery+y-1);
+             if (colx>4){tx=0; }
+              colx=getpixel(collisionpad,playerx+7,playery+y);
                         
 
-             if (colx>4){tx2=0;jmptrig=0;}
+             if (colx>4){tx2=0;}
                                           }
 
 
@@ -647,17 +648,13 @@ int keyboard(){
 
 //          if (key[KEY_DOWN]) {plus+=t; frame=frame+400;   if (frame>800){frame=0; } }
 
-                            if (framex<25){framex=100;}
-                           if (framex>100){framex=25;}
-    if (key[KEY_LEFT]) {        framex=framex-25; framey=30;   if (playerx<50) { if (bgscrolx<0){bgscrolx=0;} bgscrolx=bgscrolx-(double)tx2;   plus-=tx2; z--;   }   playerx-=tx2; }
+                          if (jmptimer<0){jmptrig=2;jmptimer=0;}
 
 
-    if (key[KEY_RIGHT]) {     framex=framex+25;  framey=0;   if (playerx>200) {         if (bgscrolx>400){bgscrolx=400;}  bgscrolx=bgscrolx+(double)tx;   plus+=tx; z++;  } playerx=playerx+tx; }
+                      if (jmptrig!=0){
 
-                     if (jmptimer>5){jmptrig=2;jmptimer=0;}
-                  if (jmptrig<1){
-             if (key[KEY_UP]) {  if (key[KEY_LEFT]){              if (playery<10){             plus-=t2;  }                playery-=t2player+t2player+tx2; } }
-             if (key[KEY_UP]) {  if (key[KEY_RIGHT]){              if (playery<10){             plus-=t2;  }               playery-=t2player+t2player+tx; } }
+               if (key[KEY_LEFT]){  if (key[KEY_UP]) {   jmptimer+=1;    if (jmptimer>15){playery+=t2player;    tx2=0;tx=0; jmptrig=0;}      if (playery<10){             plus-=t2;  }      playerx+playerx+tx;         playery=playery-(t2player+t2player);}  }
+           if (key[KEY_RIGHT]){    if (key[KEY_UP]) {     jmptimer+=1;   if (jmptimer>15){playery+=t2player;  tx2=0;tx=0;        jmptrig=0;}             if (playery<10){             plus-=t2;  }     playerx+playerx-tx2;           playery=playery-(t2player+t2player);} }
 
 
       //  if (key[KEY_UP]) if (key[KEY_RIGHT]){z++;}
@@ -670,7 +667,32 @@ int keyboard(){
   //  if (plus>9400){plus==0;}
 
 
-                               }                              if (bgscroly<0){bgscroly=100;}
+                               }
+
+
+
+
+
+                            if (framex<25){framex=100;}
+                           if (framex>100){framex=25;}
+
+
+
+
+
+
+    if (key[KEY_LEFT]) {      framex=framex-25; framey=30;   if (playerx<50) {playerx+=2; if (bgscrolx<0){bgscrolx=0;} bgscrolx=bgscrolx-(double)tx2;   plus-=tx2; z--;  }    playerx-=tx2; }
+
+
+    if (key[KEY_RIGHT]) {     framex=framex+25;  framey=0;   if (playerx>200) {   playerx-=2;      if (bgscrolx>400){bgscrolx=400;}  bgscrolx=bgscrolx+(double)tx;   plus+=tx; z++;  }    playerx=playerx+tx; }
+
+               jmpbypass++;
+                   //  if (jmpbypass>200){jmptrig=0;jmpbypass=0; }
+                    // jmptimer--;
+
+
+                   //    if (jmptimer<100){jmptrig=0;}
+                                 if (bgscroly<0){bgscroly=100;}
                                     if (playery>130){ playery--; plus+=t; }
                              playery+=tplayer;
 
@@ -680,7 +702,7 @@ int keyboard(){
 
 
 
-      spritefunction();
+     spritefunction();
 
    
 
@@ -695,7 +717,7 @@ int keyboard(){
 
 
 int main(int argc, char *argv[]) {
-
+     jmptimer=0;
     enemii.x=1;
       enemii.y=1;
       enemiposx=1;
