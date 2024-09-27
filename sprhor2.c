@@ -608,43 +608,51 @@ int mapfunc(){
 
            blit(levelbg,surface,bgscrolx,bgscroly,0,0,320,240);
 
+
   clear_to_color(collisionpad,1);
 
 
+
+
+
+
+
           vertical=0;
+
            for (k=plus;k<(plus)+(3000);k++){
 
+       int i;
 
 
 
-
-
-
-
-
-
-
-
-
-
-int i;
-           int g;
-            if (i>149){vertical=vertical+10;i=-10;}
+            if (i>149){vertical=vertical+10;i=-10;          }
            i++;
 
-      if (map[k]!=0) {
+ //                if (map[k]<1){
+   //                               rectfill(collisionpad,(i*10),vertical,((i+2)*10)+10,vertical+11,2);
 
-                           if (map[k]!=77) {
-              //    enemii.x=enemii.x+i;
-               //   enemii.y=enemii.y+vertical;
-                 blit( sprsheet,surface, map[k]+50,map[k]+20,(i*10),vertical ,10, 10);    blit( sprsheet,collisionpad, 0,0,(i*10),vertical+1 ,11,11);            }
-                                                             }
+     //                             }
+
+
+
+
+
+
+
+
+           if (map[k]!=0){              if (map[k]!=77){
+
+       blit( sprsheet,surface, map[k]+50,map[k]+20,(i*10),vertical ,10, 10);    blit( sprsheet,collisionpad, 0,0,(i*10),vertical+1 ,11,11);
+                                                             } }
         if (map[k]==100) {
           rectfill(collisionpad,(i*10),vertical+1,((i+2)*10),vertical+11,254); }
+  //    if (enemicnt>9000){enemicnt=0;}
 
+           //   if (enemicnt>20){enemicnt=0;}
 
+                 enemicnt=(i+10+z);
         if (map[k]==77) {
-          enemicnt=i;
+
 
               //    enemii.x=enemii.x+i;
                //   enemii.y=enemii.y+vertical;
@@ -667,6 +675,7 @@ int col=0;
 // clear_to_color(sprites,4);
 
 
+
        enix[enemicnt]+=0.5*r[enemicnt];
 
 for (int ks=0;ks<900;ks++){
@@ -680,9 +689,12 @@ col=getpixel(walkingspr,is+frx,js+fry);
 if (col!=getpixel(walkingspr,1,1)){
 putpixel(surface,(is+enix[enemicnt]+(i*10)),js+vertical-20,col+280);  }
       int colx;
-               for (int x=10;x<20;x++){
 
-                        colx=getpixel(collisionpad,is+enix[enemicnt]+(i*10)+x,js+vertical-20);
+               for (int x=10;x<20;x++){
+                 if(  is+enix[enemicnt]+(i*10)+x<-100){  r[enemicnt]=-r[enemicnt];  }
+                colx=getpixel(collisionpad,is+enix[enemicnt]+(i*10)+x,js+vertical);
+
+
 
                 if (colx>4){
 
@@ -691,12 +703,12 @@ putpixel(surface,(is+enix[enemicnt]+(i*10)),js+vertical-20,col+280);  }
           if (r[enemicnt]>0){fry=0;}  if (r[enemicnt]<0){fry=30;}
 
 
-                 }
 
-           }
-         }
 
- }
+  }
+  }
+  }
+  }
 
        if (map[k]==8) {
         blit( sprsheet,surface, ti2,40,i*10,vertical ,10, 10);
@@ -798,10 +810,10 @@ int keyboard(){
 
 
 
-    if (key[KEY_LEFT]) {          if (tx2==1){slow++; if (slow>10){slow=0;      if (framex<25){framex=125;}   framex=framex-25; framey=30;   }    }      if (playerx<50) {playerx+=2; if (bgscrolx<0){bgscrolx=0;} bgscrolx=bgscrolx-(double)tx2;   plus-=tx2; z--;  }    playerx-=tx2; }
+    if (key[KEY_LEFT]) {          if (tx2==1){slow++; if (slow>10){slow=0;      if (framex<25){framex=125;}   framex=framex-25; framey=30;   }    }      if (playerx<50) {playerx+=2; if (bgscrolx<0){bgscrolx=0;} bgscrolx=bgscrolx-(double)tx2;   plus-=tx2;if (z<0){z=0;}   z--;  }    playerx-=tx2; }
 
 
-    if (key[KEY_RIGHT]) {       if (tx==1){slow++; if (slow>10){slow=0;     if (framex>150){framex=0;}   framex=framex+25;  framey=0;  } }   if (playerx>200) {   playerx-=2;      if (bgscrolx>400){bgscrolx=400;}  bgscrolx=bgscrolx+(double)tx;   plus+=tx; z++;  }    playerx=playerx+tx; }
+    if (key[KEY_RIGHT]) {       if (tx==1){slow++; if (slow>10){slow=0;     if (framex>150){framex=0;}   framex=framex+25;  framey=0;  } }   if (playerx>200) {   playerx-=2;      if (bgscrolx>400){bgscrolx=400;}  bgscrolx=bgscrolx+(double)tx;   plus+=tx;if (z>100){z=0;} z++;  }    playerx=playerx+tx; }
 
                                    if (jmptrig!=0){
                    //  if (acce>3){acce=3;}
@@ -851,8 +863,10 @@ int keyboard(){
 
 
 int main(int argc, char *argv[]) {
+
      for (enemicnt=0;enemicnt<100;enemicnt++){
      r[enemicnt]=1;}
+     enemicnt=0;
      jmptimer=0;
     enemii.x=1;
       enemii.y=1;
@@ -882,7 +896,7 @@ int main(int argc, char *argv[]) {
    //set_write_alpha_blender();
 //bitmapbuffer="metal.bmp";
    /* read in the bitmap file */
- collisionpad=create_bitmap(640,480);
+ collisionpad=create_bitmap(1000,480);
 
        //   solid_mode();
   // the_image= load_bitmap(bitmapbuffer, the_palette1);
