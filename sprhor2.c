@@ -27,8 +27,8 @@ double acce;
 int y;
   int slow=0;;
 int framex,framey;
-  int r[1000];
-              double enix[1000];
+  int r[10000];
+              double enix[10000];
 int k;
 int enemicnt;
 int x;
@@ -476,14 +476,15 @@ int mapfunc(){
           vertical=0;
 
            for (k=plus;k<(plus)+(3000);k++){
-
+       int d;
        int i;
 
 
 
             if (i>149){vertical=vertical+10;i=-10;          }
            i++;
-           enemicnt=(i+z);
+           d++;
+             if (d>150){d=0;}
 
  //                if (map[k]<1){
    //                               rectfill(collisionpad,(i*10),vertical,((i+2)*10)+10,vertical+11,2);
@@ -561,8 +562,6 @@ putpixel(surface,(is+enix[enemicnt]+(i*10)),js+vertical-20,col+280);  }
                  if(  is+enix[enemicnt]+(i*10)+x<-100){  r[enemicnt]=-r[enemicnt];  }
                 colx=getpixel(collisionpad,is+enix[enemicnt]+(i*10)+x,js+vertical);
 
-
-
                 if (colx>4){
 
 
@@ -588,9 +587,11 @@ putpixel(surface,(is+enix[enemicnt]+(i*10)),js+vertical-20,col+280);  }
 
 
 
+                                enemicnt=(d+z);
+
+
 
  }
-
 
 
 
@@ -607,7 +608,7 @@ int keyboard(){
 
 
 
-           //    if (plus>5270){plus=2300;z=0;}
+              if (plus>5900){plus=0;}
 
          for (int x=10;x<20;x++){
                         colx=getpixel(collisionpad,playerx+x,playery+31);
@@ -677,10 +678,10 @@ int keyboard(){
 
 
 
-    if (key[KEY_LEFT]) {          if (tx2==1){slow++; if (slow>10){slow=0;      if (framex<25){framex=125;}   framex=framex-25; framey=30;   }    }      if (playerx<50) {playerx+=2; if (bgscrolx<0){bgscrolx=0;} bgscrolx=bgscrolx-(double)tx2;   plus-=tx2;  if (z<-50){z=1;}  z-=tx2;  }   playerx-=tx2; }
+    if (key[KEY_LEFT]) {          if (tx2==1){slow++; if (slow>10){slow=0;      if (framex<25){framex=125;}   framex=framex-25; framey=30;   }    }      if (playerx<50) {playerx+=2; if (bgscrolx<0){bgscrolx=0;} bgscrolx=bgscrolx-(double)tx2;   plus-=tx2;  if (z<-80){z=80;}  z--;  }   playerx-=tx2; }
 
 
-    if (key[KEY_RIGHT]) {       if (tx==1){slow++; if (slow>10){slow=0;     if (framex>150){framex=0;}   framex=framex+25;  framey=0;  } }   if (playerx>200) {   playerx-=2;      if (bgscrolx>400){bgscrolx=400;}  bgscrolx=bgscrolx+(double)tx;   plus+=tx; if (z>100){z=1;} z+=tx;  }    playerx=playerx+tx; }
+    if (key[KEY_RIGHT]) {       if (tx==1){slow++; if (slow>10){slow=0;     if (framex>150){framex=0;}   framex=framex+25;  framey=0;  } }   if (playerx>200) {   playerx-=2;      if (bgscrolx>400){bgscrolx=400;}  bgscrolx=bgscrolx+(double)tx;   plus+=tx;  if (z>80){z=0;}  z++;  }    playerx=playerx+tx; }
 
                                    if (jmptrig!=0){
                    //  if (acce>3){acce=3;}
@@ -784,7 +785,7 @@ rectfill(sprsheet,0,0,10,10,100);
 //    set_alpha_blender();
     sprites=create_bitmap(320,240);
     t=33;
-    z=-50;
+    z=0;
     int i;
     i=1;
     plus=0;
