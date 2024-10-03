@@ -27,8 +27,8 @@ double acce;
 int y;
   int slow=0;;
 int framex,framey;
-  int r[10000];
-              double enix[10000];
+  int r[3000];
+              double enix[3000];
 int k;
 int enemicnt;
 int x;
@@ -476,15 +476,15 @@ int mapfunc(){
           vertical=0;
 
            for (k=plus;k<(plus)+(3000);k++){
-       int d;
+
        int i;
 
 
 
             if (i>149){vertical=vertical+10;i=-10;          }
            i++;
-           d++;
-             if (d>150){d=0;}
+
+
 
  //                if (map[k]<1){
    //                               rectfill(collisionpad,(i*10),vertical,((i+2)*10)+10,vertical+11,2);
@@ -521,7 +521,7 @@ int mapfunc(){
 
         if (map[k]==77) {
 
-
+                       enemicnt=(i+10+z);
               //    enemii.x=enemii.x+i;
                //   enemii.y=enemii.y+vertical;
 
@@ -558,7 +558,7 @@ if (col!=getpixel(walkingspr,1,1)){
 putpixel(surface,(is+enix[enemicnt]+(i*10)),js+vertical-20,col+280);  }
       int colx;
 
-               for (int x=10;x<20;x++){
+               for (int x=10;x<25;x++){
                  if(  is+enix[enemicnt]+(i*10)+x<-100){  r[enemicnt]=-r[enemicnt];  }
                 colx=getpixel(collisionpad,is+enix[enemicnt]+(i*10)+x,js+vertical);
 
@@ -587,7 +587,7 @@ putpixel(surface,(is+enix[enemicnt]+(i*10)),js+vertical-20,col+280);  }
 
 
 
-                                enemicnt=(d+z);
+
 
 
 
@@ -678,10 +678,10 @@ int keyboard(){
 
 
 
-    if (key[KEY_LEFT]) {          if (tx2==1){slow++; if (slow>10){slow=0;      if (framex<25){framex=125;}   framex=framex-25; framey=30;   }    }      if (playerx<50) {playerx+=2; if (bgscrolx<0){bgscrolx=0;} bgscrolx=bgscrolx-(double)tx2;   plus-=tx2;  if (z<-80){z=80;}  z--;  }   playerx-=tx2; }
+    if (key[KEY_LEFT]) {          if (tx2==1){slow++; if (slow>10){slow=0;      if (framex<25){framex=125;}   framex=framex-25; framey=30;   }    }      if (playerx<50) {playerx+=2; if (bgscrolx<0){bgscrolx=0;} bgscrolx=bgscrolx-(double)tx2;   plus-=tx2;  if (z<1){z=2000;}  z--;  }   playerx-=tx2; }
 
 
-    if (key[KEY_RIGHT]) {       if (tx==1){slow++; if (slow>10){slow=0;     if (framex>150){framex=0;}   framex=framex+25;  framey=0;  } }   if (playerx>200) {   playerx-=2;      if (bgscrolx>400){bgscrolx=400;}  bgscrolx=bgscrolx+(double)tx;   plus+=tx;  if (z>80){z=0;}  z++;  }    playerx=playerx+tx; }
+    if (key[KEY_RIGHT]) {       if (tx==1){slow++; if (slow>10){slow=0;     if (framex>150){framex=0;}   framex=framex+25;  framey=0;  } }   if (playerx>180) {   playerx-=2;      if (bgscrolx>400){bgscrolx=400;}  bgscrolx=bgscrolx+(double)tx;   plus+=tx;  if (z>2000){z=1;}  z++;  }    playerx=playerx+tx; }
 
                                    if (jmptrig!=0){
                    //  if (acce>3){acce=3;}
@@ -732,9 +732,9 @@ int keyboard(){
 
 int main(int argc, char *argv[]) {
 
-     for (enemicnt=0;enemicnt<100;enemicnt++){
+     for (enemicnt=0;enemicnt<2000;enemicnt++){
      r[enemicnt]=1;}
-     enemicnt=0;
+     enemicnt=1;
      jmptimer=0;
     enemii.x=1;
       enemii.y=1;
