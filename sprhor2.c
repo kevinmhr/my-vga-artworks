@@ -12,7 +12,7 @@
 #include <allegro.h>
 #include <math.h>
 char *bitmapbuffer;
-unsigned int z;
+ int z;
 int frx;
 int fry;
  int tuy;
@@ -25,6 +25,8 @@ int y;
   int slow=0;;
 int framex,framey;
   int r[15000];
+int keyboard();
+int mapfunc();
               double enix[15000];
 int k;
 int enemicnt;
@@ -56,7 +58,7 @@ int f;
 int shift;
 int incdec=1;
 
-   unsigned int plus;
+int plus;
 int lenght;
 int jmptrig=0;
 double enemiposx=0;
@@ -355,63 +357,7 @@ circle(surface,enemiposx,enemiposy,5,enemii.y);
 
 }
 
-int drawroad (){
 
-
-                          ti2++;
-    if (ti2>100){timer();ti2=0;}
-
-
-              k=k+1;
-             // drawroad();
-
-          if (k>=400){k=0;  x=0;x2=0;}
-
-
-
-
-      //   for (int k=100;k<200;k=k+2)  {
-          hline(screen,((x)+68)*2,((-k+800)/4),(x2+122)*2,3);
-          hline(screen,((x)+60)*2,((-k+800)/4),(x2+120)*2,1);
-
-
-
-
-
-
-
-}
-
-
-
-
-int bg(){
-
-
-
-              f=f+1;
-
-              y=y+2;
-
-             // drawroad();
-           if (y>=200){y=0;}
-          if (f>=100){f=0;}
-
-             hline(screen,0,f+100,320,9);
-
-        hline(screen,0,y-100,320,7);
-
-
-
-
-
-
-
-
-
-
-
-}
 
 void spritefunction(){
     int j=0;
@@ -459,9 +405,23 @@ int othersblittingtosprite(int otherposx;int otherposy;){
 }
 int init(){
 
+          ti3=0;
+          z=0;
+         jmptimer=0;
+    enemii.x=1;
+      enemii.y=1;
+      enemiposx=1;
+       enemiposy=1;
+       enemicnt=0;
+
+    plus=4800;
+playerx=100;
+ playery=150;
+
 
   for (int x=0;x<15000;x++){
-     r[x]=1;   }
+enix[x]=0;     r[x]=1;   }
+mapfunc();
 
 }
 int mapfunc(){
@@ -471,36 +431,36 @@ int mapfunc(){
 
   clear_to_color(collisionpad,1);
 
-                  int i=1;
+                 int i=1;
 
-                  int vertical=10;
-
-
-
-
-                    if (vertical>220){vertical=10;}
+                 int vertical=10;
 
 
 
 
+              //      if (vertical>220){vertical=10;}
 
-                unsigned int d=1;
 
-           for (k=plus;k<(plus)+(3000);k++){
 
+
+               int d=1;
+
+           for (k=plus;k<(plus)+(4000);k++){
+
+                   if (z>140){z=0;init();}
 
 
                         d++;
 
-
-
+                      if (z<0){z=0;}
+                    //   if (z>320){z=0;}
                   i++;
-            if (i>160){vertical=vertical+10;i=1; d--;         }
+            if (i>160){vertical=vertical+10;i=1;            }
                      enemicnt=(d+z);
         if (map[k]==77) {
 
 
-                      enix[enemicnt]+=0.2*r[enemicnt];
+                      enix[enemicnt]+=(double)r[enemicnt]/5;
 
 
 
@@ -543,12 +503,11 @@ putpixel(surface,is+enix[enemicnt]+(i*10),js+vertical-20,col+210);  }
 
   }
 
-                    if (i<0){ r[enemicnt]=i;d=0; }
-                   if (i>320){ r[enemicnt]=i;d=0;}
+
 
       for (int x=10;x<20;x++){
                //   if(enix[enemicnt]+(i*10)+x<-50){  r[enemicnt]= -r[enemicnt];  }
-                    colx=getpixel(collisionpad,enix[enemicnt]+(i*10)+x+1,vertical);
+                    colx=getpixel(collisionpad,enix[enemicnt]+(i*10)+x,vertical);
                                            if (colx==4){
 
 
@@ -557,18 +516,13 @@ putpixel(surface,is+enix[enemicnt]+(i*10),js+vertical-20,col+210);  }
 
 
 
-                colx=getpixel(collisionpad,enix[enemicnt]+(i*10)+x,vertical);
-                           if (colx==4){
-
-
-          r[enemicnt]=-r[enemicnt];   }      }
 
 
 
 
 
 
-
+}
 
 
 
@@ -702,8 +656,8 @@ int keyboard(){
 
 
 
-if (playerx>200) {   playerx-=2;      if (bgscrolx>400){bgscrolx=400;}  bgscrolx=bgscrolx+(double)tx;   plus+=tx;  z=z+tx;  }
-if (playerx<50) {playerx+=2; if (bgscrolx<0){bgscrolx=0;} bgscrolx=bgscrolx-(double)tx2;   plus-=tx2;   z=z-tx2;  }
+if (playerx>200) {   playerx-=3;      if (bgscrolx>400){bgscrolx=400;}  bgscrolx=bgscrolx+(double)tx;   plus+=tx;  z=z+tx;  }
+if (playerx<50) {playerx+=3; if (bgscrolx<0){bgscrolx=0;} bgscrolx=bgscrolx-(double)tx2;   plus-=tx2;   z=z-tx2;  }
 
 
 
@@ -831,7 +785,7 @@ bgscroly=100;
 
 
 
-                  ti3++;            if (ti3>=10){ti3=0;lenght++;     if (lenght >10){lenght=0;  ti2+=10; keyboard(); poll_keyboard(); if (ti2>2000){ti2=0;}  }
+                  ti3++;            if (ti3>=5000){ti3=0;lenght++;  keyboard();
                                                                                                                             //  draw_trans_sprite(spr1,walkingspr,0,0);
                                                                                                                                     enemies_func();
                                                                                                                               blittingtosprite();
