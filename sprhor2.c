@@ -14,6 +14,7 @@
 char *bitmapbuffer;
  int z;
 int frx;
+int d;
 int fry;
  int tuy;
 double curenemix;
@@ -21,6 +22,7 @@ int roll=0;
   int jmpbypass;
 int keytrig=0;
 double acce;
+int i;
 int y;
   int slow=0;;
 int framex,framey;
@@ -404,7 +406,7 @@ int othersblittingtosprite(int otherposx;int otherposy;){
 
 }
 int init(){
-
+        d=0;
           ti3=0;
           z=0;
          jmptimer=0;
@@ -413,7 +415,7 @@ int init(){
       enemiposx=1;
        enemiposy=1;
        enemicnt=0;
-
+      i=1;
     plus=4800;
 playerx=100;
  playery=150;
@@ -421,7 +423,7 @@ playerx=100;
 
   for (int x=0;x<15000;x++){
 enix[x]=0;     r[x]=1;   }
-mapfunc();
+     mapfunc();   
 
 }
 int mapfunc(){
@@ -431,11 +433,11 @@ int mapfunc(){
 
   clear_to_color(collisionpad,1);
 
-                 int i=1;
+
 
                  int vertical=10;
 
-
+             d=0;
 
 
               //      if (vertical>220){vertical=10;}
@@ -443,15 +445,15 @@ int mapfunc(){
 
 
 
-               int d=1;
-
-           for (k=plus;k<(plus)+(4000);k++){
-
                    if (z>140){z=0;init();}
 
 
-                        d++;
+           for (k=plus;k<(plus)+(4000);k++){
 
+
+
+                        d++;
+                          if (d>7000){d=0;}
                       if (z<0){z=0;}
                     //   if (z>320){z=0;}
                   i++;
@@ -505,13 +507,19 @@ putpixel(surface,is+enix[enemicnt]+(i*10),js+vertical-20,col+210);  }
 
 
 
-      for (int x=10;x<20;x++){
-               //   if(enix[enemicnt]+(i*10)+x<-50){  r[enemicnt]= -r[enemicnt];  }
-                    colx=getpixel(collisionpad,enix[enemicnt]+(i*10)+x,vertical);
+
+                  if(enix[enemicnt]+(i*10)<-100){  r[enemicnt]=1; }
+                    colx=getpixel(collisionpad,enix[enemicnt]+(i*10)+20,vertical);
                                            if (colx==4){
 
 
-          r[enemicnt]=-r[enemicnt];   }
+          r[enemicnt]=-1;   }
+
+                    colx=getpixel(collisionpad,enix[enemicnt]+(i*10)-1,vertical);
+                                           if (colx==4){
+
+
+          r[enemicnt]=1;   }
 
 
 
@@ -522,7 +530,6 @@ putpixel(surface,is+enix[enemicnt]+(i*10),js+vertical-20,col+210);  }
 
 
 
-}
 
 
 
@@ -583,7 +590,7 @@ putpixel(surface,is+enix[enemicnt]+(i*10),js+vertical-20,col+210);  }
 }
 
 int keyboard(){
-             tplayer=1.7;
+             tplayer=1;
             t=160;
                t2=160;
      
@@ -598,7 +605,7 @@ int keyboard(){
          for (int x=10;x<20;x++){
                         colx=getpixel(collisionpad,playerx+x,playery+31);
                 if (colx==4){t=0;tplayer=0;  jmptimer--;
-          t2player=2.5;
+          t2player=2;
           tx=1;
             tx2=1;  acce=2;  }
 
@@ -698,7 +705,7 @@ if (playerx<50) {playerx+=3; if (bgscrolx<0){bgscrolx=0;} bgscrolx=bgscrolx-(dou
 
 
                            //   bgscroly=bgscroly-(t/160);
-                              mapfunc();
+
 
 
 
@@ -785,7 +792,7 @@ bgscroly=100;
 
 
 
-                  ti3++;            if (ti3>=5000){ti3=0;lenght++;  keyboard();
+                  ti3++;            if (ti3>=5000){ti3=0;lenght++;  keyboard();   mapfunc();
                                                                                                                             //  draw_trans_sprite(spr1,walkingspr,0,0);
                                                                                                                                     enemies_func();
                                                                                                                               blittingtosprite();
