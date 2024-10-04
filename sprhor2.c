@@ -12,7 +12,7 @@
 #include <allegro.h>
 #include <math.h>
 char *bitmapbuffer;
-int z;
+unsigned int z;
 int frx;
 int fry;
  int tuy;
@@ -55,8 +55,8 @@ int bgscrolx,bgscroly;
 int f;
 int shift;
 int incdec=1;
-  int vertical=0;
-   int plus;
+
+   unsigned int plus;
 int lenght;
 int jmptrig=0;
 double enemiposx=0;
@@ -471,34 +471,104 @@ int mapfunc(){
 
   clear_to_color(collisionpad,1);
 
+                  int i=0;
+
+                  int vertical=0;
 
 
 
 
-
-
-          vertical=0;
-
-           int i=0;
-           int d=0;
            
+
+
+
+
+
+                 int d=0;
+
            for (k=plus;k<(plus)+(3400);k++){
 
+
+
                         d++;
+                     //  if (d>800){d=0;}
+                     if (d<0){d=800;}
 
-                 if (d>5000){d=0;z=0;enemicnt=0;}
+                  i++;
+            if (i>=160){vertical=vertical+10;i=0;          }
+
+        if (map[k]==77) {
+
+                     enemicnt=(d+z);
+                      enix[enemicnt]+=0.2*r[enemicnt];
+
+
+
+int ks;
+int is=0;
+
+int js=0;
+int col=0;
+
+// clear_to_color(sprites,4);
+
+
+ tuy++;
+
+ if (tuy>20){    if (frx>=100){frx=0;}
+ frx=frx+25;tuy=0; }
 
 
 
 
-           i++;
-            if (i>159){vertical=vertical+10;i=0;          }
+for (int ks=0;ks<900;ks++){
+
+is++;if (is>30){is=0;js++;}
+if (js>30){js=0;}
+col=getpixel(walkingspr,is+frx,js+fry);
+if (col!=getpixel(walkingspr,1,1)){
+putpixel(surface,is+enix[enemicnt]+(i*10),js+vertical-20,col+210);  }
 
 
- //                if (map[k]<1){
-   //                               rectfill(collisionpad,(i*10),vertical,((i+2)*10)+10,vertical+11,2);
+          if (r[enemicnt]>0){fry=0;}  if (r[enemicnt]<0){fry=30;}
 
-     //                             }
+             int colx;
+
+
+
+
+
+
+
+
+  }
+      for (int x=10;x<20;x++){
+               //   if(enix[enemicnt]+(i*10)+x<-50){  r[enemicnt]= -r[enemicnt];  }
+
+                colx=getpixel(collisionpad,enix[enemicnt]+(i*10)+x,vertical);
+                           if (colx>4){
+
+
+          r[enemicnt]=-r[enemicnt];   }      }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  }
+
+
+
+
 
 
 
@@ -527,83 +597,6 @@ int mapfunc(){
 
            //   if (enemicnt>20){enemicnt=0;}
 
-                enemicnt=(d+z);
-
-        if (map[k]==77) {
-
-
-                      enix[enemicnt]=enix[enemicnt]+0.2*r[enemicnt];
-
-
-              //    enemii.x=enemii.x+i;
-               //   enemii.y=enemii.y+vertical;
-
-               //enix=(int)enix;
-           //      blit( sprsheet,collisionpad, 0,0,(i+enix)*10,vertical ,10, 10);
-
-            //     blit( sprsheet,surface, 4,5,(i+enix)*10,vertical ,10, 10);
-
-int ks;
-int is=0;
-
-int js=0;
-int col=0;
-
-// clear_to_color(sprites,4);
-
-
- tuy++;
-
- if (tuy>20){    if (frx>=100){frx=0;}
- frx=frx+25;tuy=0; }
-
-      for (int x=10;x<20;x++){
-                  if(enix[enemicnt]+(i*10)+x<-100){  r[enemicnt]=-r[enemicnt];  }
-
-                colx=getpixel(collisionpad,enix[enemicnt]+(i*10)+x,vertical);
-                           if (colx>4){
-
-
-          r[enemicnt]=-r[enemicnt];   }      }
-
-
-
-for (int ks=0;ks<900;ks++){
-
-is++;if (is>30){is=0;js++;}
-if (js>30){js=0;}
-col=getpixel(walkingspr,is+frx,js+fry);
-if (col!=getpixel(walkingspr,1,1)){
-putpixel(surface,is+enix[enemicnt]+(i*10),js+vertical-20,col+210);  }
-
-
-          if (r[enemicnt]>0){fry=0;}  if (r[enemicnt]<0){fry=30;}
-
-             int colx;
-
-
-
-
-
-
-
-
-  }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  }
 
        if (map[k]==8) {
         blit( sprsheet,surface, ti2,40,i*10,vertical ,10, 10);
@@ -700,22 +693,23 @@ int keyboard(){
 
 
 
+if (playerx>190) {   playerx-=3;      if (bgscrolx>400){bgscrolx=400;}  bgscrolx=bgscrolx+(double)tx;   plus+=tx;  z=z+tx;  }
+if (playerx<50) {playerx+=3; if (bgscrolx<0){bgscrolx=0;} bgscrolx=bgscrolx-(double)tx2;   plus-=tx2;   z=z-tx2;  }
 
 
 
                            if (framex>100){framex=0;}
 
 
-
-    if (key[KEY_LEFT]) {          if (tx2==1){slow++; if (slow>10){slow=0;      if (framex<25){framex=125;}   framex=framex-25; framey=30;   }    }      if (playerx<50) {playerx+=2; if (bgscrolx<0){bgscrolx=0;} bgscrolx=bgscrolx-(double)tx2;   plus-=tx2;   z--;  }   playerx-=tx2; }
+    if (key[KEY_LEFT]) {          if (tx2==1){slow++; if (slow>10){slow=0;      if (framex<25){framex=125;}   framex=framex-25; framey=30;   }    }        playerx-=tx2; }
 
            //              if (z>8000){z=0;}
-    if (key[KEY_RIGHT]) {       if (tx==1){slow++; if (slow>10){slow=0;     if (framex>150){framex=0;}   framex=framex+25;  framey=0;  } }   if (playerx>170) {   playerx-=2;      if (bgscrolx>400){bgscrolx=400;}  bgscrolx=bgscrolx+(double)tx;   plus+=tx;  z++;  }    playerx=playerx+tx; }
+    if (key[KEY_RIGHT]) {       if (tx==1){slow++; if (slow>10){slow=0;     if (framex>150){framex=0;}   framex=framex+25;  framey=0;  } }      playerx=playerx+tx; }
 
                                    if (jmptrig!=0){
                    //  if (acce>3){acce=3;}
           if (acce<0){acce=2;}
-             if (key[KEY_UP]) {acce-=0.08;    jmptimer+=1;    if (jmptimer>15){playery+=t2player;   jmptrig=0;}      if (playery<10){             plus-=t2;  }           playery=playery-(t2player+t2player)*acce;  }
+             if (key[KEY_UP]) {acce-=0.08;    jmptimer+=1;    if (jmptimer>15){playery+=t2player;   jmptrig=0;}      if (playery<20){             }           playery=playery-(t2player+t2player)*acce;  }
 
 
 
