@@ -1,12 +1,3 @@
-/*
- *    Example program for the Allegro library, by Shawn Hargreaves.
- *
- *    This program demonstrates how to load and display a bitmap
- *    file.  You have to use this example from the command line to
- *    specify as first parameter a graphic file in one of Allegro's
- *    supported formats.  If the file is loaded successfully,
- *    it will be displayed until you press a key.
- */
 
 
 #include <allegro.h>
@@ -97,6 +88,7 @@ double y;
     BITMAP *sprsheet;
     BITMAP *spr1;
      OBJECT enemii;
+  MIDI *grand;
 //char spritebuf[256];
 int spr01[]={
 0,0,0,0,0,0,0,230,230,230,230,230,0,0,0,0,0,0,0,0,
@@ -496,6 +488,7 @@ int othersblittingtosprite(int otherposx;int otherposy;){
 
 }
 int init(){
+          play_midi(grand,0);
         d=0;
           ti3=0;
           z=0;
@@ -513,6 +506,7 @@ playerx=100;
 
   for (int x=0;x<15000;x++){
 enix[x]=0;     r[x]=1;   }
+
      mapfunc();   
 
 }
@@ -854,6 +848,11 @@ int main(int argc, char *argv[]) {
 
    install_keyboard();
 
+         if (install_sound(DIGI_AUTODETECT, MIDI_AUTODETECT, NULL) != 0) {
+      allegro_message("Error initialising sound system\n%s\n", allegro_error);
+      return 1;
+   }
+
    if (set_gfx_mode(GFX_AUTODETECT, 320, 200, 0, 0) != 0) {
       if (set_gfx_mode(GFX_SAFE, 320, 200, 0, 0) != 0) {
        set_gfx_mode(GFX_TEXT, 0, 0, 0, 0);
@@ -869,9 +868,9 @@ int main(int argc, char *argv[]) {
  collisionpad=create_bitmap(2000,320);
 
        //   solid_mode();
-   the_image= load_bitmap("spritesheet.bmp", the_palette);
-   sprsheet=load_bitmap("mapbitmap.bmp",the_palette2);
-
+//   the_image= load_bitmap("spritesheet.bmp", the_palette);
+   sprsheet=load_bitmap("mapbit.bmp",the_palette2);
+   grand=load_midi("midsnd.mid");
    levelbg=load_bitmap("levbg1.bmp",the_palette);
    //   set_palette(the_palette);
 //    the_block1= load_bitmap("block1.bmp",the_palette2);
@@ -895,6 +894,7 @@ i=1;
     plus=4800;
 bgscroly=100;
        init();
+
      while (i!=0){
       
 
