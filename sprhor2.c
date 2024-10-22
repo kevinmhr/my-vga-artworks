@@ -464,8 +464,7 @@ int mapfunc(){
         if (maptemp[k]==77) {
 
 
-                      enix[enemicnt]+=(double)r[enemicnt]/6;
-
+                      enix[enemicnt]+=(double)r[enemicnt]/2;
 
 
 int ks=0;
@@ -483,6 +482,7 @@ int col=0;
  frx=frx+25;tuy=0; }
 
 
+    rectfill(collisionpad,enix[enemicnt]+(i*10),vertical,enix[enemicnt]+((i+1)*10),vertical+30,90);
 
 
 for (int ks=0;ks<900;ks++){
@@ -498,9 +498,8 @@ putpixel(surface,is+enix[enemicnt]+(i*10),js+vertical-20,col+1);  }
              int colx;
 
 
+
   }
-
-
 
 
 
@@ -639,6 +638,8 @@ putpixel(surface,is+(i*10),js+vertical-10,pickupcolor);  }
            colx=getpixel(collisionpad,playerx+10,playery+20);
        if (colx==5){     maptemp[k]=0;        play_midi(grand,0);    mapfunc();       }
 
+              colx=getpixel(collisionpad,bulletx+10,bullety+20);
+       if (colx==90){     maptemp[k]=0;  for (int x=0;x<2000;x++){  circlefill(screen,bulletx+10,bullety,10,colx++);}       mapfunc();            }
 
 
 
