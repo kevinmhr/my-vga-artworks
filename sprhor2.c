@@ -6,6 +6,7 @@ char *bitmapbuffer;
  int z;
 int fri=0;
 int bullethit=1;
+   int midiseek;
   int bulletx;
     int bullety;
 int frx;
@@ -395,7 +396,7 @@ int othersblittingtosprite(int otherposx;int otherposy;){
 
 }
 int init(){
-          play_midi(grand,0);
+//          play_midi(grand,0);
         d=0;
           ti3=0;
           z=0;
@@ -635,11 +636,12 @@ putpixel(surface,is+(i*10),js+vertical-10,pickupcolor);  }
 
                                         }
 
+
            colx=getpixel(collisionpad,playerx+10,playery+20);
-       if (colx==5){     maptemp[k]=0;        play_midi(grand,0);    mapfunc();       }
+       if (colx==5){     maptemp[k]=0;  midiseek=0;   play_midi(grand,0);  midi_seek(190);   mapfunc();       }
 
               colx=getpixel(collisionpad,bulletx+10,bullety+20);
-       if (colx==90){     maptemp[k]=0;  for (int x=0;x<2000;x++){  circlefill(screen,bulletx+10,bullety,10,colx++);}       mapfunc();            }
+       if (colx==90){     maptemp[k]=0; midiseek=-20; for (int x=0;x<2000;x++){ circlefill(screen,bulletx+10,bullety,10,colx++);}    play_midi(grand,0); midi_seek(250);     mapfunc();            }
 
 
 
@@ -648,9 +650,9 @@ putpixel(surface,is+(i*10),js+vertical-10,pickupcolor);  }
  }
 
 
-
-
-
+midiseek++; if(midiseek>20){midiseek=0;
+stop_midi();  
+              }
 
 
 }
@@ -756,7 +758,7 @@ if (playerx<50) {playerx+=3; if (bgscrolx<0){bgscrolx=0;} bgscrolx=bgscrolx-(dou
 
 
                 int time;
-           if (key[KEY_SPACE]){  bullettrig=1;bulletx=playerx+10;bullety=playery+10;}
+           if (key[KEY_SPACE]){  play_midi(grand,0); midiseek=0; midi_seek(100);  bullettrig=1;bulletx=playerx+10;bullety=playery+10;}
 
 
 
@@ -764,7 +766,7 @@ if (playerx<50) {playerx+=3; if (bgscrolx<0){bgscrolx=0;} bgscrolx=bgscrolx-(dou
 
 
 
-                                if (bulletdir==1){  if (bullettrig==1){ int i=4;    bulletx+=i; bullethit=0;  if (bulletx>320){bullethit=1;  bulletdir=2;     bulletx=0;bullettrig=0;bullety=playery+10;}
+                                if (bulletdir==1){  if (bullettrig==1){ int i=4;    bulletx+=i; bullethit=0;  if (bulletx>320){bullethit=1;  bulletdir=2;    bulletx=0;bullety=0;  bullettrig=0;bullety=playery+10;}
 
          circlefill(surface,bulletx,bullety,1,7);     blit(surface,screen,0,0,0,0,320,240);
 
@@ -772,7 +774,7 @@ if (playerx<50) {playerx+=3; if (bgscrolx<0){bgscrolx=0;} bgscrolx=bgscrolx-(dou
 
                                                                              }
 
-                                     if (bulletdir==0){  if (bullettrig==1){ int i=-4;   bulletx+=i; bullethit=0;  if (bulletx<0){bullethit=1; bulletdir=2; bulletx=0;bullettrig=0;bullety=playery+10;}
+                                     if (bulletdir==0){  if (bullettrig==1){ int i=-4;   bulletx+=i; bullethit=0;  if (bulletx<0){bullethit=1; bulletdir=2; bulletx=0; bullety=0;  bullettrig=0;bullety=playery+10;}
 
          circlefill(surface,bulletx,bullety,1,7);     blit(surface,screen,0,0,0,0,320,240);
 
@@ -854,7 +856,7 @@ int main(int argc, char *argv[]) {
        //   solid_mode();
 //   the_image= load_bitmap("spritesheet.bmp", the_palette);
    sprsheet=load_bitmap("mapbit.bmp",the_palette2);
-   grand=load_midi("midsnd.mid");
+   grand=load_midi("canyon.mid");
    levelbg=load_bitmap("levbg1.bmp",the_palette);
    //   set_palette(the_palette);
 //    the_block1= load_bitmap("block1.bmp",the_palette2);
