@@ -961,7 +961,7 @@ i++;if (i>30){i=0;j++;}
 if (j>30){j=0;}
 col=getpixel(walkingspr,i+framex,j+framey);
 if (col!=getpixel(walkingspr,1,1)){
-putpixel(surface,i+playerx,j+playery,col+30);  }
+putpixel(surface,i+playerx,j+playery,col+250);  }
 
 
 
@@ -1037,7 +1037,7 @@ int mapfunc(){
 
                   i=0;
 
-           for (k=plus;k<(plus)+(20000);k++){
+           for (k=plus;k<(plus)+(9000);k++){
 
 
                         d++;
@@ -1128,7 +1128,8 @@ putpixel(surface,is+enix[enemicnt]+(i*10),js+vertical-20,col+1);  }
   }
 
    if (fri>=120){fri=70;}
- if (tuu>200){  fri=fri+10;
+ if (tuu>200){
+ fri=fri+10;
  tuu=0; }
 tuu++;
 
@@ -1136,7 +1137,6 @@ tuu++;
 
         if (maptemp[k]==33) {
 
-       rectfill(collisionpad,(i*10),vertical,((i+1)*10),vertical+10,5);
 
 
 
@@ -1145,7 +1145,8 @@ int ks=0;
 int is=0;
 int col=0;
 int js=0;
-
+int fillx=0;
+int filly=0;
 
 // clear_to_color(sprites,4);
 
@@ -1154,20 +1155,23 @@ int js=0;
    fry=0;
 
 
-for (int ks=0;ks<100;ks++){
-
+for (int ks=0;ks<500;ks++){
+fillx++;
+if (fillx>vertical/100){filly++;fillx=0;}
+if (filly>vertical/100){filly=0;}
 is++;if (is>10){is=0;js++;   pickupcolor++;}
 if (js>10){js=0;pickupcolor++;}
 col=getpixel(sprsheet,is+fri,js+fry);
 if (col!=getpixel(sprsheet,100,0)){
 //putpixel(surface,is+(i*10)+1,js+vertical-9,1);
-putpixel(surface,is+(i*10),js+vertical-10,col);  }
+putpixel(surface,(is*(vertical/70)-(vertical/140))+(i*10)+fillx,(js*vertical/100)+(vertical-10)+filly,col);  }
 
 
 
 
 }
 
+  rectfill(collisionpad,(i*10),vertical,((i+1)*10),vertical+10,5);
 
 
 }
@@ -1313,10 +1317,12 @@ int keyboard(){
 
              
           //     if (plus>4950){plus=4800;playerx=40;playery=170;z=0;}
+             if (key[KEY_UP]) {  playery=playery-3;   jmptimer+=1;  ydir=-0.1;    acce+=0.1;   if (jmptimer>15){   jmptrig=0;}    }
 
 
 
-          if (key[KEY_DOWN]) {plus+=t; ydir=0.1;acce-=0.0001; frame=frame+400;   if (frame>800){frame=0; } }
+
+          if (key[KEY_DOWN]) {  playery+=3;  ydir=0.1;acce-=0.0001; frame=frame+400;   if (frame>800){frame=0; } }
 
                           if (jmptimer<0){jmptrig=2;jmptimer=0;}
 
@@ -1335,23 +1341,21 @@ if (playerx<10) {playerx+=3; if (bgscrolx<0){bgscrolx=0;} bgscrolx=bgscrolx-(dou
 
                            //    framex=10;
 
-    if (key[KEY_LEFT]) { framey=60; if (bullethit==1){bulletdir=0; }     if (tx2==1){slow++; if (slow>10){slow=0;      if (framex<25){framex=125;}      }    }        playerx=playerx-(tx2*2); }
+    if (key[KEY_LEFT]) { framey=162; if (bullethit==1){bulletdir=0; }     if (tx2==1){slow++; if (slow>10){slow=0;      if (framex<25){framex=125;}      }    }        playerx=playerx-(tx2*2); }
 
            //              if (z>8000){z=0;}
-    if (key[KEY_RIGHT]) {   framey=60;       if (bullethit==1){ bulletdir=1; }    if (tx==1){slow++; if (slow>10){slow=0;     if (framex>150){framex=0;}     } }      playerx=playerx+(tx*2); }
+    if (key[KEY_RIGHT]) {   framey=162;       if (bullethit==1){ bulletdir=1; }    if (tx==1){slow++; if (slow>10){slow=0;     if (framex>150){framex=0;}     } }      playerx=playerx+(tx*2); }
 
-                                   if (jmptrig!=0){
-                     if (acce>1){acce=1;}
+                               //    if (jmptrig!=0)  {}
+                               if (acce>1){acce=1;}
                         if (acce<-1){acce=-1;}
-             if (key[KEY_UP]) {   jmptimer+=1;  ydir=-0.1;    acce+=0.1;   if (jmptimer>15){   jmptrig=0;}      }
-                                    }
-                                    playery-=ydir;
+                              //      playery-=ydir;
 
                                     plustime++;
                                 scroll++; if (scroll>9){scroll=0; plus-=t;}
 //   if (plus>19000){plus==19000;}
 
-                              if (playery<=130){  playery=130; }
+                        //      if (playery<=130){  playery=130; }
 
 
 
@@ -1388,7 +1392,7 @@ if (playerx<10) {playerx+=3; if (bgscrolx<0){bgscrolx=0;} bgscrolx=bgscrolx-(dou
 
                    //    if (jmptimer<100){jmptrig=0;}
                                  if (bgscroly<0){bgscroly=100;}
-                                   if (playery>150){  plus-=t*((int)(acce)); }
+                              //     if (playery>150){  plus-=t*((int)(acce)); }
 
 
 
@@ -1504,5 +1508,5 @@ bgscroly=100;
    return 0;
 
 
-END_OF_MAIN()}
+}  END_OF_MAIN()
 
