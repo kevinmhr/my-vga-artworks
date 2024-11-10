@@ -103,6 +103,7 @@ double y;
   MIDI *grand;
 //char spritebuf[256];
 float sintab[20000];
+float sintab2[20000];
 int spr01[]={
 0,0,0,0,0,0,0,230,230,230,230,230,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,230,249,249,249,249,230,0,0,0,0,0,0,0,0,
@@ -995,31 +996,58 @@ playerx=100;
   int inst2=0;
 
   int ypos=0;
-    for (int x=18954;x>0;x--){
-  radian+=0.01;
+     for (int x=18954;x>0;x--){
+               radian+=0.01;
+      sintab[x]=sin(radian);
 
-    sintab[x]=sin(radian);
+
+
+
+
+
+
+     }
+    for (int x=18954;x>0;x--){
+
+
+    if (inst1>=1){  radian=radian+0.01;         }
+
+    if (inst2>=1){  radian=radian-0.01;       }
+
+                              // radian=radian+0.01;
+
+
+    if (radian<=-1){inst1=1;inst2=0;}
+    if (radian>=1){inst2=1;inst1=0;}
+       sintab2[x]=sin(radian);
+
     }
+  inst1=1;
+  inst2=0;
+
   for (int x=0;x<20000;x++){
 
+           if (inst1>=1){  radian=radian+1;         }
 
+    if (inst2>=1){  radian=radian-1;       }
+
+                              // radian=radian+0.01;
+
+
+    if (radian<=-5){inst1=1;inst2=0;}
+    if (radian>=5){inst2=1;inst1=0;}
 
  maptemp[x]=map[x];
 
     //      ypos++; if (ypos>31){     ypos=0;
-                          //                    if (radian>=1){inst1=1;inst2=0;}
- //   if (radian<=1){inst2=1;inst1=0;}
-
-                            //   if (inst1>=1){  radian=radian+0.1;   y=y+sin(radian);     }
-
- //   if (inst2>=1){  radian=radian-0.1;      y=y+sin(radian)+0.5;     }
 
                                        y+=31;
 
+       if (map[y]==0) {  maptemp[y]=30; if (map[y*(int)radian+(int)radian]==0){ maptemp[y*(int)radian+(int)radian]=33;  }   }
+     
            if (y>20000){y=0;}
 
 
-       if (map[y-5]==0) {  maptemp[y-5]=30; if (map[y+(int)sin(radian)]==0){ maptemp[y+(int)sin(radian)]=33;  }   }
       
                                     }
 
@@ -1167,31 +1195,35 @@ int col=0;
 int js=0;
 int fillx=0;
 int filly=0;
-
+int skew;
+int skew1;
+int skew3;
 // clear_to_color(sprites,4);
 
 
 
    fry=0;
+skew3=(i*10);
 
-
-for (int ks=0;ks<600;ks++){
+for (int ks=0;ks<500;ks++){
 fillx++;
+skew1=vertical*2;
+skew=vertical;
 
-if (fillx>vertical/100){filly++;fillx=0;}
-if (filly>vertical/100){filly=0;}
+if (fillx>vertical/50){filly++;fillx=0;}
+if (filly>vertical/50){filly=0;}
 is++;if (is>10){is=0;js++;   pickupcolor++;}
 if (js>10){js=0;pickupcolor++;}
 col=getpixel(sprsheet,is+fri,js+fry);
 if (col!=getpixel(sprsheet,100,0)){
 //putpixel(surface,is+(i*10)+1,js+vertical-9,1);
-putpixel(surface,is*(vertical/40)-(vertical/80)+(i*10)+fillx,js*(vertical/40)+(vertical-10)+filly,col);  }
+putpixel(surface,(i*(10+(vertical/30)-(vertical/10))+(is*vertical/30)-(vertical/10)+fillx)+(playerx/5)-50,js*(vertical/50)+100+(vertical)+filly,col);  }
 //rectfill(surface,is+(i*10),js+(vertical)+50,is+(i*10)+fillx,js+(vertical)+filly,col);
 
 //putpixel(surface,is+(i*10)+fillx,(js+(vertical/2)-10)+filly+50,col);
 
 }
-  rectfill(collisionpad,(i*10),vertical,((i+1)*10),vertical+10,5);
+  rectfill(collisionpad,(i*(10+(vertical/30)-(vertical/10)))-15,vertical+100,(i*(10+(vertical/30)-(vertical/10)))+15,vertical+110,5);
 
 
 }
@@ -1214,26 +1246,28 @@ int col=0;
 int js=0;
 int fillx=0;
 int filly=0;
-int fill=0;
+int skew3=0;
 // clear_to_color(sprites,4);
 
      int ypos=vertical;
-
+skew3=(i*10);
    fry=0;
 int skew;
 int skew1;
-for (int ks=0;ks<2000;ks++){
+for (int ks=0;ks<500;ks++){
 fillx++;
-skew1=(plus-vertical*2);
-skew=vertical*(sintab[skew1]);
-if (fillx>vertical/100){filly++;fillx=0;}
-if (filly>vertical/100){filly=0;}
+skew1=vertical*2;
+skew=vertical;
+
+if (fillx>vertical/50){filly++;fillx=0;}
+if (filly>vertical/50){filly=0;}
 is++;if (is>10){is=0;js++;   pickupcolor++;}
 if (js>10){js=0;pickupcolor++;}
 col=getpixel(sprsheet,is+10,js+fry);
 if (col!=getpixel(sprsheet,100,0)){
-//putpixel(surface,is+(i*10)+1,js+vertical-9
-putpixel(surface,100+i+(is*skew)+fillx,js*(vertical/50)+60+(vertical/5)+filly,col);
+//putpixel(surface,is+(i*10)+1,js+vertical-9
+
+putpixel(surface,(skew3+(is*2)+(is*skew)-((skew*2))+fillx)+(playerx/5)-50,js*(vertical/50)+100+(vertical)+filly,col);
 }
 //rectfill(surface,is+(i*10),js+(vertical)+50,is+(i*10)+fillx,js+(vertical)+filly,col);
 
