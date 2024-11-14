@@ -976,7 +976,7 @@ int othersblittingtosprite(int otherposx;int otherposy;){
 }
 int init(){
 //          play_midi(grand,0);
-        acce=1000;
+        acce=0.1;
         d=0;
           ti3=0;
           z=0;
@@ -1012,15 +1012,14 @@ playerx=100;
 
     if (inst1>=1){  radian=radian+0.01;         }
 
-    if (inst2>=1){  radian=radian-0.011;       }
+    if (inst2>=1){  radian=radian-0.01;       }
 
                               // radian=radian+0.01;
 
 
-
     if (radian<=-1){inst1=1;inst2=0;}
     if (radian>=1){inst2=1;inst1=0;}
-       sintab2[x]=sin(radian);//+cos(-radian);
+       sintab2[x]=sin(radian);
 
     }
   inst1=1;
@@ -1255,29 +1254,22 @@ int skew3=0;
    fry=0;
 int skew;
 int skew1;
-int skew2;
-
-
-skew3=(i*(sintab2[plus+vertical]*2)+150)-(sintab2[plus-vertical]*70);
-for (int ks=0;ks<100;ks++){
-skew1=(vertical*5);
+skew1=(vertical/(playery/5));
 skew=(vertical);
-
+skew3=(i*10);
+for (int ks=0;ks<2000;ks++){
 fillx++;
-//filly++;
-if (filly>10){filly=0;}
-if (fillx>10){filly++;fillx=0;}
-skew2=((vertical))+filly;
-is++;if (is>10){is=0;js++;  pickupcolor++;}
+
+if (fillx>skew1){filly++;fillx=0;}
+if (filly>skew1){filly=0;}
+is++;if (is>10){is=0;js++;   pickupcolor++;}
 if (js>10){js=0;pickupcolor++;}
-
-col=getpixel(sprsheet,is+10,js);
-//if (col!=getpixel(sprsheet,100,0)){
+col=getpixel(sprsheet,is+10,js+fry);
+if (col!=getpixel(sprsheet,100,0)){
 //putpixel(surface,is+(i*10)+1,js+vertical-9
-hline(surface,skew3+((is*(skew))-(skew1))/4,skew2+100,skew3+((is*(skew)-(skew1))+vertical)/4,col+100);
 
-//putpixel(surface,skew3+(is)+(is*(skew/6)-(skew))+fillx,filly+js*(skew/6)+100+(vertical/20),col);
-//}
+putpixel(surface,skew3+(is)+(is*(skew/6)-(skew))+fillx,filly+js*(skew/6)+100+(vertical/20),col);
+}
 //rectfill(surface,is+(i*10),js+(vertical)+50,is+(i*10)+fillx,js+(vertical)+filly,col);
 
 //putpixel(surface,is+(i*10)+fillx,(js+(vertical/2)-10)+filly+50,col);
@@ -1437,12 +1429,12 @@ int keyboard(){
 
              
           //     if (plus>4950){plus=4800;playerx=40;playery=170;z=0;}
-             if (key[KEY_UP]) {  playery=playery-3; acce-=0.1;  jmptimer+=1;  ydir=-0.1;    acce+=0.1;   if (jmptimer>15){   jmptrig=0;}    }
+             if (key[KEY_UP]) {  playery=playery-3;   jmptimer+=1;  ydir=-0.1;    acce+=0.1;   if (jmptimer>15){   jmptrig=0;}    }
 
 
 
 
-          if (key[KEY_DOWN]) {  playery+=3;  ydir=0.1;acce+=0.1; frame=frame+400;   if (frame>800){frame=0; } }
+          if (key[KEY_DOWN]) {  playery+=3;  ydir=0.1;acce-=0.0001; frame=frame+400;   if (frame>800){frame=0; } }
 
                           if (jmptimer<0){jmptrig=2;jmptimer=0;}
 
@@ -1467,12 +1459,12 @@ if (playerx<10) {playerx+=3; if (bgscrolx<0){bgscrolx=0;} bgscrolx=bgscrolx-(dou
     if (key[KEY_RIGHT]) {   framey=162;       if (bullethit==1){ bulletdir=1; }    if (tx==1){slow++; if (slow>10){slow=0;     if (framex>150){framex=0;}     } }      playerx=playerx+(tx*2); }
 
                                //    if (jmptrig!=0)  {}
-                               if (acce>10){acce=10;}
+                               if (acce>1){acce=1;}
                         if (acce<-1){acce=-1;}
                               //      playery-=ydir;
 
                                     plustime++;
-
+                                scroll++; if (scroll>9){scroll=0; plus-=t;}
 //   if (plus>19000){plus==19000;}
 
                         //      if (playery<=130){  playery=130; }
@@ -1485,7 +1477,7 @@ if (playerx<10) {playerx+=3; if (bgscrolx<0){bgscrolx=0;} bgscrolx=bgscrolx-(dou
 
 
 
-                  scroll++; if (scroll>10){scroll=0; plus-=t;}
+
 
 
 
@@ -1608,8 +1600,8 @@ bgscroly=100;
 
 
 
-                  ti3++;            if (ti3>=1000){ti3=0;lenght++;
-    keyboard();   mapfunc();
+
+                  ti3++;            if (ti3>=50){ti3=0;lenght++;       keyboard();   mapfunc();
                                                                                                                             //  draw_trans_sprite(spr1,walkingspr,0,0);
 
                                                                                                                               blittingtosprite();
