@@ -1074,7 +1074,7 @@ int mapfunc(){
   clear_to_color(collisionpad,1);
 
 
-
+   rectfill(surface,0,100,320,240,130);
                  int vertical=scroll;
 
              d=0;
@@ -1250,24 +1250,25 @@ int skew3=0;
 // clear_to_color(sprites,4);
 
      int ypos=vertical;
-skew3=(i*10);
+
    fry=0;
 int skew;
 int skew1;
-for (int ks=0;ks<500;ks++){
+skew1=(vertical/(playery/5));
+skew=(vertical);
+skew3=(i*10);
+for (int ks=0;ks<2000;ks++){
 fillx++;
-skew1=vertical*2;
-skew=vertical;
 
-if (fillx>vertical/50){filly++;fillx=0;}
-if (filly>vertical/50){filly=0;}
+if (fillx>skew1){filly++;fillx=0;}
+if (filly>skew1){filly=0;}
 is++;if (is>10){is=0;js++;   pickupcolor++;}
 if (js>10){js=0;pickupcolor++;}
 col=getpixel(sprsheet,is+10,js+fry);
 if (col!=getpixel(sprsheet,100,0)){
 //putpixel(surface,is+(i*10)+1,js+vertical-9
 
-putpixel(surface,(skew3+(is*2)+(is*skew)-((skew*2))+fillx)+(playerx/5)-50,js*(vertical/50)+100+(vertical)+filly,col);
+putpixel(surface,skew3+(is)+(is*(skew/6)-(skew))+fillx,filly+js*(skew/6)+100+(vertical/20),col);
 }
 //rectfill(surface,is+(i*10),js+(vertical)+50,is+(i*10)+fillx,js+(vertical)+filly,col);
 
