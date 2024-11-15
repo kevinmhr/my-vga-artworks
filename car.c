@@ -5,8 +5,7 @@
 char *bitmapbuffer;
  int z;
 int fri=0;
-  int plustime=0;
-int bullethit=1;
+  int plustime=0;int bullethit=1;
    int midiseek;
   int bulletx;
   int scroll=0;
@@ -996,7 +995,7 @@ playerx=100;
   int inst2=0;
 
   int ypos=0;
-     for (int x=18954;x>0;x--){
+     for (int x=18955;x>0;x--){
                radian+=0.01;
       sintab[x]=sin(radian);
 
@@ -1007,12 +1006,12 @@ playerx=100;
 
 
      }
-    for (int x=18954;x>0;x--){
+    for (int x=18955;x>0;x--){
 
 
     if (inst1>=1){  radian=radian+0.01;         }
 
-    if (inst2>=1){  radian=radian-0.011;       }
+    if (inst2>=1){  radian=radian-0.01;       }
 
                               // radian=radian+0.01;
 
@@ -1025,7 +1024,7 @@ playerx=100;
     }
   inst1=1;
   inst2=0;
-
+  y=0;
   for (int x=0;x<20000;x++){
 
            if (inst1>=1){  radian=radian+1;         }
@@ -1069,7 +1068,8 @@ enix[x]=0;     r[x]=1;
 int mapfunc(){
 
         //   blit(levelbg,surface,bgscrolx,bgscroly,0,0,320,240);
-
+ int fillx;
+int filly;
   clear_to_color(surface,0);
 
   clear_to_color(collisionpad,1);
@@ -1090,7 +1090,8 @@ int mapfunc(){
 
 
 
-                  i=0;
+                   int vscanl=0;
+                   int hscanl=0;                  i=0;
 
            for (k=plus;k<(plus)+(620);k++){
 
@@ -1230,12 +1231,7 @@ putpixel(surface,(i*(10+(vertical/30)-(vertical/10))+(is*vertical/30)-(vertical/
 }
 
 
-
-
-
-
-
-        if (maptemp[k]==30) {
+                if (maptemp[k]==30) {
 
 
 
@@ -1245,8 +1241,7 @@ int ks=0;
 int is=0;
 int col=0;
 int js=0;
-int fillx=0;
-int filly=0;
+
 int skew3=0;
 // clear_to_color(sprites,4);
 
@@ -1256,28 +1251,30 @@ int skew3=0;
 int skew;
 int skew1;
 int skew2;
+//if (vertical>0){
 
+//}
 
-skew3=(i*(sintab2[plus+vertical]*2)+150)-(sintab2[plus-vertical]*70);
+skew3=((sintab2[plus/20]*1000)/(vertical))+150;
 for (int ks=0;ks<100;ks++){
 skew1=(vertical*5);
 skew=(vertical);
-
 fillx++;
-//filly++;
-if (filly>10){filly=0;}
-if (fillx>10){filly++;fillx=0;}
-skew2=((vertical))+filly;
+if (filly>is){filly=0;}
+if (fillx>js){filly++;fillx=0;}
+
+
+skew2=vertical;
 is++;if (is>10){is=0;js++;  pickupcolor++;}
 if (js>10){js=0;pickupcolor++;}
 
 col=getpixel(sprsheet,is+10,js);
-//if (col!=getpixel(sprsheet,100,0)){
+if (col!=getpixel(sprsheet,100,0)){
 //putpixel(surface,is+(i*10)+1,js+vertical-9
-hline(surface,skew3+((is*(skew))-(skew1))/4,skew2+100,skew3+((is*(skew)-(skew1))+vertical)/4,col+100);
-
+rectfill(surface,skew3+((is*(skew))-(skew1))/4,(skew2)+95,skew3+((is*(skew)-(skew1))/4+is),(skew2+filly)+95,col);
+//hline(surface,skew3+((is*(skew))-(skew1))/4,(skew2)+95+js,skew3+((is*(skew)-(skew1))/4+vertical),col);
 //putpixel(surface,skew3+(is)+(is*(skew/6)-(skew))+fillx,filly+js*(skew/6)+100+(vertical/20),col);
-//}
+}
 //rectfill(surface,is+(i*10),js+(vertical)+50,is+(i*10)+fillx,js+(vertical)+filly,col);
 
 //putpixel(surface,is+(i*10)+fillx,(js+(vertical/2)-10)+filly+50,col);
@@ -1328,7 +1325,7 @@ tuu++;
                                           }
 
                   i++;
-            if (i>30){vertical=vertical+10;i=0;            }
+            if (i>30){vertical=vertical+10;i=0;           }
 
 
 
@@ -1371,6 +1368,7 @@ tuu++;
 }
 
 
+
 int keyboard(){
 
 
@@ -1384,9 +1382,7 @@ int keyboard(){
               int ydir=1;
 
 
-
-
-         for (int x=10;x<20;x++){
+          for(x=10;x<20;x++){
                         colx=getpixel(collisionpad,playerx+x,playery+31);
                 if (colx==4){t=0;tplayer=0;  jmptimer--;
           t2player=2;
