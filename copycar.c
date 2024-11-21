@@ -6,11 +6,12 @@ char *bitmapbuffer;
  int z;
 int fri=0;
   int plustime=0;int bullethit=1;
+   int vert3;
    int midiseek;
   int bulletx;
   int scroll=0;
     int bullety;
-    int plus2=0;
+    int plus2=20000;
 int frx;
 int d;
 int vert2=0;
@@ -98,6 +99,7 @@ double y;
    BITMAP *walkingspr;
    BITMAP *sprites;
      BITMAP *surface;
+       BITMAP *surface2;
     BITMAP *sprsheet;
     BITMAP *spr1;
      OBJECT enemii;
@@ -953,6 +955,16 @@ void spritefunction(){
 
 }
 int blittingtosprite(){
+
+// clear_to_color(sprites,4);
+
+
+
+   fry=0;
+
+
+
+
 int i=0;
 int j=0;
 int col=0;
@@ -984,6 +996,7 @@ int init(){
          jmptimer=0;
     enemii.x=1;
       enemii.y=1;
+      plus2=18954;
       enemiposx=1;
        enemiposy=1;
        enemicnt=0;
@@ -992,15 +1005,15 @@ int init(){
 playerx=100;
  playery=180;
   int y=-40;
-  double radian=2;
+  double radian=0;
   int inst1=1;
   int inst2=0;
 
   int ypos=0;
 
      for (int x=20000;x>0;x--){
-               radian+=0.01;
-      sintab[x]=sin(radian);
+             //  radian+=0.001;
+  //    sintab[x]=sin(radian);
 
 
 
@@ -1009,46 +1022,48 @@ playerx=100;
 
 
      }
-//     radian=0;
+//      inst1=1;
+//  inst2=0;
+  radian=0;
     for (int x=20000;x>0;x--){
+       sintab2[x]=sin(radian)*cos(radian);
 
+    if (inst1>=1){  radian=radian+0.003;         }
 
-    if (inst1>=1){  radian=radian+0.005;         }
-
-    if (inst2>=1){  radian=radian-0.005;       }
+    if (inst2>=1){  radian=radian-0.003;       }
 
                               // radian=radian+0.01;
 
 
 
-    if (radian<=-1){inst1=1;inst2=0;}
-    if (radian>=1){inst2=1;inst1=0;}
-       sintab2[x]=sin(radian);
+    if (radian<=-0.8){inst1=1;inst2=0;}
+    if (radian>=0.8){inst2=1;inst1=0;}
+
+  //        sintab[x]=radian*1000;
 
     }
-  inst1=1;
+    inst1=1;
   inst2=0;
   y=0;
+  radian=0;
   for (int x=0;x<20000;x++){
 
-           if (inst1>=1){  radian=radian+1;         }
+           if (inst1>=1){  radian=radian+0.00006;         }
 
-    if (inst2>=1){  radian=radian-1;       }
+    if (inst2>=1){  radian=radian-0.00006;       }
 
                               // radian=radian+0.01;
 
 
-    if (radian<=-5){inst1=1;inst2=0;}
+    if (radian<=0){inst1=1;inst2=0;}
     if (radian>=5){inst2=1;inst1=0;}
 
 
 
-    //      ypos++; if (ypos>31){     ypos=0;
-
-                                       y+=31;
+  y+=31;
 
             maptemp[x]=map[x];
-       if (map[y*(int)radian+(int)radian]==0){ maptemp[y*(int)radian+(int)radian]=33;  }
+     if (map[y+(int)radian]==0){ maptemp[y+(int)radian]=33;  }
        if (map[y]==0) {  maptemp[y]=30; }
            if (y>20000){y=0;}
 
@@ -1118,6 +1133,7 @@ int skew2=0;
            if (plus2<0){plus2=20000;}
 
            for (k=plus;k<(plus)+(680);k++){
+
                vert2++;
          if (vert2>240){vert2=0;}
 
@@ -1131,6 +1147,80 @@ int skew2=0;
                           enemicnt=(d+z+10);
                       // if (z>320){z=0;}
                       
+
+
+
+                if (maptemp[k]==33) {
+
+int ks=0;
+int is=0;
+int col=0;
+int js=0;
+int fillx=0;
+int filly=0;
+
+
+
+
+//int vert2;
+int skew;
+int skew1;
+
+
+// clear_to_color(sprites,4);
+
+
+
+   fry=0;
+
+//skew3=((sintab2[(int)plus2+vert2])*100)*(sintab2[vert2])+150;
+
+//vert2=vertical;
+skew2=vert2;
+
+skew3=180+(((sintab2[(plus2)-vert2]))*100)-(sintab2[vert2])*20;
+
+for (int ks=0;ks<500;ks++){
+fillx++;
+//skew1=vertical*2;
+//skew=vertical;
+
+
+if (fillx>skew2/50){filly++;fillx=0;}
+if (filly>skew2/50){filly=0;}
+is++;if (is>10){is=0;js++;   pickupcolor++;}
+if (js>10){js=0;pickupcolor++;}
+col=getpixel(sprsheet,is+fri,js+fry);
+if (col!=getpixel(sprsheet,100,0)){
+putpixel(surface,skew3+is+fillx,skew2+js+filly,col);
+//putpixel(surface,(i*(10+(vertical/30)-(vertical/10))+(is*vertical/30)-(vertical/10)+fillx)+(playerx/5)-50,js*(vertical/50)+100+(vertical)+filly,col);  }
+//rectfill(surface,is+(i*10),js+(vertical)+50,is+(i*10)+fillx,js+(vertical)+filly,col);
+//putpixel(surface,is+(i*10)+fillx,(js+(vertical/2)-10)+filly+50,col);
+
+}
+
+//  blit(sprsheet,surface,10+is,20+js,skew3,skew2,50+(sintab2[plus2-vert2]),1);
+
+  }
+   rectfill(collisionpad,skew3,skew2,skew3+10,skew2+10,5);
+
+
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         if (maptemp[k]==77) {
 
@@ -1212,6 +1302,7 @@ putpixel(surface,is+enix[enemicnt]+(i*10),js+vertical-20,col+1);  }
 
 
 
+
 //vert2=vertical;
 // if (maptemp[k]==30) {
 
@@ -1225,7 +1316,8 @@ putpixel(surface,is+enix[enemicnt]+(i*10),js+vertical-20,col+1);  }
 //}
 
 
-skew2=vert2-10;
+skew3=150+(((sintab2[(plus2)-vert2]))*100)-(sintab2[vert2])*20;
+
 skew1=1;
 skew=1;
 fillx++;
@@ -1233,32 +1325,37 @@ fillx++;
 //if (fillx>js){filly++;fillx=0;}
 // for (int ks=0;ks<100;ks++){
 
-
-is++;if (is>10){is=0;js++;  pickupcolor++;}
+js++; 
+is++;
+if (is>10){is=0; pickupcolor++;}
 if (js>10){js=0;pickupcolor++;}
-
+skew2=vert2-10;
 col=getpixel(sprsheet,is+40,js);
 
 //putpixel(surface,is+skew3,js+skew2,col);
 //rectfill(surface,skew3+((is*(skew))-(skew1))/4,(skew2)+95,skew3+((is*(skew)-(skew1))/4+is),(skew2+filly)+95,col);
 
-skew3=((sintab2[plus2+vert2])*100)*(sintab2[vert2])+150;
 
 //skew3=((sintab2[(int)plus2+vert2])*100)*(sintab2[vert2])+150;
 
 
-blit(sprsheet,surface,is,60+js,skew3,skew2,70,10);
+blit(sprsheet,surface,is,js+20,skew3,skew2,70,1);
+//hline(surface,skew3-(vert2/2),skew2+80,skew3+(vert2/2),col-is);
 
 
 
 
-//                }
+//}
+
+
+  //           }
 
 
 
-  //            }
 
-     
+
+
+
 
 
            if (maptemp[k]>=1000){
@@ -1321,68 +1418,10 @@ blit(sprsheet,surface,is,60+js,skew3,skew2,70,10);
  tuu=0; }
 tuu++;
 
-               if (maptemp[k]==33) {
-
-int ks=0;
-int is=0;
-int col=0;
-int js=0;
-int fillx=0;
-int filly=0;
-
-
-
-//int vert2;
-int skew;
-int skew1;
-int skew3;
-int skew2;
-
-// clear_to_color(sprites,4);
-
-
-
-   fry=0;
-vert2=vertical;
-skew3=((sintab2[(int)plus2+vert2])*100)*(sintab2[vert2])+150;
-skew2=vert2-40;
-for (int ks=0;ks<1000;ks++){
-fillx++;
-//skew1=vertical*2;
-//skew=vertical;
-
-
-
-if (fillx>skew2/50){filly++;fillx=0;}
-if (filly>skew2/50){filly=0;}
-is++;if (is>10){is=0;js++;   pickupcolor++;}
-if (js>10){js=0;pickupcolor++;}
-col=getpixel(sprsheet,is+fri,js+fry);
-if (col!=getpixel(sprsheet,100,0)){
-putpixel(surface,(i)+skew3+is+fillx,skew2+js+filly,col);
-//putpixel(surface,(i*(10+(vertical/30)-(vertical/10))+(is*vertical/30)-(vertical/10)+fillx)+(playerx/5)-50,js*(vertical/50)+100+(vertical)+filly,col);  }
-//rectfill(surface,is+(i*10),js+(vertical)+50,is+(i*10)+fillx,js+(vertical)+filly,col);
-//putpixel(surface,is+(i*10)+fillx,(js+(vertical/2)-10)+filly+50,col);
-
-}
-
-//  blit(sprsheet,surface,10+is,20+js,skew3,skew2,50+(sintab2[plus2-vert2]),1);
-  }
-   rectfill(collisionpad,(i+skew3),skew2,(i+skew3)+10,skew2+10,5);
-
-
-
-  }
-
-
-
-
-
-
 
 
            colx=getpixel(collisionpad,playerx+10,playery+20);
-       if (colx==5){     maptemp[k]=0;  midiseek=0;   play_midi(grand,0);  midi_seek(19);   mapfunc();       }
+       if (colx==5){     maptemp[k]=0;  midiseek=0;   play_midi(grand,0);  midi_seek(19);   mapfunc(); }
 
               colx=getpixel(collisionpad,bulletx,bullety);
      if (bullettrig==1){  if (colx==90){     maptemp[k]=0; midiseek=0; for (int x=0;x<2000;x++){ circlefill(screen,bulletx+10,bullety,10,colx++);}    play_midi(grand,0); midi_seek(90);     mapfunc();  bullettrig=0;         }
@@ -1394,6 +1433,8 @@ putpixel(surface,(i)+skew3+is+fillx,skew2+js+filly,col);
    }
 
 
+vert3--;
+if (vert3<0){vert3=240;}
 
 
 
@@ -1404,7 +1445,7 @@ putpixel(surface,(i)+skew3+is+fillx,skew2+js+filly,col);
 
 
  midiseek++;
- if (midiseek>20){
+ if (midiseek>10){
   stop_midi();    }
 
 
@@ -1630,6 +1671,8 @@ int main(int argc, char *argv[]) {
 //    the_block1= load_bitmap("block1.bmp",the_palette2);
      spr1=create_bitmap(320,240);
   surface=create_bitmap(320,240);
+    surface2=create_bitmap(320,240);
+
    enemies=create_bitmap(320,240);
  themap=create_bitmap (320,240);
 
@@ -1661,6 +1704,7 @@ bgscroly=100;
                                                                                                                               blittingtosprite();
                                                                                                                               //  enemies_func();
                                                                                                  blit(surface,screen,0,0,0,0,320,240);
+                                                                                                //  blit(surface2,screen,0,0,0,0,320,240);
                                                                                                //   blit(sprites,screen,framex,framey,playerx,playery,30, 30);
                                                                                                                                   }
 
