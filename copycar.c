@@ -7,6 +7,7 @@ char *bitmapbuffer;
 int fri=0;
   int plustime=0;int bullethit=1;
    int vert3;
+double rotatex,rotatey,rotateang;
    int midiseek;
   int bulletx;
   int scroll=0;
@@ -965,22 +966,68 @@ int blittingtosprite(){
 
 
 
-int i=0;
-int j=0;
+double i=0;
+double j=0;
+double i2=0;
+double j2=0;
 int col=0;
 // clear_to_color(sprites,4);
-for (int k=0;k<900;k++){
+for (int i=0;i<17;i++){
+for (int j=0;j<30;j++){
 
 
-i++;if (i>17){i=0;j++;}
-if (j>30){j=0;}
-col=getpixel(sprsheet,i,j+67);
+//for (int k=0;k<900;k++){
+  if (key[KEY_RIGHT]){ int nrotatex=rotatex;  rotateang+=0.000008;
+   rotatex=(cos(rotateang)+sin(rotateang));
+   rotatey=(-sin(rotateang)+cos(rotateang));
+
+
+  }
+
+
+
+ if (key[KEY_LEFT]){  int nrotatex=rotatex; rotateang+=-0.000008;
+
+
+   rotatex=(cos(rotateang)+sin(rotateang));
+   rotatey=(-sin(rotateang)+cos(rotateang));
+
+  }
+  
+  i2=((((j-15)*(rotatey))+((i-8)*rotatex)))/1.4;
+  j2=((((i-8)*(rotatey))-((j-15)*rotatex)))/1.4;
+
+
+
+ 
+//i2++;
+
+//if (i>30){i=0;j++;    }
+
+//if (j>30){j=0;     }
+
+//if (i2>30){ i2=0; }
+
+//if (j2>30){ j2=0;     }
+
+
+ 
+
+
+
+//i=i+rotatex;
+//j=j+rotatey;
+
+col=getpixel(sprsheet,((i)),((j))+67);
+
 if (col!=getpixel(sprsheet,1,1)){
-putpixel(surface,i+playerx,j+playery,col+250);  }
+putpixel(surface,((i2))+playerx,((j2)+playery),col+250);  }
+
+//putpixel(surface,i+playerx,j+playery,col+250);  }
 
 
+} }
 
-}
 }
 int othersblittingtosprite(int otherposx;int otherposy;){
 
@@ -1737,12 +1784,12 @@ int main(int argc, char *argv[]) {
   // }
 
    install_keyboard();
-
+ /*
          if (install_sound(DIGI_AUTODETECT, MIDI_AUTODETECT, NULL) != 0) {
       allegro_message("Error initialising sound system\n%s\n", allegro_error);
       return 1;
    }
-
+   */
    if (set_gfx_mode(GFX_AUTODETECT, 320, 200, 0, 0) != 0) {
       if (set_gfx_mode(GFX_SAFE, 320, 200, 0, 0) != 0) {
        set_gfx_mode(GFX_TEXT, 0, 0, 0, 0);
