@@ -997,7 +997,7 @@ int col=0;
 
 
 //for (int k=0;k<900;k++){
-//for (int r=0;r<16;r++){
+
 for (int k=0;k<8;k++){
 
 
@@ -1005,7 +1005,7 @@ for (int k=0;k<8;k++){
      int xdist=playerx;
 
 
-  if (key[KEY_RIGHT]){ int nrotatex=rotatex[k];  rotateang+=0.00001;
+  if (key[KEY_RIGHT]){ int nrotatex=rotatex[k];  rotateang+=0.001;
  //  rotatex=(cos(rotateang)+sin(rotateang));
  //  rotatey=(-sin(rotateang)+cos(rotateang));
 
@@ -1014,7 +1014,7 @@ for (int k=0;k<8;k++){
 
 
 
- if (key[KEY_LEFT]){ int nrotatex=rotatex[k]; rotateang+=-0.00001;
+ if (key[KEY_LEFT]){ int nrotatex=rotatex[k]; rotateang+=-0.001;
 
 
 //   rotatex=(cos(rotateang)+sin(rotateang));
@@ -1038,6 +1038,15 @@ for (int k=0;k<8;k++){
        j[6]=50;
        i[7]=50;
        j[7]=-50;
+        i[8]=50;
+       j[8]=50;
+       i[9]=-50;
+       j[9]=-50;
+       i[10]=-50;
+       j[10]=50;
+       i[11]=50;
+       j[11]=-50;
+
         l2[0]=50;
         l2[1]=50;
         l2[2]=50;
@@ -1046,6 +1055,21 @@ for (int k=0;k<8;k++){
         l2[5]=-50;
         l2[6]=-50;
         l2[7]=-50;
+        l2[8]=150;
+        l2[9]=150;
+        l2[10]=150;
+        l2[11]=150;
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1067,8 +1091,8 @@ for (int k=0;k<8;k++){
 
 
 
-      i2[k]=((((j[k]))*(rotatey[k])))+((((i[k]))*(rotatex[k])));
-      j2[k]=((((i[k]))*(rotatey[k])))-((((j[k]))*(rotatex[k])));
+      i2[k]=(((((j[k]))*(rotatey[k])))+((((i[k]))*(rotatex[k]))));
+      j2[k]=(((((i[k]))*(rotatey[k])))-((((j[k]))*(rotatex[k]))));
            //      int oldi2=i2[r];
             //      int oldj2=j2[r];
                   if (key[KEY_UP]){playery+=1;}
@@ -1077,17 +1101,18 @@ for (int k=0;k<8;k++){
                //   i2[r]=sin((i2[r])*4)-cos(((i2[r])*4))/((l2[k]));
 
                //   j2[r]=sin((j2[r])*4)+cos(((j2[r])*4))/((l2[k]));
-               rotateang+=0.0001;
-               i2[k]=(((i2[k]/l2[k])))-(i2[k]/5);
-               j2[k]=(((j2[k]/l2[k])))-(l2[k]/10);
-                  
+               rotateang+=0.0002;
+               i2[k]=(((i2[k]/l2[k])*(j2[k]/l2[k])))-(i2[k])/10;
+               j2[k]=((j2[k]/l2[k]))-(l2[k])/10;
+
+              //  j2[k]=j2[k]*(2*r);
+   
 //  i2[r]=(((((j[k]))*(rotatey[k]))+((i[k])*rotatex[k])))/100;
 //  j2[r]=(((((i[k]))*(rotatey[k]))-((j[k])*rotatex[k])))/100;
 
 
-               i2[k]=(i2[k]*1500)/500;
-               j2[k]=(j2[k]*1500)/500;
-
+               i2[k]=(i2[k]*1500)/700;
+               j2[k]=(j2[k]*1500)/700;
 
 
 
@@ -1105,7 +1130,7 @@ for (int k=0;k<8;k++){
  
 
 
-
+                             col=228;
 //i=i+rotatex;
 //j=j+rotatey;
 
@@ -1114,7 +1139,7 @@ for (int k=0;k<8;k++){
 //if (col!=getpixel(sprsheet,1,1)){
 //for (int i=0;i<50;i+=5){
 //for (int j=0;j<50;j+=5){
-putpixel(surface,((i2[k])+150),(j2[k]+100),250);    }
+putpixel(surface,((i2[k])+150),(j2[k]+100),col); }
 
 //putpixel(surface,i+playerx,j+playery,col+250);  }
 
