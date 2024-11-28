@@ -7,6 +7,8 @@ char *bitmapbuffer;
 int fri=0;
   int plustime=0;int bullethit=1;
    int vert3;
+double i2[100];
+double j2[100];
 double rotatex[100];
 double rotatey[100];
 double rotatez[100];
@@ -959,6 +961,7 @@ void spritefunction(){
 
 
 }
+
 int blittingtosprite(){
 
 // clear_to_color(sprites,4);
@@ -974,8 +977,7 @@ int r;
 double i[100];
 double z[100];
 double j[100];
-double i2[100];
-double j2[100];
+
 int col=0;
  clear_to_color(surface,0);
       // rotateang+=0.005;
@@ -998,8 +1000,7 @@ int col=0;
 
 //for (int k=0;k<900;k++){
 
-for (int k=0;k<8;k++){
-
+for (int k=0;k<100;k++){
 
      int ydist=(playery/2)-100;
      int xdist=playerx;
@@ -1022,43 +1023,31 @@ for (int k=0;k<8;k++){
 
   }
 
-       i[0]=50;
-       j[0]=50;
-       i[1]=-50;
-       j[1]=-50;
-       i[2]=-50;
-       j[2]=50;
-       i[3]=50;
-       j[3]=-50;
-       i[4]=50;
-       j[4]=50;
-       i[5]=-50;
-       j[5]=-50;
-       i[6]=-50;
-       j[6]=50;
-       i[7]=50;
-       j[7]=-50;
-        i[8]=50;
-       j[8]=50;
-       i[9]=-50;
-       j[9]=-50;
-       i[10]=-50;
-       j[10]=50;
-       i[11]=50;
-       j[11]=-50;
+       i[0]=500;
+       j[0]=500;
+       i[1]=-500;
+       j[1]=-500;
+       i[2]=-500;
+       j[2]=500;
+       i[3]=500;
+       j[3]=-500;
+       i[4]=500;
+       j[4]=500;
+       i[5]=-500;
+       j[5]=-500;
+       i[6]=-500;
+       j[6]=500;
+       i[7]=500;
+       j[7]=-500;
 
-        l2[0]=50;
-        l2[1]=50;
-        l2[2]=50;
-        l2[3]=50;
-        l2[4]=-50;
-        l2[5]=-50;
-        l2[6]=-50;
-        l2[7]=-50;
-        l2[8]=150;
-        l2[9]=150;
-        l2[10]=150;
-        l2[11]=150;
+        l2[0]=500;
+        l2[1]=500;
+        l2[2]=500;
+        l2[3]=500;
+        l2[4]=-500;
+        l2[5]=-500;
+        l2[6]=-500;
+        l2[7]=-500;
 
 
 
@@ -1102,17 +1091,26 @@ for (int k=0;k<8;k++){
 
                //   j2[r]=sin((j2[r])*4)+cos(((j2[r])*4))/((l2[k]));
                rotateang+=0.0002;
-               i2[k]=(((i2[k]/l2[k])*(j2[k]/l2[k])))-(i2[k])/10;
-               j2[k]=((j2[k]/l2[k]))-(l2[k])/10;
+
+                  for (int q=10;q<100;q++){
+                   for (int i=0;i<8;i++){
+                  i2[q]=i2[i]+cos(rotatex[k]*q)*300;
+                  j2[q]=j2[i]+sin(rotatey[k]+q)*300;
+                  l2[q]=l2[i]-sin(rotatex[k]-q)*500;
+                          }
+                           }
+
+               i2[k]=(((i2[k]/l2[k])*(j2[k]/l2[k])))-(i2[k])/(200);
+               j2[k]=((j2[k]/l2[k]))-(l2[k])/(200);
 
               //  j2[k]=j2[k]*(2*r);
    
 //  i2[r]=(((((j[k]))*(rotatey[k]))+((i[k])*rotatex[k])))/100;
 //  j2[r]=(((((i[k]))*(rotatey[k]))-((j[k])*rotatex[k])))/100;
 
-
-               i2[k]=(i2[k]*1500)/700;
-               j2[k]=(j2[k]*1500)/700;
+                
+               i2[k]=(i2[k]*1500)/200;
+               j2[k]=(j2[k]*1500)/200;
 
 
 
@@ -1128,22 +1126,25 @@ for (int k=0;k<8;k++){
 
 
  
+                          col=k;
 
-
-                             col=228;
+                           if (k<8) { col=228;  }
 //i=i+rotatex;
 //j=j+rotatey;
 
 //col=getpixel(sprsheet,((i)),((j))+67);
 
 //if (col!=getpixel(sprsheet,1,1)){
-//for (int i=0;i<50;i+=5){
-//for (int j=0;j<50;j+=5){
-putpixel(surface,((i2[k])+150),(j2[k]+100),col); }
 
+
+putpixel(surface,((i2[k])+150),((j2[k])+100),col);
+}
+//  drawcube();
 //putpixel(surface,i+playerx,j+playery,col+250);  }
 
   }
+
+
 
 
 int othersblittingtosprite(int otherposx;int otherposy;){
