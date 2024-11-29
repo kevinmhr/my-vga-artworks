@@ -1080,6 +1080,8 @@ for (int k=0;k<100;k++){
 
 
 
+
+
       i2[k]=(((((j[k]))*(rotatey[k])))+((((i[k]))*(rotatex[k]))));
       j2[k]=(((((i[k]))*(rotatey[k])))-((((j[k]))*(rotatex[k]))));
            //      int oldi2=i2[r];
@@ -1090,18 +1092,25 @@ for (int k=0;k<100;k++){
                //   i2[r]=sin((i2[r])*4)-cos(((i2[r])*4))/((l2[k]));
 
                //   j2[r]=sin((j2[r])*4)+cos(((j2[r])*4))/((l2[k]));
-               rotateang+=0.0002;
+               rotateang+=0.0001;
+                     for (int q=8;q<100;q++){
 
-                  for (int q=10;q<100;q++){
-                   for (int i=0;i<8;i++){
-                  i2[q]=i2[i]+cos(rotatex[k]*q)*300;
-                  j2[q]=j2[i]+sin(rotatey[k]+q)*300;
-                  l2[q]=l2[i]-sin(rotatex[k]-q)*500;
+                      for (int k=0;k<8;k++){
+                  i2[q]=cos((rotatex[k]/2)*q)*300;
+                  j2[q]=sin((rotatey[k]/2)+q)*300;
+                  l2[q]=sin((rotatex[k]/2)-q)*500;
+
+
+
+
                           }
+
                            }
 
-               i2[k]=(((i2[k]/l2[k])*(j2[k]/l2[k])))-(i2[k])/(200);
-               j2[k]=((j2[k]/l2[k]))-(l2[k])/(200);
+
+
+               i2[k]=(((i2[k]/l2[k])*(j2[k]/l2[k])))-(i2[k])/(100);
+               j2[k]=((j2[k]/l2[k]))-(l2[k])/(100);
 
               //  j2[k]=j2[k]*(2*r);
    
@@ -1109,8 +1118,8 @@ for (int k=0;k<100;k++){
 //  j2[r]=(((((i[k]))*(rotatey[k]))-((j[k])*rotatex[k])))/100;
 
                 
-               i2[k]=(i2[k]*1500)/200;
-               j2[k]=(j2[k]*1500)/200;
+               i2[k]=(i2[k]*1500)/300;
+               j2[k]=(j2[k]*1500)/300;
 
 
 
@@ -1138,7 +1147,7 @@ for (int k=0;k<100;k++){
 
 
 putpixel(surface,((i2[k])+150),((j2[k])+100),col);
-}
+                      }
 //  drawcube();
 //putpixel(surface,i+playerx,j+playery,col+250);  }
 
