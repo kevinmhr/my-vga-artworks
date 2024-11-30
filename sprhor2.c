@@ -5,6 +5,7 @@
 char *bitmapbuffer;
  int z;
 int fri=0;
+int scroll;
 int bullethit=1;
    int midiseek;
   int bulletx;
@@ -15,6 +16,7 @@ int d;
  int bulletdir;
 int fry;
     int bullettrig;
+         int downtrig;
  int tuy;
  int tuu;
 int pickupcolor;
@@ -30,7 +32,7 @@ int framex,framey;
   int r[15000];
 int keyboard();
 int mapfunc();
-              double enix[15000];
+int dur;              double enix[15000];
 int k;
 int enemicnt;
 int x;
@@ -220,7 +222,7 @@ int map[]={
 0,0,0,0,0,0,0,0,0,0,100,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,100,0,0,0,0,0,0,33,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,100,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,100,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,100,0,0,0,0,0,0,0,5020,5020,5020,5020,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,100,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,33,0,33,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,33,0,33,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 
 0,0,0,0,0,0,0,0,0,0,100,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,33,0,33,0,0,0,0,0,0,0,0,0,0,0,0,0,0,33,0,33,0,0,0,0,0,0,0,0,0,0,0,33,0,33,0,0,0,0,
@@ -386,7 +388,7 @@ i++;if (i>30){i=0;j++;}
 if (j>30){j=0;}
 col=getpixel(walkingspr,i+framex,j+framey);
 if (col!=getpixel(walkingspr,1,1)){
-putpixel(surface,i+playerx,j+playery,col+30);  }
+putpixel(surface,i+playerx,j+playery+3,col+30);  }
 
 
 
@@ -623,7 +625,7 @@ putpixel(surface,is+(i*10),js+vertical-10,col);  }
 
                      if (maptemp[k]==90){         blit( sprsheet,surface,0,48,(i*10),vertical ,10, 10);       }
 
-                                          if (maptemp[k]==100){         blit( sprsheet,surface,0,58,(i*10),vertical ,10, 10);       }
+                                          if (maptemp[k]==100){         blit( sprsheet,surface,0,58,(i*10)+scroll,vertical ,10, 10);       }
 
         if (maptemp[k]==100) {
           rectfill(collisionpad,(i*10),vertical+1,((i+2)*10),vertical+11,254); }
@@ -692,7 +694,7 @@ int keyboard(){
 
 
 
-           for (int y=0;y<30;y++){
+           for (int y=0;y<28;y++){
                         colx=getpixel(collisionpad,playerx+20,playery+y);
                         
 
@@ -737,28 +739,31 @@ int keyboard(){
 
 
 
-if (playerx>200) {   playerx-=3;      if (bgscrolx>400){bgscrolx=400;}  bgscrolx=bgscrolx+(double)tx;   plus++;  z++;  }
-if (playerx<50) {playerx+=3; if (bgscrolx<0){bgscrolx=0;} bgscrolx=bgscrolx-(double)tx2;   plus--;   z--;  }
+if (playerx>200) {   playerx-=3;      if (bgscrolx>400){bgscrolx=400;}  bgscrolx=bgscrolx+(double)tx;  plus++;  z++;  }
+if (playerx<50) {playerx+=3; if (bgscrolx<0){bgscrolx=0;} bgscrolx=bgscrolx-(double)tx2;  plus--;  z--;  }
 
 
 
-                           if (framex>100){framex=0;}
 
 
-    if (key[KEY_LEFT]) { framey=30; if (bullethit==1){bulletdir=0; }     if (tx2==1){slow++; if (slow>10){slow=0;      if (framex<25){framex=125;}   framex=framex-25;   }    }        playerx=playerx-tx2; }
+    if (key[KEY_LEFT]) { framey=133; if (bullethit==1){bulletdir=0; }     slow++; if (slow>10){slow=0; if (tx2!=0){  if (framex<120){framex=120;}    framex=framex+30;  if (framex>=240){framex=120;}         }   }           playerx=playerx-tx2; }
 
            //              if (z>8000){z=0;}
-    if (key[KEY_RIGHT]) {   framey=0;       if (bullethit==1){ bulletdir=1; }    if (tx==1){slow++; if (slow>10){slow=0;     if (framex>150){framex=0;}   framex=framex+25;    } }      playerx=playerx+tx; }
+    if (key[KEY_RIGHT]) {   framey=133;       if (bullethit==1){ bulletdir=1; }     slow++; if (slow>10){slow=0;   if (tx!=0){        framex=framex+30;     if (framex>=120){framex=0;}           }   }       playerx=playerx+tx; }
 
                                    if (jmptrig!=0){
                    //  if (acce>3){acce=3;}
-          if (acce<0){acce=2;}
-             if (key[KEY_UP]) {acce-=0.08;   jmptimer+=1;    if (jmptimer>15){playery+=t2player;   jmptrig=0;}      if (playery<20){             }           playery=playery-(t2player+t2player)*acce;  }
+                          if (acce<0){acce=50;}
+                          if (acce>50){acce=50;}
 
+             if (key[KEY_UP]) {     if (downtrig==1){   dur++;     acce-=0.05;   jmptimer+=1;    if (jmptimer>30){  jmptrig=0;}      if (playery<20){             }           playery=playery-((t2player)*(acce*2.5));  }
+                                                              }    }
   //  if (plus>9400){plus==0;}
+                                               downtrig=1;
+                                             if (dur>20){downtrig=0;}
 
 
-                               }
+                                    if (key[KEY_UP]==0){ dur=0;}
 
 
                                                 bullethit=1;
@@ -794,8 +799,8 @@ if (playerx<50) {playerx+=3; if (bgscrolx<0){bgscrolx=0;} bgscrolx=bgscrolx-(dou
 
                    //    if (jmptimer<100){jmptrig=0;}
                                  if (bgscroly<0){bgscroly=100;}
-                                    if (playery>161){ playery-=2; plus+=t; }
-                             playery+=tplayer;
+                                    if (playery>161){ playery-=3; plus+=t; }
+                                      playery+=tplayer*(acce*2.2);
 
 
                            //   bgscroly=bgscroly-(t/160);
@@ -872,7 +877,7 @@ int main(int argc, char *argv[]) {
  //      spritefunction();
        walkingspr=load_bitmap("walking.bmp",the_palette2);
 //    mapfunc();
-// set_palette(the_palette);
+ set_palette(the_palette2);
 //    set_alpha_blender();
     sprites=create_bitmap(320,240);
 
