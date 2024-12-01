@@ -747,32 +747,32 @@ if (playerx<50) {playerx+=3; if (bgscrolx<0){bgscrolx=0;} bgscrolx=bgscrolx-(dou
 
 
 
-    if (key[KEY_LEFT]) {       playerx=playerx-tx2;   framey=133;   if (framex<120){framex=120;}   framex=framex+30;  if (framex>=240){framex=120;}
+    if (key[KEY_LEFT]) {       playerx=playerx-tx2;   framey=133;   if (framex<120){framex=120;}   slow++; if (slow>10){slow=0;        framex=framex+30;              }  if (framex>=240){framex=120;}
 
 
 
-    slow++; if (slow>10){slow=0;                   }
+
                                                            }
            //              if (z>8000){z=0;}
     if (key[KEY_RIGHT]) {     playerx=playerx+tx;   framey=133;
 
-                   framex=framex+30;               if (framex>=120){framex=0;}
+                 slow++; if (slow>10){slow=0;   framex=framex+30;        }                 if (framex>=120){framex=0;}
                                                     }
-                 slow++; if (slow>10){slow=0;        }
+
 
                                    if (jmptrig!=0){
                    //  if (acce>3){acce=3;}
-                          if (acce<0){acce=50;}
-                          if (acce>50){acce=50;}
+                          if (acce<0){acce=0;}
+                          if (acce>20){acce=20;}
 
-             if (key[KEY_UP]) {     if (downtrig==1){   dur++;     acce-=0.05;   jmptimer+=1;    if (jmptimer>30){  jmptrig=0;}      if (playery<20){             }           playery=playery-((t2player)*(acce*2.5));  }
+             if (key[KEY_UP]) { slow=0;    if (downtrig==1){   dur++;     acce+=0.02;   jmptimer+=1;    if (jmptimer>20){  jmptrig=0;}      if (playery<20){             }           playery=playery-((t2player/1.4)*(acce*3.9));  }
                                                               }    }
   //  if (plus>9400){plus==0;}
                                                downtrig=1;
-                                             if (dur>20){downtrig=0;}
+                                             if (dur>9){downtrig=0;}
 
 
-                                    if (key[KEY_UP]==0){ dur=0;}
+                                if (key[KEY_UP]==0){   slow++; if (slow>10) {  slow=0;  dur=0;}}
 
 
                                                 bullethit=1;
@@ -813,7 +813,8 @@ if (playerx<50) {playerx+=3; if (bgscrolx<0){bgscrolx=0;} bgscrolx=bgscrolx-(dou
                    //    if (jmptimer<100){jmptrig=0;}
                                  if (bgscroly<0){bgscroly=100;}
                                     if (playery>161){ playery-=3; plus+=t; }
-                                      playery+=tplayer*(acce*2.2);
+                                     // acce-=0.0001;
+                                      playery+=tplayer*(acce*1.9);
 
 
                            //   bgscroly=bgscroly-(t/160);
