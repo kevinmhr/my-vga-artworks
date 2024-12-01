@@ -6,6 +6,7 @@ char *bitmapbuffer;
  int z;
 int fri=0;
 int scroll;
+ int trail;
 int bullethit=1;
    int midiseek;
   int bulletx;
@@ -746,10 +747,18 @@ if (playerx<50) {playerx+=3; if (bgscrolx<0){bgscrolx=0;} bgscrolx=bgscrolx-(dou
 
 
 
-    if (key[KEY_LEFT]) { framey=133; if (bullethit==1){bulletdir=0; }     slow++; if (slow>10){slow=0; if (tx2!=0){  if (framex<120){framex=120;}    framex=framex+30;  if (framex>=240){framex=120;}         }   }           playerx=playerx-tx2; }
+    if (key[KEY_LEFT]) {       playerx=playerx-tx2;   framey=133;   if (framex<120){framex=120;}   framex=framex+30;  if (framex>=240){framex=120;}
 
+
+
+    slow++; if (slow>10){slow=0;                   }
+                                                           }
            //              if (z>8000){z=0;}
-    if (key[KEY_RIGHT]) {   framey=133;       if (bullethit==1){ bulletdir=1; }     slow++; if (slow>10){slow=0;   if (tx!=0){        framex=framex+30;     if (framex>=120){framex=0;}           }   }       playerx=playerx+tx; }
+    if (key[KEY_RIGHT]) {     playerx=playerx+tx;   framey=133;
+
+                   framex=framex+30;               if (framex>=120){framex=0;}
+                                                    }
+                 slow++; if (slow>10){slow=0;        }
 
                                    if (jmptrig!=0){
                    //  if (acce>3){acce=3;}
@@ -768,29 +777,33 @@ if (playerx<50) {playerx+=3; if (bgscrolx<0){bgscrolx=0;} bgscrolx=bgscrolx-(dou
 
                                                 bullethit=1;
                 int time;
-           if (key[KEY_SPACE]){   play_midi(grand,0); midiseek=0; midi_seek(100); bullethit=0;  bullettrig=1;bulletx=playerx+10;bullety=playery+10;}
+           if (key[KEY_SPACE]){        play_midi(grand,0); midiseek=0; midi_seek(100); bullethit=0;  bullettrig=1;bulletx=playerx+10;      bulletx+=10;       ;bullety=playery+10;      }
 
 
 
+                                      trail++; if (trail>20){trail=0;}
+                                        for (int t=0;t<2;t++){
 
-
-
-
-                                if (bullettrig==1) { if (bulletdir==1){ int i=4;    bullethit=0;   if (bulletx>=320){bullethit=1;    bullettrig=0;    }    bulletx+=i;
-                                rectfill(surface,bulletx,bullety,bulletx+2,bullety+2,7); blit(surface,screen,0,0,0,0,320,240);
-
-                                                                             }
+                                if (bullettrig==1) { if (bulletdir==1){ int i=1;    bullethit=0;   if (bulletx>=320){bullethit=1;    bullettrig=0;    }    bulletx+=bulletdir;
+                                                bulletx+=1+(t*trail);
+                                rectfill(surface,bulletx,bullety,(bulletx)+2,bullety+2,238); blit(surface,screen,0,0,0,0,320,240);
 
                                                                              }
 
-                                    if (bullettrig==1){  if (bulletdir==0){  int i=-4;   bullethit=0;  if (bulletx<=0){bullethit=1;   bullettrig=0;}      bulletx+=i;
+                                                                             }
 
-                               rectfill(surface,bulletx,bullety,bulletx+2,bullety+2,7);     blit(surface,screen,0,0,0,0,320,240);
+                                    if (bullettrig==1){  if (bulletdir==-1){  int i=-1;   bullethit=0;  if (bulletx<=0){bullethit=1;   bullettrig=0;}      bulletx+=bulletdir;
+                                                  bulletx-=1+(t*trail);
+                               rectfill(surface,bulletx,bullety,bulletx+2,bullety+2,238);     blit(surface,screen,0,0,0,0,320,240);
 
                                                                              }
 
 
-                                                                            }
+                                                                            }      }
+
+                                     if (key[KEY_LEFT]) {    if (bullettrig==0){      bulletdir=-1;}    }
+                  if (key[KEY_RIGHT]) { if (bullettrig==0){ bulletdir=1; }    }
+
 
                jmpbypass++;
                    //  if (jmpbypass>200){jmptrig=0;jmpbypass=0; }
