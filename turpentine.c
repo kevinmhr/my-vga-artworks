@@ -72,7 +72,7 @@ int lenght;
 int jmptrig=0;
 double enemiposx=0;
 double enemiposy=0;
-int jmptimer=0;
+int jmptimer=1;
 int enemixt1=2;
 int enemiyt1=2;
 int laddercolor;
@@ -498,6 +498,7 @@ int init(){
           ti3=0;
           bgscrolx=0;
           z=0;
+         acce=1;
          jmptimer=0;
     enemii.x=1;
       enemii.y=1;
@@ -847,7 +848,7 @@ int keyboard(){
 
 //          if (key[KEY_DOWN]) {plus+=t; frame=frame+400;   if (frame>800){frame=0; } }
 
-                          if (jmptimer<0){jmptrig=2;jmptimer=0;}
+                  //        if (jmptimer<0){jmptrig=2;jmptimer=0;}
 
 
 
@@ -873,19 +874,39 @@ if (playerx<50) {playerx+=3; if (bgscrolx<0){bgscrolx=0;} bgscrolx=bgscrolx-(dou
                                                     }
 
 
-                                   if (jmptrig!=0){
+
+
+
+             if (key[KEY_UP]) {  jmptrig=1;
+               if (dur>10){downtrig=0;}
+
+
+             if (jmptimer>50){ jmptrig=0;  }  }
+
+   if (jmptrig!=0){
                    //  if (acce>3){acce=3;}
+                        jmptimer+=1;                    if (jmptimer>50){ jmptrig=0;  }
+                            acce+=0.2;
+                   dur++;            downtrig=1;
+                                             if (dur>20){downtrig=0; }
                           if (acce<0){acce=0;}
-                          if (acce>20){acce=20;}
+                          if (acce>10){acce=10;jmptrig=0;downtrig=0; }
+                              if (downtrig==1){        if (playery<20){             }           playery=playery-((t2player)+(acce/5));
+                                                          }}
 
-             if (key[KEY_UP]) { slow=0;    if (downtrig==1){   dur++;     acce+=0.02;   jmptimer+=1;    if (jmptimer>20){  jmptrig=0;}      if (playery<20){             }           playery=playery-((t2player/1.4)*(acce*3.9));  }
-                                                              }    }
+
+
+
+
+
+
+
+
+
   //  if (plus>9400){plus==0;}
-                                               downtrig=1;
-                                             if (dur>9){downtrig=0;}
 
 
-                                if (key[KEY_UP]==0){   slow++; if (slow>10) {  slow=0;  dur=0;}}
+                                if (key[KEY_UP]==0){  dur=0; slow++; if (slow>10) {  slow=0;  }}
 
 
                                                 bullethit=1;
@@ -925,9 +946,9 @@ if (playerx<50) {playerx+=3; if (bgscrolx<0){bgscrolx=0;} bgscrolx=bgscrolx-(dou
 
                    //    if (jmptimer<100){jmptrig=0;}
                                  if (bgscroly<0){bgscroly=100;}
-                                    if (playery>161){ playery-=3; plus+=t; }
+                                    if (playery>160){ playery-=2; plus+=t; }
+                                   if (tplayer>0){    playery+=(acce/5);};
                                      // acce-=0.0001;
-                                      playery+=tplayer*(acce*1.9);
 
 
                            //   bgscroly=bgscroly-(t/160);
