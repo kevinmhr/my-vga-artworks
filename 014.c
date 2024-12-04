@@ -7,6 +7,14 @@ char *bitmapbuffer;
 int fri=0;
   int plustime=0;int bullethit=1;
    int vert3;
+//int i;
+int l;
+double l2[100];
+
+double i[100];
+
+double j[100];
+
 double i2[100];
 double j2[100];
 double rotatex[100];
@@ -34,7 +42,7 @@ int roll=0;
   int jmpbypass;
 int keytrig=0;
 double acce=0.01;
-int i;
+//int i;
 int y;
   int slow=0;;
 int framex,framey;
@@ -834,45 +842,6 @@ int map[]={
 int maptemp[20000];
 
 
-int timer(){
-
-
-
-
-     if(ti>1000){z=z+1;}
-          if(ti<1000){z=z-1;}
- if (ti>=2000){incdec=-1;}
-   if (ti<=0){incdec=1;}
-  if (shift>=32){shift=1;}
-
-
-             ti=ti+(incdec);
-
-          //x+=y/10;
-
-
-
-
-         x+=ti/500+(z)/20;
-         x2+=ti/500+(z)/20;
-         x2=x2-1;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-}
 int enemies_func(  ){
   //  if (bgscrolx>700){bgscrolx=0;}
 
@@ -962,211 +931,33 @@ void spritefunction(){
 
 }
 
-int blittingtosprite(){
 
-// clear_to_color(sprites,4);
-
-
-
-   fry=0;
-
-
-double l[100];
-double l2[100];
-int r;
-double i[100];
-double z[100];
-double j[100];
-
-int col=0;
- clear_to_color(surface,0);
-      // rotateang+=0.005;
-//   rotatex=(cos(rotateang)+sin(rotateang));
- //  rotatey=(-sin(rotateang)+cos(rotateang));
-
-
-         if (key[KEY_LEFT]){playerx--;  }
-          if (key[KEY_RIGHT]){playerx++; }
-/*       if (rotateang<1){rotateang=(sintab2[(plus2-100)]/3)+0.8;  rotatex=(cos(rotateang)+sin(rotateang));
-   rotatey=(-sin(rotateang)+cos(rotateang));
-   }
-
-       if (rotateang>1){rotateang=(sintab2[(plus2-100)]/3)+0.8;   rotatex=(cos(rotateang)+sin(rotateang));
-   rotatey=(-sin(rotateang)+cos(rotateang));
-   }
-  */
-
-
-
-//for (int k=0;k<900;k++){
-
-for (int k=0;k<100;k++){
-
-     int ydist=(playery/2)-100;
-     int xdist=playerx;
-
-
-  if (key[KEY_RIGHT]){ int nrotatex=rotatex[k];  rotateang+=0.001;
- //  rotatex=(cos(rotateang)+sin(rotateang));
- //  rotatey=(-sin(rotateang)+cos(rotateang));
-
-
-  }
-
-
-
- if (key[KEY_LEFT]){ int nrotatex=rotatex[k]; rotateang+=-0.001;
-
-
-//   rotatex=(cos(rotateang)+sin(rotateang));
- //  rotatey=(-sin(rotateang)+cos(rotateang));
-
-  }
-
-       i[0]=500;
-       j[0]=500;
-       i[1]=-500;
-       j[1]=-500;
-       i[2]=-500;
-       j[2]=500;
-       i[3]=500;
-       j[3]=-500;
-       i[4]=500;
-       j[4]=500;
-       i[5]=-500;
-       j[5]=-500;
-       i[6]=-500;
-       j[6]=500;
-       i[7]=500;
-       j[7]=-500;
-
-        l2[0]=500;
-        l2[1]=500;
-        l2[2]=500;
-        l2[3]=500;
-        l2[4]=-500;
-        l2[5]=-500;
-        l2[6]=-500;
-        l2[7]=-500;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- //    if (k>3){
-  //     i[k]=i[k-4]*2;
-   //    j[k]=j[k-4]*2;
-    //    }
-
-    //       i2[r]=(i[k]);
-
-
-    //     j2[r]=(j[k]);
-  rotatex[k]=1;
-   rotatey[k]=1;
-   rotatex[k]=(cos(rotateang)+sin(rotateang));
-   rotatey[k]=(-sin(rotateang)+cos(rotateang));
-
-
-
-
-
-
-      i2[k]=(((((j[k]))*(rotatey[k])))+((((i[k]))*(rotatex[k]))));
-      j2[k]=(((((i[k]))*(rotatey[k])))-((((j[k]))*(rotatex[k]))));
-           //      int oldi2=i2[r];
-            //      int oldj2=j2[r];
-                  if (key[KEY_UP]){playery+=1;}
-        if (key[KEY_DOWN]){playery-=1;}
-            //  j[k]=(j[k])*(rotatey[k]/rotatex[k]);
-               //   i2[r]=sin((i2[r])*4)-cos(((i2[r])*4))/((l2[k]));
-
-               //   j2[r]=sin((j2[r])*4)+cos(((j2[r])*4))/((l2[k]));
-               rotateang+=0.0001;
-                     for (int q=8;q<100;q++){
-
-                      for (int k=0;k<8;k++){
-                  i2[q]=cos((rotatex[k]/2)*q)*300;
-                  j2[q]=sin((rotatey[k]/2)+q)*300;
-                  l2[q]=sin((rotatex[k]/2)-q)*500;
-
-
-
-
-                          }
-
-                           }
-
-
-
-               i2[k]=(((i2[k]/l2[k])*(j2[k]/l2[k])))-(i2[k])/(100);
-               j2[k]=((j2[k]/l2[k]))-(l2[k])/(100);
-
-              //  j2[k]=j2[k]*(2*r);
-   
-//  i2[r]=(((((j[k]))*(rotatey[k]))+((i[k])*rotatex[k])))/100;
-//  j2[r]=(((((i[k]))*(rotatey[k]))-((j[k])*rotatex[k])))/100;
-
-                
-               i2[k]=(i2[k]*1500)/300;
-               j2[k]=(j2[k]*1500)/300;
-
-
-
-//i2++;
-
-//if (i>30){i=0;j++;    }
-
-//if (j>30){j=0;     }
-
-//if (i2>30){ i2=0; }
-
-//if (j2>30){ j2=0;     }
-
-
- 
-                          col=k;
-
-                           if (k<8) { col=228;  }
-//i=i+rotatex;
-//j=j+rotatey;
-
-//col=getpixel(sprsheet,((i)),((j))+67);
-
-//if (col!=getpixel(sprsheet,1,1)){
-
-
-putpixel(surface,((i2[k])+150),((j2[k])+100),col);
-                      }
-//  drawcube();
-//putpixel(surface,i+playerx,j+playery,col+250);  }
-
-  }
-
-
-
-
-int othersblittingtosprite(int otherposx;int otherposy;){
-
-
-
-}
 int init(){
 //          play_midi(grand,0);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         acce=1000;
         d=0;
           ti3=0;
-          z=0;
+//          z=0;
          jmptimer=0;
     enemii.x=1;
       enemii.y=1;
@@ -1174,7 +965,7 @@ int init(){
       enemiposx=1;
        enemiposy=1;
        enemicnt=0;
-      i=1;
+//      i=1;
     plus=18954;
 playerx=150;
  playery=100;
@@ -1263,8 +1054,269 @@ enix[x]=0;     r[x]=1;
 //     mapfunc();
 
 }
-int mapfunc(){
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+int blittingtosprite(){
+
+// clear_to_color(sprites,4);
+
+
+
+int r;
+
+double z[100];
+
+
+
+   fry=0;
+
+
+int col=0;
+ clear_to_color(surface,0);
+      // rotateang+=0.005;
+//   rotatex=(cos(rotateang)+sin(rotateang));
+ //  rotatey=(-sin(rotateang)+cos(rotateang));
+
+
+         if (key[KEY_DOWN]){playery--;  }
+          if (key[KEY_UP]){playery++; }
+/*       if (rotateang<1){rotateang=(sintab2[(plus2-100)]/3)+0.8;  rotatex=(cos(rotateang)+sin(rotateang));
+   rotatey=(-sin(rotateang)+cos(rotateang));
+   }
+
+       if (rotateang>1){rotateang=(sintab2[(plus2-100)]/3)+0.8;   rotatex=(cos(rotateang)+sin(rotateang));
+   rotatey=(-sin(rotateang)+cos(rotateang));
+   }
+  */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//for (int k=0;k<900;k++){
+
+for (int k=0;k<50;k++){
+
+     int ydist=(playery/2)-100;
+     int xdist=playerx;
+
+
+  if (key[KEY_RIGHT]){ int nrotatex=rotatex[k];  rotateang+=0.001;
+ //  rotatex=(cos(rotateang)+sin(rotateang));
+ //  rotatey=(-sin(rotateang)+cos(rotateang));
+
+
+  }
+
+
+
+ if (key[KEY_LEFT]){ int nrotatex=rotatex[k]; rotateang+=-0.001;
+
+
+//   rotatex=(cos(rotateang)+sin(rotateang));
+ //  rotatey=(-sin(rotateang)+cos(rotateang));
+
+  }
+      int o=1;
+      int y=1;
+      int r=1;
+
+
+
+
+
+       i[0]=500;
+       j[0]=500;
+       i[1]=-500;
+       j[1]=-500;
+       i[2]=-500;
+       j[2]=500;
+       i[3]=500;
+       j[3]=-500;
+       i[4]=500;
+       j[4]=500;
+       i[5]=-500;
+       j[5]=-500;
+       i[6]=-500;
+       j[6]=500;
+       i[7]=500;
+       j[7]=-500;
+
+        l2[0]=500;
+        l2[1]=500;
+        l2[2]=500;
+        l2[3]=500;
+        l2[4]=-500;
+        l2[5]=-500;
+        l2[6]=-500;
+        l2[7]=-500;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ //    if (k>3){
+  //     i[k]=i[k-4]*2;
+   //    j[k]=j[k-4]*2;
+    //    }
+
+    //       i2[r]=(i[k]);
+
+
+    //     j2[r]=(j[k]);
+  rotatex[k]=1;
+   rotatey[k]=1;
+   rotatex[k]=(cos(rotateang)+sin(rotateang));
+   rotatey[k]=(-sin(rotateang)+cos(rotateang));
+
+      i2[k]=(((((j[k]))*(rotatey[k])))+((((i[k]))*(rotatex[k]))));
+      j2[k]=(((((i[k]))*(rotatey[k])))-((((j[k]))*(rotatex[k]))));
+           //      int oldi2=i2[r];
+            //      int oldj2=j2[r];
+                  if (key[KEY_UP]){playery+=0.001;}
+        if (key[KEY_DOWN]){playery-=0.001;}
+            //  j[k]=(j[k])*(rotatey[k]/rotatex[k]);
+               //   i2[r]=sin((i2[r])*4)-cos(((i2[r])*4))/((l2[k]));
+
+               //   j2[r]=sin((j2[r])*4)+cos(((j2[r])*4))/((l2[k]));
+               rotateang+=0.001;
+
+
+
+
+
+
+                      for (int q=8;q<100;q++){
+                      for (int k=0;k<8;k++){
+                      
+                  i2[q]=cos((rotatex[k])*q)*100;
+                  j2[q]=sin((rotatey[k])+q)*300;
+                  l2[q]=sin((rotatex[k])-q)*500;
+
+                                            }
+
+
+                          } 
+
+
+
+
+
+               i2[k]=(((i2[k]/l2[k])*(j2[k]/l2[k])))-(i2[k])/(100);
+               j2[k]=((j2[k]/l2[k]))-((l2[k]))/(100);
+
+              //  j2[k]=j2[k]*(2*r);
+   
+//  i2[r]=(((((j[k]))*(rotatey[k]))+((i[k])*rotatex[k])))/100;
+//  j2[r]=(((((i[k]))*(rotatey[k]))-((j[k])*rotatex[k])))/100;
+
+                
+               i2[k]=(i2[k]*1500)/300;
+               j2[k]=(j2[k]*1500)/300;
+
+
+
+//i2++;
+
+//if (i>30){i=0;j++;    }
+
+//if (j>30){j=0;     }
+
+//if (i2>30){ i2=0; }
+
+//if (j2>30){ j2=0;     }
+
+
+ 
+                          col=k+50;
+
+                           if (k<8) { col=228;  }
+//i=i+rotatex;
+//j=j+rotatey;
+
+//col=getpixel(sprsheet,((i)),((j))+67);
+
+//if (col!=getpixel(sprsheet,1,1)){
+
+
+putpixel(surface,((i2[k])+150),((j2[k])+100),col);
+   line(surface,i2[0]+150,j2[0]+100,i2[4]+150,j2[4]+100,col);
+   line(surface,i2[1]+150,j2[1]+100,i2[5]+150,j2[5]+100,col);
+   line(surface,i2[2]+150,j2[2]+100,i2[6]+150,j2[6]+100,col);
+   line(surface,i2[3]+150,j2[3]+100,i2[7]+150,j2[7]+100,col);
+
+   line(surface,i2[0]+150,j2[0]+100,i2[2]+150,j2[2]+100,col);
+   line(surface,i2[1]+150,j2[1]+100,i2[2]+150,j2[2]+100,col);
+   line(surface,i2[0]+150,j2[0]+100,i2[3]+150,j2[3]+100,col);
+   line(surface,i2[3]+150,j2[3]+100,i2[1]+150,j2[1]+100,col);
+
+   line(surface,i2[4]+150,j2[4]+100,i2[6]+150,j2[6]+100,col);
+   line(surface,i2[5]+150,j2[5]+100,i2[6]+150,j2[6]+100,col);
+   line(surface,i2[4]+150,j2[4]+100,i2[7]+150,j2[7]+100,col);
+   line(surface,i2[7]+150,j2[7]+100,i2[5]+150,j2[5]+100,col);
+
+
+
+
+
+
+
+
+
+   
+ 
+ 
+ 
+                      }
+//  drawcube();
+//putpixel(surface,i+playerx,j+playery,col+250);  }
+
+  }
+
+
+
+
+int othersblittingtosprite(int otherposx;int otherposy;){
+
+
+
+}
+int mapfunc(){
+int i;
    if (plus<100){     plus=18954;  }
 vert2=scroll;
 
