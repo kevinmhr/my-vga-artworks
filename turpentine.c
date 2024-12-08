@@ -12,6 +12,7 @@ int level=1;
  int trail;
 int bullethit=1;
    int midiseek;
+       int timer2;
   int bulletx;
     int bullety;
 int frx;
@@ -831,7 +832,7 @@ int keyboard(){
 
          for (int x=10;x<20;x++){
                         colx=getpixel(collisionpad,playerx+x,playery+31);
-                if (colx==4){t=0;tplayer=0;  jmptimer--;
+                if (colx==4){t=0;tplayer=0;
           t2player=2;
           tx=1;
             tx2=1;  acce=10;  }
@@ -839,7 +840,7 @@ int keyboard(){
               colx=getpixel(collisionpad,playerx+x,playery);
                         
 
-             if (colx==4){t2=0;t2player=0;  jmptimer--; }
+             if (colx==4){t2=0;t2player=0;   }
                                           }
 
 
@@ -912,29 +913,38 @@ int keyboard(){
 
 
 
-                            jmptrig=0;
-                  jmptimer+=1;
+
+
                     //   if (jmptimer>50){  jmptrig=0; jmptimer=50;  }
                      //   if (jmptimer<50){  jmptrig=1;  }
-                  
 
-             if (key[KEY_UP]) {   jmptrig=1;        dur=0;
+              if (key[KEY_UP]==0){jmptimer=0;      }
+
+             if (key[KEY_UP]) {  downtrig=1;  jmptrig=1;  dur=0;
 
 
-             }
+                      if (jmptimer>50){downtrig=0;jmptrig=0;}
+                                     }
+
+
 
 
             if (dur>25){  jmptrig=0; downtrig=0;  }
 
 
-   if (jmptrig!=0){
+   if (jmptrig==1){
+
                    //  if (acce>3){acce=3;}
                           dur++;
-                            acce-=0.2;          downtrig=1;
+                            acce-=0.2;
+                                jmptimer++;
+                             timer2++;
+                          if (acce<0){acce=0; jmptrig=0; downtrig=0;     }
+                              if (downtrig==1){
 
 
-                          if (acce<0){acce=0;       jmptrig=0;downtrig=0; }
-                              if (downtrig==1){           playery=playery-((t2player)+(acce/5));
+
+                              playery=playery-((t2player)+(acce/5));
                                              }
 
 
@@ -947,7 +957,7 @@ int keyboard(){
 
                                              }
 
-
+                   if (key[KEY_UP]==0) { }
 
   //  if (plus>9400){plus==0;}
 
