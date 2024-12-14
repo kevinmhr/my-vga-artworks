@@ -1128,9 +1128,9 @@ for (int k=0;k<8;k++){
      int ydist=(playery/2)-100;
      int xdist=playerx;
 
-        if (key[KEY_UP]){playery+=0.001;}
+   //     if (key[KEY_UP]){playery+=0.001;}
 
-        if (key[KEY_DOWN]){playery-=0.001;}
+   //     if (key[KEY_DOWN]){playery-=0.001;}
         
         if (key[KEY_UP]){ rotateangy+=0.0001;
                            }
@@ -1226,15 +1226,18 @@ for (int k=0;k<8;k++){
                  i2[k]=((((j[k]*rotatey[k]))+((((i[k]))*(rotatex[k])))));
                  j2[k]=(((((i[k])*rotatey[k]))-((((j[k]))*(rotatex[k])))));
 
+                 l2[k]+=((l2[k]/10)+(j2[k]*rotatex[k])/10);
 
 
-              i2[k]=((((i2[k])/(l2[k]))*((((j2[k]))/(l2[k])))-(i2[k])));
+
+              i2[k]=((((i2[k])/((l2[k])))*((j2[k]))/((l2[k]))-(i2[k])));
 
               
-              j2[k]=(((j2[k]/(l2[k]))-((l2[k]))));
+              j2[k]=((((j2[k])/(l2[k]))-((l2[k]))));
 
+              //   i2[k]=(i2[k])-(j2[k]*rotatel2[k]);
 
-
+               //     j2[k]=(j2[k])+(i2[k]*rotatel2[k]);
 
 
 
