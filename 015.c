@@ -9,17 +9,19 @@ int fri=0;
    int vert3;
 //int i;
 //int l;
-double l2[100];
-double l[100];
-double i[100];
+double l2[400];
+double l[400];
+double i[400];
 
-double j[100];
+double j[400];
 
-double i2[100];
-double j2[100];
-double rotatex[100];
-double rotatey[100];
-double rotatel[100];
+double i2[400];
+double j2[400];
+double rotatex[400];
+double rotatey[400];
+double rotatel[400];
+double rotatel2[400];
+
 double rotateang=1.3;
       double rotateangy=1;
    int midiseek;
@@ -1069,7 +1071,7 @@ enix[x]=0;     r[x]=1;
 
 
 
-int blittingtosprite(){
+int cube(){
 
 // clear_to_color(sprites,4);
 
@@ -1091,8 +1093,8 @@ int col=0;
  //  rotatey=(-sin(rotateang)+cos(rotateang));
 
 
-         if (key[KEY_DOWN]){playery--;  }
-          if (key[KEY_UP]){playery++; }
+   //      if (key[KEY_DOWN]){playery--;  }
+   //       if (key[KEY_UP]){playery++; }
 /*       if (rotateang<1){rotateang=(sintab2[(plus2-100)]/3)+0.8;  rotatex=(cos(rotateang)+sin(rotateang));
    rotatey=(-sin(rotateang)+cos(rotateang));
    }
@@ -1104,8 +1106,8 @@ int col=0;
 
 
 
-          if (key[KEY_LEFT]){playerx-=5;  }
-          if (key[KEY_RIGHT]){playerx+=5; }
+   //       if (key[KEY_LEFT]){playerx-=5;  }
+    //      if (key[KEY_RIGHT]){playerx+=5; }
 
 
 
@@ -1118,7 +1120,7 @@ int col=0;
               int it,jt;
 
 
-   for (int z=1;z<40;z++){
+   for (int z=1;z<50;z+=2){
 
 
 for (int k=0;k<8;k++){
@@ -1201,54 +1203,22 @@ for (int k=0;k<8;k++){
 
 
 
-
- //    if (k>3){
-  //     i[k]=i[k-4]*2;
-   //    j[k]=j[k-4]*2;
-    //    }
-
-    //       i2[r]=(i[k]);
-
-
-    //     j2[r]=(j[k]);
   rotatex[k]=1;
    rotatey[k]=1;
    rotatex[k]=(cos(rotateang)+sin(rotateang));
    rotatey[k]=(-sin(rotateang)+cos(rotateang));
- //  rotatel[k]=(sin(rotateangy)+cos(rotateangy))/(-sin(rotateangy)+cos(rotateangy));
-   rotatel[k]=cos(rotateang)+sin(rotateang);
+   rotatel[k]=(sin(rotateangy)+cos(rotateangy));
+   rotatel2[k]=(-sin(rotateangy)+cos(rotateangy));
+
 
 
 
          l2[k]=(l[k]);
 
-           //      int oldi2=i2[r];
-            //      int oldj2=j2[r];
-
-            //  j[k]=(j[k])*(rotatey[k]/rotatex[k]);
-               //   i2[r]=sin((i2[r])*4)-cos(((i2[r])*4))/((l2[k]));
-
-               //   j2[r]=sin((j2[r])*4)+cos(((j2[r])*4))/((l2[k]));
-               rotateang+=0.00001;
+               rotateang+=0.0001;
 
 
 
-
-
-
-               /*
-                      int x;
-                      for (int q=80;q<1000;q++){
-                        x=1000^q;
-
-                      
-                  i[q/10]=((x))-500;
-
-                  j[q/10]=((x))-500;
-                  l2[q/10]=-500;
-
-
-                 */
 
 
 
@@ -1258,26 +1228,33 @@ for (int k=0;k<8;k++){
 
 
 
+              i2[k]=((((i2[k])/(l2[k]))*((((j2[k]))/(l2[k])))-(i2[k])));
 
-                       i2[k]=((i2[k]/(l2[k]))*((j2[k]/(l2[k]))))-(i2[k]/2);
-              j2[k]=(j2[k]/(l2[k]))-((l2[k]/2));
-
-
-
+              
+              j2[k]=(((j2[k]/(l2[k]))-((l2[k]))));
 
 
-                   j2[k]=j2[k]*(playery/70);
-                 i2[k]=i2[k]*(playery/70);
-                  l2[k]=l2[k]*(playery/70);
+
+
+
+
+
+
+
+                   j2[k]=j2[k]*(playery/10);
+                 i2[k]=i2[k]*(playery/10);
 
                                 col=3;
-                       it+=10;
-              if (it>rotateang*10+k){it=0;jt++;   col=rotateang*10;     }
+                       it+=1;
+              if (it>rotateang*2){it=0;jt++;   col=rotateang*2;     }
+              col=k+rotateang*5;
               if (jt>10){jt=0;     }
-              j2[k]=((j2[k]*10)/(z));
-                i2[k]=((i2[k]*10)/(z));
+
+              j2[k]=(int)((j2[k]+1)*((z)*(0.1)))/5;
+              i2[k]=(int)((i2[k])*((z)*(0.1)))/5;
             //     l2[k]=(l2[k]*100)/(z*10);
-         
+              i2[k]=(i2[k])+(playerx);
+              j2[k]=(j2[k])+100;
 
 
 
@@ -1287,60 +1264,6 @@ for (int k=0;k<8;k++){
 
 
 
-
-
-
-                       i2[k]=(i2[k]*150/20)+(playerx);
-              j2[k]=(j2[k]*150/20)+100;
-
-
-
-
-
-
-
-
-
-
-
-              //    i[k]=((i[k]/((l[k]*rotatel[k])/100))-(j[k]/l[k]*rotatel[k]/100))-(i[k]);
-              //   j[k]=(j[k]/((l[k]*rotatel[k])/100))-(j[k]);
-              //   l2[k]=(l2[k]+((l2[k]*rotatel[k])));
-
-
-           //   j2[k]=(j2[k])+(z);
-            //       putpixel(surface,((i2[k])),((j2[k])),col);
-
-
-
-
-
-              //  j2[k]=j2[k]*(2*r);
-
-
-
-
-
-//i2++;
-
-//if (i>30){i=0;j++;    }
-
-//if (j>30){j=0;     }
-
-//if (i2>30){ i2=0; }
-
-//if (j2>30){ j2=0;     }
-
-
-
-
-                       //    if (k<8) { col=228;  }
-//i=i+rotatex;
-//j=j+rotatey;
-
-//col=getpixel(sprsheet,((i)),((j))+67);
-
-//if (col!=getpixel(sprsheet,1,1)){
 
 
 putpixel(surface,((i2[k])),((j2[k])),col);
@@ -2107,7 +2030,7 @@ bgscroly=100;
   //  keyboard();  // mapfunc();
                                                                                                                             //  draw_trans_sprite(spr1,walkingspr,0,0);
 
-                                                                                                                              blittingtosprite();
+                                                                                                         cube();
                                                                                                                               //  enemies_func();
                                                                                                  blit(surface,screen,0,0,0,0,320,240);
                                                                                                 //  blit(surface2,screen,0,0,0,0,320,240);
