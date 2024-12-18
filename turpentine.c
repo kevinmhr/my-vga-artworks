@@ -94,17 +94,16 @@ double y;
 
 
 
- BITMAP *the_image;
- BITMAP *themap;
-   BITMAP *bgsurface;
-   BITMAP *enemies;
+
+
    BITMAP *levelbg;
    BITMAP *collisionpad;
-   BITMAP *the_block1;
+    BITMAP *sprite;
    PALETTE the_palette1;
    PALETTE the_palette;
    PALETTE the_palette2;
    BITMAP *walkingspr;
+   BITMAP *walkingspr2;
    BITMAP *sprites;
      BITMAP *surface;
     BITMAP *sprsheet;
@@ -178,6 +177,12 @@ int spr01[]={
 0,0,0,0,0,230,240,240,0,0,230,230,249,240,230,0,0,0,0,0,
 0,0,0,0,0,0,230,240,0,0,0,0,230,230,230,230,0,0,0,0,
 
+};
+
+int entitiesmap[]={0,0,0,0,0,0,0,0,0,0,0,77,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 };
 
 int map1[]={
@@ -581,20 +586,42 @@ int mapfunc(){
 
 
 
-                 int vertical=10-add2;
 
-             d=0;
 
 
               //      if (vertical>220){vertical=10;}
 
-
-
-
-
-
-
                   i=1;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+              int vertical=10-add2;
+
+             d=0;
+
+             i=1;
+
+
 
            for (k=plus;k<(3000)+plus;k++){
 
@@ -612,7 +639,7 @@ int mapfunc(){
       //     if (add<0){add=10;}
 
                         d++;
-                    //    if (d>5000){d=0;}
+
                       if (z<0){z=0;}
                           enemicnt=(d+z+10);
                       // if (z>320){z=0;}
@@ -630,11 +657,7 @@ int mapfunc(){
 
 
 
-
-
-
-
-        if (maptemp[k]==77) {
+                                        if (maptemp[k]==77) {
 
 
                       enix[enemicnt]+=(double)r[enemicnt]/5;
@@ -654,14 +677,13 @@ int col=0;
     rectfill(collisionpad,enix[enemicnt]+(i*10),vertical-add2+eniy[enemicnt],enix[enemicnt]+((i+1)*10),vertical+30-add2+eniy[enemicnt],90);
 
 
-for (int ks=0;ks<900;ks++){
+//for (ks=0;ks<900;ks++){
 
 is++;if (is>30){is=5;js++;}
 if (js>30){js=0;}
 col=getpixel(walkingspr,is+frx,js+fry);
-if (col!=getpixel(walkingspr,1,1)){
-putpixel(surface,is+enix[enemicnt]+(i*10)-add,js+vertical-20-add2+eniy[enemicnt],col+1);  }
-
+//if (col!=getpixel(walkingspr,1,1)){
+//putpixel(surface,is+enix[enemicnt]+(i*10)-add,js+vertical-20-add2+eniy[enemicnt],col+1);  }
           if (r[enemicnt]>0){fry=0;}  if (r[enemicnt]<0){fry=30;}
 
              int colx;
@@ -678,7 +700,7 @@ putpixel(surface,is+enix[enemicnt]+(i*10)-add,js+vertical-20-add2+eniy[enemicnt]
                      if (colx==90){ init(); midiseek=-100;   play_midi(grand,0);  midi_seek(160);     }
 
 
-  }
+//  }
 
 
 
@@ -717,17 +739,22 @@ putpixel(surface,is+enix[enemicnt]+(i*10)-add,js+vertical-20-add2+eniy[enemicnt]
 
                     if(enix[enemicnt]+(i*10)-add>500){  r[enemicnt]=-1; }
                   if(enix[enemicnt]+(i*10)-add<-50){  r[enemicnt]=1; }
-                    colx=getpixel(collisionpad,enix[enemicnt]+(i*10)-add+20,vertical-add2+eniy[enemicnt]);
+                    colx=getpixel(collisionpad,enix[enemicnt]+(i*10)-add+30,vertical-add2+eniy[enemicnt]+10);
                                            if (colx==4){
 
 
           r[enemicnt]=-1;   }
 
-                    colx=getpixel(collisionpad,enix[enemicnt]+(i*10)-add-1,vertical-add2+eniy[enemicnt]);
+                    colx=getpixel(collisionpad,enix[enemicnt]+(i*10)-add-1,vertical-add2+eniy[enemicnt]+10);
                                            if (colx==4){
 
 
          r[enemicnt]=1;   }
+
+
+          blit(walkingspr,sprite,frx,fry,0,0,20,30);
+         draw_sprite(surface,sprite,enix[enemicnt]+(i*10)-add,vertical-20-add2+eniy[enemicnt]);
+
 
 
 }
@@ -739,10 +766,7 @@ putpixel(surface,is+enix[enemicnt]+(i*10)-add,js+vertical-20-add2+eniy[enemicnt]
 
 
 
-
-
-
-   if (fri>=327){fri=287;}
+   if (fri>=317){fri=287;}
  if (tuu>22000){  fri=fri+10;
  tuu=0; }
 tuu++;
@@ -862,6 +886,13 @@ putpixel(surface,(is)+(i*10)-add,(js)+vertical-10-add2,col);  }
 
 
 
+
+
+
+
+
+
+
                      if (maptemp[k]==80){         blit( sprsheet,surface,0,38,(i*10),vertical-add2 ,10, 10);       }
 
                      if (maptemp[k]==90){         blit( sprsheet,surface,0,48,(i*10),vertical-add2 ,10, 10);       }
@@ -901,6 +932,19 @@ putpixel(surface,(is)+(i*10)-add,(js)+vertical-10-add2,col);  }
 midiseek++; if(midiseek>23){midiseek=0;
 stop_midi();  
               }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 }
@@ -1142,20 +1186,23 @@ int main(int argc, char *argv[]) {
       allegro_message("Error initialising sound system\n%s\n", allegro_error);
       return 1;
    }
-
+         // drawing_mode(5, NULL,1,0);
    if (set_gfx_mode(GFX_AUTODETECT, 320, 200, 0, 0) != 0) {
       if (set_gfx_mode(GFX_SAFE, 320, 200, 0, 0) != 0) {
        set_gfx_mode(GFX_TEXT, 0, 0, 0, 0);
          allegro_message("Unable to set any graphic mode\n%s\n", allegro_error);
  return 1;
       }   }
-   //  drawing_mode(DRAW_MODE_TRANS, NULL,0,0);
-//set_multiply_blender(0, 0, 0, 0);
-     //  set_color_depth(4);
-   //set_write_alpha_blender();
+
+//set_multiply_blender(0, 0, 0, 9);
+   //    set_color_depth(8);
+  //  gfx_driver->set_blender_mode(0,0,0,0,9);
+   set_write_alpha_blender();
 //bitmapbuffer="metal.bmp";
    /* read in the bitmap file */
- collisionpad=create_bitmap(2000,320);
+ collisionpad=create_bitmap(2000,240);
+
+
 
        //   solid_mode();
 //   the_image= load_bitmap("spritesheet.bmp", the_palette);
@@ -1166,11 +1213,45 @@ int main(int argc, char *argv[]) {
 //    the_block1= load_bitmap("block1.bmp",the_palette2);
      spr1=create_bitmap(320,240);
   surface=create_bitmap(320,240);
-   enemies=create_bitmap(320,240);
- themap=create_bitmap (320,240);
+   sprite=create_bitmap(20,30);
+// themap=create_bitmap (320,240);
 
+  walkingspr=create_bitmap(320,240);
+      walkingspr2=load_bitmap("walking.bmp",the_palette2);
  //      spritefunction();
-       walkingspr=load_bitmap("walking.bmp",the_palette2);
+
+  int x,y,col,col2;
+  for (int i=0;i<68000;i++){
+   x++;if(x>320){y++;x=0;}
+   if (y>240){y=0;}
+   col2=getpixel(walkingspr,0,0);
+
+   col=getpixel(walkingspr2,x,y);
+      if (col==col2){
+   putpixel(walkingspr,x,y,256);
+
+               }
+
+
+
+   if (col!=col2){
+   putpixel(walkingspr,x,y,col);
+
+               }
+
+
+
+
+  }
+
+
+
+
+
+
+
+
+
 //    mapfunc();
  set_palette(the_palette2);
 //    set_alpha_blender();
@@ -1203,7 +1284,7 @@ bgscroly=100;
     }
 
 
- destroy_bitmap(screen); destroy_bitmap(the_image);
+ destroy_bitmap(screen);
 
    
    readkey();
