@@ -1050,7 +1050,7 @@ int keyboard(){
                     //   if (jmptimer>50){  jmptrig=0; jmptimer=50;  }
                      //   if (jmptimer<50){  jmptrig=1;  }
 
-              if (key[KEY_UP]==0){jmptimer=0;      }
+              if (key[KEY_UP]==0){jmptimer=0;    framey=133;    }
 
              if (key[KEY_UP]) {  downtrig=1;  jmptrig=1;  dur=0;
 
@@ -1064,7 +1064,7 @@ int keyboard(){
             if (dur>25){  jmptrig=0; downtrig=0;  }
 
 
-   if (jmptrig==1){
+   if (jmptrig==1){   if (key[KEY_RIGHT]) {  framey=102;  framex=0; }    if (key[KEY_LEFT]) {  framey=102;  framex=30; }
 
                    //  if (acce>3){acce=3;}
                           dur++;
@@ -1216,25 +1216,18 @@ int main(int argc, char *argv[]) {
    sprite=create_bitmap(20,30);
 // themap=create_bitmap (320,240);
 
-  walkingspr=create_bitmap(320,240);
+  walkingspr=create_bitmap(640,480);
       walkingspr2=load_bitmap("walking.bmp",the_palette2);
  //      spritefunction();
 
   int x,y,col,col2;
-  for (int i=0;i<68000;i++){
-   x++;if(x>320){y++;x=0;}
-   if (y>240){y=0;}
-   col2=getpixel(walkingspr,0,0);
+  for (int i=0;i<240000;i++){
+   x++;if(x>640){y++;x=0;}
+   if (y>480){y=0;}
+   col2=getpixel(walkingspr2,0,0);
 
    col=getpixel(walkingspr2,x,y);
-      if (col==col2){
-   putpixel(walkingspr,x,y,256);
-
-               }
-
-
-
-   if (col!=col2){
+    if (col!=col2){
    putpixel(walkingspr,x,y,col);
 
                }
@@ -1242,9 +1235,19 @@ int main(int argc, char *argv[]) {
 
 
 
+
+      if (col==col2){
+   putpixel(walkingspr,x,y,256);
+
+               }
+
+
+
+
+
+
+
   }
-
-
 
 
 
