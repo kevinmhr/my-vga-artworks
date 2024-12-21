@@ -57,7 +57,7 @@ int ti4;
 int colx,coly;
 double playerx=110;
 double playery=150;
-
+  double jmptimer2=0;
 
 
 int swi=1;
@@ -72,13 +72,13 @@ int bgscrolx,bgscroly;
 int f;
 int shift;
 int incdec=1;
-
+  int dur2;
 int plus;
 int lenght;
 int jmptrig=0;
 double enemiposx=0;
 double enemiposy=0;
-int jmptimer=1;
+double jmptimer;
 int enemixt1=2;
 int enemiyt1=2;
 int laddercolor;
@@ -922,28 +922,28 @@ int keyboard(){
 
 
 
-         for (int x=10;x<20;x++){
+         for (int x=12;x<18;x++){
 
 
 
 
                         colx=getpixel(collisionpad,playerx+x,playery+31);
                 if (colx==4){t=0;tplayer=0;
-          t2player=2;
+          t2player=2;       if (dur2==1){jmptimer2=0;}
           tx=1;
-            tx2=1;  acce=10;  }
+            tx2=1;    dur++; if (dur>50){   acce=32; jmptrig=0; } }
 
               colx=getpixel(collisionpad,playerx+x,playery);
                         
 
-             if (colx==4){t2=0;t2player=0;   }
+             if (colx==4){t2=0;t2player=0; downtrig=0; acce=0; }
                                           }
 
 
 
 
 
-           for (int y=0;y<28;y++){
+           for (int y=0;y<29;y++){
 
 
               colx=getpixel(collisionpad,playerx,playery+y);
@@ -954,16 +954,16 @@ int keyboard(){
 
 
 
-                        colx=getpixel(collisionpad,playerx+20,playery+y);
+                        colx=getpixel(collisionpad,playerx+21,playery+y);
                         
 
              if (colx==4){tx=0; }
-              colx=getpixel(collisionpad,playerx,playery+y);
+              colx=getpixel(collisionpad,playerx+10,playery+y);
                         
 
              if (colx==4){tx2=0;}
 
-               colx=getpixel(collisionpad,playerx,playery+y);
+               colx=getpixel(collisionpad,playerx+10,playery+y);
                         
 
              if (colx>230){       tplayer=-1;  tx=1;tx2=1;}
@@ -997,15 +997,64 @@ int keyboard(){
 
 
 
-              if (playerx>150) {   playerx-=1;      if (bgscrolx>400){bgscrolx=400;}  bgscrolx=bgscrolx+(double)tx;  add++; if (add>7){add=0;  plus+=1;  z++;   }  }
-        if (playerx<70) {             playerx+=1; if (bgscrolx<0){bgscrolx=0;} bgscrolx=bgscrolx-(double)tx2;     add--;  if (add<0)   {add=7;  plus-=1;  z--; } }
 
 
 
 
 
 
-    if (key[KEY_LEFT]) {       playerx=playerx-tx2;   framey=133;   if (framex<120){framex=120;}   slow++; if (slow>10){slow=0;        framex=framex+30;              }  if (framex>=240){framex=120;}
+
+
+
+
+                    //   if (jmptimer>50){  jmptrig=0; jmptimer=50;  }
+                     //   if (jmptimer<50){  jmptrig=1;  }
+
+
+             if (key[KEY_UP]) { jmptimer=0; dur=0;  jmptimer2+=0.5;   downtrig=1;  acce-=0.1; jmptrig=1;
+
+
+                      if (jmptimer2>50){downtrig=0;}  }
+
+
+
+
+
+
+   if (jmptrig==1){
+
+                   //  if (acce>3){acce=3;}
+                                dur++;
+                                dur2=0;
+                             //    tx=tx*1.1;  tx2=tx2*1.1;
+                            acce-=0.180;
+                                jmptimer+=0.5;
+
+                             timer2++;
+                              if (acce<0){acce=0; jmptrig=0; downtrig=0;     }
+
+                              if (downtrig==1){
+
+                              playery=playery-((t2player)*(acce/20));
+                                             }
+
+
+                                             }
+                                      else {
+                                             acce2+=1.0;
+                                             if (acce2>5){acce2=5;}
+
+
+
+
+                                             }
+               if (key[KEY_UP]==0){jmptimer=0;dur2=1;  framey=133;    }
+
+                   if (key[KEY_UP]==0) { }
+
+  //  if (plus>9400){plus==0;}
+
+      if (key[KEY_LEFT]) {       playerx=playerx-tx2;   framey=133;   if (framex<120){framex=120;}   slow++; if (slow>10){slow=0;        framex=framex+30;              }  if (framex>=240){framex=120;}
 
 
 
@@ -1019,54 +1068,8 @@ int keyboard(){
 
 
 
-
-
-                    //   if (jmptimer>50){  jmptrig=0; jmptimer=50;  }
-                     //   if (jmptimer<50){  jmptrig=1;  }
-
-              if (key[KEY_UP]==0){jmptimer=0;    framey=133;    }
-
-             if (key[KEY_UP]) {  downtrig=1;  jmptrig=1;  dur=0;
-
-
-                      if (jmptimer>50){downtrig=0;jmptrig=0;}
-                                     }
-
-
-
-
-            if (dur>25){  jmptrig=0; downtrig=0;  }
-
-
-   if (jmptrig==1){   if (key[KEY_RIGHT]) {  framey=102;  framex=0; }    if (key[KEY_LEFT]) {  framey=102;  framex=30; }
-
-                   //  if (acce>3){acce=3;}
-                          dur++;
-                            acce-=0.2;
-                                jmptimer++;
-                             timer2++;
-                          if (acce<0){acce=0; jmptrig=0; downtrig=0;     }
-                              if (downtrig==1){
-
-
-
-                              playery=playery-((t2player)+(acce/5));
-                                             }
-
-
-                                             }
-                                      else {
-                                             acce2+=1.2;
-                                             if (acce2>5){acce2=5;}
-
-
-
-                                             }
-
-                   if (key[KEY_UP]==0) { }
-
-  //  if (plus>9400){plus==0;}
-
+        if (playerx>110) {   playerx-=1;      if (bgscrolx>400){bgscrolx=400;}  bgscrolx=bgscrolx+(double)tx;  add++; if (add>7){add=0;  plus+=1;  z++;   }  }
+        if (playerx<90) {             playerx+=1; if (bgscrolx<0){bgscrolx=0;} bgscrolx=bgscrolx-(double)tx2;     add--;  if (add<0)   {add=7;  plus-=1;  z--; } }
 
 
 
@@ -1107,7 +1110,7 @@ int keyboard(){
                    //    if (jmptimer<100){jmptrig=0;}
                                  if (bgscroly<0){bgscroly=100;}
                                     if (playery>162){ playery-=4;    add2++;  if (add2>5){ add2=0;   plus+=t;} }
-                                       if (playery<60){ playery+=2;  add2--;   if (add2<0){ add2=5;    plus-=t;} }
+                                       if (playery<50){ playery+=2;  add2--;  if (add2<0){ add2=5;    plus-=t;} }
 
 
 
