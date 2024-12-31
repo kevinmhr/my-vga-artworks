@@ -7,6 +7,8 @@ char *bitmapbuffer;
 int fry,frx,tuy,tuu,fri;
 int add=0;
 int add2=0;
+double spd;
+
   int faced;
 int scroll;
 int level=1;
@@ -425,7 +427,8 @@ i++;if (i>30){i=0;j++;}
 if (j>30){j=0;}
 col=getpixel(walkingspr,i+framex,j+framey);
 if (col!=getpixel(walkingspr,1,1)){
-putpixel(surface,i+playerx,j+playery+3,col);  }
+putpixel(surface,i+playerx,j+playery+3,col-1);
+    }
 
 
 
@@ -592,7 +595,8 @@ int mapfunc(){
 
         if (maptemp[k]==33) {
 
-       rectfill(collisionpad,(i*10),vertical,((i+1)*10)-add,vertical+10,5);
+       rectfill(collisionpad,(i*10)-add,vertical,((i+1)*10)-add,vertical+10,5);
+        //  rectfill(surface,(i*10)-add,vertical,((i+1)*10)-add,vertical+10,5);
 
 
 
@@ -604,7 +608,7 @@ int js=0;
 
 
 
-blit(walkingspr,surface,188,29,(i*10)-add,vertical-add2,10,10);
+      blit(walkingspr,surface,135,28,(i*10)-add,vertical-add2,12,9);
 
 
 
@@ -626,9 +630,8 @@ blit(walkingspr,surface,188,29,(i*10)-add,vertical-add2,10,10);
 
         if (maptemp[k]==803) {
         //    levelbg3=create_bitmap(30,60);
-          blit(levelbg2,levelbg3,49,89,0,0,30,60);
+      masked_blit(levelbg2,surface,49,89,(i*10)-add,vertical-add2-35,30,60);
 
-          draw_sprite(surface,levelbg3,(i*10)-add,vertical-add2-35);
 
 
 
@@ -640,9 +643,8 @@ blit(walkingspr,surface,188,29,(i*10)-add,vertical-add2,10,10);
 
         if (maptemp[k]==800) {
           //  levelbg3=create_bitmap(60,30);
-          blit(levelbg2,levelbg3,17,36,0,0,60,30);
+          masked_blit(levelbg2,surface,17,36,(i*10)-add,vertical-add2-20,60,30);
 
-          draw_sprite(surface,levelbg3,(i*10)-add,vertical-add2-20);
 
 
 
@@ -653,8 +655,7 @@ blit(walkingspr,surface,188,29,(i*10)-add,vertical-add2,10,10);
 
                if (maptemp[k]==801) {  
 
-          blit(levelbg2,levelbg4,2,80,0,0,40,25);
-      draw_sprite(surface,levelbg4,((i*10)-add)*2,vertical-add2-20);
+          masked_blit(levelbg2,surface,2,80,((i*10)-add)*2,vertical-add2-20,40,25);
 
 
 
@@ -783,7 +784,7 @@ tuu++;
               x=maptemp[k];
               x1=(int)(x/100);
               y=x-(x1*100);
-       blit( sprsheet,surface,x1-10,y-10,((i)*10)-add,vertical-add2 ,10, 10);
+       masked_blit( sprsheet,surface,x1-10,y-10,((i)*10)-add,vertical-add2 ,10, 10);
             rectfill(collisionpad,(i*10)-add,vertical-add2,((i+1)*10)-add,vertical+10,4);
 
 
@@ -891,7 +892,8 @@ putpixel(surface,(is)+(i*10)-add-1,(js)+vertical-10-add2,col);  }
 
  }
 
-midiseek++; if(midiseek>23){midiseek=0;
+
+midiseek++; if(midiseek>23){midiseek=0;
 stop_midi();  
               }
 
@@ -1013,7 +1015,7 @@ int keyboard(){
                      //   if (jmptimer<50){  jmptrig=1;  }
 
 
-             if (key[KEY_UP]) { jmptimer=0; dur=0;  jmptimer2+=0.5;   downtrig=1;  acce-=0.1; jmptrig=1;
+             if (key[KEY_UP]) { jmptimer=0; dur=0;  jmptimer2+=0.2;   downtrig=1;  acce+=0.01; jmptrig=1;
 
 
                       if (jmptimer2>50){downtrig=0;}  }
@@ -1030,14 +1032,14 @@ int keyboard(){
                                 dur2=0;
                              //    tx=tx*1.1;  tx2=tx2*1.1;
                             acce-=0.180;
-                                jmptimer+=0.5;
+                                jmptimer+=0.3;
 
                              timer2++;
                               if (acce<0){acce=0; jmptrig=0; downtrig=0;     }
 
                               if (downtrig==1){
 
-                              playery=playery-((t2player)*(acce/20));
+                              playery=playery-((t2player)*(acce/21));
                                              }
 
 
@@ -1056,14 +1058,19 @@ int keyboard(){
 
   //  if (plus>9400){plus==0;}
 
-      if (key[KEY_LEFT]) {  faced=-1;     playerx=playerx-tx2;   framey=133;   if (framex<120){framex=120;}   slow++; if (slow>10){slow=0;        framex=framex+30;              }  if (framex>=240){framex=120;}
+                   //  playerx--;
+
+
+
+
+      if (key[KEY_LEFT]) {  faced=-1;  if (spd<-5){spd=-5;} spd-=1;     playerx=playerx+((tx2)*((spd))/10);     framey=133;   if (framex<120){framex=120;}   slow++; if (slow>10){slow=0;        framex=framex+30;              }  if (framex>=240){framex=120;}
 
 
 
 
                                                            }
            //              if (z>8000){z=0;}
-    if (key[KEY_RIGHT]) {  faced=1;   playerx=playerx+tx;   framey=133;
+    if (key[KEY_RIGHT]) {  faced=1;  if (spd>5){spd=5;} spd+=1;     playerx=playerx+((tx)*((spd))/10);     framey=133;
 
                  slow++; if (slow>10){slow=0;   framex=framex+30;        }                 if (framex>=120){framex=0;}
                                                     }
@@ -1211,10 +1218,9 @@ int main(int argc, char *argv[]) {
   surface=create_bitmap(320,240);
    sprite=create_bitmap(20,30);
 // themap=create_bitmap (320,240);
-       levelbg3=create_bitmap(30,60);
-              levelbg4=create_bitmap(40,25);
 
-              levelbg2=create_bitmap(4000,240);
+
+              levelbg2=create_bitmap(320,240);
        levelbg1=load_bitmap("bgsprts.bmp",the_palette2);
   walkingspr=create_bitmap(640,480);
       walkingspr2=load_bitmap("walking.bmp",the_palette2);
