@@ -5,10 +5,11 @@
 char *bitmapbuffer;
  int z;
 int fry,frx,tuy,tuu,fri;
+    int verti,it;
 int add=0;
 int add2=0;
 double spd;
-
+int rollbitmap();
   int faced;
 int scroll;
 int level=1;
@@ -34,6 +35,7 @@ int roll=0;
 int keytrig=0;
 double acce;
 double i;
+  double rollbit;
 int y;
   int slow=0;;
 int framex=0;
@@ -487,6 +489,15 @@ int mapfunc(){
 
 
 
+
+                    rollbit++;
+              if (rollbit>100){it=330;verti=300;rollbit=0;}
+ 
+
+               rect(screen,(((it)*10)+7)-(rollbit/15),(verti+7)-(rollbit/15),((it)*10)+(rollbit/10),verti+(rollbit/10),rollbit/2 );
+           //      vline(screen,((it+1)*10)-rollbit/10,verti,verti+10,rollbit/2 );
+
+
            for (k=plus;k<(400)+plus;k++){
 
 
@@ -718,31 +729,6 @@ tuu++;
      
 
 
-           if (maptemp[k]>=1000){
-              int x,y;
-              double x1,y1;
-              x=maptemp[k];
-              x1=(int)(x/100);
-              y=x-(x1*100);
-       masked_blit( sprsheet,surface,x1-10,y-10,((i)*10)-add,vertical-add2 ,10, 10);
-            rectfill(collisionpad,(i*10)-add,vertical-add2,((i+1)*10)-add,vertical+10,4);
-
-
-// clear_to_color(sprites,4);
-
-
-
-
-
-
-//for (int ks=0;ks<100;ks++){
-
-
-
-//}
-
-
-                                          }
 /*
 
 
@@ -874,6 +860,36 @@ circlefill(surface,enemiposx,enemiposy,3,5);
   */
 
 
+             if (maptemp[k]>=1000){
+
+
+
+             
+              int x,y;
+              double x1,y1;
+              x=maptemp[k];
+              x1=(int)(x/100);
+              y=x-(x1*100);
+       masked_blit( sprsheet,surface,x1-10,y-10,((i)*10)-add,vertical-add2 ,10, 10);
+            rectfill(collisionpad,(i*10)-add,vertical-add2,((i+1)*10)-add,vertical+10,4);
+
+
+
+
+
+// clear_to_color(sprites,4);
+
+
+
+
+
+
+//for (int ks=0;ks<100;ks++){
+
+
+
+//}
+
 
 
      for (int y=0;y<5;y++){
@@ -884,11 +900,13 @@ circlefill(surface,enemiposx,enemiposy,3,5);
                         colx=getpixel(collisionpad,enemiposx-3,enemiposy+y-2);
            
 
-             if (colx==4){enemixt1=1; midiseek=0; play_midi(grand,0);  midi_seek(230); maptemp[k]=0; vervar=y;  mapfunc();    }
+             if (colx==4){enemixt1=1;    it=i; verti=vertical;
+          midiseek=0; play_midi(grand,0);  midi_seek(230); maptemp[k]=0; vervar=y;  mapfunc();    }
               colx=getpixel(collisionpad,enemiposx+3,enemiposy+y-2);
                         
 
-             if (colx==4){enemixt1=0; midiseek=0; play_midi(grand,0);  midi_seek(230); maptemp[k]=0; vervar=y; mapfunc();  }
+             if (colx==4){enemixt1=0;    it=i; verti=vertical;
+                        midiseek=0; play_midi(grand,0);  midi_seek(230); maptemp[k]=0; vervar=y; mapfunc();  }
 
 
 
@@ -903,11 +921,17 @@ circlefill(surface,enemiposx,enemiposy,3,5);
 
                         
 
-             if (colx==4){enemiyt1=0; midiseek=0; play_midi(grand,0);  midi_seek(230); maptemp[k]=0; horvar=x;  mapfunc();  }
+             if (colx==4){enemiyt1=0;    it=i; verti=vertical;
+
+             midiseek=0; play_midi(grand,0);  midi_seek(230); maptemp[k]=0; horvar=x;  mapfunc();  }
               colx=getpixel(collisionpad,enemiposx+x-2,enemiposy-3);
                         
 
-             if (colx==4){enemiyt1=1; midiseek=0; play_midi(grand,0);  midi_seek(230); maptemp[k]=0; horvar=x;
+             if (colx==4){enemiyt1=1;     it=i; verti=vertical;
+
+
+
+             midiseek=0; play_midi(grand,0);  midi_seek(230); maptemp[k]=0; horvar=x;
                                                   mapfunc(); }
                                           }
 
@@ -915,7 +939,7 @@ circlefill(surface,enemiposx,enemiposy,3,5);
 
 
 
-
+                                          }
 
 
    if (enemii.y<0){enemiyt1=2;horvar=-vervar;  }
@@ -930,7 +954,6 @@ if (enemii.x>290){enemixt1=-1;vervar=-horvar;}
 
 if (enemixt1>=1){enemii.x=enemii.x+(0.002)+(sin(horvar/30000));}
 if (enemixt1<=0){enemii.x=enemii.x-(0.002)+(sin(horvar/30000));}
-
 
 
 
@@ -961,6 +984,13 @@ stop_midi();
 
 }
 
+
+
+
+
+
+
+
 int keyboard(){
              tplayer=1;
             t=160;
@@ -969,8 +999,6 @@ int keyboard(){
 
            tx2=1;
            tx=1;
-
-
 
 
 
@@ -1314,7 +1342,7 @@ int main(int argc, char *argv[]) {
       levelbg=load_bitmap("levbg1.bmp",the_palette);
      spr1=create_bitmap(320,240);
   surface=create_bitmap(320,240);
-   sprite=create_bitmap(20,30);
+   sprite=create_bitmap(10,10);
 // themap=create_bitmap (320,240);
 
 
