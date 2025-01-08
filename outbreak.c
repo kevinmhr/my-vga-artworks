@@ -5,7 +5,8 @@
 char *bitmapbuffer;
  int z;
 int fry,frx,tuy,tuu,fri;
-    int verti,it;
+    int verti=300;
+    int it=400;
 int add=0;
 int add2=0;
 double spd;
@@ -15,6 +16,7 @@ int scroll;
 int level=1;
  int trail;
 int bullethit=1;
+   int cnt;
    int midiseek;
        int timer2;
   int bulletx;
@@ -23,7 +25,7 @@ double vervar,horvar;
 int d;
 
  int bulletdir;
-
+int ballsize;
     int bullettrig;
          int downtrig;
 
@@ -204,16 +206,16 @@ int map1[]={
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,2050,0,0,0,0,2050,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,2050,0,0,0,0,0,2050,0,0,2050,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,0,0,0,0
+0,0,0,0,0,0,0,0,0,0,2050,2050,0,0,0,0,2050,2050,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2050,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,0,0,0,0,0,0,0
 ,
-0,0,0,0,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,0,0,0,0
+0,0,0,0,0,0,0,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,0,0,0,0,0,0,0
 ,
-0,0,0,0,0,0,0,2020,0,0,0,2020,0,0,0,0,2020,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,6020,0,0,0,6020,0,0,0,0,6020,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,2020,0,0,0,2020,0,0,0,0,2020,2020,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,2020,0,0,2020,0,0,0,2020,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,6020,0,0,0,0,6020,0,0,6020,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,6020,0,0,0,0,6020,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -354,9 +356,12 @@ int col=0;
 col=getpixel(walkingspr,i,j+100);
 //if (col!=getpixel(walkingspr,1,1)){
 
-masked_blit(sprsheet,surface,102,10,playerx,150,28,10);
+masked_blit(sprsheet,surface,102,10,playerx,playery,28,10);
 
-rectfill(collisionpad,playerx,150,playerx+40,155,7);
+//masked_blit(sprsheet,surface,1,1,playerx,150,28,10);
+
+rectfill(collisionpad,playerx-5,playery,playerx+29,playery+5,7);
+//rectfill(surface,playerx,150,playerx+24,155,7);
 
 //putpixel(surface,playerx,150,col-1);
   //  }
@@ -372,7 +377,7 @@ int othersblittingtosprite(int otherposx;int otherposy;){
 }
 int init(){
 //          play_midi(grand,0);
-
+       enemiyt1=-1;
         maplenght=32;
         d=0;
           ti3=0;
@@ -380,16 +385,17 @@ int init(){
           z=0;
          acce=1;
          jmptimer=0;
-    enemii.x=1;
-      enemii.y=1;
+    playerx=110;
+ playery=170;
+    enemii.x=playerx;
+      enemii.y=playery;
+     vervar=2;
+     horvar=0;
 
-      enemiposx=1;
-       enemiposy=1;
        enemicnt=0;
       i=1;
     plus=100;
-playerx=110;
- playery=170;
+
   if (level>3){level=1;}
   if (level==1){
   for (int x=0;x<20000;x++){
@@ -781,8 +787,8 @@ putpixel(surface,(is)+(i*10)-add-1,(js)+vertical-10-add2,col);  }
 
 
 
-circlefill(surface,enemiposx,enemiposy,4,2);
-circlefill(surface,enemiposx,enemiposy,3,5);
+circlefill(surface,enemiposx,enemiposy,3,2);
+circlefill(surface,enemiposx,enemiposy,3,3);
 
 
 
@@ -891,47 +897,48 @@ circlefill(surface,enemiposx,enemiposy,3,5);
 //}
 
 
+     ballsize=3;
 
-     for (int y=0;y<5;y++){
-                          putpixel(surface,enemiposx-3,enemiposy+y-2,7);
-                 putpixel(surface,enemiposx+3,enemiposy+y-2,7);
+     for (int y=0;y<ballsize;y++){
+                          putpixel(surface,enemiposx-(ballsize/1.8),enemiposy+y-(ballsize/2.2),7);
+                 putpixel(surface,enemiposx+(ballsize/1.8),enemiposy+y-(ballsize/2.2),7);
           
 
-                        colx=getpixel(collisionpad,enemiposx-3,enemiposy+y-2);
+                        colx=getpixel(collisionpad,enemiposx-(ballsize/1.8),enemiposy+y-(ballsize/2.2));
            
 
-             if (colx==4){enemixt1=1;    it=i; verti=vertical;
-          midiseek=0; play_midi(grand,0);  midi_seek(230); maptemp[k]=0; vervar=y;  mapfunc();    }
-              colx=getpixel(collisionpad,enemiposx+3,enemiposy+y-2);
+             if (colx==4){enemixt1=1;  cnt++;  it=i; verti=vertical;
+          midiseek=0; play_midi(grand,0);  midi_seek(230); maptemp[k]=0;   mapfunc();    }
+              colx=getpixel(collisionpad,enemiposx+(ballsize/1.8),enemiposy+y-(ballsize/2.2));
                         
 
-             if (colx==4){enemixt1=0;    it=i; verti=vertical;
-                        midiseek=0; play_midi(grand,0);  midi_seek(230); maptemp[k]=0; vervar=y; mapfunc();  }
+             if (colx==4){enemixt1=0;  cnt++;  it=i; verti=vertical;
+                        midiseek=0; play_midi(grand,0);  midi_seek(230); maptemp[k]=0;  mapfunc();  }
 
 
 
                                           }
-               for (int x=0;x<5;x++){
-                 putpixel(surface,enemiposx+x-2,enemiposy-3,7);
-                 putpixel(surface,enemiposx+x-2,enemiposy+3,7);
+               for (int x=0;x<ballsize;x++){
+                 putpixel(surface,enemiposx+x-(ballsize/2.2),enemiposy-(ballsize/1.8),7);
+                 putpixel(surface,enemiposx+x-(ballsize/2.2),enemiposy+(ballsize/1.8),7);
            
 
 
-                        colx=getpixel(collisionpad,enemiposx+x-2,enemiposy+3);
+                        colx=getpixel(collisionpad,enemiposx+x-(ballsize/2.2),enemiposy+(ballsize/1.8));
 
                         
 
-             if (colx==4){enemiyt1=0;    it=i; verti=vertical;
+             if (colx==4){enemiyt1=0; cnt++;   it=i; verti=vertical;
 
-             midiseek=0; play_midi(grand,0);  midi_seek(230); maptemp[k]=0; horvar=x;  mapfunc();  }
-              colx=getpixel(collisionpad,enemiposx+x-2,enemiposy-3);
+             midiseek=0; play_midi(grand,0);  midi_seek(230); maptemp[k]=0;   mapfunc();  }
+              colx=getpixel(collisionpad,enemiposx+x-(ballsize/2.2),enemiposy-(ballsize/1.8));
                         
 
-             if (colx==4){enemiyt1=1;     it=i; verti=vertical;
+             if (colx==4){enemiyt1=1; cnt++;    it=i; verti=vertical;
 
 
 
-             midiseek=0; play_midi(grand,0);  midi_seek(230); maptemp[k]=0; horvar=x;
+             midiseek=0; play_midi(grand,0);  midi_seek(230); maptemp[k]=0;
                                                   mapfunc(); }
                                           }
 
@@ -942,18 +949,18 @@ circlefill(surface,enemiposx,enemiposy,3,5);
                                           }
 
 
-   if (enemii.y<0){enemiyt1=2;horvar=-vervar;  }
-if (enemii.y>200){enemiyt1=-1;horvar=-vervar;               }
+   if (enemii.y<0){enemiyt1=2;  }
+if (enemii.y>200){enemiyt1=-1;   }
 
-if (enemiyt1>=1){enemii.y=enemii.y+(0.002)+(sin(vervar/30000));}
-if (enemiyt1<=0){enemii.y=enemii.y-(0.002)+(sin(vervar/30000));}
+if (enemiyt1>=1){enemii.y=enemii.y+(0.0005)+(double)sin(0.0004*(vervar));}
+if (enemiyt1<=0){enemii.y=enemii.y-(0.0005)-(double)sin(0.0004*(vervar));}
 
 
-if (enemii.x<10){enemixt1=2;vervar=-horvar; }
-if (enemii.x>290){enemixt1=-1;vervar=-horvar;}
+if (enemii.x<10){enemixt1=2; }
+if (enemii.x>290){enemixt1=-1;}
 
-if (enemixt1>=1){enemii.x=enemii.x+(0.002)+(sin(horvar/30000));}
-if (enemixt1<=0){enemii.x=enemii.x-(0.002)+(sin(horvar/30000));}
+if (enemixt1>=1){enemii.x=enemii.x+(0.0005)+(double)sin(0.0004*(horvar));}
+if (enemixt1<=0){enemii.x=enemii.x-(0.0005)-(double)sin(0.0004*(horvar));}
 
 
 
@@ -1003,7 +1010,7 @@ int keyboard(){
 
 
 
-
+                  if (cnt==55){cnt=0;init();}
 
 
                   int colx;
@@ -1013,13 +1020,15 @@ int keyboard(){
 
 
 
-            for (int x=0;x<10;x++){
-                        colx=getpixel(collisionpad,enemiposx+x,enemiposy+10);
-                        
+            for (int x=0;x<ballsize;x++){
+
+                         colx=getpixel(collisionpad,enemiposx+x-(ballsize/2.2),enemiposy+(ballsize/1.8));
+ 
 
              if (colx==7){enemiyt1=0; midiseek=0; play_midi(grand,0);  midi_seek(309); horvar=x;  }
-              colx=getpixel(collisionpad,enemiposx+x,enemiposy);
-                        
+
+                colx=getpixel(collisionpad,enemiposx+x-(ballsize/2.2),enemiposy-(ballsize/1.8));
+          
 
              if (colx==7){enemiyt1=1;  midiseek=0; play_midi(grand,0);  midi_seek(309);horvar=x;
                                                   }
@@ -1033,13 +1042,17 @@ int keyboard(){
 
 
 
-     for (int y=0;y<10;y++){
-                        colx=getpixel(collisionpad,enemiposx,enemiposy+y);
+     for (int y=0;y<ballsize;y++){
 
+
+
+       colx=getpixel(collisionpad,enemiposx-(ballsize/1.8),enemiposy+y-(ballsize/2.2));
+           
 
              if (colx==7){enemixt1=0; vervar=y;     }
-              colx=getpixel(collisionpad,enemiposx+5,enemiposy+y);
-                        
+
+     colx=getpixel(collisionpad,enemiposx+(ballsize/1.8),enemiposy+y-(ballsize/2.2));
+                           
 
              if (colx==7){enemixt1=1; vervar=y;  }
 
@@ -1141,10 +1154,10 @@ int keyboard(){
                      //   if (jmptimer<50){  jmptrig=1;  }
 
 
-             if (key[KEY_UP]) { jmptimer=0; dur=0;  jmptimer2+=0.2;   downtrig=1;  acce+=0.01; jmptrig=1;
+           //  if (key[KEY_UP]) { jmptimer=0; dur=0;  jmptimer2+=0.2;   downtrig=1;  acce+=0.01; jmptrig=1;
 
 
-                      if (jmptimer2>50){downtrig=0;}  }
+            //          if (jmptimer2>50){downtrig=0;}  }
 
 
 
@@ -1210,7 +1223,7 @@ int keyboard(){
                     
                                                 bullethit=1;
 
-
+          /*
            if (key[KEY_SPACE]){  timerb=0;
                 if (faced<0){        bulletdir=-1;}
                 if (faced>0){          bulletdir=1;}
@@ -1221,7 +1234,7 @@ int keyboard(){
 
 
            play_midi(grand,0); midiseek=0; midi_seek(100); bullethit=0;  bullettrig=1;bulletx=playerx+10;      bulletx+=10;       ;bullety=playery+10;      }
-
+                            */
                             if (timerb>2000){bullettrig=0;timerb=0; }
 
 
@@ -1265,7 +1278,7 @@ int keyboard(){
 
 
 
-                                   if (tplayer>0){    playery+=(acce2/3);};
+                                 //  if (tplayer>0){    playery+=(acce2/3);};
                                      // acce-=0.0001;
 
 
