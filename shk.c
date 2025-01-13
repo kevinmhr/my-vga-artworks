@@ -44,6 +44,8 @@ int roll=0;
   int jmpbypass;
 int keytrig=0;
 double acce;
+
+double diag;
 double i;
 int y;
   int slow=0;;
@@ -607,7 +609,7 @@ int mapfunc(){
 
        slow2++;
 
-           for (k=plus;k<(5000)+plus;k++){
+           for (k=plus;k<(600)+plus;k++){
 
 
 
@@ -906,7 +908,7 @@ col=getpixel(walkingspr,is+frx,js+fry);
 
 
 
-                           for (int sprcnt=0;sprcnt<100;sprcnt+=10){
+                           for (int sprcnt=0;sprcnt<100;sprcnt+=1){
 
 
 
@@ -1089,22 +1091,25 @@ int y=0;
 
 
                }      mapfunc();    }
+                           diag+=1;
+       slow2++;if (slow2>2){    slow2=0; }
+   //    if (diag>30){diag=0;}
+       sprx1+=(sin(diag)*20);
+               spry1-=(sin(diag)*20);
 
-           sprx1+=sin(plus)/5;
-               spry1+=cos(plus)/5;
 
+    //    if(  sprx1>100){sprx1=sin(sprcnt/1000);}
+     //     if(  spry1>100){spry1=cos(sprcnt/1000);}
+                 spraym-=0.001;
+               //  if (spraym<-100){spraym=0;}
 
-        if(  sprx1>100){sprx1=sin(plus);}
-          if(  spry1>100){spry1=cos(plus);}
-
-                spraym-=0.1;
 
          spx=(cos(spraym)-sin(spraym));
       spy=(sin(spraym)+cos(spraym));
           sprayx[sprcnt]=(((spry1*spy))-((sprx1*spx)));
      sprayy[sprcnt]=(((sprx1*spy))+((spry1*spx)));
 
-              sprcnt+=10;
+              sprcnt+=1;
 if (sprcnt>100){sprcnt=0;}
 
 
@@ -1298,9 +1303,9 @@ if (sprcnt>100){sprcnt=0;}
 
 
 
-           if (key[KEY_SPACE]){ timerb+=5;
+           if (key[KEY_SPACE]){ timerb+=10;
 
-                                  play_midi(grand,0); midiseek=0; midi_seek(40);
+                              //    play_midi(grand,0); midiseek=0; midi_seek(40);
                  
 
                              if (erasure>99){erasure=0;}
@@ -1334,7 +1339,7 @@ if (sprcnt>100){sprcnt=0;}
 
 
                     for (int i=0;i<timerb;i++){
-                       if(timerb>200){timerb=200;}
+                       if(timerb>100){timerb=100;}
 
 
                              bulletdir=1;
