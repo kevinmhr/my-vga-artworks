@@ -9,9 +9,10 @@ int add=0;
 int add2=0;
        double spx,spy;
 int bulletcnt;
-     double sprx1;
-       double spry1;
+     double sprx1[100];
+       double spry1[100];
 int sprcnt;
+double sprcnt2;
 double spd;
 int slow2;
 double spraym=0;
@@ -488,8 +489,8 @@ playerx=110;
   if (level==1){
 
   for (int x=0;x<100;x++){
-  sprayx[x]=1;
-   sprayy[x]=1;
+  sprayx[x]=0;
+   sprayy[x]=0;
 
   bulletx[x]=playerx;
     bullety[x]=playery;
@@ -508,7 +509,7 @@ int y=0;
 
 // maptemp[x]=map1[x];
    maptemp[x]=0;
-     if (y>175){maptemp[i*j]=44;}
+     if (y>179){maptemp[i*j]=44;}
 
    if (y>180){maptemp[i*j]=77;}
     if (y>190){y=0;}
@@ -733,14 +734,14 @@ int js=0;
 
             //  eniy[enemicnt]=(sin(plus/20)*20)+(cos(plus/20)*20)+add2;
 
-                                        if (maptemp[k]==77) {
+                                         if (maptemp[k]==77) {
 //         if (slow2>1){     slow2=0;
 
 
 
                      eniy[enemicnt]=100+(sin((enemicnt/10)-(plus/20)))*40;
 
-
+                                enix[enemicnt]=sin(plus/10)*10;
 
     if (tuy>50000){    if (frx>88){frx=68;}
  frx=frx+20;tuy=0; }
@@ -873,10 +874,19 @@ col=getpixel(walkingspr,is+frx,js+fry);
 //}
 
 
+
+
    if (maptemp[k]==44) {
 
 
 
+                 if (sprcnt>10){sprcnt=0;}
+
+
+
+                        spraym=sprcnt*30;
+
+                     sprcnt+=1;
 
 
 
@@ -885,6 +895,7 @@ col=getpixel(walkingspr,is+frx,js+fry);
 
 
 
+                   //  eniy[enemicnt]=100+(sin((enemicnt/10)-(plus/20)))*40;
 
 
 
@@ -893,35 +904,28 @@ col=getpixel(walkingspr,is+frx,js+fry);
 
 
 
+                   spx=(cos(spraym)-sin(spraym));
+                  spy=(sin(spraym)+cos(spraym));
+
+
+          sprayx[sprcnt]=(((spry1[sprcnt]*spy))-((sprx1[sprcnt]*spx)));
+          sprayy[sprcnt]=(((sprx1[sprcnt]*spy))+((spry1[sprcnt]*spx)));
+
+
+                    for (int cnt=0;cnt<10;cnt+=1){
+
+            masked_blit( sprsheet,surface,30,50,((i)*10)-add,vertical*10 ,10, 10);
+            rectfill(collisionpad,(i*10)-add,vertical*10,((i+1)*10)-add,vertical*10,4);
+
+
+          rect(surface,sprayx[cnt]+(i*10)-add,sprayy[cnt]+(vertical*10),sprayx[cnt]+2+(i*10)-add,sprayy[cnt]+2+(vertical*10),plus);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-                           for (int sprcnt=0;sprcnt<100;sprcnt+=1){
-
-
-
-
-
-          rectfill(surface,sprayx[sprcnt]+(i*10)-add,sprayy[sprcnt]+100,sprayx[sprcnt]+1+(i*10)-add,sprayy[sprcnt]+1+100,7);
-
-
-
-
+                  }
 
                                           }
-                                                  }
+
 
 
         if (maptemp[k]==35) {
@@ -1049,8 +1053,24 @@ int keyboard(){
                t2=maplenght;
      
 
+
            tx2=1;
            tx=1;
+
+                  slow2++;if (slow2>2){ slow2=0;  spry1[sprcnt]+=2;
+
+
+                    sprx1[sprcnt]+=2;
+
+
+           if (spry1[sprcnt]>201){spry1[sprcnt]=0;}
+
+           if (sprx1[sprcnt]>201){sprx1[sprcnt]=0;}
+
+                    }
+
+
+
 
          for (int x=12;x<18;x++){
 
@@ -1076,41 +1096,42 @@ if (plus>1000){  add=0; add2=0; plus=0;
 int y=0;
  int i=0;
  int j=0;
+                           diag+=1;
+
+
   for (int x=0;x<50000;x++){
-
-
  y++;
- i+=5; if (i>100){i=0;j=j+5; }
+
+ i+=1; if (i>100){i=0;j=j+5; }
  if (j>500){j=0;}
 
 // maptemp[x]=map1[x];
    maptemp[x]=0;
- if (y>30){y=0;maptemp[i*j]=77;}
+     if (y>179){maptemp[i*j]=44;}
+
+   if (y>180){maptemp[i*j]=77;}
+    if (y>190){y=0;}
+
+
+               }      mapfunc();     }
 
 
 
 
-               }      mapfunc();    }
-                           diag+=1;
-       slow2++;if (slow2>2){    slow2=0; }
+
+ //      slow2++;if (slow2>2){    slow2=0; }
    //    if (diag>30){diag=0;}
-       sprx1+=(sin(diag)*20);
-               spry1-=(sin(diag)*20);
+      // sprx1+=(sin(diag)*20);
+     //  spry1-=(sin(diag)*20);
 
 
     //    if(  sprx1>100){sprx1=sin(sprcnt/1000);}
      //     if(  spry1>100){spry1=cos(sprcnt/1000);}
-                 spraym-=0.001;
+
                //  if (spraym<-100){spraym=0;}
 
 
-         spx=(cos(spraym)-sin(spraym));
-      spy=(sin(spraym)+cos(spraym));
-          sprayx[sprcnt]=(((spry1*spy))-((sprx1*spx)));
-     sprayy[sprcnt]=(((sprx1*spy))+((spry1*spx)));
 
-              sprcnt+=1;
-if (sprcnt>100){sprcnt=0;}
 
 
 
@@ -1231,9 +1252,9 @@ if (sprcnt>100){sprcnt=0;}
              //  if (framex<120){framex=120;}
 
              //    slow++; if (slow>10){slow=0;   framex=framex+30;  }
-            if (key[KEY_UP]) {playery-=1;
+            if (key[KEY_UP]) {playery-=0.5;
   }
-                      if (key[KEY_DOWN]) {playery+=1;
+                      if (key[KEY_DOWN]) {playery+=0.5;
              }
                   
                           if (key[KEY_SPACE]==0) {       }
@@ -1312,7 +1333,7 @@ if (sprcnt>100){sprcnt=0;}
 
 
 
-                        bullety[erasure]=playery+10;
+                        bullety[erasure]=((int)((playery+10)/10))*10;
                         bulletx[erasure]=playerx+10;
 
 
@@ -1357,7 +1378,7 @@ if (sprcnt>100){sprcnt=0;}
 
 
 
-                                rectfill(screen,bulletx[bulletcnt],bullety[bulletcnt],(bulletx[bulletcnt])+1,bullety[bulletcnt]+1,240);
+                                circle(screen,bulletx[bulletcnt],bullety[bulletcnt],1,230);
                                                                }
 
 
