@@ -224,10 +224,11 @@ int map1[]={
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-
+0,
 80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,
+80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,
+
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -392,7 +393,7 @@ int init(){
  playery=170;
     enemii.x=playerx;
       enemii.y=playery;
-     vervar=0;
+     vervar=2;
      horvar=0;
 
        enemicnt=0;
@@ -867,6 +868,25 @@ circlefill(surface,enemiposx,enemiposy,3,3);
 
   */
 
+          if (maptemp[k]==80) {
+
+
+                 rectfill(collisionpad,(i*10)-add,vertical-add2,((i+1)*10)-add,vertical+10,2);
+
+                  rectfill(surface,(i*10)-add,vertical-add2,((i+1)*10)-add,vertical+10,100);
+
+                  hline( surface,((i)*10)-add+linerol,vertical-add2+2 ,((i)*10)-add+10-linerol, 2);
+                     hline( surface,((i)*10)-add,vertical-add2 ,((i)*10)-add+10, 237);
+                         colx=getpixel(collisionpad,enemiposx,enemiposy);
+      if (colx==2){enemiyt1=-1; hits-=5;}
+
+
+
+
+                  }
+
+
+
 
              if (maptemp[k]>=1000){
 
@@ -899,7 +919,10 @@ circlefill(surface,enemiposx,enemiposy,3,3);
 //}
 
 
+
+
      ballsize=3;
+
 
      for (int y=0;y<ballsize;y++){
                           putpixel(surface,enemiposx-(ballsize/1.8),enemiposy+y-(ballsize/2.2),7);
@@ -909,12 +932,13 @@ circlefill(surface,enemiposx,enemiposy,3,3);
                         colx=getpixel(collisionpad,enemiposx-(ballsize/1.8),enemiposy+y-(ballsize/2.2));
 
 
-             if (colx==4){enemixt1=1;  hits+=10;   cnt++;  it=i; verti=vertical;
+             if (colx==coly){enemixt1=1;  hits+=10;   cnt++;  it=i; verti=vertical;
           midiseek=0; play_midi(grand,0);  midi_seek(230); maptemp[k]=0;   mapfunc();    }
+
               colx=getpixel(collisionpad,enemiposx+(ballsize/1.8),enemiposy+y-(ballsize/2.2));
                         
 
-             if (colx==4){enemixt1=0;   hits+=10; cnt++;  it=i; verti=vertical;
+             if (colx==coly){enemixt1=0;   hits+=10; cnt++;  it=i; verti=vertical;
                         midiseek=0; play_midi(grand,0);  midi_seek(230); maptemp[k]=0;  mapfunc();  }
 
 
@@ -937,10 +961,7 @@ circlefill(surface,enemiposx,enemiposy,3,3);
 
 
              if (colx==4){enemiyt1=1; cnt++;   hits+=10;   it=i; verti=vertical;
-
-
-
-             midiseek=0; play_midi(grand,0);  midi_seek(230); maptemp[k]=0;
+                      midiseek=0; play_midi(grand,0);  midi_seek(230); maptemp[k]=0;
                                                   mapfunc(); }
 
 
@@ -953,20 +974,6 @@ circlefill(surface,enemiposx,enemiposy,3,3);
 
 
 
-       if (maptemp[k]==80) {
-
-                  hline( surface,((i)*10)-add+linerol,vertical-add2+2 ,((i)*10)-add+10-linerol, 2);
-                     hline( surface,((i)*10)-add,vertical-add2 ,((i)*10)-add+10, 237);
-
-                 rectfill(collisionpad,(i*10)-add,vertical-add2,((i+1)*10)-add,vertical+10,443);
-
-
-
-
-
-
-                  }
-
 
 
 
@@ -975,18 +982,18 @@ circlefill(surface,enemiposx,enemiposy,3,3);
 
 
    if (enemii.y<0){enemiyt1=2;  }
-if (enemii.y>200){hits=0;init();   }
+if (enemii.y>=200){enemiyt1=-1;    }
 
 
-if (enemiyt1>=1){enemii.y+=0.0001+(double)(sin(vervar/3000));}
-if (enemiyt1<=0){enemii.y-=0.0001+(double)(sin(vervar/3000));}
+if (enemiyt1>=1){enemii.y+=0.001;}
+if (enemiyt1<=0){enemii.y-=0.001;}
 
 
 if (enemii.x<=0){enemixt1=2; }
 if (enemii.x>=320){enemixt1=-1;}
 
-if (enemixt1>=1){enemii.x+=0.0001+(double)(sin(horvar/3000));}
-if (enemixt1<=0){enemii.x-=0.0001+(double)(sin(horvar/3000));}
+if (enemixt1>=1){enemii.x+=(horvar);}
+if (enemixt1<=0){enemii.x-=(horvar);}
 
 
 
@@ -1020,6 +1027,7 @@ stop_midi();
 
 
                textprintf_ex(surface,font,10,10,250,0,"%i",hits);
+                  textprintf_ex(surface,font,300,10,250,0,"%d",horvar*10);
 
 
 
@@ -1045,7 +1053,7 @@ int keyboard(){
 
 
 
-                  if (cnt==55){cnt=0;init();}
+                  if (cnt>55){cnt=0;init();}
 
 
                   int colx;
@@ -1055,25 +1063,25 @@ int keyboard(){
 
 
 
-            for (double x=0;x<ballsize;x+=0.5){
+            for (int x=-1;x<ballsize+1;x+=1){
 
                          colx=getpixel(collisionpad,enemiposx+x-(ballsize/2.2),enemiposy+(ballsize/1.8));
  
 
-             if (colx==7){enemiyt1=0; midiseek=0; play_midi(grand,0);  midi_seek(309);  horvar=x;     hits+=10; }
+             if (colx==7){enemiyt1=0; midiseek=0; play_midi(grand,0);  midi_seek(309); if (x>1){ horvar-=0.00005; }  if (x<=1){ horvar+=0.00005; }   hits+=10; }
 
                 colx=getpixel(collisionpad,enemiposx+x-(ballsize/2.2),enemiposy-(ballsize/1.8));
           
 
-             if (colx==7){enemiyt1=1;  midiseek=0; play_midi(grand,0);  midi_seek(309); horvar=x;   hits+=10; }
-
-
+             if (colx==7){enemiyt1=1;  midiseek=0; play_midi(grand,0);  midi_seek(309); if (x>1){ horvar-=0.00005; } if (x<=1){ horvar+=0.00005; }  hits+=10; }
 
 
 
                                           }
 
 
+                  if (horvar<=-0.001){horvar=-0.001;}
+      if (horvar>=0.001){horvar=0.001;}
 
 
 
@@ -1081,19 +1089,19 @@ int keyboard(){
 
 
 
-     for (double y=0;y<ballsize;y+=0.5){
+/*     for (double y=0;y<ballsize;y+=1){
 
 
 
        colx=getpixel(collisionpad,enemiposx-(ballsize/1.8),enemiposy+y-(ballsize/2.2));
            
-
-             if (colx==7){enemixt1=0;vervar=y;  }
+                             if (vervar>5){vervar=5;}
+             if (colx==7){enemixt1=0;if (y>=1){ vervar-=1; }  if (y<1){ vervar+=1; }   }
 
      colx=getpixel(collisionpad,enemiposx+(ballsize/1.8),enemiposy+y-(ballsize/2.2));
                            
 
-             if (colx==7){enemixt1=1;vervar=y; }
+             if (colx==7){enemixt1=1;if (y>=1){ vervar-=1; }  if (y<1){ vervar+=1; }  }
 
 
 
@@ -1101,7 +1109,7 @@ int keyboard(){
 
 
 
-
+   */
 
 
          for (int x=12;x<18;x++){
