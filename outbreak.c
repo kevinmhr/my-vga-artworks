@@ -7,6 +7,9 @@ char *bitmapbuffer;
 int fry,frx,tuy,tuu,fri;
     int verti=300;
     int it=400;
+double xt=2;
+double yt=2;
+ double xu,yu;
 int add=0;
 int add2=0;
 unsigned int hits;
@@ -517,7 +520,6 @@ int mapfunc(){
 
 
 
-
       //      if (key[KEY_LEFT]){ add-=1;   }
       //     if (key[KEY_LEFT]){ add+=1;   }
       //     if (add>10){add=0;}
@@ -731,7 +733,7 @@ col=getpixel(walkingspr,is+frx,js+fry);
 */
 
    if (fri>=317){fri=287;}
- if (tuu>22000){  fri=fri+10;
+ if (tuu>10){  fri=fri+10;
  tuu=0; }
 tuu++;
 
@@ -785,13 +787,6 @@ putpixel(surface,(is)+(i*10)-add-1,(js)+vertical-10-add2,col);  }
 */
 
 
-
-         
-
-
-
-circlefill(surface,enemiposx,enemiposy,3,2);
-circlefill(surface,enemiposx,enemiposy,3,3);
 
 
 
@@ -868,6 +863,21 @@ circlefill(surface,enemiposx,enemiposy,3,3);
 
   */
 
+     xu=(sin(enemiposy/tuu)+cos(enemiposy/tuu));
+  yu=(cos(enemiposy/tuu)-sin(enemiposy/tuu));
+
+
+   xu=xu*1.8;
+   yu=yu*1.8;
+   
+    circle(surface,enemiposx,enemiposy,3.5,7);
+   //   rect(surface,enemiposx,enemiposy,enemiposx+xu,enemiposy+yu,8);
+//     putpixel(surface,enemiposx+xu,enemiposy+yu,7);
+     line(surface,enemiposx,enemiposy,enemiposx+xu,enemiposy+yu,35);
+     //   circle(surface,enemiposx,enemiposy,3,3);
+  
+
+
           if (maptemp[k]==80) {
 
 
@@ -925,8 +935,8 @@ circlefill(surface,enemiposx,enemiposy,3,3);
 
 
      for (int y=0;y<ballsize;y++){
-                          putpixel(surface,enemiposx-(ballsize/1.8),enemiposy+y-(ballsize/2.2),7);
-                 putpixel(surface,enemiposx+(ballsize/1.8),enemiposy+y-(ballsize/2.2),7);
+                   //       putpixel(surface,enemiposx-(ballsize/1.8),enemiposy+y-(ballsize/2.2),7);
+               //  putpixel(surface,enemiposx+(ballsize/1.8),enemiposy+y-(ballsize/2.2),7);
           
 
                         colx=getpixel(collisionpad,enemiposx-(ballsize/1.8),enemiposy+y-(ballsize/2.2));
@@ -945,8 +955,8 @@ circlefill(surface,enemiposx,enemiposy,3,3);
 
                                           }
                for (int x=0;x<ballsize;x++){
-                 putpixel(surface,enemiposx+x-(ballsize/2.2),enemiposy-(ballsize/1.8),7);
-                 putpixel(surface,enemiposx+x-(ballsize/2.2),enemiposy+(ballsize/1.8),7);
+            //     putpixel(surface,enemiposx+x-(ballsize/2.2),enemiposy-(ballsize/1.8),7);
+            //     putpixel(surface,enemiposx+x-(ballsize/2.2),enemiposy+(ballsize/1.8),7);
            
 
 
@@ -1009,6 +1019,7 @@ if (enemixt1<=0){enemii.x-=(horvar);}
 
 
 
+
  }
 
 
@@ -1051,9 +1062,7 @@ int keyboard(){
            tx=1;
 
 
-
-
-                  if (cnt>55){cnt=0;init();}
+                  if (cnt>54){cnt=0;init();}
 
 
                   int colx;
@@ -1245,6 +1254,8 @@ int keyboard(){
   //  if (plus>9400){plus==0;}
 
                    //  playerx--;
+
+
 
 
 
