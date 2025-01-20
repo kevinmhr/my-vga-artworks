@@ -871,6 +871,7 @@ putpixel(surface,(is)+(i*10)-add-1,(js)+vertical-10-add2,col);  }
    yu=yu*1.8;
    
     circle(surface,enemiposx,enemiposy,3.5,7);
+
    //   rect(surface,enemiposx,enemiposy,enemiposx+xu,enemiposy+yu,8);
 //     putpixel(surface,enemiposx+xu,enemiposy+yu,7);
      line(surface,enemiposx,enemiposy,enemiposx+xu,enemiposy+yu,35);
@@ -883,10 +884,10 @@ putpixel(surface,(is)+(i*10)-add-1,(js)+vertical-10-add2,col);  }
 
                  rectfill(collisionpad,(i*10)-add,vertical-add2,((i+1)*10)-add,vertical+10,2);
 
-                  rectfill(surface,(i*10)-add,vertical-add2,((i+1)*10)-add,vertical+10,100);
+                  rectfill(surface,(i*10)-add,vertical-add2,((i+1)*10)-add,vertical+10,105);
 
                   hline( surface,((i)*10)-add+linerol,vertical-add2+2 ,((i)*10)-add+10-linerol, 2);
-                     hline( surface,((i)*10)-add,vertical-add2 ,((i)*10)-add+10, 237);
+                     hline( surface,((i)*10)-add,vertical-add2 ,((i)*10)-add+10, 228);
                          colx=getpixel(collisionpad,enemiposx,enemiposy);
       if (colx==2){enemiyt1=-1; hits-=5;}
 
@@ -927,7 +928,6 @@ putpixel(surface,(is)+(i*10)-add-1,(js)+vertical-10-add2,col);  }
 
 
 //}
-
 
 
 
@@ -1068,29 +1068,26 @@ int keyboard(){
                   int colx;
            enemiposx=enemii.x;
            enemiposy=enemii.y;
+               rectfill(collisionpad,enemiposx,enemiposy,enemiposx+3,enemiposy+3,10);
 
 
+               int rocketsize=28;
 
+            for (int x=-3;x<rocketsize;x+=1){
 
-            for (int x=-1;x<ballsize+1;x+=1){
-
-                         colx=getpixel(collisionpad,enemiposx+x-(ballsize/2.2),enemiposy+(ballsize/1.8));
+                         colx=getpixel(collisionpad,playerx+x,playery);
  
 
-             if (colx==7){enemiyt1=0; midiseek=0; play_midi(grand,0);  midi_seek(309); if (x>1){ horvar-=0.00005; }  if (x<=1){ horvar+=0.00005; }   hits+=10; }
+             if (colx==10){enemiyt1=-1; midiseek=0; play_midi(grand,0);  midi_seek(309); if (x>rocketsize-rocketsize/3){ horvar=horvar+0.00005; }  if (x<rocketsize/3){ horvar=horvar+0.00005; } else {horvar=horvar-0.000045;}  hits+=10; }
 
-                colx=getpixel(collisionpad,enemiposx+x-(ballsize/2.2),enemiposy-(ballsize/1.8));
-          
-
-             if (colx==7){enemiyt1=1;  midiseek=0; play_midi(grand,0);  midi_seek(309); if (x>1){ horvar-=0.00005; } if (x<=1){ horvar+=0.00005; }  hits+=10; }
 
 
 
                                           }
 
+                           if (horvar<=0){horvar=0.0005;}
+      if (horvar>=0.0015){horvar=0.0015;}
 
-                  if (horvar<=-0.001){horvar=-0.001;}
-      if (horvar>=0.001){horvar=0.001;}
 
 
 
@@ -1320,8 +1317,8 @@ int keyboard(){
 
                                                                         }
 
-                                     linerol+=1;
-                   if (linerol>10){linerol=0;}
+                                 slow++; if (slow>100){  slow=0;  linerol+=1;}
+                   if (linerol>5){linerol=0;}
 
 
 
