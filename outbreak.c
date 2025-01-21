@@ -20,6 +20,7 @@ double scroll;
 int level=1;
  int trail;
 int bullethit=1;
+int leveltotal=0;
    int cnt;
    int midiseek;
        int timer2;
@@ -209,26 +210,26 @@ int map1[]={
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,2050,0,0,0,0,2050,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,2050,2050,0,0,0,0,2050,2050,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2050,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,0,0,0,0,0,0,0
-,
-0,0,0,0,0,0,0,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,2050,0,0,0,0,0,0,0
-,
-0,0,0,0,0,0,0,2020,0,0,0,2020,0,0,0,0,2020,2020,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,2020,0,0,2020,0,0,0,2020,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,6020,0,0,0,0,6020,0,0,6020,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,6020,0,0,0,0,6020,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,8147,8147,8147,8147,8147,8147,8147,8147,8147,8147,8147,8147,8147,8147,8147,8147,8147,8147,8147,8147,8147,8147,0,0,0,
+0,0,0,0,0,0,0,8147,8147,8147,8147,8147,8147,8147,8147,8147,8147,8147,8147,8147,8147,8147,8147,8147,8147,8147,8147,8147,8147,0,0,0,
+
+
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,7347,7347,0,0,7347,7347,0,0,7347,7347,0,0,7347,7347,0,0,7347,7347,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,7347,7347,0,0,7347,7347,0,0,7347,7347,0,0,7347,7347,0,0,7347,7347,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,7347,7347,0,0,7347,7347,0,0,7347,7347,0,0,7347,7347,0,0,7347,7347,0,0,0,0,0,
+
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,9147,8147,9147,8147,9147,8147,9147,8147,9147,8147,9147,8147,9147,8147,9147,8147,9147,8147,9147,8147,9147,8147,0,0,0,
+0,0,0,0,0,0,0,9147,8147,9147,8147,9147,8147,9147,8147,9147,8147,9147,8147,9147,8147,9147,8147,9147,8147,9147,8147,9147,8147,0,0,0,
+0,0,0,0,0,0,2047,2047,2047,2047,2047,2047,2047,2047,2047,2047,2047,2047,2047,2047,2047,2047,2047,2047,2047,2047,2047,2047,2047,2047,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,
 80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,
 
@@ -405,16 +406,16 @@ int init(){
 
   if (level>3){level=1;}
   if (level==1){
-  for (int x=0;x<20000;x++){
+  for (int x=0;x<1000;x++){
 
  maptemp[x]=map1[x];
-
+ if ( maptemp[x]!=80){ if ( map1[x]>0){ leveltotal+=1; }  }
                }
 
 
-               levelbg=load_bitmap("levbg1.bmp",the_palette);
-               levelbg=create_bitmap(320,240);
-               clear_to_color(levelbg,0);
+               levelbg=load_bitmap("bg1.bmp",the_palette);
+             //  levelbg=create_bitmap(320,240);
+              // clear_to_color(levelbg,0);
 
                }
    if (level==2){
@@ -456,7 +457,7 @@ int mapfunc(){
 
 //     clear_to_color(levelbg,0);
     clear_to_color(surface,0);
-     blit(levelbg,surface,bgscrolx,bgscroly,0,0,320,240);
+     blit(levelbg,surface,0,0,0,0,320,240);
   clear_to_color(collisionpad,1);
 
 
@@ -533,7 +534,7 @@ int mapfunc(){
               //    vertical=vertical+10;
                   i++;
                //   if (vertical>24){i=i+1;}
-            if (i>maplenght){vertical=vertical+10;i=1;            }
+            if (i>maplenght-1){vertical=vertical+10;i=0;            }
 
 
  tuy++;
@@ -870,11 +871,11 @@ putpixel(surface,(is)+(i*10)-add-1,(js)+vertical-10-add2,col);  }
    xu=xu*1.8;
    yu=yu*1.8;
    
-    circle(surface,enemiposx,enemiposy,3.5,7);
+    circlefill(surface,enemiposx,enemiposy,3.5,237);
 
    //   rect(surface,enemiposx,enemiposy,enemiposx+xu,enemiposy+yu,8);
 //     putpixel(surface,enemiposx+xu,enemiposy+yu,7);
-     line(surface,enemiposx,enemiposy,enemiposx+xu,enemiposy+yu,35);
+     line(surface,enemiposx,enemiposy,enemiposx+xu,enemiposy+yu,0);
      //   circle(surface,enemiposx,enemiposy,3,3);
   
 
@@ -889,7 +890,7 @@ putpixel(surface,(is)+(i*10)-add-1,(js)+vertical-10-add2,col);  }
                   hline( surface,((i)*10)-add+linerol,vertical-add2+2 ,((i)*10)-add+10-linerol, 2);
                      hline( surface,((i)*10)-add,vertical-add2 ,((i)*10)-add+10, 228);
                          colx=getpixel(collisionpad,enemiposx,enemiposy);
-      if (colx==2){enemiyt1=-1; hits-=5;}
+      if (colx==2){enemiyt1=-1; hits-=3;}
 
 
 
@@ -1038,7 +1039,7 @@ stop_midi();
 
 
                textprintf_ex(surface,font,10,10,250,0,"%i",hits);
-                  textprintf_ex(surface,font,300,10,250,0,"%d",horvar*10);
+                  textprintf_ex(surface,font,280,10,250,0,"%i",leveltotal);
 
 
 
@@ -1062,7 +1063,7 @@ int keyboard(){
            tx=1;
 
 
-                  if (cnt>54){cnt=0;init();}
+                  if (cnt>leveltotal-1){cnt=0;init();}
 
 
                   int colx;
@@ -1078,14 +1079,14 @@ int keyboard(){
                          colx=getpixel(collisionpad,playerx+x,playery);
  
 
-             if (colx==10){enemiyt1=-1; midiseek=0; play_midi(grand,0);  midi_seek(309); if (x>rocketsize-rocketsize/3){ horvar=horvar+0.00005; }  if (x<rocketsize/3){ horvar=horvar+0.00005; } else {horvar=horvar-0.000045;}  hits+=10; }
+             if (colx==10){enemiyt1=-1; midiseek=0; play_midi(grand,0);  midi_seek(309); if (x>rocketsize-rocketsize/2){ horvar=horvar+0.00005; }  if (x<rocketsize/3){ horvar=horvar+0.00005; } else {horvar=horvar-0.000055;}   }
 
 
 
 
                                           }
 
-                           if (horvar<=0){horvar=0.0005;}
+                           if (horvar<=0){horvar=0.001;}
       if (horvar>=0.0015){horvar=0.0015;}
 
 
@@ -1406,10 +1407,10 @@ int main(int argc, char *argv[]) {
    sprsheet=load_bitmap("mapbit.bmp",the_palette2);
    grand=load_midi("canyon.mid");
 
-   //   set_palette(the_palette);
+
 //    the_block1= load_bitmap("block1.bmp",the_palette2);
 
-      levelbg=load_bitmap("levbg1.bmp",the_palette);
+      levelbg=load_bitmap("bg1.bmp",the_palette2);
      spr1=create_bitmap(320,240);
   surface=create_bitmap(320,240);
    sprite=create_bitmap(10,10);
@@ -1421,7 +1422,7 @@ int main(int argc, char *argv[]) {
   walkingspr=create_bitmap(640,480);
       walkingspr2=load_bitmap("walking.bmp",the_palette2);
  //      spritefunction();
-
+      set_palette(the_palette2);
   int x,y,col,col2;
     for (int i=0;i<2400000;i++){
     x++; if(x>4000){x=0;y++;}
