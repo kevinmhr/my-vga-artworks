@@ -16,6 +16,7 @@ unsigned int hits;
 double spd;
 int rollbitmap();
   int faced;
+int resetgame=0;
 double scroll;
 int level=1;
  int trail;
@@ -231,6 +232,7 @@ int map1[]={
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,
+
 80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,
 
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -384,7 +386,7 @@ int othersblittingtosprite(int otherposx;int otherposy;){
 }
 int init(){
 //          play_midi(grand,0);
-
+        leveltotal=0;
        enemiyt1=-1;
         maplenght=32;
         d=0;
@@ -446,7 +448,7 @@ eniy[x]=0;
 int mapfunc(){
 
 
-
+                if (resetgame==1){resetgame=0;init();}
 
 
                   int enitx=0.1;
@@ -889,8 +891,6 @@ putpixel(surface,(is)+(i*10)-add-1,(js)+vertical-10-add2,col);  }
 
                   hline( surface,((i)*10)-add+linerol,vertical-add2+2 ,((i)*10)-add+10-linerol, 2);
                      hline( surface,((i)*10)-add,vertical-add2 ,((i)*10)-add+10, 228);
-                         colx=getpixel(collisionpad,enemiposx,enemiposy);
-      if (colx==2){enemiyt1=-1; hits-=3;}
 
 
 
@@ -1061,6 +1061,8 @@ int keyboard(){
 
            tx2=1;
            tx=1;
+                                colx=getpixel(collisionpad,enemiposx,enemiposy);
+      if (colx==2){ hits=0;cnt=0;init(); }
 
 
                   if (cnt>leveltotal-1){cnt=0;init();}
