@@ -397,9 +397,9 @@ int init(){
          jmptimer=0;
     playerx=110;
  playery=170;
-    enemii.x=playerx;
+    enemii.x=playerx+10;
       enemii.y=playery;
-     vervar=2;
+     vervar=0;
      horvar=0;
 
        enemicnt=0;
@@ -1071,7 +1071,7 @@ int keyboard(){
                   int colx;
            enemiposx=enemii.x;
            enemiposy=enemii.y;
-               rectfill(collisionpad,enemiposx,enemiposy,enemiposx+3,enemiposy+3,10);
+               rectfill(collisionpad,enemiposx-3,enemiposy-3,enemiposx+3,enemiposy+3,10);
 
 
                int rocketsize=28;
@@ -1080,16 +1080,18 @@ int keyboard(){
 
                          colx=getpixel(collisionpad,playerx+x,playery);
  
-
-             if (colx==10){enemiyt1=-1; midiseek=0; play_midi(grand,0);  midi_seek(309); if (x>rocketsize-rocketsize/2){ horvar=horvar+0.00005; }  if (x<rocketsize/3){ horvar=horvar+0.00005; } else {horvar=horvar-0.000055;}   }
+               //        rectfill(screen,playerx+rocketsize-3,playery,(playerx+rocketsize-rocketsize/3)-1,playery+10,228);
+                 //              rectfill(screen,playerx,playery,(playerx+rocketsize/3)-2,playery+10,228);
+           
+             if (colx==10){enemiyt1=-1; midiseek=0; play_midi(grand,0);  midi_seek(309); if (x>(rocketsize-rocketsize/3)-2){ horvar=horvar+0.00005; }  if (x<(rocketsize/3)-1){ horvar=horvar+0.00005; } else {horvar=horvar-0.000055;}   }
 
 
 
 
                                           }
 
-                           if (horvar<=0){horvar=0.001;}
-      if (horvar>=0.0015){horvar=0.0015;}
+                           if (horvar<0.00055){horvar=0.00055;}
+      if (horvar>0.0015){horvar=0.0015;}
 
 
 
