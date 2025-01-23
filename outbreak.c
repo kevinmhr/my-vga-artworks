@@ -1083,7 +1083,7 @@ int keyboard(){
                //        rectfill(screen,playerx+rocketsize-3,playery,(playerx+rocketsize-rocketsize/3)-1,playery+10,228);
                  //              rectfill(screen,playerx,playery,(playerx+rocketsize/3)-2,playery+10,228);
            
-             if (colx==10){enemiyt1=-1; midiseek=0; play_midi(grand,0);  midi_seek(309); if (x>(rocketsize-rocketsize/3)-2){ horvar=horvar+0.00005; }  if (x<(rocketsize/3)-1){ horvar=horvar+0.00005; } else {horvar=horvar-0.000055;}   }
+             if (colx==10){enemiyt1=-1; midiseek=0; play_midi(grand,0);  midi_seek(309); if (x>(rocketsize-(rocketsize/3))-1){ horvar=horvar+0.00005; }  if (x<(rocketsize/3)-1){ horvar=horvar+0.00005; } horvar=horvar-0.000025;   }
 
 
 
