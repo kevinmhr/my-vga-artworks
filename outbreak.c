@@ -943,14 +943,14 @@ putpixel(surface,(is)+(i*10)-add-1,(js)+vertical-10-add2,col);  }
                         colx=getpixel(collisionpad,enemiposx-(ballsize/1.8),enemiposy+y-(ballsize/2.2));
 
 
-             if (colx==4){enemixt1=1;  hits+=10;   cnt++;  it=i; verti=vertical;
-          midiseek=0; play_midi(grand,0);  midi_seek(230); maptemp[k]=0;   mapfunc();    }
+             if (colx==4){for (int i=0;i<10;i++){  sound(((k)));}enemixt1=1;  hits+=10;   cnt++;  it=i; verti=vertical;
+          midiseek=0; play_midi(grand,0);  midi_seek(328); maptemp[k]=0;   mapfunc();    }
 
               colx=getpixel(collisionpad,enemiposx+(ballsize/1.8),enemiposy+y-(ballsize/2.2));
                         
 
-             if (colx==4){enemixt1=0;   hits+=10; cnt++;  it=i; verti=vertical;
-                        midiseek=0; play_midi(grand,0);  midi_seek(230); maptemp[k]=0;  mapfunc();  }
+             if (colx==4){for (int i=0;i<10;i++){  sound(((k)));}enemixt1=0;   hits+=10; cnt++;  it=i; verti=vertical;
+                        midiseek=0; play_midi(grand,0);  midi_seek(328); maptemp[k]=0;  mapfunc();  }
 
 
 
@@ -965,14 +965,14 @@ putpixel(surface,(is)+(i*10)-add-1,(js)+vertical-10-add2,col);  }
 
 
 
-             if (colx==4){enemiyt1=0;  hits+=10; cnt++;   it=i; verti=vertical;
+             if (colx==4){for (int i=0;i<10;i++){ sound((k));} enemiyt1=0;  hits+=10; cnt++;   it=i; verti=vertical;
 
-             midiseek=0; play_midi(grand,0);  midi_seek(230); maptemp[k]=0;   mapfunc();  }
+             midiseek=0; play_midi(grand,0);  midi_seek(328); maptemp[k]=0;   mapfunc();  }
               colx=getpixel(collisionpad,enemiposx+x-(ballsize/2.2),enemiposy-(ballsize/1.7));
 
 
-             if (colx==4){enemiyt1=1; cnt++;   hits+=10;   it=i; verti=vertical;
-                      midiseek=0; play_midi(grand,0);  midi_seek(230); maptemp[k]=0;
+             if (colx==4){for (int i=0;i<10;i++){ sound((k));} enemiyt1=1; cnt++;   hits+=10;   it=i; verti=vertical;
+                      midiseek=0; play_midi(grand,0);  midi_seek(328); maptemp[k]=0;
                                                   mapfunc(); }
 
 
@@ -1024,8 +1024,9 @@ if (enemixt1<=0){enemii.x-=(horvar);}
  }
 
 
-midiseek++; if(midiseek>40){midiseek=0;
+midiseek++; if(midiseek>20){midiseek=0;
 stop_midi();  
+sound(0);
               }
 
 
@@ -1083,7 +1084,8 @@ int keyboard(){
                //        rectfill(screen,playerx+rocketsize-3,playery,(playerx+rocketsize-rocketsize/3)-1,playery+10,228);
                  //              rectfill(screen,playerx,playery,(playerx+rocketsize/3)-2,playery+10,228);
            
-             if (colx==10){enemiyt1=-1; midiseek=0; play_midi(grand,0);  midi_seek(309); if (x>(rocketsize-(rocketsize/3))-1){ horvar=horvar+0.00005; }  if (x<(rocketsize/3)-1){ horvar=horvar+0.00005; } horvar=horvar-0.000025;   }
+             if (colx==10){enemiyt1=-1;for (int i=0;i<10;i++){ sound(200);}  sound(0); midiseek=0; play_midi(grand,0);  midi_seek(240); if (x>(rocketsize-(rocketsize/3))-1){ horvar=horvar+0.00005; }  if (x<(rocketsize/3)-1){ horvar=horvar+0.00005; } horvar=horvar-0.000025;   }
+
 
 
 
@@ -1412,6 +1414,7 @@ int main(int argc, char *argv[]) {
    grand=load_midi("canyon.mid");
 
 
+      
 //    the_block1= load_bitmap("block1.bmp",the_palette2);
 
       levelbg=load_bitmap("bg1.bmp",the_palette2);
