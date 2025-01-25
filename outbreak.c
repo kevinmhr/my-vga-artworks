@@ -5,6 +5,7 @@
 char *bitmapbuffer;
  int z;
 int fry,frx,tuy,tuu,fri;
+    int slow3;
     int verti=300;
     int it=400;
 double xt=2;
@@ -14,6 +15,13 @@ int add=0;
 int add2=0;
 unsigned int hits;
 double spd;
+double sprx1[500];
+double spry1[500];
+double sprayx[500];
+double sprayy[500];
+double spraym;
+int sprcnt;
+int cnt;
 int rollbitmap();
   int faced;
 int resetgame=0;
@@ -22,6 +30,7 @@ int level=1;
  int trail;
 int bullethit=1;
 int leveltotal=0;
+ void stars();
    int cnt;
    int midiseek;
        int timer2;
@@ -66,7 +75,7 @@ int t2;
  double tplayer;
      double t2player;
 int x2;
-
+int slow2;
 int ti;
 int ti2;
 int ti3=1;
@@ -99,7 +108,7 @@ double jmptimer;
 int enemixt1=2;
 int enemiyt1=2;
 int laddercolor;
-
+double spx,spy;
 typedef struct OBJECT{
 double x;
 double y;
@@ -459,7 +468,8 @@ int mapfunc(){
 
 //     clear_to_color(levelbg,0);
     clear_to_color(surface,0);
-     blit(levelbg,surface,0,0,0,0,320,240);
+        stars();
+     masked_blit(levelbg,surface,0,0,0,0,320,240);
   clear_to_color(collisionpad,1);
 
 
@@ -996,15 +1006,15 @@ putpixel(surface,(is)+(i*10)-add-1,(js)+vertical-10-add2,col);  }
 if (enemii.y>=200){enemiyt1=-1;    }
 
 
-if (enemiyt1>=1){enemii.y+=0.001;}
-if (enemiyt1<=0){enemii.y-=0.001;}
+if (enemiyt1>=1){enemii.y+=0.0008;}
+if (enemiyt1<=0){enemii.y-=0.0008;}
 
 
 if (enemii.x<=5){enemixt1=2; }
 if (enemii.x>=315){enemixt1=-1;}
 
-if (enemixt1>=1){enemii.x+=(horvar);}
-if (enemixt1<=0){enemii.x-=(horvar);}
+if (enemixt1>=1){enemii.x+=(horvar-0.0001);}
+if (enemixt1<=0){enemii.x-=(horvar-0.0001);}
 
 
 
@@ -1027,7 +1037,14 @@ if (enemixt1<=0){enemii.x-=(horvar);}
 midiseek++; if(midiseek>20){midiseek=0;
 stop_midi();  
 sound(0);
+
+
+
+
+
+
               }
+
 
 
 
@@ -1055,6 +1072,7 @@ sound(0);
 
 
 int keyboard(){
+
              tplayer=1;
             t=160;
                t2=160;
@@ -1357,6 +1375,86 @@ int keyboard(){
 }
 
 
+void stars(){
+
+
+
+//     blit(levelbg,surface,bgscrolx,bgscroly,0,0,320,240);
+
+
+
+
+            //  slow2++;if (slow2>100){slow2=0;}
+
+                //  spry1[sprcnt]+=sprcnt/10;
+            //  sprx1[sprcnt]+=sprcnt/10;
+
+
+
+
+
+
+                      //  if(spraym>100){spraym=100;}
+
+                                 slow3++; if (slow3>200){  slow3=0;
+                                                         sprx1[sprcnt]=0;spry1[sprcnt]=0;
+                                                                                        }
+
+                         //        if (slow2>10){          slow2=0;clear_to_color(surface,0);}
+                          //       slow2++;
+
+
+
+
+                    sprx1[sprcnt]+=1;
+                        spry1[sprcnt]+=1;
+
+                           //  if (spraym>1000){spraym=0; }
+
+
+
+                                sprcnt+=10;
+
+
+                     if (sprcnt>100){sprcnt=0;    }
+
+
+
+
+
+                   //  eniy[enemicnt]=100+(sin((enemicnt/10)-(plus/20)))*40;
+
+
+
+                     for (int cnt=0;cnt<500;cnt++){
+
+
+                      spraym=cnt+sprcnt;
+
+                             spx=(cos(spraym)-sin(spraym));
+                  spy=(sin(spraym)+cos(spraym));
+
+
+
+          sprayx[sprcnt]=(((spry1[sprcnt]*spy))-((sprx1[sprcnt]*spx)));
+          sprayy[sprcnt]=(((sprx1[sprcnt]*spy))+((spry1[sprcnt]*spx)));
+
+
+
+
+
+
+        //    rectfill(collisionpad,160,100,170,100,4);
+
+
+          putpixel(surface,sprayx[cnt]+160,sprayy[cnt]+100,3);
+             rectfill(surface,160,100,160+2,100+2,0);     }
+
+
+
+
+
+}
 
 
 
@@ -1404,7 +1502,7 @@ int main(int argc, char *argv[]) {
    set_write_alpha_blender();
 //bitmapbuffer="metal.bmp";
    /* read in the bitmap file */
- collisionpad=create_bitmap(2000,240);
+ collisionpad=create_bitmap(320,240);
 
 
 
@@ -1519,7 +1617,7 @@ bgscroly=100;
 
 
 
-                  ti3++;            if (ti3>=5000){ti3=0;lenght++;    keyboard();   mapfunc();  ball_func();
+                  ti3++;             if (ti3>=5000){ti3=0;lenght++;   keyboard();   mapfunc();  ball_func();
                                                                                                                             //  draw_trans_sprite(spr1,walkingspr,0,0);
 
                                                                                                                               blittingtosprite();
