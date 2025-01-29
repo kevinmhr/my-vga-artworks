@@ -71,6 +71,7 @@ int k;
 int enemicnt;
 int x;
 int t;
+void blittext();
 int t2;
  double tplayer;
      double t2player;
@@ -136,7 +137,7 @@ double y;
     BITMAP *sprsheet;
     BITMAP *spr1;
      OBJECT enemii;
-
+ BITMAP *font1;
   MIDI *grand;
 //char spritebuf[256];
 int spr01[]={
@@ -1058,8 +1059,9 @@ sound(0);
 
                textprintf_ex(surface,font,10,10,250,0,"%i",hits);
                   textprintf_ex(surface,font,280,10,250,0,"%i",leveltotal);
+        //           textout_ex(surface,font1,"abcdefghijklmnopqrstuvwxyz1234567890",0,10,250,0);
 
-
+                       blittext(); //   to be done.
 
 
 }
@@ -1460,7 +1462,34 @@ void stars(){
 
 
 
+void blittext(int x,int y){
 
+
+
+char integ;
+
+
+
+int i,j;
+
+int textlenght=20;
+for (int i=0;i<textlenght;i++){
+char* text="this is something";
+
+
+int fontsize=7;
+integ=*(text+i);
+int t=integ-98;
+
+masked_blit(font1,surface,(t*fontsize),0,(i*fontsize)+100,0,fontsize,fontsize);
+
+                               }
+
+
+
+
+
+}
 
 int main(int argc, char *argv[]) {
 
@@ -1520,7 +1549,7 @@ int main(int argc, char *argv[]) {
   surface=create_bitmap(320,240);
    sprite=create_bitmap(10,10);
 // themap=create_bitmap (320,240);
-
+       font1=load_bitmap("fonts.bmp",the_palette2);
 
               levelbg2=create_bitmap(320,240);
        levelbg1=load_bitmap("bgsprts.bmp",the_palette2);
