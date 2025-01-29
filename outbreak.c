@@ -1241,8 +1241,8 @@ int keyboard(){
 
 
 
-
-
+ //              if (key[KEY_UP]){playery--;}
+  //               if (key[KEY_DOWN]){playery++;}
 
    if (jmptrig==1){
 
@@ -1462,26 +1462,32 @@ void stars(){
 
 
 
-void blittext(int x,int y){
+void blittext(){
 
 
 
-char integ;
-
-
-
+int integ=0;
+//enemii.y=0;
+//enemii.x=0;
+char* tex=" this is a game of ball and other things";
+int o=0;
 int i,j;
-
-int textlenght=20;
+int k=1;
+int fontsize=8;
+int textlenght=50;
 for (int i=0;i<textlenght;i++){
-char* text="this is something";
 
 
-int fontsize=7;
-integ=*(text+i);
-int t=integ-98;
+integ=((int)tex[i])-97;
 
-masked_blit(font1,surface,(t*fontsize),0,(i*fontsize)+100,0,fontsize,fontsize);
+//integ=*(fontsize);
+
+if (integ>-1){   if (integ<127){
+
+masked_blit(font1,surface,(integ)*(70/10),0,(i*(fontsize)),190,fontsize,fontsize);
+   textprintf_ex(surface,font,0,0,250,0,"%i",(int)playerx);
+            
+              }  }
 
                                }
 
