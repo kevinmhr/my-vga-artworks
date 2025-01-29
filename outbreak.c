@@ -8,7 +8,9 @@ int fry,frx,tuy,tuu,fri;
     int slow3;
     int verti=300;
     int it=400;
+int queue;
 double xt=2;
+double movhor;
 double yt=2;
  double xu,yu;
 int add=0;
@@ -20,6 +22,7 @@ double spry1[500];
 double sprayx[500];
 double sprayy[500];
 double spraym;
+int timer1;
 int sprcnt;
 int cnt;
 int rollbitmap();
@@ -285,45 +288,6 @@ int map1[]={
 int maptemp[20000];
 
 
-int timer(){
-
-
-
-
-     if(ti>1000){z=z+1;}
-          if(ti<1000){z=z-1;}
- if (ti>=2000){incdec=-1;}
-   if (ti<=0){incdec=1;}
-  if (shift>=32){shift=1;}
-
-
-             ti=ti+(incdec);
-
-          //x+=y/10;
-
-
-
-
-         x+=ti/500+(z)/20;
-         x2+=ti/500+(z)/20;
-         x2=x2-1;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-}
 int ball_func(){
   //  if (bgscrolx>700){bgscrolx=0;}
 
@@ -470,6 +434,22 @@ int mapfunc(){
 //     clear_to_color(levelbg,0);
     clear_to_color(surface,0);
         stars();
+      if (timer1>=1000){
+  movhor+=0.1;  if (queue==0){  masked_blit(levelbg1,surface,4,80,-80+movhor,50,40,25); }
+               if (queue==1){  masked_blit(levelbg1,surface,16,33,-80+movhor,50,35,35);}
+               if (queue==2){  masked_blit(levelbg1,surface,114,45,-80+movhor,50,30,35);}
+               if (queue==3){  masked_blit(levelbg1,surface,152,28,-80+movhor,50,30,35);}
+               if (queue==4){  masked_blit(levelbg1,surface,7,107,-80+movhor,50,30,35);}
+
+               
+
+
+  }
+                              if (movhor>420){movhor=0;timer1=0;if (queue>4){queue=-1;} queue+=1;  }
+
+
+
+
      masked_blit(levelbg,surface,0,0,0,0,320,240);
   clear_to_color(collisionpad,1);
 
@@ -1030,8 +1010,6 @@ if (enemixt1<=0){enemii.x-=(horvar-0.0001);}
 
 
 
-
-
  }
 
 
@@ -1045,8 +1023,6 @@ sound(0);
 
 
               }
-
-
 
 
 
@@ -1079,7 +1055,7 @@ int keyboard(){
             t=160;
                t2=160;
      
-
+              timer1++;
            tx2=1;
            tx=1;
                                 colx=getpixel(collisionpad,enemiposx,enemiposy);
@@ -1088,6 +1064,8 @@ int keyboard(){
 
                   if (cnt>leveltotal-1){cnt=0;init();}
 
+
+             
 
                   int colx;
            enemiposx=enemii.x;
