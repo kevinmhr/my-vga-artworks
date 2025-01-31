@@ -71,6 +71,8 @@ int maplenght;
 double enix[20000];
 double eniy[20000];
 int k;
+
+double warpy;
 int enemicnt;
 int x;
 int t;
@@ -1454,13 +1456,15 @@ int k=1;
 
 
 for (int i=0;i<textlenght;i++){
-
+    warpy+=0.001;
 
 integ=((int)tex[i])-97;
 
 //integ=*(fontsize);
 
 if (integ>-1){   if (integ<127){
+
+/*
 if (fontsize>10){
 slow2++;
 rectfill(surface,(i*(fontsize))+textplacex,textplacey,(i*(fontsize))+textplacex+fontsize,textplacey+fontsize+4,slow2);
@@ -1475,13 +1479,55 @@ if (fontsize==8){
 masked_blit(font1,surface,(integ)*(7),0,(i*(fontsize))+textplacex,textplacey,fontsize,fontsize);
     }
 
-
-
+ */
+    int  warp=1;
    textprintf_ex(surface,font,0,0,250,0,"%i",(int)playerx);
 
 
+     int x=0;
+     int y=0;
+
+     for (int j=0;j<fontsize*(fontsize+fontsize/2);j++){
+      x++; if (x>fontsize){x=0;y++;}
+int col;  
+
+    int coly=y;
+
+     if (warp=1){      coly=y*sin(warpy/10)*2; }
+   if (fontsize>=10){
+
+   col=getpixel(font1,1+(double)((integ)*(13.182))+x,y+74);
+   slow++; if (slow>50000){ slow=0;        slow2+=1; }
 
 
+       if (col==255){
+
+
+      col=col+slow2;
+
+     putpixel(surface,(i*fontsize)+x+textplacex,textplacey+(coly),col);     }
+
+                 }
+     
+
+
+  if (fontsize<=10){
+   col=getpixel(font1,(integ)*(7)+x-1,y-1);
+   if (col==255){
+   putpixel(surface,(i*fontsize)+x+textplacex,textplacey+y,col);
+
+               }
+
+                 }
+
+
+
+
+
+
+
+
+     }
 
 
 
@@ -1492,6 +1538,7 @@ masked_blit(font1,surface,(integ)*(7),0,(i*(fontsize))+textplacex,textplacey,fon
               }  }
 
                                }
+
 
 
 
@@ -1507,12 +1554,11 @@ int intro(){
 
  timer1++;
  if (timer1>5000){x=0;timer1=0;}
-      clear_to_color(surface,3);
+      clear_to_color(surface,0);
 
-   blittext(100,100,"metro_inspect",13,20,0); //   to be done.
-     blit(surface,screen,0,0,0,0,320,240);                  
-}
-
+   blittext(70,100,"metro_inspect",13,20,0); //   to be done.
+           blit(surface,screen,0,0,0,0,320,240);
+           }
 
 return 0;
 
