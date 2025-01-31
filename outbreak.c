@@ -1036,9 +1036,9 @@ sound(0);
                textprintf_ex(surface,font,10,10,250,0,"%i",hits);
                   textprintf_ex(surface,font,280,10,250,0,"%i",leveltotal);
         //           textout_ex(surface,font1,"abcdefghijklmnopqrstuvwxyz1234567890",0,10,250,0);
-
-                       blittext(); //   to be done.
-
+                      
+              //         blittext(0,150,"this is a text",14,20,0); //   to be done.
+                          blittext(0,190,"this is a text",8,15,0);
 
 }
 
@@ -1440,19 +1440,19 @@ void stars(){
 
 
 
-void blittext(){
+void blittext(int textplacex,int textplacey,char* tex,int fontsize,int textlenght,int inv){
 
 
 
 int integ=0;
 //enemii.y=0;
 //enemii.x=0;
-char* tex=" this is a game of ball and other things";
+//char* tex=" this is a game of ball and other things";
 int o=0;
 int i,j;
 int k=1;
-int fontsize=8;
-int textlenght=50;
+
+
 for (int i=0;i<textlenght;i++){
 
 
@@ -1461,20 +1461,63 @@ integ=((int)tex[i])-97;
 //integ=*(fontsize);
 
 if (integ>-1){   if (integ<127){
+if (fontsize>10){
+slow2++;
+rectfill(surface,(i*(fontsize))+textplacex,textplacey,(i*(fontsize))+textplacex+fontsize,textplacey+fontsize+4,slow2);
 
-masked_blit(font1,surface,(integ)*(70/10),0,(i*(fontsize)),190,fontsize,fontsize);
+masked_blit(font1,surface,1+(double)((integ)*(13.182)),75,(i*(fontsize))+textplacex,textplacey,fontsize,fontsize+4);
+    if (inv==1){   masked_blit(font1,surface,(double)((integ)*(13.18)),53,(i*(fontsize))+textplacex,textplacey,fontsize,fontsize+3);
+
+   }
+    }
+
+if (fontsize==8){
+masked_blit(font1,surface,(integ)*(7),0,(i*(fontsize))+textplacex,textplacey,fontsize,fontsize);
+    }
+
+
+
    textprintf_ex(surface,font,0,0,250,0,"%i",(int)playerx);
-            
+
+
+
+
+
+
+
+
+
+
+
               }  }
 
                                }
 
 
 
+ }
+
+
+int intro(){
+
+   int x;
+ x=1;
+
+ while (x){
+
+ timer1++;
+ if (timer1>5000){x=0;timer1=0;}
+      clear_to_color(surface,3);
+
+   blittext(100,100,"metro_inspect",13,20,0); //   to be done.
+     blit(surface,screen,0,0,0,0,320,240);                  
+}
+
+
+return 0;
 
 
 }
-
 int main(int argc, char *argv[]) {
 
 
@@ -1512,7 +1555,7 @@ int main(int argc, char *argv[]) {
 //set_multiply_blender(0, 0, 0, 9);
    //    set_color_depth(8);
   //  gfx_driver->set_blender_mode(0,0,0,0,9);
-   set_write_alpha_blender();
+//   set_write_alpha_blender();
 //bitmapbuffer="metal.bmp";
    /* read in the bitmap file */
  collisionpad=create_bitmap(320,240);
@@ -1540,7 +1583,7 @@ int main(int argc, char *argv[]) {
   walkingspr=create_bitmap(640,480);
       walkingspr2=load_bitmap("walking.bmp",the_palette2);
  //      spritefunction();
-      set_palette(the_palette2);
+    //  set_palette(the_palette2);
   int x,y,col,col2;
     for (int i=0;i<2400000;i++){
     x++; if(x>4000){x=0;y++;}
@@ -1621,7 +1664,7 @@ i=1;
     z=0;
     plus=4800;
 bgscroly=100;
-
+        intro();
        init();
 
      while (i!=0){
