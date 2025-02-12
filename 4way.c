@@ -9,6 +9,9 @@ int add=0;
   int ballcnt=0;
  double ballinix[20000];
  double balliniy[20000];
+       double bullet2x[20000];
+           double bullet2y[20000];
+
 int add2=0;
 int slowspid=0;
 int spidtimer=0;
@@ -51,8 +54,10 @@ int framey=133;
 int ballframex,ballframey;
   int rx[20000];
     int ry[20000];
+      int rbx[20000];
+    int rby[20000];
 int keyboard();
-
+int timer3=0;
 int mapfunc();
 double acce2;
 int dur;
@@ -535,8 +540,9 @@ playerx=0;
                
 
   for (int x=0;x<20000;x++){
-    rx[x]=1;  ry[x]=-1;    btx[x]=1;    bty[x]=0;
-
+    rx[x]=1;  ry[x]=-1;    btx[x]=1;    bty[x]=0;      rbx[x]=1;  rby[x]=-1;
+        bullet2x[x]=0;
+            bullet2y[x]=0;
 
 
  }
@@ -1066,6 +1072,9 @@ for (int i=0;i<20000;i++){
 
 
 
+            //      rbx[i]=0;
+              //    rby[i]=0;
+
 
 
 
@@ -1079,8 +1088,46 @@ for (int i=0;i<20000;i++){
 
 
 
+             //       bullet2x[i]+=1*0.5;
+
+
+
 
            if (maptemp[i]==1077){
+
+                   timer3++;
+
+
+
+
+                      if (timer3>=10000){
+            bullet2x[i]=enix[i]+2;
+            bullet2y[i]=eniy[i]+2;
+
+                      if (ry[i]>0){rby[i]=1;  }
+                         if (ry[i]<0){rby[i]=-1;    }
+                         if (rx[i]>0){rbx[i]=1;  }
+                         if (rx[i]<0){rbx[i]=-1;  }
+
+
+
+
+
+
+            }
+                 if (timer3>=20000) { timer3=0;      }
+
+
+
+                                            if (rbx[i]==1){
+                   bullet2x[i]-=1*0.5;}
+                      if (rbx[i]==-1){
+                   bullet2x[i]+=1*0.5;}
+                      if (rby[i]==1){
+                   bullet2y[i]-=1*0.5;}
+                         if (rby[i]==-1){
+                   bullet2y[i]+=1*0.5;}
+
 
 
 
@@ -1163,12 +1210,30 @@ int col=0;
                         //   if(enix[enemicnt]-(z*10)-add>320){  r[enemicnt]=-1; }
                          //  if(enix[enemicnt]-(z*10)-add<0){  r[enemicnt]=1;}
 
-                         if (ry[enemicnt]>0){eniy[enemicnt]+=1*0.2;}
-                         if (ry[enemicnt]<0){eniy[enemicnt]-=1*0.2;}
+                         if (ry[enemicnt]>0){eniy[enemicnt]+=1*0.2;              }
+                         if (ry[enemicnt]<0){eniy[enemicnt]-=1*0.2;              }
                          if (rx[enemicnt]>0){enix[enemicnt]+=1*0.2; if (spidanimx>=13){spidanimx=0;}  if(slowspid>20) { slowspid=0;spidanimx+=13;} }
-                         if (rx[enemicnt]<0){enix[enemicnt]-=1*0.2;}
+                         if (rx[enemicnt]<0){enix[enemicnt]-=1*0.2;             }
                       //     if(  enix[enemicnt]==0){ enix[enemicnt]==1; r[enemicnt]=-r[enemicnt];}
 
+
+
+
+
+
+
+
+
+
+
+
+       //  blit(walkingspr,surface,0,0,bullet2x[i],bullet2y[i],2,2);
+         circlefill(surface,bullet2x[i]-add-(z*10),bullet2y[i]-(zv*10),1,228);
+             rectfill(collisionpad,enix[i]+bullet2x[i]-add-(z*10),eniy[i]+bullet2y[i]-(zv*10),enix[i]+bullet2x[i]-add-(z*10)+3,eniy[i]+bullet2y[i]-(zv*10)+3,90);
+           int colx=getpixel(collisionpad,bullet2x[i]-add-(z*10),bullet2y[i]-(zv*10));
+             if (colx==4){  bullet2x[i]=enix[i]+2;
+            bullet2y[i]=eniy[i]+2;
+                 }
                 /*
                   for (int x=1;x<10;x++){
                            int coly;
@@ -1194,9 +1259,32 @@ int col=0;
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       }
 
 
+
+      for (int i=100;i<20000;i++){
+
+
+
+
+
+      }
 
 
 }
