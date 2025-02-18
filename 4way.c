@@ -4,6 +4,7 @@
 #include <math.h>
 char *bitmapbuffer;
  int z,zv;
+int textlenght=2;
 int fry,frx,tuy,tuu,fri;
 int add=0;
   int ballcnt=0;
@@ -15,6 +16,7 @@ int timer5=0;
 int add2=0;
 int slowspid=0;
 int spidtimer=0;
+int hits=0;
 double spd;
 double ballx;
 double bally;
@@ -129,6 +131,7 @@ double y;
    PALETTE the_palette2;
    BITMAP *walkingspr;
    BITMAP *walkingspr2;
+    BITMAP *font1;
    BITMAP *sprites;
      BITMAP *surface;
     BITMAP *sprsheet;
@@ -280,6 +283,106 @@ int map1[]={
 
 
 
+void blittext(int textplacex,int textplacey,char* tex,int fontsize,int textlenght,int inv){
+
+
+
+int integ=0;
+//enemii.y=0;
+//enemii.x=0;
+//char* tex=" this is a game of ball and other things";
+int o=0;
+int i,j;
+int k=1;
+
+int warpy;
+for (int i=0;i<textlenght;i++){
+//    warpy+=0.001;
+
+integ=((int)tex[i])-97;
+
+//integ=*(fontsize);
+
+if (integ>-1){   if (integ<127){
+
+/*
+if (fontsize>10){
+slow2++;
+rectfill(surface,(i*(fontsize))+textplacex,textplacey,(i*(fontsize))+textplacex+fontsize,textplacey+fontsize+4,slow2);
+
+masked_blit(font1,surface,1+(double)((integ)*(13.182)),75,(i*(fontsize))+textplacex,textplacey,fontsize,fontsize+4);
+    if (inv==1){   masked_blit(font1,surface,(double)((integ)*(13.18)),53,(i*(fontsize))+textplacex,textplacey,fontsize,fontsize+3);
+
+   }
+    }
+
+if (fontsize==8){
+masked_blit(font1,surface,(integ)*(7),0,(i*(fontsize))+textplacex,textplacey,fontsize,fontsize);
+    }
+
+ */
+    int  warp=1;
+
+
+     int x=0;
+     int y=0;
+
+     for (int j=0;j<fontsize*(fontsize+fontsize/2);j++){
+      x++; if (x>fontsize){x=0;y++;}
+int col;  
+
+    int coly=y;
+
+     if (warp=1){      coly=y*sin(warpy/10)*2; }
+   if (fontsize>=10){
+
+   col=getpixel(font1,1+(double)((integ)*(13.182))+x,y+74);
+   slow++; if (slow>50000){ slow=0;        slow2+=1; }
+
+
+       if (col==255){
+
+
+      col=col+slow2;
+
+     putpixel(surface,(i*fontsize)+x+textplacex,textplacey+(coly),col);     }
+
+                 }
+     
+
+
+  if (fontsize<=10){
+   col=getpixel(font1,(integ)*(7)+x-1,y-1);
+   if (col==255){
+   putpixel(surface,(i*fontsize)+x+textplacex,textplacey+y,col);
+
+               }
+
+                 }
+
+
+
+
+
+
+
+
+     }
+
+
+
+
+
+
+
+              }  }
+
+                               }
+
+
+
+
+ }
 
 
 int timer(){
@@ -665,9 +768,12 @@ int tx,ty;
                    if (maptemp[k]==1800) {
           //  levelbg3=create_bitmap(60,30);
           masked_blit(levelbg1,surface,17,36,(i*10)-add,vertical-add2-20,40,30);
+               rectfill(collisionpad,(i*10)-add,vertical-add2-20,(i*10)-add+40,vertical-add2-20+30,45);
+               int colx=getpixel(collisionpad,playerx,playery);
+               if (colx==45){
+                         blittext((i*10)-add,vertical-add2-40,"enter the journal ",8,20,0);
 
-
-
+                             }
 
 
 
@@ -836,15 +942,14 @@ tuu++;
 
                        colx=getpixel(collisionpad,playerx+2,playery+20);
                        if (colx==5){maptemp[k]=0; midiseek=0;   play_midi(grand,0);midi_seek(40); mapfunc(); }
-                    if (bulletx>10){     colx=getpixel(collisionpad,bulletx+2,bullety+20);
-        if (bullettrig==1){  if (colx==90){     maptemp[k]=0; midiseek=0; for (int x=0;x<20000;x++){ circlefill(screen,bulletx+10,bullety,10,colx++);}    play_midi(grand,0); midi_seek(95);     mapfunc();  bullettrig=0;         }
+              /*      if (bulletx>10){
                colx=getpixel(collisionpad,bulletx,bullety);
-               if (colx!=1){ maptemp[k]=0; bullettrig=0; midiseek=0;   play_midi(grand,0);midi_seek(40); mapfunc();  }
+               if (colx!=1){ maptemp[k]=0; bullettrig=0; midiseek=0;  play_midi(grand,0);midi_seek(40); mapfunc();  }
 
         }
 
+          */
 
-        }
 
 
 
@@ -1140,7 +1245,7 @@ int col=0;
 
 
           if (bulletx>10){     colx=getpixel(collisionpad,bulletx+2,bullety-10);
-        if (bullettrig==1){  if (colx==90){     maptemp[i]=0; midiseek=0; for (int x=0;x<200;x++){ circlefill(screen,bulletx+10,bullety,10,colx++);}    play_midi(grand,0); midi_seek(95);     mapfunc();  bullettrig=0;         }
+        if (bullettrig==1){  if (colx==90){ hits++;    maptemp[i]=0; midiseek=0; for (int x=0;x<200;x++){ circlefill(screen,bulletx+10,bullety,10,colx++);}    play_midi(grand,0); midi_seek(95);     mapfunc();  bullettrig=0;         }
 
 
 }                               }
@@ -1270,10 +1375,16 @@ int col=0;
 
       }
 
+        textprintf_ex(surface,font,160,0,250,0,"%i",hits);
 
+      
+// blitnum(10,10,8,0);
 
 
 }
+
+
+
 int keyboard(){
              tplayer=1;
                  t2player=-1;
@@ -1575,6 +1686,7 @@ int main(int argc, char *argv[]) {
 
    //   set_palette(the_palette);
 //    the_block1= load_bitmap("block1.bmp",the_palette2);
+               font1=load_bitmap("fonts.bmp",the_palette);
 
       levelbg=load_bitmap("levbg1.bmp",the_palette);
      spr1=create_bitmap(320,240);
