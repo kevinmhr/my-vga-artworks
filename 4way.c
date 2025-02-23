@@ -5,12 +5,15 @@
 char *bitmapbuffer;
  int z,zv;
 int textlenght=2;
-int fry,frx,tuy,tuu,fri;
+int fry;
+int frx=328;
+int zvb;
+int tuy,tuu,fri;
 int add=0;
-  int ballcnt=0;
+ int ballcnt=0;
  int explostrig=0;
-
-
+int erasure;
+int bulletcnt=0;
 int timer5=0;
 int add2=0;
 int slowspid=0;
@@ -28,11 +31,11 @@ int level=1;
 int bullethit=1;
    int midiseek;
        int timer2;
-  int bulletx;
-    int bullety;
+  double bulletx[500];
+  double bullety[500];
 int d;
 
- int bulletdir;
+ double bulletdir[500];
 
     int bullettrig;
          int downtrig;
@@ -70,7 +73,7 @@ int t2;
 int tplayer;
 int t2player;
 int x2;
-
+int bulletspd=0;
 int ti;
 int ti2;
 int ti3=1;
@@ -678,6 +681,7 @@ int mapfunc(){
 
 
 
+        bulletspd=0;
 
 
 
@@ -727,13 +731,13 @@ int mapfunc(){
 
 
 
-                     int x=-30;
-                     int y=-30;
+                     int x=-30+bgaddh;
+                     int y=-30+bgaddv;
                   for (int i=0;i<150;i++){
-                         x+=30; if (x>320){y+=30;x=-30;}
-                         if (y>200){y=-30;}
-                         blit(sprsheet,surface,30,110,x+bgaddh,y+bgaddv,30,30);
-                         rectfill(surface,x+bgaddh,y+bgaddv,x+28+bgaddh,y+28+bgaddv,110);
+                         x+=30; if (x>320+bgaddh){y+=30;x=-30+bgaddh;}
+                         if (y>200+bgaddv){y=-30+bgaddv;}
+                         blit(sprsheet,surface,30,110,x,y,30,30);
+                         rectfill(surface,x,y,x+28,y+28,110);
                          //   rectfill(surface,x,y,x+29,y+29,110);
                           }
 
@@ -808,6 +812,10 @@ int tx,ty;
 
 
 
+ if (frx>=317){frx=287;}
+ if (tuu>50000){  frx=frx+10;
+ tuu=0; }
+tuu++;
 
 
 
@@ -849,10 +857,6 @@ int js=0;
 
 
 
-   if (frx>307){frx=287;}
- if (tuu>50000){  frx=frx+10;
- tuu=0; }
-tuu++;
 
 
 
@@ -882,6 +886,8 @@ tuu++;
 
 
                         }
+
+
 
 
 
@@ -1035,9 +1041,8 @@ stop_midi();
         spider.timer++;
 
         spider.timer2++;
-
+      int  bulleti;
 for (int i=0;i<20000;i++){
-
 
 
 
@@ -1226,6 +1231,9 @@ for (int i=0;i<20000;i++){
 
 
            if (maptemp[i]==1077){
+
+
+
                     if (spider.timer>=400) { spider.timer=0;      }
 
                          if (spider.timer>=200) {      spider.bulletx[i]=spider.x[i]+4;   if (playerx<spider.x[i]-(z*10)){   spider.bdirx[i]=1; }  if (playerx>spider.x[i]-(z*10)){   spider.bdirx[i]=-1; }
@@ -1277,11 +1285,9 @@ int col=0;
 
  //       rectfill(surface,enix[enemicnt]+(i*10),vertical-20-add2+eniy[enemicnt],enix[enemicnt]+((i+1)*10),vertical+10-add2+eniy[enemicnt],90);
 
-          if (bulletx>10){     colx=getpixel(collisionpad,bulletx+2,bullety-10);
-        if (bullettrig==1){  if (colx==90){ hits++;    if (explostrig==0){explostrig=1;} maptemp[i]=0; midiseek=0;     play_midi(grand,0); midi_seek(95);     bullettrig=0;         }
 
 
-}                               }
+
 
           if (spider.dirx[enemicnt]>0){fry=0;}  if (spider.dirx[enemicnt]<0){fry=30;}
 
@@ -1344,10 +1350,7 @@ int col=0;
 
 
 
-
-
-             colx=getpixel(collisionpad,spider.bulletx[i]-add-(z*10),spider.bullety[i]-(zv*10));
-         /*    if (colx==4){  bullet2x[i]=400;
+                 /*    if (colx==4){  bullet2x[i]=400;
             bullet2y[i]=300;
                  } */
        //  blit(walkingspr,surface,0,0,bullet2x[i],bullet2y[i],2,2);
@@ -1356,12 +1359,7 @@ int col=0;
                              circle(surface,spider.bulletx[i]-add-(z*10)-3,spider.bullety[i]-(zv*10)-add2-3,1,255);
                               //  rectfill(surface,playerx,playery,playerx,playery,95);
                                int colx=getpixel(collisionpad,playerx+10,playery+10);
-                       if (colx==98){maptemp[k]=0; midiseek=0;   play_midi(grand,0);midi_seek(40); init(); }
-
-
-
-
-
+                       if (colx==98){ midiseek=0;   play_midi(grand,0);midi_seek(40); init(); }
 
 
 
@@ -1383,10 +1381,44 @@ int col=0;
                          if (spider.bdiry[i]==-1){
                    spider.bullety[i]+=1;}
 
+                                                         int explosx=400;
+        int explosy=400;
+        explos.x[0]+=0.05;  explos.y[0]+=0.05;
+       if (explos.x[0]>10){ explos.x[0]=2;}
+         if (explos.y[0]>10){ explos.y[0]=2;}
+
+
+
+            for (int u=0;u<200;u+=5){
+            timer1++;
+
+                                                                 colx=getpixel(collisionpad,bulletx[u],bullety[u]-zvb-5);
+         if (colx==90){ hits++;    if (explostrig==0){explostrig=1;}maptemp[i]=0; bulletspd=1; midiseek=0;     play_midi(grand,0); midi_seek(95);     bullettrig=0;     mapfunc();    }
+                               if( explostrig==1){        if (explos.timer<=1000) {  explosx=bulletx[u];/*spider.x[enemicnt]-1-(z*10)-add; */ explosy=bullety[u]-zvb-5;
+                                                     rect(surface,explosx+explos.x[0],explosy-explos.x[0],explosx-explos.x[0]-explos.x[0]/5,explosy+explos.y[0]-explos.x[0]/5,timer1);
+                                
+
+                                                  }
+            /*    spider.y[enemicnt]-(zv*10)-add2; */
+
+                                      }  }
+        
+
+         
+
+                  if (explos.timer>1000){ explos.timer=0;explostrig=0;}
+                        explos.timer++;
+
+
 
 
 
   }
+
+
+
+
+
 
 
 
@@ -1537,21 +1569,12 @@ int col=0;
 
 
       }
-        int explosx=400;
-        int explosy=400;
-        explos.x[0]+=0.5;  explos.y[0]+=0.5;
-       if (explos.x[0]>10){ explos.x[0]=0;}
-         if (explos.y[0]>10){ explos.y[0]=0;}
+
+
 
 
         textprintf_ex(surface,font,160,0,250,0,"%i",hits);
-    if (explostrig==1){               if (explos.timer<=100) {  explosx=bulletx;   explosy=bullety;
 
-                                      }  }
-
-                            rect(surface,explosx+explos.x[0],explosy-explos.x[0],explosx-explos.x[0]-explos.x[0]/4,explosy+explos.y[0]-explos.x[0]/4,explos.timer);
-                             if (explos.timer>100){ explos.timer=0;explostrig=0;}
-                        explos.timer++;
 // blitnum(10,10,8,0);
 
 
@@ -1712,61 +1735,118 @@ int keyboard(){
         if (framex>=201){framex=155;}
 
 
+
                                                            }
            //              if (z>8000){z=0;}
     if (key[KEY_RIGHT]) {   releaser=0; faced=1;  if (spd>5){spd=5;} spd+=1;     playerx=playerx+tx;     framey=230;
 
-                 slow++; if (slow>10){slow=0;    framex+=16;       }                 if (framex>=201){framex=155;}
+                 slow++; if (slow>10){slow=0;    framex+=16;
+
+
+
+                 }                 if (framex>=201){framex=155;}
+
+
+
+
                                                 }
 
-              if (playery>=125){  playery-=1; bgaddv--; if (bgaddv<0){bgaddv=30;}                      add2++;  if (add2>10){ add2=0;   plus+=255+97;zv=zv+1; }  }
-                                    if (playery<60){  playery+=1;  bgaddv++; if (bgaddv>30){bgaddv=0;} add2--;  if (add2<0){ add2=10;    plus-=255+97;zv=zv-1;}  }
+              if (playery>=125){ zvb++; playery-=1; bgaddv--; if (bgaddv<0){bgaddv=30;}                      add2++;  if (add2>10){ add2=0;   plus+=255+97;zv=zv+1; }  }
+                                    if (playery<60){ zvb--; playery+=1;  bgaddv++; if (bgaddv>30){bgaddv=0;} add2--;  if (add2<0){ add2=10;    plus-=255+97;zv=zv-1;}  }
 
 
-         if (key[KEY_UP]){  framey=210;   framex+=16;    if (framex>175){framex=155;}  playery=playery+t2player;      }
-         if (key[KEY_DOWN]){ framey=191;  framex+=16;    if (framex>175){framex=155;}   playery=playery+tplayer;    }
-
-                    
-                                                bullethit=1;
+         if (key[KEY_UP]){
 
 
-           if (key[KEY_SPACE]){  timerb=0;
-                if (faced<0){        bulletdir=-1;}
-                if (faced>0){          bulletdir=1;}
+
+         framey=210;   framex+=16;    if (framex>175){framex=155;}  playery=playery+t2player;      }
+         if (key[KEY_DOWN]){
 
 
 
 
+         framey=191;  framex+=16;    if (framex>175){framex=155;}   playery=playery+tplayer;    }
+
+                                                                     bullethit=1;
+
+                                           bullettrig=0;
+
+                //    bulletcnt-=0.1;
+
+           //  if (bulletcnt<0){bulletcnt=0;}
+           if (timerb<0){timerb=0;}
+
+            // timerb=0;
+
+                   //   if(bulletx[bulletcnt]>320){bulletx[bulletcnt]=playerx+10;
+                    //                                   bullety[bulletcnt]=playery+10;    }
 
 
-           play_midi(grand,0); midiseek=0; midi_seek(100); bullethit=0;  bullettrig=1;   if (faced==1){  bulletx=playerx+20; }   if (faced==-1){  bulletx=playerx+5; }  bullety=playery+10;      }
 
-                            if (timerb>2000){bullettrig=0;timerb=0; }
-
-
-                                if (bullettrig>=1) {    bulletx=bulletx+(sin(timerb));    timerb+=1;
-                            int i=timerb/100;      if (bulletdir==1){  bullethit=0;      bulletx+=bulletdir;
+               //     bulletcnt++;
 
 
-                                      bulletx+=1+i;
+              erasure++;
 
-                                rectfill(surface,bulletx,bullety,(bulletx)+2,bullety+2,238); blit(surface,screen,0,0,0,0,320,240);
-                                                               }
+                         bullety[erasure]=400;
+                        bulletx[erasure]=400;
+
+                             if (erasure>500){erasure=0;}
 
 
 
 
-                                    if (bulletdir==-1){     bullethit=0;       bulletx+=bulletdir;
-
-                                    bulletx-=1+i;
-
-                               rectfill(surface,bulletx,bullety,bulletx+2,bullety+2,238);     blit(surface,screen,0,0,0,0,320,240);
 
 
-                                                               }
+
+                     if (key[KEY_SPACE]){  bullettrig=1;
+                             play_midi(grand,0); midiseek=0; midi_seek(10);
+                              //    play_midi(grand,0); midiseek=0; midi_seek(40);
 
 
-                                                                        }
+                        bullety[bulletcnt]=(((int)(playery/10)*10)+((int)(((zvb)))))+10;
+                        bulletx[bulletcnt]=(playerx+10);
+
+
+
+
+
+
+
+                if (faced==1){   bulletx[bulletcnt]=(playerx+15);     bulletdir[bulletcnt]=0.1;}
+                if (faced==-1){   bulletx[bulletcnt]=(playerx-10);       bulletdir[bulletcnt]=-0.1;}
+
+
+                                             //  if(bulletcnt>50){bulletcnt=0;bullettrig=0;}
+                  
+
+
+
+
+
+
+                                              }
+                                             if (bullettrig==1){   bullettrig=0;
+                                               if(bulletcnt>50){bulletcnt=0;bullettrig=0;}
+     bulletcnt=bulletcnt+1;  }
+
+                                         for (int i=0;i<50;i+=1){
+                          // if (bulleti>400){bulleti=0;}
+                    //   if(timerb>300){timerb=300;}
+
+                                bulletx[i]=bulletx[i]+(20*bulletdir[i]);
+
+                                circlefill(screen,bulletx[i],bullety[i]-(zvb),1,0);
+
+                                                              }
+
+
+           bullethit=0  ;
+
+                   //    bulletx[bulletcnt]=playerx;
+                                if(bulletx[bulletcnt]>320){bulletx[bulletcnt]=400;bullety[bulletcnt]=400; }
+                                 if(bulletx[bulletcnt]<0){bulletx[bulletcnt]=400;bullety[bulletcnt]=400; }
+
 
 
 
