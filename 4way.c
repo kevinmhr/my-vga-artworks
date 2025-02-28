@@ -7,6 +7,7 @@ char *bitmapbuffer;
  int z,zv;
     int k34=0;
 int textlenght=2;
+int midis=0;
 int fry;
 int frx=328;
 int zvb;
@@ -132,7 +133,7 @@ OBJECT spider;
 OBJECT sleeps;
 OBJECT spr;
 OBJECT explos;
-                 BITMAP *levelbg;
+         BITMAP *levelbg;
           BITMAP *levelbg1;
      BITMAP *levelbg2;
    BITMAP *collisionpad;
@@ -141,14 +142,14 @@ OBJECT explos;
    PALETTE the_palette1;
    PALETTE the_palette;
    PALETTE the_palette2;
-   BITMAP *walkingspr;
+
    BITMAP *walkingspr2;
     BITMAP *font1;
    BITMAP *sprites;
      BITMAP *surface;
     BITMAP *sprsheet;
-    BITMAP *spr1;
-     OBJECT enemii;
+  //  BITMAP *spr1;
+    // OBJECT enemii;
   MIDI *grand;
 //char spritebuf[256];
 
@@ -369,7 +370,7 @@ maptemp[i+50000]=shrine[x*y];
 
 }
 
-
+/*
 void spritefunction(){
     int j=0;
     int k=0;
@@ -391,6 +392,7 @@ void spritefunction(){
 
 
 }
+*/
 int collisionimplant(){
 
 int i=-65;int y=10;
@@ -528,7 +530,7 @@ playerx=10;
 
 
  }
-
+//   play_midi(grand,0);
 }
 
 
@@ -704,7 +706,7 @@ int js=0;
 
 
 
-      masked_blit(walkingspr,surface,frx,14,(i*10)-add,vertical,12,9);
+      masked_blit(walkingspr2,surface,frx,14,(i*10)-add,vertical,12,9);
 
 
 
@@ -833,10 +835,8 @@ int js=0;
 
 
 
-
-
                        colx=getpixel(collisionpad,playerx+2,playery+20);
-                       if (colx==5){maptemp[k]=0; midiseek=0;   play_midi(grand,0);midi_seek(40); mapfunc(); }
+                       if (colx==5){maptemp[k]=0; midiseek=0;   play_midi(grand,0);midi_seek(5); mapfunc(); }
               /*      if (bulletx>10){
                colx=getpixel(collisionpad,bulletx,bullety);
                if (colx!=1){ maptemp[k]=0; bullettrig=0; midiseek=0;  play_midi(grand,0);midi_seek(40); mapfunc();  }
@@ -878,7 +878,9 @@ int js=0;
 
 
 
-midiseek++; if(midiseek>23){midiseek=0;
+
+
+midiseek++; if(midiseek>17){midiseek=0;
 stop_midi();
               }
 
@@ -1224,7 +1226,7 @@ int col=0;
 
 
 
-         masked_blit(walkingspr,surface,155+spidanimx,261,spider.x[enemicnt]-1-(z*10)-add,spider.y[enemicnt]-(zv*10)-add2,10,10);
+         masked_blit(walkingspr2,surface,155+spidanimx,261,spider.x[enemicnt]-1-(z*10)-add,spider.y[enemicnt]-(zv*10)-add2,10,10);
 //         draw_sprite(surface,sprite,);
 
 
@@ -1251,7 +1253,7 @@ int col=0;
          if (colx==90){ hits++;     k34=1;     /*spider.x[enemicnt]-1-(z*10)-add; */
                         explos.timer=0;
              if (explostrig==0){
-           explostrig=1;}  maptemp[i]=0; bulletspd=1; midiseek=0;     play_midi(grand,0); midi_seek(95);     bullettrig=0;   mapfunc();
+           explostrig=1;}  maptemp[i]=0; bulletspd=1; midiseek=0;     play_midi(grand,0); midi_seek(250);     bullettrig=0;   mapfunc();
                                       explosx=bulletx[u];     explosy=bullety[u]-zvb-13;
              
 
@@ -1662,7 +1664,7 @@ int keyboard(){
                                                   if (bullettrig==1){   bullettrig=0;
 
 
-                                                                    play_midi(grand,0); midiseek=0; midi_seek(10);
+                                                                    play_midi(grand,0); midiseek=0; midi_seek(80);
 
                                                   bullety[bulletcnt]=playery+zvb+10;
                                               bulletx[bulletcnt]=(playerx+10);
@@ -1735,7 +1737,7 @@ int keyboard(){
 
 
 
-
+               //     midis++;if (midis>30){midis=0;stop_midi();  play_midi(grand,0);midi_seek(34);}
 
 
                                //    if (tplayer>0){    playery+=(acce2/3);};
@@ -1746,7 +1748,7 @@ int keyboard(){
 
 
 
-     spritefunction();
+//     spritefunction();
 
    
 
@@ -1808,22 +1810,22 @@ int main(int argc, char *argv[]) {
        //   solid_mode();
 //   the_image= load_bitmap("spritesheet.bmp", the_palette);
    sprsheet=load_bitmap("mapbit.bmp",the_palette2);
-   grand=load_midi("canyon.mid");
+   grand=load_midi("music.mid");
 
    //   set_palette(the_palette);
 //    the_block1= load_bitmap("block1.bmp",the_palette2);
                font1=load_bitmap("fonts.bmp",the_palette);
 
       levelbg=load_bitmap("levbg1.bmp",the_palette);
-     spr1=create_bitmap(320,240);
+//     spr1=create_bitmap(320,240);
   surface=create_bitmap(320,240);
 //   sprite=create_bitmap(20,30);
 // themap=create_bitmap (320,240);
 
 
-              levelbg2=create_bitmap(320,240);
+           levelbg2=create_bitmap(320,240);
        levelbg1=load_bitmap("bgsprts.bmp",the_palette2);
- walkingspr=create_bitmap(640,480);
+// walkingspr=create_bitmap(640,480);
       walkingspr2=load_bitmap("walking.bmp",the_palette2);
  //      spritefunction();
 
@@ -1857,7 +1859,7 @@ int main(int argc, char *argv[]) {
 
 
 
-
+  /*
 
 
 
@@ -1890,7 +1892,7 @@ int main(int argc, char *argv[]) {
   }
 
 
-
+    */
 
 
 
@@ -1917,12 +1919,12 @@ bgscroly=100;
 
 
 
-                  ti3++;            if (ti3>=50){ti3=0;lenght++;    keyboard();        mapfunc();
+                  ti3++;            if (ti3>=5000){ti3=0;lenght++;    keyboard();        mapfunc();
                                                                                                                             //  draw_trans_sprite(spr1,walkingspr,0,0);
 
                                                                                                                               blittingtosprite();
                                                                                                                               //  enemies_func();
-
+             if (key[KEY_ESC]){ return 0;}
                                                                                                                                  blit(surface,screen,0,0,0,0,320,240);
                                                                                                //   blit(sprites,screen,framex,framey,playerx,playery,30, 30);
                                                                                                                                   }
