@@ -16,7 +16,7 @@ int add=0;
 
  int ballcnt=0;
  int explostrig=0;
-int erasure;
+ 
 int bulletcnt=0;
 int timer5=0;
 int add2=0;
@@ -1230,7 +1230,9 @@ int col=0;
        //  blit(walkingspr,surface,0,0,bullet2x[i],bullet2y[i],2,2);
 
                         rectfill(collisionpad,spider.bulletx[i]-add-(z*10)-5,spider.bullety[i]-(zv*10)-add2-5,spider.bulletx[i]-add-(z*10)+10,spider.bullety[i]-(zv*10)-add2+10,98);
-                             circle(surface,spider.bulletx[i]-add-(z*10)-3,spider.bullety[i]-(zv*10)-add2-3,1,254);
+                             circle(surface,spider.bulletx[i]-add-(z*10)-3,spider.bullety[i]-(zv*10)-add2-3,1,228);
+                                      circlefill(surface,spider.bulletx[i]-add-(z*10)-3+1,spider.bullety[i]-(zv*10)-add2-3,1,0);
+               
                         //                                   circlefill(surface,spider.bulletx[i]-add-(z*10)-2,spider.bullety[i]-(zv*10)-add2-2,1,253);
 
                               //  rectfill(surface,playerx,playery,playerx,playery,95);
@@ -1678,8 +1680,12 @@ int keyboard(){
 
 
                                                double warpx=0;   double warpy=0;
+                                        int thickx=0;
+                                        int thicky=0;
+                     if (key[KEY_SPACE]){
 
-                     if (key[KEY_SPACE]){         if (bullettimer==0){bullettrig=1;bullettimer=20;     }
+
+        if (bullettimer==0){bullettrig=1;bullettimer=20;     }
 
                                          if (key[KEY_UP]){     faced=2;}
                                           if (key[KEY_DOWN]){     faced=-2;   }
@@ -1690,10 +1696,10 @@ int keyboard(){
                                                        bulletwarp+=bulletwapd*0.1;
                                                        if (bulletwarp>180) {bulletwapd=-bulletwapd; }
                                                           if (bulletwarp<0) {bulletwapd=-bulletwapd; }
-                                                  if (faced==1){   bulletx[bulletcnt]=(playerx+15);     bulletdirx[bulletcnt]=0.1; warpy=sin(bulletwarp)/5; warpx=0;  bulletdiry[bulletcnt]=0;          }
-                                                 if (faced==-1){   bulletx[bulletcnt]=(playerx-10);     bulletdirx[bulletcnt]=-0.1;  warpy=sin(bulletwarp)/5; warpx=0; bulletdiry[bulletcnt]=0;}
-                                                  if (faced==2){     bulletdirx[bulletcnt]=0;   bulletdiry[bulletcnt]=-0.1;warpx=sin(bulletwarp)/5; warpy=0; }
-                                                   if (faced==-2){      bulletdirx[bulletcnt]=0;  bulletdiry[bulletcnt]=0.1;warpx=sin(bulletwarp)/5; warpy=0; }
+                                                  if (faced==1){   bulletx[bulletcnt]=(playerx+15);     bulletdirx[bulletcnt]=0.1; warpy=sin(bulletwarp)/5; warpx=0;  bulletdiry[bulletcnt]=0; thickx=1;thicky=0;         }
+                                                 if (faced==-1){   bulletx[bulletcnt]=(playerx-10);     bulletdirx[bulletcnt]=-0.1;  warpy=sin(bulletwarp)/5; warpx=0; bulletdiry[bulletcnt]=0; thickx=1;thicky=0; }
+                                                  if (faced==2){     bulletdirx[bulletcnt]=0;   bulletdiry[bulletcnt]=-0.1;warpx=sin(bulletwarp)/5; warpy=0;  thickx=0;thicky=1;}
+                                                   if (faced==-2){      bulletdirx[bulletcnt]=0;  bulletdiry[bulletcnt]=0.1;warpx=sin(bulletwarp)/5; warpy=0;  thickx=0;thicky=1;}
 
                                              //  if(bulletcnt>50){bulletcnt=0;bullettrig=0;}
                   
@@ -1719,6 +1725,7 @@ int keyboard(){
 
                                              if(bullettimer<=0){bullettimer=0;}
                                          for (int i=0;i<100;i+=1){
+
                                                 if(bulletcnt>100){bulletcnt=0;bullettrig=0;}
                                       bulletcnt=bulletcnt+1;
 
@@ -1729,7 +1736,9 @@ int keyboard(){
                                 bulletx[i]=bulletx[i]+(20*bulletdirx[i])+warpx;
                                  bullety[i]=bullety[i]+(20*bulletdiry[i]+warpy);
 
-                                rect(screen,bulletx[i],bullety[i]-(zvb),bulletx[i]+1,bullety[i]-(zvb)+1,95);
+                                rect(screen,bulletx[i],bullety[i]-(zvb),bulletx[i]+thickx+1,bullety[i]-(zvb)+thicky+1,95);
+                                         rectfill(screen,bulletx[i],bullety[i]-(zvb),bulletx[i]+1,bullety[i]-(zvb)+1,0);
+                        
                                    int colx;
                                   colx=getpixel(collisionpad,bulletx[i],bullety[i]-zvb);
                                       if(colx==4){ bulletx[i]=400;  bullety[i]=400;}
@@ -1738,10 +1747,6 @@ int keyboard(){
 
 
            bullethit=0  ;
-                                  bullety[erasure]=400;
-                        bulletx[erasure]=400;
-
-                             if (erasure>500){erasure=0;}
 
 
                    //    bulletx[bulletcnt]=playerx;
@@ -1749,7 +1754,7 @@ int keyboard(){
                                  if(bulletx[bulletcnt]<0){bulletx[bulletcnt]=-100;bullety[bulletcnt]=400;  }
                                    if(bullety[bulletcnt]>=220){bulletx[bulletcnt]=400;bullety[bulletcnt]=400; }
                                  if(bullety[bulletcnt]<=0){bulletx[bulletcnt]=400;bullety[bulletcnt]=400;  }
-                                    erasure++;
+
 
 
 
