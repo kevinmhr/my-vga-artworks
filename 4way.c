@@ -9,11 +9,15 @@ char *bitmapbuffer;
 int textlenght=2;
 int midis=0;
 int fry;
+int digi=0;
 int frx=328;
 int zvb;
 int tuy,tuu,fri;
 int add=0;
-
+int num=0;
+int num2=0;
+int num3=0;
+int num4=0;
  int ballcnt=0;
  int explostrig=0;
  
@@ -130,7 +134,7 @@ int bdirx[20000];
 int bdiry[20000];
 int timer;
 int timer2;
-
+int health[20000];
 }OBJECT;
 OBJECT spider;
 OBJECT sleeps;
@@ -256,6 +260,103 @@ int maptemp[20000];
 
 const int corebreak=2060;
 
+void blitnumtex(int sc,int textplacex,int textplacey){
+
+      int numdig=4;
+      int x=0;
+      int y=0;
+    int fontsize=8;
+       double  integ[10];
+      if (hits>9){hits=0;num2++;};
+      if (num2>9){num2=0;num3++;};
+      if (num3>9){num3=0;num4++;};
+      if (num4>9){num4=1;};
+      integ[1]=((int)(hits))*6.9+180;
+      integ[2]=((int)(num2))*6.9+180;
+      integ[3]=((int)(num3))*6.9+180;
+      integ[4]=((int)(num4))*6.9+180;
+
+
+
+
+
+            
+     for (int j=0;j<fontsize*(fontsize+fontsize/2);j++){
+      x++; if (x>fontsize){x=0;y++;}
+int col;  
+
+    int coly=y;
+
+ //    if (warp=1){      coly=y*sin(warpy/10)*2; }
+
+
+   col=getpixel(font1,(integ[1])+x,y);
+  // slow++; if (slow>50000){ slow=0;        slow2+=1; }
+
+
+       if (col==255){
+
+
+      col=col+slow2;
+
+     putpixel(surface,(i*fontsize)+(x)+textplacex+40,textplacey+(coly),0);
+
+    }
+   col=getpixel(font1,(integ[2])+x,y);
+  // slow++; if (slow>50000){ slow=0;        slow2+=1; }
+
+
+       if (col==255){
+
+
+      col=col+slow2;
+
+     putpixel(surface,(i*fontsize)+x+textplacex+30,textplacey+(coly),0);
+
+    } 
+
+   col=getpixel(font1,(integ[3])+x,y);
+  // slow++; if (slow>50000){ slow=0;        slow2+=1; }
+
+
+       if (col==255){
+
+
+      col=col+slow2;
+
+     putpixel(surface,(i*fontsize)+x+textplacex+20,textplacey+(coly),0);
+
+    }
+
+   col=getpixel(font1,(integ[4])+x,y);
+  // slow++; if (slow>50000){ slow=0;        slow2+=1; }
+
+
+       if (col==255){
+
+
+      col=col+slow2;
+
+     putpixel(surface,(i*fontsize)+x+textplacex+10,textplacey+(coly),0);
+
+    } 
+
+
+    }
+
+    
+
+
+
+
+
+
+
+
+
+
+
+}
 void blittext(int textplacex,int textplacey,char* tex,int fontsize,int textlenght,int inv){
 
 
@@ -269,14 +370,15 @@ int i,j;
 int k=1;
 
 int warpy;
+
+
+
 for (int i=0;i<textlenght;i++){
 //    warpy+=0.001;
 
-integ=((int)tex[i])-97;
 
 //integ=*(fontsize);
 
-if (integ>-1){   if (integ<127){
 
 /*
 if (fontsize>10){
@@ -295,12 +397,16 @@ masked_blit(font1,surface,(integ)*(7),0,(i*(fontsize))+textplacex,textplacey,fon
 
  */
     int  warp=1;
-
+      int integ=(((int)tex[i]))-97;
 
      int x=0;
      int y=0;
 
      for (int j=0;j<fontsize*(fontsize+fontsize/2);j++){
+
+
+
+
       x++; if (x>fontsize){x=0;y++;}
 int col;  
 
@@ -310,7 +416,7 @@ int col;
    if (fontsize>=10){
 
    col=getpixel(font1,1+(double)((integ)*(13.182))+x,y+74);
-   slow++; if (slow>50000){ slow=0;        slow2+=1; }
+  slow++; if (slow>50000){ slow=0;        slow2+=1; }
 
 
        if (col==255){
@@ -325,13 +431,12 @@ int col;
 
 
   if (fontsize<=10){
-   col=getpixel(font1,(integ)*(7)+x-1,y-1);
+   col=getpixel(font1,(integ*7)+x-1,y-1);
    if (col==255){
    putpixel(surface,(i*fontsize)+x+textplacex,textplacey+y,col);
 
                }
 
-                 }
 
 
 
@@ -340,7 +445,8 @@ int col;
 
 
 
-     }
+
+
 
 
 
@@ -350,7 +456,7 @@ int col;
 
               }  }
 
-                               }
+ }
 
 
 
@@ -469,6 +575,10 @@ int init(){
 //          play_midi(grand,0);
      //  ballx=320;
      //  bally=100;
+      hits=0;
+      num2=0;
+      num3=0;
+      num4=0;
          explos.timer=0;
            maplenght=351-65;
         d=0;
@@ -905,7 +1015,7 @@ stop_midi();
               }
 
 
-
+          blitnumtex(hits,10,10);
 
 
 
@@ -1460,7 +1570,7 @@ int col=0;
 
            if (hits>2){copymapchunk();}
 
-        textprintf_ex(surface,font,160,0,250,0,"%i",hits);
+ //       textprintf_ex(surface,font,160,0,250,0,"%i",hits);
 
 // blitnum(10,10,8,0);
 
