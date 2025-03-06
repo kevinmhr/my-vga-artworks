@@ -1189,18 +1189,51 @@ for (int i=0;i<20000;i++){
 
             if (maptemp[i]==1077){
 
+                             
 
+                    if (spider.timer>=800) { spider.timer=0;      }
 
-                    if (spider.timer>=400) { spider.timer=0;      }
-
-                         if (spider.timer>=200) {      spider.bulletx[i]=spider.x[i]+8;   if (playerx<spider.x[i]-(z*10)){   spider.bdirx[i]=1; }  if (playerx>spider.x[i]-(z*10)){   spider.bdirx[i]=-1; }
+                         if (spider.timer>=400) {     if (playerx<spider.x[i]-(z*10)){   spider.bdirx[i]=1; }  if (playerx>spider.x[i]-(z*10)){   spider.bdirx[i]=-1; }
                          if (playery<spider.y[i]-(zv*10)){   spider.bdiry[i]=1; }if (playery>spider.y[i]-(zv*10)){   spider.bdiry[i]=-1; }
 
-                                          spider.bullety[i]=spider.y[i]+5; }
+
+                                       if (playery>spider.y[i]-(zv*10)){
+                                   if (playery-spider.y[i]-(zv*10)<=30){   spider.bdiry[i]=0; } }
+                                       if (playery<spider.y[i]-(zv*10)){
+                                   if (spider.y[i]-(zv*10)-playery<=30){   spider.bdiry[i]=0; } }
+
+                                                spider.bullety[i]=spider.y[i]+5;
+                                                spider.bulletx[i]=spider.x[i]+8;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                               }
+
+
 
                          // rbx[enemicnt]=-1;
                           //  rby[enemicnt]=1;
-                          if (spider.timer2>100){   spider.dirx[enemicnt]=-spider.dirx[enemicnt];      }
+                          if (spider.timer2>100){   spider.dirx[enemicnt]=-spider.dirx[enemicnt];
+
+
+
+
+
+
+
+    }
 
             if (spider.timer2>200){   spider.diry[enemicnt]=-spider.diry[enemicnt];     }
               if (spider.timer2>300){ spider.timer2=0; }
@@ -1343,7 +1376,6 @@ int col=0;
                    spider.bullety[i]-=1;}
                          if (spider.bdiry[i]==-1){
                    spider.bullety[i]+=1;}
-
 
 
 
@@ -2028,7 +2060,7 @@ bgscroly=100;
                blittingtosprite();
 
    blit(surface,screen,0,0,0,0,320,240);
-
+     if (key[KEY_ESC]){ return 0;}
 
     }
 
