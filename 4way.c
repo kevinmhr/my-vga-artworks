@@ -28,7 +28,7 @@ int slowspid=0;
 int spidtimer=0;
 double bulletwarp=0;
 double bulletwapd=1;
-int hits=0;
+double hits=0;
 double spd;
 double ballx;
 double bally;
@@ -260,27 +260,31 @@ int maptemp[20000];
 
 const int corebreak=2060;
 
-void blitnumtex(int sc,int textplacex,int textplacey){
-
+void blitnumtex(int sc,int textplacex,int textplacey,int digit){
       int numdig=4;
-      int x=0;
-      int y=0;
+
     int fontsize=8;
        double  integ[10];
-      if (hits>9){hits=0;num2++;};
+          hits=sc;
+      if (hits>=9){hits=0;num2++;};
+
       if (num2>9){num2=0;num3++;};
       if (num3>9){num3=0;num4++;};
       if (num4>9){num4=1;};
-      integ[1]=((int)(hits))*6.9+180;
+
+      integ[1]=(hits)*6.9+180;
+
       integ[2]=((int)(num2))*6.9+180;
       integ[3]=((int)(num3))*6.9+180;
       integ[4]=((int)(num4))*6.9+180;
 
+   //    if (hits<0){hits=9999;}
+   //   hits--;
 
 
 
-
-            
+        int x=0;
+      int y=0;        
      for (int j=0;j<fontsize*(fontsize+fontsize/2);j++){
       x++; if (x>fontsize){x=0;y++;}
 int col;  
@@ -289,8 +293,8 @@ int col;
 
  //    if (warp=1){      coly=y*sin(warpy/10)*2; }
 
-
-   col=getpixel(font1,(integ[1])+x,y);
+        for (int d=1;d<digit+1;d++){
+   col=getpixel(font1,(integ[d])+x,y);
   // slow++; if (slow>50000){ slow=0;        slow2+=1; }
 
 
@@ -299,50 +303,12 @@ int col;
 
       col=col+slow2;
 
-     putpixel(surface,(i*fontsize)+(x)+textplacex+40,textplacey+(coly),0);
-
-    }
-   col=getpixel(font1,(integ[2])+x,y);
-  // slow++; if (slow>50000){ slow=0;        slow2+=1; }
-
-
-       if (col==255){
-
-
-      col=col+slow2;
-
-     putpixel(surface,(i*fontsize)+x+textplacex+30,textplacey+(coly),0);
-
-    } 
-
-   col=getpixel(font1,(integ[3])+x,y);
-  // slow++; if (slow>50000){ slow=0;        slow2+=1; }
-
-
-       if (col==255){
-
-
-      col=col+slow2;
-
-     putpixel(surface,(i*fontsize)+x+textplacex+20,textplacey+(coly),0);
+     putpixel(surface,((i*fontsize)+((x-d*6))+textplacex+40),textplacey+(coly),0);
 
     }
 
-   col=getpixel(font1,(integ[4])+x,y);
-  // slow++; if (slow>50000){ slow=0;        slow2+=1; }
 
-
-       if (col==255){
-
-
-      col=col+slow2;
-
-     putpixel(surface,(i*fontsize)+x+textplacex+10,textplacey+(coly),0);
-
-    } 
-
-
-    }
+    }        }
 
     
 
@@ -519,11 +485,15 @@ spider.x[k]=0;
 
 if (maptemp[k]==1077){ numtogo++; spider.x[k]=(i*10);   spider.bdiry[k]=0;  spider.bdirx[k]=0;
 spider.y[k]=y-245;
+spider.health[k]=60;
+
             }
 
 spr.x[k]=0;
 if (maptemp[k]==1078){spr.x[k]=(i*10);   spr.bdiry[k]=0;  spr.bdirx[k]=0;
 spr.y[k]=y-245;
+
+
             }
 
 
@@ -1015,7 +985,7 @@ stop_midi();
               }
 
 
-          blitnumtex(hits,10,10);
+          blitnumtex(hits,10,10,4);
 
 
 
@@ -1176,7 +1146,10 @@ for (int i=0;i<20000;i++){
                         */
                   int colx=getpixel(collisionpad,playerx,playery);
                   if (colx==16) {init();}
+            //     blitnumtex(hits,ballx,bally-(zv*10),4);
+
                masked_blit(walkingspr2,surface,269+ballframex,ballframey,ballx,bally-(zv*10),16,18);
+
                   rectfill(collisionpad,ballx-5,bally-(zv*10)-5,ballx+15,bally-(zv*10)+15,16);
                    
                
@@ -1214,7 +1187,7 @@ for (int i=0;i<20000;i++){
              //       bullet2x[i]+=1*0.5;
 
 
-           if (maptemp[i]==1077){
+            if (maptemp[i]==1077){
 
 
 
@@ -1354,7 +1327,7 @@ int col=0;
 
                                         colx=getpixel(collisionpad2,spider.bulletx[i]+60,spider.bullety[i]+250);
                                       if(colx==4){ spider.bulletx[i]=spider.x[i];  spider.bullety[i]=spider.y[i];}
-
+     //     textprintf_ex(surface,font,spider.x[enemicnt]-1-(z*10)-add,spider.y[enemicnt]-(zv*10)-add2-10,250,0,"%i",spider.health[i]);
 
 
          masked_blit(walkingspr2,surface,155+spidanimx,261,spider.x[enemicnt]-1-(z*10)-add,spider.y[enemicnt]-(zv*10)-add2,10,10);
@@ -1381,10 +1354,10 @@ int col=0;
 
                               k34=0;
                         for (int x=-2;x<2;x++){          colx=getpixel(collisionpad,bulletx[u]+x,bullety[u]-zvb-13);   }
-         if (colx==90){ hits++;     k34=1;     /*spider.x[enemicnt]-1-(z*10)-add; */
+         if (colx==90){ hits+=1;      k34=1;    /*spider.x[enemicnt]-1-(z*10)-add; */
                         explos.timer=0;
-             if (explostrig==0){
-           explostrig=1;}  maptemp[i]=0; bulletspd=1; midiseek=0;     play_midi(grand,0); midi_seek(250);     bullettrig=0;   mapfunc();
+             if (explostrig==0){  explostrig=1;
+          } bulletspd=1; midiseek=0;  maptemp[i]=0;    play_midi(grand,0); midi_seek(250);     bullettrig=0;     mapfunc();
                                       explosx=bulletx[u];     explosy=bullety[u]-zvb-13;
              
 
@@ -1394,7 +1367,7 @@ int col=0;
 
                                  }
 
-
+                            if (spider.health[i]<1){   } 
             /*    spider.y[enemicnt]-(zv*10)-add2; */
 
 
@@ -1727,7 +1700,7 @@ int keyboard(){
                int releasel=1;
                int releaser=1;
 
-      if (key[KEY_LEFT]) { releasel=0; faced=-1;  if (spd<-5){spd=-5;} spd-=1;     playerx=playerx-tx2;     framey=172; slow++; if (slow>10){slow=0;        framex+=16;          }
+      if (key[KEY_LEFT]) { releasel=0; faced=-1;     playerx=playerx-tx2*1;     framey=172; slow++; if (slow>10){slow=0;        framex+=16;          }
 
         if (framex>=201){  framex=155;}
 
@@ -1735,7 +1708,7 @@ int keyboard(){
 
                                                            }
            //              if (z>8000){z=0;}
-    if (key[KEY_RIGHT]) {   releaser=0; faced=1;  if (spd>5){spd=5;} spd+=1;     playerx=playerx+tx;     framey=230;
+    if (key[KEY_RIGHT]) {   releaser=0; faced=1;     playerx=playerx+tx*1;      framey=230;
 
                  slow++; if (slow>10){slow=0;    framex+=16;
 
@@ -1754,12 +1727,12 @@ int keyboard(){
 
 
 
-         framey=210;   framex+=16;    if (framex>175){framex=155;}  playery=playery+t2player;      }
+         framey=210;   framex+=16;    if (framex>175){framex=155;}  playery=playery+t2player*1;      }
          if (key[KEY_DOWN]){
 
 
 
-         framey=191;  framex+=16;    if (framex>175){framex=155;}   playery=playery+tplayer;    }
+         framey=191;  framex+=16;    if (framex>175){framex=155;}   playery=playery+tplayer*1;    }
 
                                                                      bullethit=1;
 
@@ -1780,11 +1753,11 @@ int keyboard(){
                //     bulletcnt++;
                                  
                                            if (playerx>=151) {
-                                          playerx-=1;      if (bgscrolx>400){bgscrolx=400;}  bgscrolx=bgscrolx+(double)tx; add++;bgaddh--; if (bgaddh<0){bgaddh=30;}if (add>10){add=1;  plus=(int)plus+1;z++;  } }
+                                          playerx-=1;    add++; if (add>10){add=1;  plus=(int)plus+1;z++;  } }
                                     if (playerx<=130) {
-                           playerx+=1; if (bgscrolx<0){bgscrolx=0;} bgscrolx=bgscrolx-(double)tx2;  add--;bgaddh++; if (bgaddh>30){bgaddh=0;} if (add<1)   {add=10;     plus=(int)plus-1;z--;   } }
-                    if (playery>=80){ zvb++; playery-=1;  if (bgaddv<0){bgaddv=30;} bgaddv--;                     add2++;  if (add2>10){ add2=0;   plus+=255+97;zv=zv+1; }  }
-                    if (playery<=70){ zvb--; playery+=1;    if (bgaddv>30){bgaddv=0;} bgaddv++; add2--;  if (add2<0){ add2=10;    plus-=255+97;zv=zv-1;}  }
+                           playerx+=1;   add--;bgaddh++;  if (add<1)   {add=10;     plus=(int)plus-1;z--;   } }
+                    if (playery>=80){ zvb++; playery-=1;                       add2++;  if (add2>10){ add2=0;   plus+=255+97;zv=zv+1; }  }
+                    if (playery<=70){ zvb--; playery+=1;    add2--;  if (add2<0){ add2=10;    plus-=255+97;zv=zv-1;}  }
 
 
 
@@ -1862,7 +1835,7 @@ int keyboard(){
                    //    bulletx[bulletcnt]=playerx;
                                 if(bulletx[bulletcnt]>320){bulletx[bulletcnt]=400;bullety[bulletcnt]=400;  }
                                  if(bulletx[bulletcnt]<0){bulletx[bulletcnt]=-100;bullety[bulletcnt]=400;  }
-                                   if(bullety[bulletcnt]>=220){bulletx[bulletcnt]=400;bullety[bulletcnt]=400; }
+                                   if(bullety[bulletcnt]>=240){bulletx[bulletcnt]=400;bullety[bulletcnt]=400; }
                                  if(bullety[bulletcnt]<=0){bulletx[bulletcnt]=400;bullety[bulletcnt]=400;  }
 
 
@@ -1939,38 +1912,26 @@ int main(int argc, char *argv[]) {
  return 1;
       }   }
 
-//set_multiply_blender(0, 0, 0, 9);
-   //    set_color_depth(8);
-  //  gfx_driver->set_blender_mode(0,0,0,0,9);
+       set_color_depth(8);
    set_write_alpha_blender();
-//bitmapbuffer="metal.bmp";
-   /* read in the bitmap file */
  collisionpad=create_bitmap(320,240);
   collisionpad2=create_bitmap(3200,1000);
 
 
 
        //   solid_mode();
-//   the_image= load_bitmap("spritesheet.bmp", the_palette);
    sprsheet=load_bitmap("mapbit.bmp",the_palette2);
    grand=load_midi("music.mid");
 
-   //   set_palette(the_palette);
-//    the_block1= load_bitmap("block1.bmp",the_palette2);
                font1=load_bitmap("fonts.bmp",the_palette);
 
       levelbg=load_bitmap("levbg1.bmp",the_palette);
-//     spr1=create_bitmap(320,240);
-  surface=create_bitmap(320,240);
-//   sprite=create_bitmap(20,30);
-// themap=create_bitmap (320,240);
+     surface=create_bitmap(320,240);
 
 
            levelbg2=create_bitmap(320,240);
        levelbg1=load_bitmap("bgsprts.bmp",the_palette2);
-// walkingspr=create_bitmap(640,480);
       walkingspr2=load_bitmap("walking.bmp",the_palette2);
- //      spritefunction();
 
   int x,y,col,col2;
     for (int i=0;i<2400000;i++){
@@ -2062,15 +2023,12 @@ bgscroly=100;
 
 
 
-                  ti3++;            if (ti3>=5000){ti3=0;lenght++;    keyboard();        mapfunc();
-                                                                                                                            //  draw_trans_sprite(spr1,walkingspr,0,0);
+              keyboard();        mapfunc();
 
-                                                                                                                              blittingtosprite();
-                                                                                                                              //  enemies_func();
-             if (key[KEY_ESC]){ return 0;}
-                                                                                                                                 blit(surface,screen,0,0,0,0,320,240);
-                                                                                               //   blit(sprites,screen,framex,framey,playerx,playery,30, 30);
-                                                                                                                                  }
+               blittingtosprite();
+
+   blit(surface,screen,0,0,0,0,320,240);
+
 
     }
 
