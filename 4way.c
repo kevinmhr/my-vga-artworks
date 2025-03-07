@@ -124,6 +124,9 @@ int enemiyt1=2;
 int laddercolor;
 
 typedef struct OBJECT{
+double rx[20000];
+double ry[20000];
+double rotate[20000];
 double bulletx[20000];
 double bullety[20000];
 double x[20000];
@@ -990,13 +993,13 @@ stop_midi();
 
 
   // crossball();
+              spider.timer+=1;
 
+        spider.timer2+=2;
         spr.timer++;
 
         spr.timer2++;
-        spider.timer++;
 
-        spider.timer2++;
       int  bulleti;
 int i2=0;
 int j2=0;
@@ -1186,14 +1189,15 @@ for (int i=0;i<20000;i++){
 
              //       bullet2x[i]+=1*0.5;
 
+ if (spider.timer2>=300){ spider.timer2=0; }
+         if (spider.timer>=800) { spider.timer=0;      }
+
 
             if (maptemp[i]==1077){
 
-                             
 
-                    if (spider.timer>=800) { spider.timer=0;      }
 
-                         if (spider.timer>=400) {     if (playerx<spider.x[i]-(z*10)){   spider.bdirx[i]=1; }  if (playerx>spider.x[i]-(z*10)){   spider.bdirx[i]=-1; }
+                         if (spider.timer>=400) {      if (playerx<spider.x[i]-(z*10)){   spider.bdirx[i]=1; }  if (playerx>spider.x[i]-(z*10)){   spider.bdirx[i]=-1; }
                          if (playery<spider.y[i]-(zv*10)){   spider.bdiry[i]=1; }if (playery>spider.y[i]-(zv*10)){   spider.bdiry[i]=-1; }
 
 
@@ -1206,7 +1210,7 @@ for (int i=0;i<20000;i++){
                                                 spider.bulletx[i]=spider.x[i]+8;
 
 
-
+                                                   spider.rotate[i]+=0.1;
 
 
 
@@ -1225,7 +1229,7 @@ for (int i=0;i<20000;i++){
 
                          // rbx[enemicnt]=-1;
                           //  rby[enemicnt]=1;
-                          if (spider.timer2>100){   spider.dirx[enemicnt]=-spider.dirx[enemicnt];
+                          if (spider.timer2>=100){   spider.dirx[enemicnt]=-spider.dirx[enemicnt];
 
 
 
@@ -1235,8 +1239,7 @@ for (int i=0;i<20000;i++){
 
     }
 
-            if (spider.timer2>200){   spider.diry[enemicnt]=-spider.diry[enemicnt];     }
-              if (spider.timer2>300){ spider.timer2=0; }
+            if (spider.timer2>=200){   spider.diry[enemicnt]=-spider.diry[enemicnt];     }
 
 
 
@@ -1256,8 +1259,7 @@ for (int i=0;i<20000;i++){
 
 
 
-
-                      if (slow2>20000){ slow2=0;  }
+                  //    if (slow2>20000){ slow2=0;  }
 
 
 
@@ -1279,7 +1281,6 @@ int col=0;
 
 
 
-          if (spider.dirx[enemicnt]>0){fry=0;}  if (spider.dirx[enemicnt]<0){fry=30;}
 
 
 
@@ -1325,11 +1326,11 @@ int col=0;
                       //    if(enix[enemicnt]<50){  rx[enemicnt]=1;  }
                         //   if(enix[enemicnt]-(z*10)-add>320){  r[enemicnt]=-1; }
                          //  if(enix[enemicnt]-(z*10)-add<0){  r[enemicnt]=1;}
-
-                         if (spider.diry[enemicnt]>0){spider.y[enemicnt]+=1*0.5;              }
-                         if (spider.diry[enemicnt]<0){spider.y[enemicnt]-=1*0.5;              }
-                         if (spider.dirx[enemicnt]>0){spider.x[enemicnt]+=1*0.5; if (spidanimx>=13){spidanimx=0;}  if(slowspid>20) { slowspid=0;spidanimx+=13;} }
-                         if (spider.dirx[enemicnt]<0){spider.x[enemicnt]-=1*0.5;             }
+                            if (spidanimx>=13){spidanimx=0;}  if(slowspid>20) { slowspid=0;spidanimx+=13;}
+                         if (spider.diry[enemicnt]>0){spider.y[enemicnt]+=1*0.8;              }
+                         if (spider.diry[enemicnt]<0){spider.y[enemicnt]-=1*0.8;              }
+                         if (spider.dirx[enemicnt]>0){spider.x[enemicnt]+=1*0.8; }
+                         if (spider.dirx[enemicnt]<0){spider.x[enemicnt]-=1*0.8;             }
                       //     if(  enix[enemicnt]==0){ enix[enemicnt]==1; r[enemicnt]=-r[enemicnt];}
 
 
@@ -1337,6 +1338,7 @@ int col=0;
 
 
 
+                             if (spider.dirx[enemicnt]>=0){fry=0;}  if (spider.dirx[enemicnt]<=0){fry=30;}
 
 
 
@@ -1359,12 +1361,35 @@ int col=0;
 
 
                                         colx=getpixel(collisionpad2,spider.bulletx[i]+60,spider.bullety[i]+250);
-                                      if(colx==4){ spider.bulletx[i]=spider.x[i];  spider.bullety[i]=spider.y[i];}
+                                      if(colx==4){ spider.bulletx[i]=400;  spider.bullety[i]=400;}
      //     textprintf_ex(surface,font,spider.x[enemicnt]-1-(z*10)-add,spider.y[enemicnt]-(zv*10)-add2-10,250,0,"%i",spider.health[i]);
+             double x=0;
+             double y=0;
 
 
-         masked_blit(walkingspr2,surface,155+spidanimx,261,spider.x[enemicnt]-1-(z*10)-add,spider.y[enemicnt]-(zv*10)-add2,10,10);
-//         draw_sprite(surface,sprite,);
+
+            double x2= (sin(spider.rotate[i])-(cos(spider.rotate[i])));
+     
+             double y2=   (sin(spider.rotate[i])+(cos(spider.rotate[i])));
+
+            for (int i=0;i<100;i++){
+
+             x++; if (x>12){x=0;y++;}
+
+                double x3=((((x-5)*(x2))+((y-4)*(y2)))/1.5);
+                double y3=((((y-4)*(x2))-((x-5)*(y2)))/1.5);
+                 int colx=getpixel(walkingspr2,155+spidanimx+x,261+y);
+                 if (colx!=0){putpixel(surface,x3+spider.x[enemicnt]-1-(z*10)-add,y3+spider.y[enemicnt]-(zv*10)-add2,colx+100);
+             putpixel(surface,x3+spider.x[enemicnt]-1-(z*10)-add,y3+spider.y[enemicnt]-(zv*10)-add2+5,0);
+        
+             //       masked_blit(walkingspr2,surface,155+spidanimx+x3+3,261+y3,spider.x[enemicnt]-1-(z*10)-add,spider.y[enemicnt]-(zv*10)-add2,10,10);
+
+              //      masked_blit(walkingspr2,surface,155+spidanimx+x3+3,261+y3,spider.x[enemicnt]-1-(z*10)-add,spider.y[enemicnt]-(zv*10)-add2,10,10);
+                      }
+
+            }
+
+   //         draw_sprite(surface,sprite,);
 
 
                      if (spider.bdirx[i]==1){
@@ -1377,15 +1402,11 @@ int col=0;
                          if (spider.bdiry[i]==-1){
                    spider.bullety[i]+=1;}
 
-
-
-
-
-            for (int u=0;u<50;u+=1){
+                for (int u=0;u<100;u+=2){
 
 
                               k34=0;
-                        for (int x=-2;x<2;x++){          colx=getpixel(collisionpad,bulletx[u]+x,bullety[u]-zvb-13);   }
+                                 colx=getpixel(collisionpad,bulletx[u],bullety[u]-zvb-13);
          if (colx==90){ hits+=1;      k34=1;    /*spider.x[enemicnt]-1-(z*10)-add; */
                         explos.timer=0;
              if (explostrig==0){  explostrig=1;
@@ -1394,26 +1415,30 @@ int col=0;
              
 
 
-                                 }
 
 
-                                 }
 
-                            if (spider.health[i]<1){   } 
+                                 } }
+
+
+
+
+         //                   if (spider.health[i]<1){   }
             /*    spider.y[enemicnt]-(zv*10)-add2; */
 
 
 
 
-
+                     explos.x[0]+=0.02;  explos.y[0]+=0.02;
+                            if (explos.x[0]>10) { explos.x[0]=2;}
+                           if (explos.y[0]>10)  { explos.y[0]=2;}
+                     
 
 
   }
 
-                              explos.x[0]+=0.02;  explos.y[0]+=0.02;
-                            if (explos.x[0]>10) { explos.x[0]=2;}
-                           if (explos.y[0]>10)  { explos.y[0]=2;}
-                     
+
+
 
 
 
@@ -1564,6 +1589,8 @@ int col=0;
 
 
       }
+
+
 
                           if (explos.timer<=50) { circle(surface,explosx,explosy,explos.timer/10,2);
                                circle(surface,explosx,explosy,10-explos.timer/10,228);
