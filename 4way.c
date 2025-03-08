@@ -1189,7 +1189,6 @@ for (int i=0;i<20000;i++){
 
              //       bullet2x[i]+=1*0.5;
 
- if (spider.timer2>=300){ spider.timer2=0; }
          if (spider.timer>=800) { spider.timer=0;      }
 
 
@@ -1229,7 +1228,9 @@ for (int i=0;i<20000;i++){
 
                          // rbx[enemicnt]=-1;
                           //  rby[enemicnt]=1;
-                          if (spider.timer2>=100){   spider.dirx[enemicnt]=-spider.dirx[enemicnt];
+
+
+                          if (spider.timer2==100){   spider.dirx[enemicnt]=-spider.dirx[enemicnt];
 
 
 
@@ -1239,15 +1240,21 @@ for (int i=0;i<20000;i++){
 
     }
 
-            if (spider.timer2>=200){   spider.diry[enemicnt]=-spider.diry[enemicnt];     }
+            if (spider.timer2==300){   spider.diry[enemicnt]=-spider.diry[enemicnt];     }
+
+                  if (spider.timer2==550){   spider.dirx[enemicnt]=0;}
+                         if (spider.timer2==750){   spider.diry[enemicnt]=0;}
 
 
 
+              if (spider.timer2>=1000){ spider.timer2=0; }
+
+                           if (spider.timer2==50){   spider.dirx[enemicnt]=1;}
+                         if (spider.timer2==150){   spider.diry[enemicnt]=1;}
 
 
 
-
-         rectfill(collisionpad,spider.x[enemicnt]-(z*10)-add,spider.y[enemicnt]-15-add2-(zv*10),spider.x[enemicnt]-(z*10)-add+15,spider.y[enemicnt]-15-add2-(zv*10)+20,90);
+         rectfill(collisionpad,spider.x[enemicnt]-(z*10)-add,spider.y[enemicnt]-15-add2-(zv*10),spider.x[enemicnt]-(z*10)-add+20,spider.y[enemicnt]-15-add2-(zv*10)+25,90);
 
 
 
@@ -1327,10 +1334,10 @@ int col=0;
                         //   if(enix[enemicnt]-(z*10)-add>320){  r[enemicnt]=-1; }
                          //  if(enix[enemicnt]-(z*10)-add<0){  r[enemicnt]=1;}
                             if (spidanimx>=13){spidanimx=0;}  if(slowspid>20) { slowspid=0;spidanimx+=13;}
-                         if (spider.diry[enemicnt]>0){spider.y[enemicnt]+=1*0.8;              }
-                         if (spider.diry[enemicnt]<0){spider.y[enemicnt]-=1*0.8;              }
-                         if (spider.dirx[enemicnt]>0){spider.x[enemicnt]+=1*0.8; }
-                         if (spider.dirx[enemicnt]<0){spider.x[enemicnt]-=1*0.8;             }
+                         if (spider.diry[enemicnt]>0){spider.y[enemicnt]+=1*0.6;              }
+                         if (spider.diry[enemicnt]<0){spider.y[enemicnt]-=1*0.6;              }
+                         if (spider.dirx[enemicnt]>0){spider.x[enemicnt]+=1*0.6; }
+                         if (spider.dirx[enemicnt]<0){spider.x[enemicnt]-=1*0.6;             }
                       //     if(  enix[enemicnt]==0){ enix[enemicnt]==1; r[enemicnt]=-r[enemicnt];}
 
 
@@ -1878,7 +1885,7 @@ int keyboard(){
                                 bulletx[i]=bulletx[i]+(20*bulletdirx[i])+warpx;
                                  bullety[i]=bullety[i]+(20*bulletdiry[i]+warpy);
 
-                                rect(screen,bulletx[i],bullety[i]-(zvb),bulletx[i]+thickx+1,bullety[i]-(zvb)+thicky+1,95);
+                                rect(screen,bulletx[i],bullety[i]-(zvb),bulletx[i]+thickx+1,bullety[i]-(zvb)+thicky+1,2);
                                          rectfill(screen,bulletx[i],bullety[i]-(zvb),bulletx[i]+1,bullety[i]-(zvb)+1,0);
                         
                                    int colx;
