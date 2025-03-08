@@ -1383,14 +1383,16 @@ int col=0;
 
             for (int i=0;i<100;i++){
 
-             x++; if (x>12){x=0;y++;}
+             x++; if (x>10){x=0;y++;}
 
                 double x3=((((x-5)*(x2))+((y-4)*(y2)))/1.5);
                 double y3=((((y-4)*(x2))-((x-5)*(y2)))/1.5);
                  int colx=getpixel(walkingspr2,155+spidanimx+x,261+y);
-                 if (colx!=0){putpixel(surface,x3+spider.x[enemicnt]-1-(z*10)-add,y3+spider.y[enemicnt]-(zv*10)-add2,colx+100);
-             putpixel(surface,x3+spider.x[enemicnt]-1-(z*10)-add,y3+spider.y[enemicnt]-(zv*10)-add2+5,0);
-        
+                 if (colx!=0){
+//              putpixel(surface,(x/2)+spider.x[enemicnt]-1-(z*10)-add,(y/2)+spider.y[enemicnt]-(zv*10)-add2+1,0);
+         
+             putpixel(surface,x3+spider.x[enemicnt]-1-(z*10)-add,y3+spider.y[enemicnt]-(zv*10)-add2,colx+50);
+
              //       masked_blit(walkingspr2,surface,155+spidanimx+x3+3,261+y3,spider.x[enemicnt]-1-(z*10)-add,spider.y[enemicnt]-(zv*10)-add2,10,10);
 
               //      masked_blit(walkingspr2,surface,155+spidanimx+x3+3,261+y3,spider.x[enemicnt]-1-(z*10)-add,spider.y[enemicnt]-(zv*10)-add2,10,10);
@@ -1856,7 +1858,7 @@ int keyboard(){
 
 
 
-                                                       bulletwarp+=bulletwapd*0.1;
+                                                       bulletwarp+=bulletwapd*0.10;
                                                        if (bulletwarp>180) {bulletwapd=-bulletwapd; }
                                                           if (bulletwarp<0) {bulletwapd=-bulletwapd; }
                                                   if (faced==1){   bulletx[bulletcnt]=(playerx+15);     bulletdirx[bulletcnt]=0.1; warpy=sin(bulletwarp)/5; warpx=0;  bulletdiry[bulletcnt]=0; thickx=1;thicky=0;         }
