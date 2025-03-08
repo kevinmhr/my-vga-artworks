@@ -1006,7 +1006,7 @@ int j2=0;
 
 
 
-for (int i=(z*10);i<12000+(z*10);i++){
+for (int i=10000;i<20000;i++){
 
 
 
@@ -1412,24 +1412,33 @@ int col=0;
                          if (spider.bdiry[i]==-1){
                    spider.bullety[i]+=1;}
 
-                for (int u=10;u<100;u+=2){
+                for (int u=0;u<100;u+=3){
 
 
                               k34=0;
                               for (x=0;x<2;x++){
            colx=getpixel(collisionpad,bulletx[u],bullety[u]-zvb-10+x);
          if (colx==90){ hits+=1;   play_midi(grand,0); midi_seek(250);      k34=1;    /*spider.x[enemicnt]-1-(z*10)-add; */
-                        explos.timer=0;
-             if (explostrig==0){  explostrig=1;
-          } bulletspd=1; midiseek=0;  maptemp[i]=0;      bullettrig=0;     mapfunc();
-                                      explosx=bulletx[u];     explosy=bullety[u]-zvb-13;
-             
+
+            explosx=bulletx[u];     explosy=bullety[u]-zvb-13;
+                     }    }   for (x=0;x<2;x++){
+           colx=getpixel(collisionpad,bulletx[u]+x,bullety[u]-zvb-10);
+         if (colx==90){ hits+=1;   play_midi(grand,0); midi_seek(250);      k34=1;    /*spider.x[enemicnt]-1-(z*10)-add; */
+            bullettrig=0;    explosx=bulletx[u];     explosy=bullety[u]-zvb-13;
+
+
+                                }           }
+
+             if (k34==1){      explos.timer=0;
+
+           bulletspd=1; midiseek=0;  maptemp[i]=0;         mapfunc();
+
+            }
+
+                                  }
 
 
 
-
-
-                                 } }       }
 
 
 
