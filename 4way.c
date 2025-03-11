@@ -687,9 +687,7 @@ int mapfunc(){
          int  vertical=10-add2;
 
 
-                                       if (playery>=90){                }
-                                       if (playery<=80){                }
-
+             /*
                   d=100;
 
                int xi=0;
@@ -697,19 +695,20 @@ int mapfunc(){
                int ui=0;
                 for(int k=0;k<640;k++){
                   xi+=10; if (xi>=320){yi+=10;xi=0;}
-                  blit(sprsheet,surface,0,50,(xi)-(add)+0,yi,10,10);
+                  blit(sprsheet,surface,0,50,(xi)-(add)+0,yi,1,1);
 
 
              
              
                                     }
-
+               */
 
            for (int k=0;k<(6500);k++){
 
 
                  int mapb=k+plus;
                  int k=mapb;
+
 
             maplenght=351-65;
                  i+=1;
@@ -859,8 +858,13 @@ int js=0;
 
                         }
 
+                   if (maptemp[k]==0){
+                      int y=i;
+                  putpixel(surface,(i*10)-add,vertical,0);
 
 
+               //   blit(sprsheet,surface,0,50,(i*10)-add,vertical,1,1);
+                                  }
            //    blit(sprsheet,surface,0,0,(i*10)-add,vertical-10,10,10);}
              
 
@@ -2131,14 +2135,39 @@ bgscroly=100;
        init();
 
      while (i!=0){
-      
-
-
-
-
-              keyboard();        mapfunc();
+                      keyboard();        mapfunc();
 
                blittingtosprite();
+                   /*
+                   float x1=0;
+                     int x2=0;
+                     int y=1;
+                     int x=1;
+
+                       double j2=1;;
+
+                //   clear_to_color(surface,110);
+
+                      //    i=0;
+                          for (int j=0;j<240;j+=1){
+                        for (int i=0;i<240;i+=1){
+                                             x2=i;
+
+                       x1=((x2)*(j));
+
+                        x=x1+1;
+
+                          int col=getpixel(surface,(i+80),(j));
+                              putpixel(screen,(x1)+160,j/2,col);
+
+
+                          }
+                          }
+
+
+
+                     */
+
 
    blit(surface,screen,0,0,0,0,320,240);
      if (key[KEY_ESC]){ return 0;}
