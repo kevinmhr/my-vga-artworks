@@ -5,10 +5,12 @@
 #include "map2.c"
 char *bitmapbuffer;
  int z,zv;
+
     int k34=0;
 int textlenght=2;
 int midis=0;
 int fry;
+double rot=0;
 int digi=0;
 int frx=328;
 int zvb;
@@ -580,7 +582,7 @@ int init(){
        enemicnt=0;
       i=1;
     plus=1000;
-playerx=100;
+playerx=150;
  playery=70;
 
   if (level>3){level=1;}
@@ -2150,23 +2152,29 @@ bgscroly=100;
                       //    i=0;
                         y=0;
 
+
+                           
                                  int k=0;
 
                                y+=3;
+
+                                              //   plus--;
+
+
                                                   for (int j=0;j<240;j+=2){
                                             k+=1;
                         for (int i=-140;i<170;i+=2){
 
+
                                          x2=i;
 
 
-                                                    j2=(k*j*0.01)+50;
-                          x1=(((i))*((j2)))*0.01;
+                                                    j2=((k*j*0.01)+50);
+                          x1=((((i))*((j2)))*0.01);
 
 
                      //  j2=j+50;
                         //  int col=getpixel(surface2,i+160,j);
-
 
                               blit(surface2,surface,(i+160),j,(x1)+150,(j2),4,4);
                              // putpixel(surface,(x1)+160+res,j2+res2,col); }  }
@@ -2177,12 +2185,23 @@ bgscroly=100;
 
 
 
-                     //  playery++;
+                       playery++;
 
               keyboard();        mapfunc();
 
          //      blittingtos                   double i=0;
 
+                                   for (int i=0;i<320;i++){
+                                       for (int j=0;j<240;j++){
+
+
+
+
+                                //    blit (surface,screen,i,j,i2,j2,1,1);
+
+
+
+                                       }}
                                  blit(surface,screen,0,0,0,0,320,240);
 
      if (key[KEY_ESC]){ return 0;}
