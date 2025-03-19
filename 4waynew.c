@@ -850,7 +850,6 @@ int mapfunc(){
   clear_to_color(collisionpad,1);
 
   
-  clear_to_color(surface,110);
 
    //    blit(collisionpad2,surface,(z*20+add)+120,((zv))*20+add2+480,0,0,320,240);
 
@@ -2020,21 +2019,98 @@ int keyboard(){
                                         int thickx=0;
                                         int thicky=0;
 
+                                   //      set_keyboard_rate(10,2);
+
+         if (key[KEY_LEFT]) {
 
 
-                                         if (key[KEY_UP]){     faced=2;}
-                                          if (key[KEY_DOWN]){     faced=-2;   }
-                                                  if (bullettimer==0){
 
 
-                                     bullettimer=1000; bullettrig=1;  clear_keybuf();   }
+         faced=-1;    playerx=playerx-tx2*1;     framey=172; slow++; if (slow>10){slow=0;        framex+=16;          }
+
+        if (framex>175){  framex=155;}
+
+
+
+                                                           }
+
+
+           //              if (z>8000){z=0;}
+    if (key[KEY_RIGHT]) {   releaser=0; faced=1;     playerx=playerx+tx*1;      framey=230;
+
+                 slow++; if (slow>10){slow=0;    framex+=16;
+
+
+
+                 }                 if (framex>=201){framex=155;}
+
+
+                  }
+
+
+                  if (key[KEY_UP]){    faced=2;
+
+
+
+         framey=210;   slow++; if (slow>10){slow=0;        framex+=16;          }  playery=playery+t2player*1;                        if (framex>175){framex=155;}
+      }
+
+
+         if (key[KEY_DOWN]){       faced=-2;
+
+
+
+         framey=191;  slow++; if (slow>10){slow=0;        framex+=16;          }    playery=playery+tplayer*1;                       if (framex>175){framex=155;}
+     }
+                                                                     bullethit=1;
+
+                                           bullettrig=0;
+
+
+
+                      if (key[KEY_RIGHT]) {    if (key[KEY_DOWN]){     faced=-4;}      }
+ 
+
+
+                                     
+
+                                                              if (key[KEY_LEFT]) {   if (key[KEY_DOWN]){     faced=4;}         }
+
+
+
+                                                              if (key[KEY_UP]){          if(key[KEY_LEFT]) {  faced=3;    } if (key[KEY_RIGHT]) {  faced=-3;  } }
+
+
+
+
 
 
 
                      if (key[KEY_LCONTROL]){
 
+
+                                                  if (bullettimer==0){
+
+
+                                     bullettimer=1000; bullettrig=1;     }
+
                                            //    play_midi(grand,0); midiseek=0; midi_seek(40);
-                                                        if (bullettrig==1){   bullettrig=0;
+                                                        if (bullettrig==1){
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                        bullettrig=0;
                                                                      bullety[bulletcnt]=playery+zvb+10;
                                                                 bulletx[bulletcnt]=(playerx+10);
                                                   
@@ -2073,18 +2149,6 @@ int keyboard(){
 
 
 
-                                     if (key[KEY_LEFT]){  releasel=0;         if(key[KEY_UP]){    faced=3;}   }
-                                     
-                                             if (key[KEY_RIGHT]) {  releasel=0;    if (key[KEY_UP]){     faced=-3;}      }
-                                                  if (key[KEY_LEFT]) {  releasel=0;   if (key[KEY_DOWN]){     faced=4;}         }
-                                             if (key[KEY_RIGHT]) {    releasel=0;  if (key[KEY_DOWN]){     faced=-4;}      }
- 
-
-
-
-
-
-
 
                                                                  if (faced==3){      bulletdirx[bulletcnt]=-0.1;  bulletdiry[bulletcnt]=-0.1;warpx=sin(bulletwarp)/5; warpy=0;  thickx=1;thicky=1;}
                                                           if (faced==-3){      bulletdirx[bulletcnt]=0.1;  bulletdiry[bulletcnt]=-0.1;warpx=sin(bulletwarp)/5; warpy=0;  thickx=1;thicky=1;}
@@ -2103,7 +2167,6 @@ int keyboard(){
                                 bullettimer--;
 
 
-
                   
                                                          if(bulletcnt>100){bulletcnt=0;bullettrig=0;}
                                       bulletcnt=bulletcnt+1;
@@ -2116,7 +2179,7 @@ int keyboard(){
                                  bullety[ib]=bullety[ib]+(20*bulletdiry[ib]+warpy);
 
                             //    rect(screen,bulletx[i],bullety[i]-(zvb),bulletx[i]+thickx+1,bullety[i]-(zvb)+thicky+1,2);
-                                         rectfill(screen,bulletx[ib],bullety[ib]-(zvb),bulletx[ib]+1,bullety[ib]-(zvb)+1,0);
+                                         rectfill(surface,bulletx[ib],bullety[ib]-(zvb),bulletx[ib]+1,bullety[ib]-(zvb)+1,0);
                                      //    blit(cubespr2,screen,bulletx[ib],bullety[ib]-(zvb),5,5);
                         
                                    int colx;
@@ -2139,49 +2202,6 @@ int keyboard(){
 
 
                    //    bulletx[bulletcnt]=playerx;
-
-
-
-
-
-
-
-                        if (key[KEY_LEFT]) { releasel=0; faced=-1;     playerx=playerx-tx2*1;     framey=172; slow++; if (slow>10){slow=0;        framex+=16;          }
-
-        if (framex>175){  framex=155;}
-
-
-
-                                                           }
-           //              if (z>8000){z=0;}
-    if (key[KEY_RIGHT]) {   releaser=0; faced=1;     playerx=playerx+tx*1;      framey=230;
-
-                 slow++; if (slow>10){slow=0;    framex+=16;
-
-
-
-                 }                 if (framex>=201){framex=155;}
-
-
-                  }
-
-
-                  if (key[KEY_UP]){
-
-
-
-         framey=210;   slow++; if (slow>10){slow=0;        framex+=16;          }  playery=playery+t2player*1;                        if (framex>175){framex=155;}
-      }
-         if (key[KEY_DOWN]){
-
-
-
-         framey=191;  slow++; if (slow>10){slow=0;        framex+=16;          }    playery=playery+tplayer*1;                       if (framex>175){framex=155;}
-     }
-                                                                     bullethit=1;
-
-                                           bullettrig=0;
-
 
 
 
@@ -2370,19 +2390,20 @@ bgscroly=100;
          framex=155;
            framey=210;
        init();
-        install_int( timek,2);
+        install_int( timek,3);
 
      while (i!=0){
 
 
 
 
-              cube();
 
-            if (tick>1){ tick=0;  cube();
-              keyboard();        mapfunc();
+              
+            if (tick>1){   clear_to_color(surface,110);
+ keyboard();  tick=0;  cube();
+                   mapfunc();
 
-               blittingtosprite();         }
+               blittingtosprite();           }    poll_keyboard();
                    /*
                    float x1=0;
                      int x2=0;
