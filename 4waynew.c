@@ -1856,6 +1856,11 @@ int keyboard(){
            tx2=1;
            tx=1;
 
+   //           if (key[KEY_LCONTROL]) {   t2player=0;    tplayer=0;   tx=0; tx2=0; }
+
+
+
+
          for (int x=9;x<15;x++){
 
 
@@ -1997,8 +2002,6 @@ int keyboard(){
                int releaser=1;
 
 
-
-
                if (timerb<0){timerb=0;}
 
 
@@ -2021,7 +2024,7 @@ int keyboard(){
 
                                    //      set_keyboard_rate(10,2);
 
-         if (key[KEY_LEFT]) {
+         if (key[41]) {      if (key[KEY_UP]){ }
 
 
 
@@ -2036,7 +2039,7 @@ int keyboard(){
 
 
            //              if (z>8000){z=0;}
-    if (key[KEY_RIGHT]) {   releaser=0; faced=1;     playerx=playerx+tx*1;      framey=230;
+    if (key[43]) {   releaser=0; faced=1;     playerx=playerx+tx*1;      framey=230;
 
                  slow++; if (slow>10){slow=0;    framex+=16;
 
@@ -2048,7 +2051,7 @@ int keyboard(){
                   }
 
 
-                  if (key[KEY_UP]){    faced=2;
+                  if (key[45]){            faced=2;
 
 
 
@@ -2056,7 +2059,7 @@ int keyboard(){
       }
 
 
-         if (key[KEY_DOWN]){       faced=-2;
+         if (key[42]){       faced=-2;
 
 
 
@@ -2067,26 +2070,23 @@ int keyboard(){
                                            bullettrig=0;
 
 
-
-                      if (key[KEY_RIGHT]) {    if (key[KEY_DOWN]){     faced=-4;}      }
+                      if (key[43]) {    if (key[42]){     faced=-4;}      }
  
 
 
                                      
 
-                                                              if (key[KEY_LEFT]) {   if (key[KEY_DOWN]){     faced=4;}         }
+                                                              if (key[41]) {   if (key[42]){     faced=4;}         }
 
 
 
-                                                              if (key[KEY_UP]){          if(key[KEY_LEFT]) {  faced=3;    } if (key[KEY_RIGHT]) {  faced=-3;  } }
+                                                              if (key[45]){
+
+                                                              if(key[41]) {  faced=3;    } if (key[43]) {  faced=-3;  }            }
 
 
 
-
-
-
-
-                     if (key[KEY_LCONTROL]){
+                                             if (key[KEY_LCONTROL]) {
 
 
                                                   if (bullettimer==0){
