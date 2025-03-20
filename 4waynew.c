@@ -1038,9 +1038,10 @@ int js=0;
               x=maptemp[k];
               x1=(int)(x/100);
               y=x-(x1*100);
-          if(maptemp[k]==2060)    {y=75;x1=99;}
-            if(maptemp[k]==2050)    {y=47;x1=53;}
+   //       if(maptemp[k]==2060)    {y=75;x1=99;}
+            if(maptemp[k]==2050)    {y=40;x1=40;}
                           rectfill(surface,(i*20)-add,vertical,((i+2)*20)-add,vertical+20,4);
+               //  masked_blit( sprsheet,surface,20,107,((i*20))-add,vertical ,20, 20);
 
        masked_blit( sprsheet,surface,x1-10,y-10,((i*20))-add,vertical ,20, 20);
   //     masked_blit( sprsheet,surface,x1-10,y-10,((i*20))-add+10,vertical ,10, 10);
@@ -2295,7 +2296,7 @@ int main(int argc, char *argv[]) {
 
 
        //   solid_mode();
-   sprsheet=load_bitmap("mapbit.bmp",the_palette2);
+   sprsheet=load_bitmap("mapbit.bmp",the_palette);
    grand=load_midi("music.mid");
 
                font1=load_bitmap("fonts.bmp",the_palette);
@@ -2399,7 +2400,7 @@ bgscroly=100;
 
 
               
-            if (tick>1){   clear_to_color(surface,110);
+            if (tick>1){   clear_to_color(surface,10);
  keyboard();  tick=0;  cube();
                    mapfunc();
 
