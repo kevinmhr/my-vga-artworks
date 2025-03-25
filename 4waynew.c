@@ -102,6 +102,7 @@ int t;
 int slow2;
 int t2;
 int tplayer;
+int erasure=0;
 int t2player;
 int x2;
 int bulletspd=0;
@@ -638,7 +639,7 @@ playerx=100;
   for (int x=0;x<20000;x++){
     spider.dirx[x]=1;  spider.diry[x]=-1;
     spr.dirx[x]=1;  spr.diry[x]=-1;
-    sleeps.dirx[x]=1; sleeps.diry[x]=0;
+    sleeps.dirx[x]=-1; sleeps.diry[x]=1;
     spider.bdirx[x]=1;  spider.bdiry[x]=1;
     spider.bulletx[x]=spider.x[x];
     spider.bullety[x]=spider.y[x];
@@ -1265,16 +1266,39 @@ for (int i=1;i<19990;i++){
                    // colx=getpixel(collisionpad,((i*10)+ballx-add)+5,vertical+bally-10);
 
               //       if (sleeps.timer>=4000) {  sleeps.dirx[ballcnt]=-1;sleeps.diry[ballcnt]=0;      }
+                                                         //    sleeps.diry[ballcnt]=1;
+                                                         //       sleeps.dirx[ballcnt]=1;
+                                   if (sleeps.timer>=20) {  sleeps.timer=0;
+                                  if (playerx>sleeps.x[ballcnt]-(z*20)){
+                            if (playerx-sleeps.x[ballcnt]-(z*20)<50){
 
-                           if (sleeps.timer>=100) {   sleeps.timer=0;
                          if (playerx<sleeps.x[ballcnt]-(z*20)){     sleeps.dirx[ballcnt]=-1;     }
                              if (playerx>sleeps.x[ballcnt]-(z*20)){     sleeps.dirx[ballcnt]=1;     }
+                                                                         }   }
+                                  if (playerx<sleeps.x[ballcnt]-(z*20)){
+                                       if (sleeps.x[ballcnt]-(z*20)-playerx<50){
+
+                         if (playerx<sleeps.x[ballcnt]-(z*20)){     sleeps.dirx[ballcnt]=-1;     }
+                             if (playerx>sleeps.x[ballcnt]-(z*20)){     sleeps.dirx[ballcnt]=1;     }
+                                                                         }
+                                               }
+                                                                  }
+                                               
+                                          if (playery>sleeps.y[ballcnt]-(z*20)){
+
+                                     if (playery-sleeps.y[ballcnt]-(zv*20)<50){
+
                                    if (playery<sleeps.y[ballcnt]-(zv*20)){     sleeps.diry[ballcnt]=-1;     }
-                             if (playery>sleeps.y[ballcnt]-(zv*20)){     sleeps.diry[ballcnt]=1;     }
 
+                                                    if (playery>sleeps.y[ballcnt]-(zv*20)){     sleeps.diry[ballcnt]=1;     }  } }
 
-                                                               }
+                                            if (playery<sleeps.y[ballcnt]-(zv*20)){
 
+                                     if (sleeps.y[ballcnt]-(zv*20)-playery<50){
+
+                                   if (playery<sleeps.y[ballcnt]-(zv*20)){     sleeps.diry[ballcnt]=-1;     }
+
+                                                    if (playery>sleeps.y[ballcnt]-(zv*20)){     sleeps.diry[ballcnt]=1;     }  }  }
 
 
 
@@ -1319,32 +1343,42 @@ for (int i=1;i<19990;i++){
                              colx=getpixel(collisionpad2,sleeps.x[ballcnt]+120+2,sleeps.y[ballcnt]+480+y);
                              //    putpixel(collisionpad2,ballinix[ballcnt]+60+2,balliniy[ballcnt]+240+y,0);
 
-                      if (colx==4){sleeps.dirx[ballcnt]=1;   }
+                      if (colx==4){
+
+
+                                   sleeps.dirx[ballcnt]=1;
+
+                      }
 
                              colx=getpixel(collisionpad2,sleeps.x[ballcnt]+120+25,sleeps.y[ballcnt]+480+y);
                                //         putpixel(collisionpad2,ballinix[ballcnt]+60+25,balliniy[ballcnt]+240+y,0);
 
-                      if (colx==4){sleeps.dirx[ballcnt]=-1;   }
+                      if (colx==4){
 
-                                        }
+
+                                sleeps.dirx[ballcnt]=-1;}
+
+
                                  for (int x=5;x<25;x++){
 
                              colx=getpixel(collisionpad2,sleeps.x[ballcnt]+120+x,sleeps.y[ballcnt]+480+10);
                          //                      putpixel(collisionpad2,ballinix[ballcnt]+60+x,balliniy[ballcnt]+17+240,0);
 
-                      if (colx==4){sleeps.diry[ballcnt]=-1;   }
+                      if (colx==4){sleeps.diry[ballcnt]=-1;      }
+   }
 
                              colx=getpixel(collisionpad2,sleeps.x[ballcnt]+120+x,sleeps.y[ballcnt]+480-5);
                               //                  putpixel(collisionpad2,ballinix[ballcnt]+60+x,balliniy[ballcnt]-5+240,0);
 
-                      if (colx==4){sleeps.diry[ballcnt]=1;   }
-             
-                                                  }
+                      if (colx==4){sleeps.diry[ballcnt]=1;        }
+   }
 
-               if (sleeps.dirx[ballcnt]==1){    sleeps.x[ballcnt]+=0.5;  }
-               if (sleeps.dirx[ballcnt]==-1){   sleeps.x[ballcnt]-=0.5;  }
-               if (sleeps.diry[ballcnt]==1){    sleeps.y[ballcnt]+=0.5;  }
-               if (sleeps.diry[ballcnt]==-1){   sleeps.y[ballcnt]-=0.5;  }
+
+
+               if (sleeps.dirx[ballcnt]==1){    sleeps.x[ballcnt]+=0.8;  }
+               if (sleeps.dirx[ballcnt]==-1){   sleeps.x[ballcnt]-=0.8;  }
+               if (sleeps.diry[ballcnt]==1){    sleeps.y[ballcnt]+=0.8;  }
+               if (sleeps.diry[ballcnt]==-1){   sleeps.y[ballcnt]-=0.8;  }
 
 
               int  ballx=sleeps.x[ballcnt]-add-(z*20);
@@ -2025,7 +2059,7 @@ int keyboard(){
 
                                    //      set_keyboard_rate(10,2);
 
-         if (key[41]) {      if (key[KEY_UP]){ }
+         if (key[41]) {
 
 
 
@@ -2089,11 +2123,13 @@ int keyboard(){
 
                                              if (key[KEY_LCONTROL]) {
 
+                                                             if (bullettimer==0){
 
-                                                  if (bullettimer==0){
+                                                  //  bullety[erasure]=-100;
 
+                                     bullettimer=1000; bullettrig=1;
+                                                      }
 
-                                     bullettimer=1000; bullettrig=1;     }
 
                                            //    play_midi(grand,0); midiseek=0; midi_seek(40);
                                                         if (bullettrig==1){
@@ -2104,7 +2140,8 @@ int keyboard(){
 
 
 
-
+                                                                        bullety[bulletcnt]=playery+zvb+10;
+                                                                bulletx[bulletcnt]=(playerx+10);
 
 
 
@@ -2112,9 +2149,7 @@ int keyboard(){
 
 
                                                         bullettrig=0;
-                                                                     bullety[bulletcnt]=playery+zvb+10;
-                                                                bulletx[bulletcnt]=(playerx+10);
-                                                  
+
 
 
 
@@ -2161,16 +2196,22 @@ int keyboard(){
            bullethit=0  ;
 
 
-                                             if(bullettimer<=0){bullettimer=1000;}
+                                             if(bullettimer<=0){bullettimer=100;}
+
+
                              
+
+
                   for (int ib=0;ib<100;ib+=1){
+
+
 
                                 bullettimer--;
 
-
+                                                          if(bulletcnt>100){bulletcnt=0;bullettrig=0;}
+                                   
                   
-                                                         if(bulletcnt>100){bulletcnt=0;bullettrig=0;}
-                                      bulletcnt=bulletcnt+1;
+                                               bulletcnt=bulletcnt+1;
 
 
                           // if (bulleti>400){bulleti=0;}
@@ -2184,22 +2225,19 @@ int keyboard(){
                                      //    blit(cubespr2,screen,bulletx[ib],bullety[ib]-(zvb),5,5);
                         
                                    int colx;
-                                  colx=getpixel(collisionpad,bulletx[ib],bullety[ib]-zvb);
-                                      if(colx==4){ bulletx[ib]=1800;  bullety[ib]=1800;}
+
                                         colx=getpixel(collisionpad,bulletx[ib],bullety[ib]-zvb);
                                       if(colx==90){ lastbullet=ib;}
+                                              colx=getpixel(collisionpad,bulletx[ib],bullety[ib]-zvb);
+                                      if(colx==4){ bulletx[ib]=1400;}
 
 
                                                               }
 
-
-
-                                   if(bulletx[bulletcnt]>320){bulletx[bulletcnt]=1800;bullety[bulletcnt]=1800;  }
+                                          if(bulletx[bulletcnt]>320){bulletx[bulletcnt]=1800;bullety[bulletcnt]=1800;  }
                                  if(bulletx[bulletcnt]<0){bulletx[bulletcnt]=1800;bullety[bulletcnt]=1800;  }
-                                   if(bullety[bulletcnt]>=240){bulletx[bulletcnt]=1800;bullety[bulletcnt]=1800; }
                                  if(bullety[bulletcnt]<=0){bulletx[bulletcnt]=1800;bullety[bulletcnt]=1800;  }
-
-
+                                   if   (bulletcnt>20){    if(bullety[bulletcnt]>=240){      for (int i=bulletcnt-20;i<bulletcnt;i++){ bullety[i]=8000;} }}
 
 
                    //    bulletx[bulletcnt]=playerx;
