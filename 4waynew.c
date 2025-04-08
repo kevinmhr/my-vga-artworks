@@ -149,7 +149,8 @@ int enemiyt1=2;
 int laddercolor;
 
 typedef struct OBJECT{
-
+int colxw;
+int colyw;
 int diryw[20000];
 int dirxw[20000];
 int color[20000];
@@ -1349,9 +1350,13 @@ for (int i=1;i<19990;i++){
                  //          (z*10+add)+60,240
                         //    btx[ballcnt]=0;
                         //       bty[ballcnt]=0;
-                                         sleeps.timer++;
 
-                                     if (sleeps.timer>200) {
+
+
+
+                                         sleeps.timer++;
+                                            //   if (sleeps.timer==0) {         sleeps.colxw=1;     sleeps.colyw=1;    }
+                                     if (sleeps.timer>100) {         sleeps.colxw=1;     sleeps.colyw=1;
                                                      sleeps.timer=0;
 
                                         if (playerx>(sleeps.x[ballcnt]-(z*20))){   sleeps.dirx[ballcnt]=1;      }
@@ -1359,10 +1364,33 @@ for (int i=1;i<19990;i++){
                                         if (playery>(sleeps.y[ballcnt]-(zv*20))){   sleeps.diry[ballcnt]=1;      }
                                         if (playery<(sleeps.y[ballcnt]-(zv*20))){   sleeps.diry[ballcnt]=-1;      }
                               
-                                                            }
+                                                             }
 
 
-                          
+
+                                                      if(   sleeps.colyw!=0 ){
+                                if (playery>(sleeps.y[ballcnt]-(zv*20))){
+                                    
+                                         if (playerx==(sleeps.x[ballcnt]-(z*20))){   sleeps.diry[ballcnt]=1;    sleeps.dirx[ballcnt]=0;    }   }
+
+                                                         if (playery<(sleeps.y[ballcnt]-(zv*20))){
+                                    
+                                         if (playerx==(sleeps.x[ballcnt]-(z*20))){   sleeps.diry[ballcnt]=-1;     sleeps.dirx[ballcnt]=0;    }   }
+                             
+                                                                          }
+
+                                                     if(   sleeps.colxw!=0 ){
+
+                                                  if (playerx>(sleeps.x[ballcnt]-(z*20))){
+                                    
+
+
+                                         if (playery==(sleeps.y[ballcnt]-(zv*20))){   sleeps.dirx[ballcnt]=1;    sleeps.diry[ballcnt]=0;   } }
+
+                                                         if (playerx<(sleeps.x[ballcnt]-(z*20))){
+                                    
+                                         if (playery==(sleeps.y[ballcnt]-(zv*20))){   sleeps.dirx[ballcnt]=-1;   sleeps.diry[ballcnt]=0;  } }
+                                                                         }
                           
                          for (int y=-5;y<15;y++){
 
@@ -1372,7 +1400,7 @@ for (int i=1;i<19990;i++){
                       if (colx==4){
 
 
-                                        sleeps.dirx[ballcnt]=1;
+                                        sleeps.dirx[ballcnt]=1;   sleeps.colxw=0;
 
                       }
 
@@ -1382,7 +1410,7 @@ for (int i=1;i<19990;i++){
                       if (colx==4){
 
 
-                                sleeps.dirx[ballcnt]=-1;           }
+                                sleeps.dirx[ballcnt]=-1;   sleeps.colxw=0;        }
 
 
                                  for (int x=5;x<25;x++){
@@ -1390,14 +1418,14 @@ for (int i=1;i<19990;i++){
                              colx=getpixel(collisionpad2,sleeps.x[ballcnt]+120+x,sleeps.y[ballcnt]+480+40);
                          //                      putpixel(collisionpad2,ballinix[ballcnt]+60+x,balliniy[ballcnt]+17+240,0);
 
-                      if (colx==4){            sleeps.diry[ballcnt]=-1;                 }
+                      if (colx==4){            sleeps.diry[ballcnt]=-1;   sleeps.colyw=0;              }
    }
 
                              colx=getpixel(collisionpad2,sleeps.x[ballcnt]+120+x,sleeps.y[ballcnt]+480+10);
                               //                  putpixel(collisionpad2,ballinix[ballcnt]+60+x,balliniy[ballcnt]-5+240,0);
 
-                      if (colx==4){     if (playery>(sleeps.y[ballcnt]-(zv*20))){
-                                        sleeps.diry[ballcnt]=1;                 }  }
+                      if (colx==4){     if (playery>(sleeps.y[ballcnt]-(zv*20)-add2)){  
+                                        sleeps.diry[ballcnt]=1;   sleeps.colyw=0;              }  }
    }
 
 
@@ -1420,16 +1448,16 @@ for (int i=1;i<19990;i++){
                         /*  if (playerx==ballinix[ballcnt]-(z*10)){   if (bty[ballcnt]==1){     ballframey=189;   slow3++; if (slow3>50){slow3=0;ballframex+=16;}if (ballframex>=32){ballframex=0;};      }
                                 if (bty[ballcnt]==-1){  ballframey=212;  slow3++; if (slow3>50){slow3=0;ballframex+=16;}if (ballframex>=32){ballframex=0;};           }         }
                         */
-                  int colx=getpixel(collisionpad,playerx,playery);
-                  if (colx==16) {init();}
             //     blitnumtex(hits,ballx,bally-(zv*10),4);
 
                masked_blit(walkingspr2,surface,269+ballframex,ballframey,ballx,bally-(zv*20),16,18);
 
-                  rectfill(collisionpad,ballx-5,bally-(zv*20)-5,ballx+15,bally-(zv*20)+15,16);
+                  rectfill(collisionpad,ballx-15,bally-(zv*20)-5,ballx+15,bally-(zv*20)+15,16);
                    
                
-
+                             int colx=getpixel(collisionpad,playerx,playery);
+                  if (colx==16) {init();}
+          
  }
 
 
