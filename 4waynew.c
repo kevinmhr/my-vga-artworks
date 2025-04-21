@@ -89,7 +89,7 @@ int y;
   int slow=0;;
 int slow3=0;
 int framex=0;
-
+   int xoff[20000];
      int timerb;
 int framey=133;
 int ballframex,ballframey;
@@ -149,6 +149,8 @@ int enemiyt1=2;
 int laddercolor;
 
 typedef struct OBJECT{
+int type;
+int animation;
 int colxw;
 int colyw;
 int diryw[20000];
@@ -620,7 +622,7 @@ playerx=100;
 
  maptemp[x]=map1[x];
 
-
+        xoff[20000]=0;
                }
 
 
@@ -1225,6 +1227,7 @@ stop_midi();
 int i2=0;
 int j2=0;
 
+
  int lastspider;
 
 for (int i=1;i<19990;i++){
@@ -1233,11 +1236,14 @@ for (int i=1;i<19990;i++){
 
 
 
+
       if (maptemp[i]==1043) {
                     //  textprintf_ex(surface,font,10,10,250,0,"%i",k);
-
+                   sleeps.type++;
                int ballcnt=i;
-
+                 if (   sleeps.type==2){     xoff[i]=-55; }
+        if (   sleeps.type==3){      xoff[i]=0; }
+         if (   sleeps.type==5){     sleeps.type=0;  }
        //   if (z>1000){ z=0;ballinix=330; balliniy=100; timer1=0;}
        //     if (z<-500){ z=0;ballinix=-130; balliniy=100; timer1=0;}
       //      tx=-1;
@@ -1356,7 +1362,7 @@ for (int i=1;i<19990;i++){
 
                                          sleeps.timer++;
                                             //   if (sleeps.timer==0) {         sleeps.colxw=1;     sleeps.colyw=1;    }
-                                     if (sleeps.timer>100) {         sleeps.colxw=1;     sleeps.colyw=1;
+                                     if (sleeps.timer>200) {         sleeps.colxw=1;     sleeps.colyw=1;
                                                      sleeps.timer=0;
 
                                         if (playerx>(sleeps.x[ballcnt]-(z*20))){   sleeps.dirx[ballcnt]=1;      }
@@ -1443,14 +1449,15 @@ for (int i=1;i<19990;i++){
 
              //    rectfill(surface, (i*10)+ballx-add,vertical+bally,(i*10)+ballx-add+10,vertical+bally+10,5);
                //    circlefill(surface,ballinix[ballcnt]-(z*10)-add,balliniy[ballcnt]-(zv*10),3,0);
-                 if (sleeps.dirx[ballcnt]==1){ ballframey=229;  slow3++; if (slow3>500){slow3=0;ballframex+=16;}if (ballframex>=48){ballframex=0;}; }
-                        if (sleeps.dirx[ballcnt]==-1){ ballframey=173;  slow3++; if (slow3>500){slow3=0;ballframex+=16;}if (ballframex>=48){ballframex=0;}; }
+                 if (sleeps.dirx[ballcnt]==1){ ballframey=229;  slow3++; if (slow3>500){slow3=0;sleeps.animation+=16;}if (sleeps.animation>=48){sleeps.animation=0;}; }
+                        if (sleeps.dirx[ballcnt]==-1){ ballframey=173;  slow3++; if (slow3>500){slow3=0;sleeps.animation+=16;}if (sleeps.animation>=48){sleeps.animation=0;}; }
                         /*  if (playerx==ballinix[ballcnt]-(z*10)){   if (bty[ballcnt]==1){     ballframey=189;   slow3++; if (slow3>50){slow3=0;ballframex+=16;}if (ballframex>=32){ballframex=0;};      }
                                 if (bty[ballcnt]==-1){  ballframey=212;  slow3++; if (slow3>50){slow3=0;ballframex+=16;}if (ballframex>=32){ballframex=0;};           }         }
                         */
             //     blitnumtex(hits,ballx,bally-(zv*10),4);
 
-               masked_blit(walkingspr2,surface,269+ballframex,ballframey,ballx,bally-(zv*20),16,18);
+
+               masked_blit(walkingspr2,surface,sleeps.animation+269+xoff[i],ballframey,ballx,bally-(zv*20),16,18);
 
                   rectfill(collisionpad,ballx-15,bally-(zv*20)-5,ballx+15,bally-(zv*20)+15,16);
                    
@@ -1632,10 +1639,10 @@ int col=0;
                         //   if(enix[enemicnt]-(z*10)-add>320){  r[enemicnt]=-1; }
                          //  if(enix[enemicnt]-(z*10)-add<0){  r[enemicnt]=1;}
                             if (spidanimx>=13){spidanimx=0;}  if(slowspid>20) { slowspid=0;spidanimx+=13;}
-                         if (spider.diry[enemicnt]>0){spider.y[enemicnt]+=1*1;              }
-                         if (spider.diry[enemicnt]<0){spider.y[enemicnt]-=1*1;              }
-                         if (spider.dirx[enemicnt]>0){spider.x[enemicnt]+=1*1; }
-                         if (spider.dirx[enemicnt]<0){spider.x[enemicnt]-=1*1;             }
+                         if (spider.diry[enemicnt]>0){spider.y[enemicnt]+=0.5*1;              }
+                         if (spider.diry[enemicnt]<0){spider.y[enemicnt]-=0.5*1;              }
+                         if (spider.dirx[enemicnt]>0){spider.x[enemicnt]+=0.5*1; }
+                         if (spider.dirx[enemicnt]<0){spider.x[enemicnt]-=0.5*1;             }
                       //     if(  enix[enemicnt]==0){ enix[enemicnt]==1; r[enemicnt]=-r[enemicnt];}
 
 
@@ -2494,7 +2501,7 @@ bgscroly=100;
          framex=155;
            framey=210;
        init();
-        install_int( timek,3);
+        install_int( timek,1);
 
      while (i!=0){
 
