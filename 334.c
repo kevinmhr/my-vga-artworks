@@ -12,9 +12,13 @@ int fry;
 int bullettimer2=0;
 int digi=0;
 double bulletx2[100];
-
+double ang=0;
 double rotateang2=0;
 double bullety2[100];
+double accelx=0.1;
+double accely=0.1;
+double accelx2=0.1;
+double accely2=0.1;
 
 typedef struct CUBE{
                            
@@ -528,10 +532,15 @@ int collisionimplant(){
       // if (j>240){k=320*240;}
    int walls=getpixel(map,0,1);
    int term=getpixel(map,0,2);
-   int col= getpixel(map,i,j);
+      int blue=getpixel(map,0,4);
+   int purple= getpixel(map,0,3);
+         int col= getpixel(map,i,j);
+ 
 
    if (col==walls){maptemp[k]=2060;}
      if (col==term){maptemp[k]=1043;}
+        if (col==blue){maptemp[k]=2080;}
+           if (col==purple){maptemp[k]=4060;}
  
 
 
@@ -606,6 +615,11 @@ int blittingtosprite(){
 int i=0;
 int j=0;
 int col=0;
+
+
+
+
+
 // clear_to_color(sprites,4);
 
 for (int k=0;k<100;k++){
@@ -1175,10 +1189,33 @@ for (int i=0;i<80000;i++){
 
 
 
-                                             if (sleeps.timer2>1) {  sleeps.timer2=0;
+                                             if (sleeps.timer2==2000) {
+
+
+                                                           sleeps.dirx[ballcnt]=-1;
+                                                            sleeps.diry[ballcnt]=0;
+                                                                   }
+                                                  if (sleeps.timer2==4000) {
+                                                           sleeps.dirx[ballcnt]=0;
+                                                            sleeps.diry[ballcnt]=-1;
+                                                                   }
+                                                        if (sleeps.timer2==6000) {
+                                                           sleeps.dirx[ballcnt]=- sleeps.dirx[ballcnt];
+                                                            sleeps.diry[ballcnt]=0;
+                                                                   }
+                                                               if (sleeps.timer2==8000) {
+                                                           sleeps.diry[ballcnt]=-sleeps.diry[ballcnt];
+                                                            sleeps.dirx[ballcnt]=-sleeps.dirx[ballcnt];
+                                                                   }
+                                                                     if (sleeps.timer2==10000) {   sleeps.timer2=0;
+                                                           sleeps.diry[ballcnt]=-sleeps.diry[ballcnt];
+                                                            sleeps.dirx[ballcnt]=-sleeps.dirx[ballcnt];
+                                                                   }
 
 
 
+                                                                   
+                                               /*
 
 
                                         if (playerx>(sleeps.x[ballcnt]-(z*5))){   sleeps.dirx[ballcnt]=1;  spdy=0;           }
@@ -1266,7 +1303,7 @@ for (int i=0;i<80000;i++){
                           
                          for (int y=-2;y<2;y++){
 
-                             colx=getpixel(collisionpad2,(sleeps.x[ballcnt])-5 +370,(sleeps.y[ballcnt])+y+30);
+                             colx=getpixel(collisionpad2,(sleeps.x[ballcnt])-6 +370,(sleeps.y[ballcnt])+y+30);
                              //    putpixel(collisionpad2,ballinix[ballcnt]+60+2,balliniy[ballcnt]+240+y,0);
 
                       if (colx==wall){
@@ -1277,7 +1314,7 @@ for (int i=0;i<80000;i++){
 
                       }
 
-                             colx=getpixel(collisionpad2,(sleeps.x[ballcnt])+5 +370,(sleeps.y[ballcnt])+y+30);
+                             colx=getpixel(collisionpad2,(sleeps.x[ballcnt])+6 +370,(sleeps.y[ballcnt])+y+30);
                                //         putpixel(collisionpad2,ballinix[ballcnt]+60+25,balliniy[ballcnt]+240+y,0);
 
                       if (colx==wall){
@@ -1286,16 +1323,16 @@ for (int i=0;i<80000;i++){
                                 colr=1;
                                   }
 
-                                 for (int x=-2;x<5;x++){
+                                 for (int x=-2;x<6;x++){
 
-                             colx=getpixel(collisionpad2,(sleeps.x[ballcnt])+x +370,(sleeps.y[ballcnt])+5+30);
+                             colx=getpixel(collisionpad2,(sleeps.x[ballcnt])+x +370,(sleeps.y[ballcnt])+6+30);
                          //                      putpixel(collisionpad2,ballinix[ballcnt]+60+x,balliniy[ballcnt]+17+240,0);
 
                       if (colx==wall){        cold=1;
               }
    }
 
-                             colx=getpixel(collisionpad2,(sleeps.x[ballcnt])+x +370,(sleeps.y[ballcnt])-5+30);
+                             colx=getpixel(collisionpad2,(sleeps.x[ballcnt])+x +370,(sleeps.y[ballcnt])-6+30);
                               //                  putpixel(collisionpad2,ballinix[ballcnt]+60+x,balliniy[ballcnt]-5+240,0);
 
                       if (colx==wall){   //  if (playery>(sleeps.y[ballcnt]-(zv*5)-add2)){
@@ -2047,7 +2084,28 @@ int keyboard(){
   //  if (plus>9400){plus==0;}
 
                    //  playerx--;
+                           int brkxl=1;
+                       int brkyu=1;
+                            int brkxr=1;
+                       int brkyd=1;
+          if (tx==0){ accelx2=0;}
+             if (tx2==0){ accelx=0;}
+               if (t2player==0){ accely=0;}
+             if (tplayer==0){ accely2=0;}
 
+              accelx+=0.004;
+              accelx2-=0.004;
+              accely+=0.004;
+              accely2-=0.004;
+            if (accelx>=0){accelx=0;}
+            if (accelx2<=0){accelx2=0;}
+            if (accely>=0){accely=0;}
+            if (accely2<=0){accely2=0;}
+                if (tx2!=0){   playerx+=accelx;   }
+                if (tx!=0){   playerx+=accelx2;   }
+
+              if (t2player!=0){   playery+=accely; }
+              if (tplayer!=0){   playery+=accely2; }
 
                int releasel=1;
                int releaser=1;
@@ -2056,12 +2114,12 @@ int keyboard(){
                if (timerb<0){timerb=0;}
 
 
-           if (playerx>171) {
-                                          playerx-=2;    add+=1; if (add>5){add=0;  plus=(int)plus+1;z++;  } }
+           if (playerx>250) {
+                                          playerx-=1;    add+=1; if (add>5){add=0;  plus=(int)plus+1;z++;  } }
                                     if (playerx<150) {
-                           playerx+=2;   add-=1;bgaddh++;  if (add<0)   {add=5;     plus=(int)plus-1;z--;   } }
-                    if (playery>150){ zvb++; playery-=2;                       add2+=1;  if (add2>5){ add2=0;   plus+=maplenght+1;zv=zv+1; }  }
-                    if (playery<140){ zvb--; playery+=2;    add2-=1;  if (add2<0){ add2=5;    plus-=maplenght+1;zv=zv-1;}  }
+                           playerx+=1;   add-=1;bgaddh++;  if (add<0)   {add=5;     plus=(int)plus-1;z--;   } }
+                    if (playery>180){ zvb++; playery-=1;                       add2+=1;  if (add2>5){ add2=0;   plus+=maplenght+1;zv=zv+1; }  }
+                    if (playery<110){ zvb--; playery+=1;    add2-=1;  if (add2<0){ add2=5;    plus-=maplenght+1;zv=zv-1;}  }
 
 
                               bulletwarp+=bulletwapd*10;
@@ -2075,12 +2133,19 @@ int keyboard(){
 
                                    //      set_keyboard_rate(10,2);
 
+                 double rotatex=(sin(ang)-cos(ang));
+                 double rotatey=(-sin(ang)+cos(ang));
+
+
+
+
+
          if (key[41]) {
+                                                            accelx-=0.008;
+                                 ang+=0.001;
 
 
-
-
-         faced=-1;    playerx=playerx-tx2*2;     framey=172; slow++; if (slow>10){slow=0;        framex+=16;          }
+         faced=-1;      framey=172; slow++; if (slow>10){slow=0;        framex+=16;          }
 
         if (framex>175){  framex=155;}
 
@@ -2090,7 +2155,8 @@ int keyboard(){
 
 
            //              if (z>8000){z=0;}
-    if (key[43]) {   releaser=0; faced=1;     playerx=playerx+tx*2;      framey=230;
+    if (key[43]) {   releaser=0; faced=1;     ang-=0.001;       accelx2+=0.008;
+      framey=230;
 
                  slow++; if (slow>10){slow=0;    framex+=16;
 
@@ -2102,19 +2168,19 @@ int keyboard(){
                   }
 
 
-                  if (key[45]){            faced=2;
+                  if (key[45]){            faced=2;     accely-=0.008;
 
 
 
-         framey=210;   slow++; if (slow>10){slow=0;        framex+=16;          }  playery=playery+t2player*2;                        if (framex>175){framex=155;}
+         framey=210;   slow++; if (slow>10){slow=0;        framex+=16;          }                       if (framex>175){framex=155;}
       }
 
 
-         if (key[42]){       faced=-2;
+         if (key[42]){       faced=-2;            accely2+=0.008;;
 
 
 
-         framey=191;  slow++; if (slow>10){slow=0;        framex+=16;          }    playery=playery+tplayer*2;                       if (framex>175){framex=155;}
+         framey=191;  slow++; if (slow>10){slow=0;        framex+=16;          }                       if (framex>175){framex=155;}
      }
                                                                      bullethit=1;
 
