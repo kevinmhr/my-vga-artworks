@@ -158,37 +158,37 @@ int laddercolor;
 typedef struct OBJECT{
 int colxw;
 int colyw;
-int diryw[80000];
-int dirxw[80000];
-int color[80000];
-double rx[80000];
-double ry[80000];
-double rotate[80000];
-double bulletx[80000];
-double bullety[80000];
-double x[80000];
-double y[80000];
-int dirx[80000];
-int diry[80000];
-int dirx2[80000];
-int diry2[80000];
-int bdirx[80000];
-int bdiry[80000];
+int diryw[50000];
+int dirxw[50000];
+int color[50000];
+double rx[50000];
+double ry[50000];
+double rotate[50000];
+double bulletx[50000];
+double bullety[50000];
+double x[50000];
+double y[50000];
+int dirx[50000];
+int diry[50000];
+int dirx2[50000];
+int diry2[50000];
+int bdirx[50000];
+int bdiry[50000];
 int timer;
 double timer3;
 int timer2;
-int health[80000];
+int health[50000];
 }OBJECT;
 OBJECT spider;
 OBJECT sleeps;
 OBJECT spr;
 OBJECT explos;
 CUBE cb;
-         BITMAP *levelbg;
-          BITMAP *levelbg1;
+  //       BITMAP *levelbg;
+   //       BITMAP *levelbg1;
                 BITMAP *map;
    
-     BITMAP *levelbg2;
+//     BITMAP *levelbg2;
    BITMAP *collisionpad;
      BITMAP *collisionpad2;
     BITMAP *sprite;
@@ -206,7 +206,7 @@ CUBE cb;
     BITMAP *sprsheet;
   //  BITMAP *spr1;
     // OBJECT enemii;
-  MIDI *grand;
+//  MIDI *grand;
 //char spritebuf[256];
 
 int spr01[]={
@@ -479,20 +479,6 @@ int col;
  }
 
 
-int copymapchunk(){
-int x=0;
-int y=0;
-
-for (int i=0;i<200000;i++){
-x++; if (x>32){y++;}
-if (y>24){return 0;}
-if (shrine[i]>0){
-maptemp[i+50000]=shrine[x*y];
-                 }
-
-}
-
-}
 
 /*
 void spritefunction(){
@@ -521,7 +507,7 @@ int collisionimplant(){
 
         int i=0;
         int j=0;
-         for (int k=0;k<80000;k++){
+         for (int k=0;k<50000;k++){
                      sleeps.dirx[k]=1;
                     sleeps.diry[k]=0;
 
@@ -530,7 +516,7 @@ int collisionimplant(){
 
 
          }
-     for (int k=0;k<230*240;k++){
+     for (int k=0;k<320*200;k++){
     i++; if (i>320){j++; i=0;}
       // if (j>240){k=320*240;}
    int walls=getpixel(map,0,1);
@@ -570,7 +556,7 @@ int collisionimplant(){
 
  i=0;int y=0;
 
-for (int k=0;k<320*240;k++){
+for (int k=0;k<320*200;k++){
 
 i+=1; if (i>320){i=0;y+=1;}
 //if (y>320){y=0;}
@@ -578,7 +564,7 @@ if (maptemp[k]>2000){ rectfill(collisionpad2,(i*5),(y*5),((i*5)+5),((y*5)+5),4);
 }
  i=0;
  y=0;
-for (int k=0;k<80000;k++){
+for (int k=0;k<50000;k++){
 i+=1; if (i>353){i=0;y+=5;}
 spider.x[k]=0;
 
@@ -598,7 +584,7 @@ spr.y[k]=y-60;
 
             }
 i=0; y=0;
-for (int k=0;k<80000;k++){
+for (int k=0;k<50000;k++){
 i+=1; if (i>320){i=0;y+=1;}
 
 //sleeps.x[k]=0;
@@ -697,15 +683,8 @@ playerx=100;
   if (level>3){level=1;}
   if (level==1){
 
-  for (int x=0;x<80000;x++){
 
-// maptemp[x]=map1[x];
-
-
-               }
-
-
-               levelbg=load_bitmap("levbg1.bmp",the_palette);     }
+         /*      levelbg=load_bitmap("levbg1.bmp",the_palette); */    }
 
      collisionimplant();
 
@@ -714,18 +693,18 @@ playerx=100;
 
 // maptemp[x]=map1[x];
 
-               }    levelbg=load_bitmap("levbg2.bmp",the_palette);       }
+               }   /* levelbg=load_bitmap("levbg2.bmp",the_palette);*/       }
 
    if (level==3){
   for (int x=0;x<7144;x++){
 
 // maptemp[x]=map1[x];
 
-               }    levelbg=load_bitmap("spritesh.bmp",the_palette);       }
+               }   /* levelbg=load_bitmap("spritesh.bmp",the_palette); */      }
  for (int i=0;i<100;i++){
    bulletx[i]=800;
       bullety[i]=800;}
-  for (int x=0;x<80000;x++){
+  for (int x=0;x<50000;x++){
     spider.dirx[x]=1;  spider.diry[x]=-1;
     spr.dirx[x]=1;  spr.diry[x]=-1;
     sleeps.dirx[x]=-1; sleeps.diry[x]=1;
@@ -1048,7 +1027,7 @@ int j2=0;
            double spdy2=0;
                                                           double spdx2=0;
 int k35=0;
-for (int i=0;i<80000;i++){
+for (int i=0;i<50000;i++){
 
 
 
@@ -2510,7 +2489,7 @@ int main(int argc, char *argv[]) {
      //  set_color_depth(8);
    set_write_alpha_blender();
  collisionpad=create_bitmap(480,600);
-  collisionpad2=create_bitmap(6400,1000);
+  collisionpad2=create_bitmap(4400,1000);
 
 
 
@@ -2518,42 +2497,42 @@ int main(int argc, char *argv[]) {
    sprsheet=load_bitmap("mapbit.bmp",the_palette);
       map=load_bitmap("map.bmp",the_palette2);
 
-   grand=load_midi("music.mid");
+ //  grand=load_midi("music.mid");
 
                font1=load_bitmap("fonts.bmp",the_palette);
-      levelbg=load_bitmap("levbg1.bmp",the_palette);
+//      levelbg=load_bitmap("levbg1.bmp",the_palette);
      surface=create_bitmap(480,600);
     cubespr=create_bitmap(20,20);
 
-           levelbg2=create_bitmap(320,240);
-       levelbg1=load_bitmap("bgsprts.bmp",the_palette2);
+//           levelbg2=create_bitmap(320,240);
+//       levelbg1=load_bitmap("bgsprts.bmp",the_palette2);
       walkingspr2=load_bitmap("walking.bmp",the_palette2);
 
   int x,y,col,col2;
-    for (int i=0;i<2400000;i++){
-    x++; if(x>4000){x=0;y++;}
-    if (y>240){y=0;}
-     col2=getpixel(levelbg1,0,0);
+//    for (int i=0;i<2400000;i++){
+//    x++; if(x>4000){x=0;y++;}
+ //   if (y>240){y=0;}
+//     col2=getpixel(levelbg1,0,0);
 
-    col=getpixel(levelbg1,x,y);
+  //  col=getpixel(levelbg1,x,y);
 
-    if (col!=col2){
-   putpixel(levelbg2,x,y,col);
+ //   if (col!=col2){
+ //  putpixel(levelbg2,x,y,col);
 
-               }
-
-
+   //            }
 
 
 
-      if (col==col2){
-   putpixel(levelbg2,x,y,256);
 
-               }
 
-       }
+  //    if (col==col2){
+//   putpixel(levelbg2,x,y,256);
 
-     x=0;y=0;
+    //           }
+
+  //     }
+
+//     x=0;y=0;
 
 
 
@@ -2623,7 +2602,7 @@ bgscroly=100;
               
             if (tick>1){     clear_to_color(surface,0);
 
- tick=0;  cube();
+ tick=0; // cube();
           keyboard();          mapfunc();    blittingtosprite();
 
                           }    poll_keyboard();
