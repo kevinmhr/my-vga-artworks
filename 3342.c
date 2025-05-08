@@ -995,7 +995,7 @@ int mapfunc(){
 
                  rectfill(collisionpad,(i*5)-add,vertical-add2,((i*5)-add)+5,vertical+7-add2,4);
                      colx=getpixel(collisionpad,bulletx[lastbullet],bullety[lastbullet]-zvb);
-                     if(colx==4){ bulletx[lastbullet]=8000;   }
+                     if(colx==4){ bulletx[lastbullet]=14000;   }
 
        
            //   rectfill(surface,(i*5)-add,vertical,((i+2)*5)-add,vertical+7,4);
@@ -2548,16 +2548,16 @@ int keyboard(){
 
                                                            }
                     
-                                          if(bulletx[bulletcnt]<=20){bulletx[bulletcnt]=8000;bullety[bulletcnt]=8000;  }
+                                          if(bulletx[bulletcnt]<=20){bulletx[bulletcnt]=14000;bullety[bulletcnt]=14000;  }
 
-                                        if(bulletx[bulletcnt]>=210){bulletx[bulletcnt]=8000;bullety[bulletcnt]=8000;  }
-
-
-                                       if(bullety[bulletcnt]>=230){bulletx[bulletcnt]=8000;bullety[bulletcnt]=8000;  }
+                                        if(bulletx[bulletcnt]>=210){bulletx[bulletcnt]=14000;bullety[bulletcnt]=14000;  }
 
 
-                                 if(bullety[bulletcnt]<=10){bulletx[bulletcnt]=playerx;bullety[bulletcnt]=8000;  }
-                                   if   (bulletcnt>=20){         for (int i=bulletcnt-20;i<bulletcnt;i++){ bulletx[i]=8000; bullety[i]=8000;} }
+                                       if(bullety[bulletcnt]>=230){bulletx[bulletcnt]=14000;bullety[bulletcnt]=14000;  }
+
+
+                                 if(bullety[bulletcnt]<=10){bulletx[bulletcnt]=playerx;bullety[bulletcnt]=14000;  }
+                                   if   (bulletcnt>=20){         for (int i=bulletcnt-20;i<bulletcnt;i++){ bulletx[i]=14000; bullety[i]=14000;} }
 
 
                    //    bulletx[bulletcnt]=playerx;
@@ -2653,7 +2653,7 @@ int main(int argc, char *argv[]) {
 
      //  set_color_depth(8);
    set_write_alpha_blender();
- collisionpad=create_bitmap(320,240);
+ collisionpad=create_bitmap(380,280);
   collisionpad2=create_bitmap(4400,1500);
    bg=create_bitmap(4400,1500);
 
@@ -2678,7 +2678,7 @@ int main(int argc, char *argv[]) {
     for (int i=0;i<2400000;i++){
     x++; if(x>4400){x=0;y++;}
     if (y>1500){y=0;}
-        putpixel(bg,x*20,y*20,200);
+        putpixel(bg,x*20,y*20,100);
 
             }
 //     col2=getpixel(levelbg1,0,0);
@@ -2769,11 +2769,11 @@ bgscroly=100;
 
 
               
-            if (tick>1){     clear_to_color(surface,0);                    blit(sprsheet,surface,53+(playerhealth*9),36,150,60,10,10);
+            if (tick>1){     clear_to_color(surface,0);       blit(bg,surface,((z*5)+add),(((zv*5))+add2),0,0,640,480);
+               blit(sprsheet,surface,53+(playerhealth*9),36,150,60,10,10);
 
 
  tick=0; // cube();
-  blit(bg,surface,((z*5)+add),(((zv*5))+add2),0,0,640,480);
             keyboard();          mapfunc();    blittingtosprite();
 
                           }    poll_keyboard();
