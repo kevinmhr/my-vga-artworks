@@ -7,6 +7,9 @@ char *bitmapbuffer;
  int z=0;
  int zv=0;
  int spdbulcol;
+int yrow1=0;
+int yrow2=0;
+
     int k34=0;
 int textlenght=2;
 int midis=0;
@@ -161,22 +164,22 @@ int laddercolor;
 typedef struct OBJECT{
 int colxw;
 int colyw;
-int diryw[50000];
-int dirxw[50000];
-int color[50000];
-double rx[50000];
-double ry[50000];
-double rotate[50000];
-double bulletx[50000];
-double bullety[50000];
-double x[50000];
-double y[50000];
-int dirx[50000];
-int diry[50000];
-int dirx2[50000];
-int diry2[50000];
-int bdirx[50000];
-int bdiry[50000];
+int diryw[60000];
+int dirxw[60000];
+int color[60000];
+double rx[60000];
+double ry[60000];
+double rotate[60000];
+double bulletx[60000];
+double bullety[60000];
+double x[60000];
+double y[60000];
+int dirx[60000];
+int diry[60000];
+int dirx2[60000];
+int diry2[60000];
+int bdirx[60000];
+int bdiry[60000];
 int timer;
 double timer3;
 int timer2;
@@ -521,22 +524,23 @@ int collisionimplant(){
          }
 
 
-         
      for (int k=0;k<320*300;k++){
     i++; if (i>320){j++; i=0;}
       // if (j>240){k=320*240;}
    int walls=getpixel(map,0,1);
+      int walls2=getpixel(map,1,3);
    int term=getpixel(map,0,2);
       int blue=getpixel(map,0,4);
    int purple= getpixel(map,0,3);
            int spider=getpixel(map,0,5);
-            int mapstart=getpixel(map,0,8);
-           int mapend=getpixel(map,0,7);
+            int mapstart=getpixel(map,1,2);
+           int mapend=getpixel(map,1,1);
 
          int col= getpixel(map,i,j);
  
 
-   if (col==walls){maptemp[k]=2060;}
+   if (col==walls){maptemp[k]=3020;}
+        if (col==walls2){maptemp[k]=2090;}
      if (col==term){maptemp[k]=1043;}
         if (col==blue){maptemp[k]=2080;}
            if (col==purple){maptemp[k]=4060;}
@@ -579,7 +583,7 @@ if (maptemp[k]>2000){if (maptemp[k]!=2050){ rectfill(collisionpad2,(i*5)+mapxoff
 
 
 i=0; y=0;
-for (int k=0;k<50000;k++){
+for (int k=0;k<60000;k++){
 i+=1; if (i>320){i=0;y+=1;}
 
 //sleeps.x[k]=0;
@@ -653,6 +657,9 @@ level=1;
      //  ballx=320;
      //  bally=100;
 
+
+      yrow1=0;
+      yrow2=0;
       hits=0;
       num2=0;
       num3=0;
@@ -894,10 +901,10 @@ int mapfunc(){
 
   clear_to_color(collisionpad,1);
 
-//       blit(collisionpad2,surface,((z*5)+add)+100,(((zv*5))+add2)+200,0,0,320,240);
+     //  blit(collisionpad2,surface,((z*5)+add)+35,(((zv*5))+add2)+20,0,0,320,240);
   
-   int xoffsetcorrec=100;
-   int yoffsetcorrec=200;
+   int xoffsetcorrec=35;
+   int yoffsetcorrec=20;
       // blit(cubespr,surface,0,0,0,0,320,240);
 
   //   blit(levelbg2,levelbg3,0,150,0,0,105,65);
@@ -1050,15 +1057,27 @@ int j2=0;
 
                                                           double spdx2=0;
 int k35=0;
-for (int i=0;i<60000;i++){
 
+if ((zv*5)<240){       if (yrow2==0){     yrow2=40000;}  }
+
+if ((zv*5)>240){yrow1=30000; yrow2=60000;}
+for (int i=yrow1;i<yrow2;i++){
+
+
+                       enemicnt=i;
+
+                       int spiderok=1;
 
 
 
 
 
             if (maptemp[i]==1077){
-                             enemicnt=i;
+
+
+
+            if (spiderok==1){
+
                    if( spider.dirx[enemicnt]==1 )  {   spider.rotate[i]+=0.005; }
                      if(   spider.dirx[enemicnt]==-1)   {   spider.rotate[i]-=0.005; }
 
@@ -1125,7 +1144,7 @@ for (int i=0;i<60000;i++){
 
 
 
-                              slowspid++;
+                           //   slowspid++;
 
 
 
@@ -1156,7 +1175,7 @@ int col=0;
 
 
 
-                          for (int x=-3;x<15;x++){
+                          for (int x=-3;x<10;x++){
 
                     colx=getpixel(collisionpad2,spider.x[i]+x+xoffsetcorrec,spider.y[enemicnt]-5+yoffsetcorrec);
                                            if (colx==4){
@@ -1164,7 +1183,7 @@ int col=0;
 
           spider.diry[enemicnt]=1;   }
 
-                    colx=getpixel(collisionpad2,spider.x[enemicnt]+x+xoffsetcorrec,spider.y[enemicnt]+15+yoffsetcorrec);
+                    colx=getpixel(collisionpad2,spider.x[enemicnt]+x+xoffsetcorrec,spider.y[enemicnt]+10+yoffsetcorrec);
                                            if (colx==4){
                                   //   spider.color[enemicnt]+=1;
 
@@ -1176,9 +1195,9 @@ int col=0;
 
 
 
-                 for (int y=-3;y<15;y++){
+                 for (int y=-3;y<10;y++){
 
-                    colx=getpixel(collisionpad2,spider.x[enemicnt]+15+xoffsetcorrec,y+spider.y[enemicnt]+yoffsetcorrec);
+                    colx=getpixel(collisionpad2,spider.x[enemicnt]+10+xoffsetcorrec,y+spider.y[enemicnt]+yoffsetcorrec);
                                            if (colx==4){
                                         //    spider.color[enemicnt]+=1;
 
@@ -1226,12 +1245,12 @@ int col=0;
 
                         rectfill(collisionpad,spider.bulletx[i]-add-(z*5)-5,spider.bullety[i]-(zv*5)-add2-5,spider.bulletx[i]-add-(z*5)+10,spider.bullety[i]-(zv*5)-add2+10,134);
                              circlefill(surface,spider.bulletx[i]-add-(z*5)-3,spider.bullety[i]-(zv*5)-add2-3,1,spdbulcol);
-                                      circlefill(surface,spider.bulletx[i]-add-(z*5)-3+1,spider.bullety[i]-(zv*5)-add2-3,1,spdbulcol+50);
+                                  //    circlefill(surface,spider.bulletx[i]-add-(z*5)-3+1,spider.bullety[i]-(zv*5)-add2-3,1,spdbulcol+50);
                
                         //                                   circlefill(surface,spider.bulletx[i]-add-(z*10)-2,spider.bullety[i]-(zv*10)-add2-2,1,253);
 
                               //  rectfill(surface,playerx,playery,playerx,playery,95);
-                               int colx=getpixel(collisionpad,playerx+10,playery+10);
+                         //      int colx=getpixel(collisionpad,playerx+10,playery+10);
               //         if (colx==98){ midiseek=0;   play_midi(grand,0);midi_seek(40); init(); }
 
 
@@ -1309,7 +1328,7 @@ int col=0;
 
  
 
-
+                        }
 
 
 
@@ -1718,7 +1737,7 @@ int col=0;
                         */
             //     blitnumtex(hits,ballx,bally-(zv*10),4);
 //              masked_blit(walkingspr2,surface,269+ballframex,ballframey,ballx,bally-(zv*20),16,18);
-                  blit(sprsheet,surface,sleepssprdir,193,sleeps.x[ballcnt]-add-(z*5),sleeps.y[ballcnt]-add2-(zv*5),14,12);
+                  masked_blit(sprsheet,surface,sleepssprdir,193,sleeps.x[ballcnt]-add-(z*5),sleeps.y[ballcnt]-add2-(zv*5),14,12);
 
 
 
@@ -2074,7 +2093,7 @@ int keyboard(){
 
 
 
-                        colx=getpixel(collisionpad,playerx+x-add,playery+15-add2);
+                        colx=getpixel(collisionpad,playerx+x-add,playery+17-add2);
           //            putpixel(surface,playerx+x,playery+10,238);
            
 
@@ -2083,7 +2102,7 @@ int keyboard(){
 
 
 
-              colx=getpixel(collisionpad,playerx+x-add,playery-15-add2);
+              colx=getpixel(collisionpad,playerx+x-add,playery-5-add2);
         //       putpixel(surface,playerx+x,playery-10,238);
                       
              if (colx==4){ t2player=0; }
@@ -2108,13 +2127,13 @@ int keyboard(){
 
 
 
-               colx=getpixel(collisionpad,playerx+10-add,playery+y-add2);
+               colx=getpixel(collisionpad,playerx+15-add,playery+y-add2);
 
              if (colx==4){tx=0; }
 
                    if (colx==21){init(); }          
 
-              colx=getpixel(collisionpad,playerx-add,playery+y-add2);
+              colx=getpixel(collisionpad,playerx-add-10,playery+y-add2);
 
              if (colx==4){tx2=0;}
                      if (colx==21){init(); }          
@@ -2498,11 +2517,11 @@ int keyboard(){
                           // if (bulleti>400){bulleti=0;}
                     //   if(timerb>300){timerb=300;}
 
-                                 bulletx[ib]= bulletx[ib]+(bdirx*50)+warpx;
+                                 bulletx[ib]= bulletx[ib]+(bdirx*30)+warpx;
 
 
 
-                                 bullety[ib]= bullety[ib]+(bdiry*50)+warpy;
+                                 bullety[ib]= bullety[ib]+(bdiry*30)+warpy;
 
                             //    rect(screen,bulletx[i],bullety[i]-(zvb),bulletx[i]+thickx+1,bullety[i]-(zvb)+thicky+1,2);
 
