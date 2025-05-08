@@ -168,8 +168,8 @@ int colyw;
 int diryw[60000];
 int dirxw[60000];
 int color[60000];
-double rx[60000];
-double ry[60000];
+//double rx[60000];
+//double ry[60000];
 double rotate[60000];
 double bulletx[60000];
 double bullety[60000];
@@ -177,14 +177,14 @@ double x[60000];
 double y[60000];
 int dirx[60000];
 int diry[60000];
-int dirx2[60000];
-int diry2[60000];
+//int dirx2[60000];
+//int diry2[60000];
 int bdirx[60000];
 int bdiry[60000];
 int timer;
 double timer3;
 int timer2;
-int health[50000];
+int health[60000];
 }OBJECT;
 OBJECT spider;
 OBJECT sleeps;
@@ -2655,7 +2655,7 @@ int main(int argc, char *argv[]) {
    set_write_alpha_blender();
  collisionpad=create_bitmap(380,280);
   collisionpad2=create_bitmap(4400,1500);
-   bg=create_bitmap(4400,1500);
+   bg=create_bitmap(320,240);
 
 
 
@@ -2675,9 +2675,9 @@ int main(int argc, char *argv[]) {
       walkingspr2=load_bitmap("walking.bmp",the_palette2);
         clear_to_color(bg,0);
   int x,y,col,col2;
-    for (int i=0;i<2400000;i++){
-    x++; if(x>4400){x=0;y++;}
-    if (y>1500){y=0;}
+    for (int i=0;i<60000;i++){
+    x++; if(x>320){x=0;y++;}
+    if (y>240){y=0;}
         putpixel(bg,x*20,y*20,100);
 
             }
@@ -2769,7 +2769,7 @@ bgscroly=100;
 
 
               
-            if (tick>1){     clear_to_color(surface,0);       blit(bg,surface,((z*5)+add),(((zv*5))+add2),0,0,640,480);
+            if (tick>1){     clear_to_color(surface,0);   int i=1;int j=1;  for (int k=0;k<35;k++){i++; if (i>5){j++;i=-1; } blit(bg,surface,((z*5)+add)+(i*320)-1000,((zv*5))+add2+(j*240)-1200,0,0,380,280);}
                blit(sprsheet,surface,53+(playerhealth*9),36,150,60,10,10);
 
 
