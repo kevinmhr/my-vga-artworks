@@ -27,8 +27,9 @@ double accelx=0.1;
 double accely=0.1;
 double accelx2=0.1;
 double accely2=0.1;
+
+
 typedef struct CUBE{
-                           
 double l2[400];
 double i[400];
 double j[400];
@@ -68,7 +69,7 @@ double ballx;
 double bally;
   int faced;
   int explosy=400;    int explosx=400;
-
+int initplus;
 int scroll;
 int spidanimx,spidanimy;
 double timer1=0;
@@ -199,6 +200,7 @@ CUBE cb;
      BITMAP *collisionpad2;
     BITMAP *sprite;
         BITMAP *cubespr;
+              BITMAP *bg;
 
 
    PALETTE the_palette1;
@@ -657,7 +659,7 @@ level=1;
      //  ballx=320;
      //  bally=100;
 
-
+       initplus=plus;
       yrow1=0;
       yrow2=0;
       hits=0;
@@ -687,8 +689,8 @@ level=1;
        enemicnt=0;
       i=1;
 //    plus=2000;
-playerx=100;
- playery=50;
+playerx=225;
+ playery=165;
 
   if (level>3){level=1;}
   if (level==1){
@@ -901,10 +903,14 @@ int mapfunc(){
 
   clear_to_color(collisionpad,1);
 
-     //  blit(collisionpad2,surface,((z*5)+add)+35,(((zv*5))+add2)+20,0,0,320,240);
+
+ //  int xoffsetcorrec=35;
+ //  int yoffsetcorrec=20;
+        // textprintf_ex(surface,font,100,100,250,0,"%i",8987/449);
   
-   int xoffsetcorrec=35;
+    int xoffsetcorrec=35;
    int yoffsetcorrec=20;
+
       // blit(cubespr,surface,0,0,0,0,320,240);
 
   //   blit(levelbg2,levelbg3,0,150,0,0,105,65);
@@ -916,6 +922,8 @@ int mapfunc(){
 
 
               //      if (vertical>220){vertical=10;}
+
+
 
                int    i=0;
 
@@ -930,23 +938,11 @@ int mapfunc(){
 
 
                   d=100;
-          /*
-               int xi=0;
-               int yi=0-add2;
-               int ui=0;
 
 
-                for(int k=0;k<640;k++){
-                  xi+=10; if (xi>=320){yi+=10;xi=0;}
-                  blit(sprsheet,surface,0,50,(xi)-(add)+0,yi,1,1);
 
-
-             
-             
-                                    }
-
-            */
-
+                 int i10=0;
+                 int vertical10=0;
            for (int k=0;k<(20000);k++){
 
 
@@ -955,10 +951,18 @@ int mapfunc(){
 
 
 
-
+                 i10+=2;
                  i+=1;
 
-          if (i>maplenght){vertical=vertical+5;i=0;            }
+          if (i>maplenght){vertical=vertical+5;i=0; i10=0; vertical10+=10;          }
+
+
+
+
+
+
+
+
 
 
 
@@ -1055,7 +1059,7 @@ int j2=0;
        
            double spdy2=0;
 
-                                                          double spdx2=0;
+         double spdx2=0;
 int k35=0;
 
 if ((zv*5)<240){       if (yrow2==0){     yrow2=40000;}  }
@@ -1067,6 +1071,9 @@ for (int i=yrow1;i<yrow2;i++){
                        enemicnt=i;
 
                        int spiderok=1;
+
+
+
 
 
 
@@ -1263,6 +1270,8 @@ int col=0;
                     rectfill(collisionpad,spider.x[enemicnt]-(z*5)-add-5,spider.y[enemicnt]-15-add2-(zv*5),spider.x[enemicnt]-(z*5)-add+15,spider.y[enemicnt]-15-add2-(zv*5)+20,84);
 
      //     textprintf_ex(surface,font,spider.x[enemicnt]-1-(z*10)-add,spider.y[enemicnt]-(zv*10)-add2-10,250,0,"%i",spider.health[i]);
+                  //   textprintf_ex(surface,font,100,100,250,0,"%f",plus);
+  
              double x=0;
              double y=0;
 
@@ -2361,11 +2370,11 @@ int keyboard(){
                if (timerb<0){timerb=0;}
 
            if (playerx>230) {
-                                          playerx-=1;    add+=1; if (add>5){add=0;  plus=(int)plus+1;z++; addb++; } }
-                                    if (playerx<210) {
-                           playerx+=1;   add-=1;bgaddh++;  if (add<0)   {add=5;     plus=(int)plus-1;z--; addb--;  } }
-                    if (playery>170){ zvb++; playery-=1;                       add2+=1;  if (add2>5){ add2=0;   plus+=maplenght+1;zv=zv+1;addb2++; }  }
-                    if (playery<160){ zvb--;  playery+=1;    add2-=1;  if (add2<0){ add2=5;    plus-=maplenght+1;zv=zv-1;    addb2--;   }  }
+                                          playerx-=1;         add+=1; if (add>5){add=0;  plus=(int)plus+1;z++; addb++; } }
+                                    if (playerx<220) {
+                           playerx+=1;   add-=1;bgaddh++;         if (add<0)   {add=5;     plus=(int)plus-1;z--; addb--;  } }
+                    if (playery>170){ zvb++; playery-=1;                      add2+=1;  if (add2>5){ add2=0;   plus+=maplenght+1;zv=zv+1;addb2++; }  }
+                    if (playery<160){ zvb--;  playery+=1;     add2-=1;  if (add2<0){ add2=5;    plus-=maplenght+1;zv=zv-1;    addb2--;   }  }
 
 
                               bulletwarp+=bulletwapd*10;
@@ -2644,8 +2653,9 @@ int main(int argc, char *argv[]) {
 
      //  set_color_depth(8);
    set_write_alpha_blender();
- collisionpad=create_bitmap(480,600);
+ collisionpad=create_bitmap(320,240);
   collisionpad2=create_bitmap(4400,1500);
+   bg=create_bitmap(4400,1500);
 
 
 
@@ -2663,11 +2673,14 @@ int main(int argc, char *argv[]) {
 //           levelbg2=create_bitmap(320,240);
 //       levelbg1=load_bitmap("bgsprts.bmp",the_palette2);
       walkingspr2=load_bitmap("walking.bmp",the_palette2);
-
+        clear_to_color(bg,0);
   int x,y,col,col2;
-//    for (int i=0;i<2400000;i++){
-//    x++; if(x>4000){x=0;y++;}
- //   if (y>240){y=0;}
+    for (int i=0;i<2400000;i++){
+    x++; if(x>4400){x=0;y++;}
+    if (y>1500){y=0;}
+        putpixel(bg,x*20,y*20,200);
+
+            }
 //     col2=getpixel(levelbg1,0,0);
 
   //  col=getpixel(levelbg1,x,y);
@@ -2760,7 +2773,8 @@ bgscroly=100;
 
 
  tick=0; // cube();
-          keyboard();          mapfunc();    blittingtosprite();
+  blit(bg,surface,((z*5)+add),(((zv*5))+add2),0,0,640,480);
+            keyboard();          mapfunc();    blittingtosprite();
 
                           }    poll_keyboard();
                    /*
