@@ -3,6 +3,8 @@
 int k=1;
 int scy=0;
 int addy=0;
+       double obsticlex[100000];
+       double axismove[100000];
        double somenum=1;
        int split=1;
        int x=-1;
@@ -12,7 +14,7 @@ int addy=0;
        int num3;
        int num4;
        int hits;
-
+       int copanimx=0;
        double planex=160;
        double planey=180;
        double throtl=0;
@@ -51,16 +53,18 @@ int mapshape(){
                       mapfil=0;
                       somenum=1;
                         int mapfil=0;
-                        double ui=-150;
+                        double ui=-160;
                         for (int i=99980;i>0;i--){
-                      ui+=7;
+                      ui+=4;
                       ui=ui;
-                      if (ui>150){ui=-150;}
+                      if (ui>160){ui=-160;}
 
-                      somenum+=((cos(ui)*50)*sin(i)*50);
-       mapfil+=somenum/50;map[i]=0;
+                      somenum+=((cos(ui)*40)*sin(i)*50);
+       mapfil+=somenum/70;map[i]=0;
         if (mapfil>1300){map[i]=1;}
          if (mapfil>1850){map[i]=2;}
+              if (mapfil>1995){map[i]=5;}
+      
            if (mapfil>1999){map[i]=3;}
      
         if (mapfil>2000){map[i+10]=4;}
@@ -171,7 +175,24 @@ void mapfn(){
 
 
 
+                  if (map[i+rows]==5){
 
+                if (axismove[i+rows]<0){copanimx=0;}
+                   if (axismove[i+rows]>0){copanimx=15;}
+
+               masked_blit(sprites,surface,70,copanimx+1,obsticlex[i+rows],(y)-10,14,14);
+               int colx=getpixel(collisionbmp,obsticlex[i+rows],y-10);
+                if (colx==35){axismove[i+rows]=-axismove[i+rows];}
+          
+         rectfill(collisionbmp,obsticlex[i+rows],(y)-10,obsticlex[i+rows]+14,(y)-10+14,47);
+              colx=getpixel(collisionbmp,planex,planey);
+      if (colx==47){rows=99999;num2=0;num3=0;num4=0;planex=150;planey=180;hits=0;mapshape();mapfn();};
+
+             obsticlex[i+rows]+=axismove[i+rows];
+
+
+       
+                        }
 
 
 
@@ -223,6 +244,16 @@ collisionbmp=create_bitmap(320,240);
    somenum=5;
 mapshape();
 rows=100000;
+int r=0;
+for (x=0;x<100000;x++){
+r++;
+obsticlex[x]=0;axismove[x]=0.05;
+ if (r==1){obsticlex[x]=320;axismove[x]=-0.05; }
+if (r==2){r=0;}
+
+//axismove[x]=0.05;
+
+}
 
   while (k==1){
 
