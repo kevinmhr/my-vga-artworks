@@ -168,7 +168,7 @@ void mapfn(){
 
          rectfill(collisionbmp,(x*10)+offx,(y)-10,(x*10)+offx+10,(y)-10+32,35);
 
-              int colx=getpixel(collisionbmp,planex,planey);
+              int colx=getpixel(collisionbmp,planex-4,planey);
       if (colx==35){rows=99999;num2=0;num3=0;num4=0;planex=150;planey=180;hits=0;mapshape();mapfn();};
 
                                     }
@@ -264,7 +264,6 @@ if (r==2){r=0;}
                  mapfil=0;
 
                         }
-
 
 
 
