@@ -180,11 +180,11 @@ void mapfn(){
                 if (axismove[i+rows]<0){copanimx=0;}
                    if (axismove[i+rows]>0){copanimx=15;}
 
-               masked_blit(sprites,surface,70,copanimx+1,obsticlex[i+rows],(y)-10,14,14);
-               int colx=getpixel(collisionbmp,obsticlex[i+rows],y-10);
+               masked_blit(sprites,surface,70,copanimx+1,obsticlex[i+rows]+offx,(y)-10,14,14);
+               int colx=getpixel(collisionbmp,obsticlex[i+rows]+offx,y-10);
                 if (colx==35){axismove[i+rows]=-axismove[i+rows];}
           
-         rectfill(collisionbmp,obsticlex[i+rows],(y)-10,obsticlex[i+rows]+14,(y)-10+14,47);
+         rectfill(collisionbmp,obsticlex[i+rows],(y)-10,obsticlex[i+rows]+14+offx,(y)-10+14,47);
               colx=getpixel(collisionbmp,planex,planey);
       if (colx==47){rows=99999;num2=0;num3=0;num4=0;planex=150;planey=180;hits=0;mapshape();mapfn();};
 
@@ -274,7 +274,7 @@ if (r==2){r=0;}
 
               y=-4;
               x=-1;
-           addx=sin(scrol)*10;
+           addx=sin(scrol)*20;
          //   sizey=sin(curvature)*10;
          //   sizex=cos(curvature)*10;
 
