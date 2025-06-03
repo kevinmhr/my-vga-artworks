@@ -57,6 +57,18 @@ PALETTE PAL;
 
 int mapshape(){
 
+                      int r=0;
+for (x=0;x<100000;x++){
+r++;
+obsticlex[x]=0;axismove[x]=0.05;   creatx[x]=320; creatxmov[x]=-0.05;
+ if (r==2){obsticlex[x]=320;axismove[x]=-0.05;   creatx[x]=0;  creatxmov[x]=0.05;   }
+if (r==2){r=0;}
+
+//axismove[x]=0.05;
+
+}
+
+
                       mapfil=0;
                       somenum=1;
                         int mapfil=0;
@@ -153,7 +165,7 @@ void mapfn(){
            //  rectfill(surface,(x*10)+offx-2,(y)-13,(x*10)+offx+12,(y)-10+32,31);
 
               int colx=getpixel(collisionbmp,planex-4,planey);
-    //  if (colx==35){rows=99999;num2=0;num3=0;num4=0;planex=150;planey=180;hits=0;mapshape();mapfn();};
+      if (colx==35){rows=99999;num2=0;num3=0;num4=0;planex=150;planey=180;hits=0;mapshape();mapfn();};
 
                                     }
 
@@ -180,7 +192,7 @@ void mapfn(){
                if (colx==90){ bulletx=planex-4; bullety=planey-3;
                map[i+rows]=0;mapfn();      hits+=1; sound(300);}
                           colx=getpixel(collisionbmp,planex-4,planey);
-   //   if (colx==90){rows=99999;num2=0;num3=0;num4=0;planex=150;planey=180;bulletx=planex; bullety=planey;hits=0;mapshape();mapfn();};
+      if (colx==90){rows=99999;num2=0;num3=0;num4=0;planex=150;planey=180;bulletx=planex; bullety=planey;hits=0;mapshape();mapfn();};
 
 
 
@@ -234,7 +246,7 @@ void mapfn(){
                masked_blit(sprites,surface,70,copanimx+1,(x*10)+obsticlex[i+rows]+offx,(y)-10,14,14);
               rectfill(collisionbmp,(x*10)+obsticlex[i+rows]+offx,(y)-10,(x*10)+obsticlex[i+rows]+14+offx,(y)-10+14,47);
              colx=getpixel(collisionbmp,planex,planey);
- //     if (colx==47){rows=99999;num2=0;num3=0;num4=0;planex=150;planey=180;hits=0;mapshape();mapfn();};
+      if (colx==47){rows=99999;num2=0;num3=0;num4=0;planex=150;planey=180;hits=0;mapshape();mapfn();};
 
 
        
@@ -312,16 +324,6 @@ collisionbmp=create_bitmap(320,240);
    somenum=5;
 mapshape();
 rows=100000;
-int r=0;
-for (x=0;x<100000;x++){
-r++;
-obsticlex[x]=0;axismove[x]=0.05;   creatx[x]=320; creatxmov[x]=-0.05;
- if (r==2){obsticlex[x]=320;axismove[x]=-0.05;   creatx[x]=0;  creatxmov[x]=0.05;   }
-if (r==2){r=0;}
-
-//axismove[x]=0.05;
-
-}
 
   while (k==1){
 
