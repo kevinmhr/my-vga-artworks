@@ -61,21 +61,25 @@ int mapshape(){
                       somenum=1;
                         int mapfil=0;
                         double ui=0;
+                        double ux=0;
                         for (int i=99980;i>0;i--){
+                      ux+=5;
                       ui+=1;
                       ui=ui;
-                        if (ui>10){ui=0;}
-                         somenum+=((sin(ui*100)*100)*sin(i*30)*50);
-              mapfil+=somenum/200;map[i]=0;
+                       if (ui>10000){ui=0;}
+                        if (ux>20000){ux=0;}
+                     
+                         somenum+=sqrt((sin(ux)*(sin(ui*10)))*100);
+              mapfil+=somenum*2;map[i]=0;
               if (mapfil>0){map[i]=1;}
-               if (mapfil>1060){map[i]=6;}
+               if (mapfil>1200){map[i]=6;}
       
-            if (mapfil>1070){map[i]=4;}
+            if (mapfil>1220){map[i]=4;}
       
-         if (mapfil>1100){map[i]=2;}
-              if (mapfil>1280){map[i]=5;}
+         if (mapfil>1250){map[i]=2;}
+              if (mapfil>1350){map[i]=5;}
       
-           if (mapfil>1300){map[i]=3;}
+           if (mapfil>1380){map[i]=3;}
      
           if (mapfil>1401) {mapfil=0;}
                   }
@@ -149,7 +153,7 @@ void mapfn(){
            //  rectfill(surface,(x*10)+offx-2,(y)-13,(x*10)+offx+12,(y)-10+32,31);
 
               int colx=getpixel(collisionbmp,planex-4,planey);
-      if (colx==35){rows=99999;num2=0;num3=0;num4=0;planex=150;planey=180;hits=0;mapshape();mapfn();};
+    //  if (colx==35){rows=99999;num2=0;num3=0;num4=0;planex=150;planey=180;hits=0;mapshape();mapfn();};
 
                                     }
 
@@ -176,7 +180,7 @@ void mapfn(){
                if (colx==90){ bulletx=planex-4; bullety=planey-3;
                map[i+rows]=0;mapfn();      hits+=1; sound(300);}
                           colx=getpixel(collisionbmp,planex-4,planey);
-      if (colx==90){rows=99999;num2=0;num3=0;num4=0;planex=150;planey=180;bulletx=planex; bullety=planey;hits=0;mapshape();mapfn();};
+   //   if (colx==90){rows=99999;num2=0;num3=0;num4=0;planex=150;planey=180;bulletx=planex; bullety=planey;hits=0;mapshape();mapfn();};
 
 
 
@@ -230,7 +234,7 @@ void mapfn(){
                masked_blit(sprites,surface,70,copanimx+1,(x*10)+obsticlex[i+rows]+offx,(y)-10,14,14);
               rectfill(collisionbmp,(x*10)+obsticlex[i+rows]+offx,(y)-10,(x*10)+obsticlex[i+rows]+14+offx,(y)-10+14,47);
              colx=getpixel(collisionbmp,planex,planey);
-      if (colx==47){rows=99999;num2=0;num3=0;num4=0;planex=150;planey=180;hits=0;mapshape();mapfn();};
+ //     if (colx==47){rows=99999;num2=0;num3=0;num4=0;planex=150;planey=180;hits=0;mapshape();mapfn();};
 
 
        
@@ -312,7 +316,7 @@ int r=0;
 for (x=0;x<100000;x++){
 r++;
 obsticlex[x]=0;axismove[x]=0.05;   creatx[x]=320; creatxmov[x]=-0.05;
- if (r==1){obsticlex[x]=320;axismove[x]=-0.05;   creatx[x]=0;  creatxmov[x]=0.05;   }
+ if (r==2){obsticlex[x]=320;axismove[x]=-0.05;   creatx[x]=0;  creatxmov[x]=0.05;   }
 if (r==2){r=0;}
 
 //axismove[x]=0.05;
