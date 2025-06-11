@@ -1,28 +1,10 @@
-/**************************************************************************
- * bitmap.c                                                               *
- * written by David Brackeen                                              *
- * http://www.brackeen.com/home/vga/                                      *
- *                                                                        *
- * This is a 16-bit program.                                              *
- * Tab stops are set to 2.                                                *
- * Remember to compile in the LARGE memory model!                         *
- * To compile in Borland C: bcc -ml bitmap.c                              *
- *                                                                        *
- * This program will only work on DOS- or Windows-based systems with a    *
- * VGA, SuperVGA or compatible video adapter.                             *
- *                                                                        *
- * Please feel free to copy this source code.                             *
- *                                                                        *
- * DESCRIPTION: This program demostrates drawing bitmaps, including       *
- * transparent bitmaps.                                                   *
- **************************************************************************/
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <dos.h>
 #include <mem.h>
 #include <conio.h>
-
+#include <math.h>
 #define VIDEO_INT           0x10      /* the BIOS video interrupt. */
 #define SET_MODE            0x00      /* BIOS func to set the video mode. */
 #define VGA_256_COLOR_MODE  0x13      /* use to set 256-color mode. */
@@ -36,16 +18,24 @@ typedef unsigned char  byte;
 typedef unsigned short word;
 typedef unsigned long  dword;
 
+
 byte *VGA=(byte *)0xA0000000L;        /* this points to video memory. */
 word *my_clock=(word *)0x0000046C;    /* this points to the 18.2hz system
 					 clock. */
 char *buffer;
+char *buffer2;
+
 typedef struct tagBITMAP              /* the structure for a bitmap. */
 {
   word width;
   word height;
   byte *data;
 } BITMAP;
+
+void kputpixel(char *buffer,int x,int y,int col);
+int kgetpixelpage(char *buffer,int x,int y);
+int kgetpixelbmp(BITMAP *bmp,int x,int y);
+
 
 /**************************************************************************
  *  fskip                                                                 *
@@ -139,6 +129,22 @@ void load_bmp(char *file,BITMAP *b)
  *    Draws a bitmap.                                                     *
  **************************************************************************/
 
+void copy_bitmap(BITMAP *bmp,char *buffer,int x,int y)
+{
+  int j;
+  word screen_offset = (y<<8)+(y<<6)+x;
+  word bitmap_offset = 0;
+
+  for(j=0;j<bmp->height;j++)
+  {
+    memcpy(&buffer[screen_offset],&bmp->data[bitmap_offset],bmp->width);
+
+    bitmap_offset+=bmp->width;
+    screen_offset+=SCREEN_WIDTH;
+  }
+}
+
+
 void draw_bitmap(BITMAP *bmp,int x,int y)
 {
   int j;
@@ -155,6 +161,13 @@ void draw_bitmap(BITMAP *bmp,int x,int y)
 }
 
 
+void kdrawrectfill(char *buffer,int x,int y,int w,int h,int col){
+int i,j;
+for (i=x;i<x+w;i++){
+for (j=y;j<y+h;j++){
+kputpixel(buffer,i,j,col);
+}}                       }
+
 
 
 
@@ -162,10 +175,21 @@ void draw_bitmap(BITMAP *bmp,int x,int y)
  *  draw_transparent_bitmap                                               *
  *    Draws a transparent bitmap.                                         *
  **************************************************************************/
-int kgetpixel(BITMAP *bmp,int x,int y){
+int kgetpixelpage(char *buffer,int x,int y){
 int col;
 
-col=bmp->data[x+(y*320)];
+col=buffer[x+(y*320)];
+
+return col;
+
+}
+
+
+
+int kgetpixelbmp(BITMAP *bp,int x,int y){
+int col;
+
+col=bp->data[x+(y*320)];
 
 return col;
 
@@ -178,15 +202,18 @@ buffer[x+(y*320)]=col;
 }
 
 
-void kdrawtransbitmap(BITMAP *bmp,char* buffer,int posx,int posy,int w,int h,int colc){
+void kdrawtransbitmap(char *buffer2,char* buffer,int posx,int posy,int w,int h,int colc){
 int x,y;
 int col;
-for (x=posx;x<posx+w;x++){
-for (y=posy;y<posy+h;y++){
-col=kgetpixel(bmp,x,y);
-if (col)  kputpixel(buffer,x,y,col+colc);
+for (y=0;y<=h;y++){
 
+for (x=0;x<=w;x++){
+
+col=buffer2[x+y*(320)];
+if (col)
+buffer[x+posx+((y+posy)*320)]=col+colc;
 }
+
 }
 
 
@@ -239,27 +266,102 @@ void wait(int ticks)
 void main()
 {
   int k=1;
-  int i,x,y;
-  int col;
+  double t;
+  int i,x,y,x1,y1;
+ byte u,f,o,l;
+ byte u1=0,f1=0,o1=0,l1=0;
+  double col[256];
+  double col2=0;
+  int ti=0;
+ // BITMAP bmp;
   BITMAP bmp;
-  BITMAP bmp2;
+   BITMAP bmp2;
+
   buffer=(char*)malloc(64000U);
-  load_bmp("rocket.bmp",&bmp2);        /* open the file */
-  load_bmp("map.bmp",&bmp);
+  buffer2=(char*)malloc(64000U);
+
+   load_bmp("rocket.bmp",&bmp);
+
+   load_bmp("map.bmp",&bmp2);
+
+ /* open the file */
+
   set_mode(VGA_256_COLOR_MODE);       /* set the video mode. */
 
 
+copy_bitmap(&bmp,buffer2,0,0);
 
-     memset(buffer,0,64000);
 
-      draw_transparent_bitmap(&bmp,0,0);
-	   draw_transparent_bitmap(&bmp2,0,100);
 
-col=0;
+
+  memset(buffer,0,64000);
+
+
+       col2=1;
 while (k==1){
-col++;
-kdrawtransbitmap(&bmp,buffer,220,25,70,45,col);
-kputpixel(buffer,150,10,col);
+ti++;
+if (ti>100){ col2+=1; ti=0; }
+t=0;
+for (i=0;i<256;i++){
+  t+=0.05;
+  col[i]=((cos(t))+10);
+}
+
+u=u1;
+f=f1;
+
+for (x=1;x<320;x++){
+o=o1;
+l=l1;
+
+
+       for (y=1;y<200;y++){
+
+kputpixel(buffer,x,y,(col[f]+col[u]+col[o]+col[l])+col2);
+
+
+
+o+=5;
+l+=3;
+
+ }
+u+=1;
+f+=1;
+
+ }
+ l1+=5;
+ o1+=3;
+ u1+=2;
+ f1+=1;
+
+copy_bitmap(&bmp2,buffer2,0,0);
+kdrawrectfill(buffer2,50,50,40,40,0);
+
+kdrawtransbitmap(buffer2,buffer,0,0,320,200,0);
+copy_bitmap(&bmp,buffer2,0,0);
+
+
+kdrawtransbitmap(buffer2,buffer,100,100,50,59,0);
+kputpixel(buffer,150,10,f1+o+l);
+
+//draw_transparent_bitmap(&bmp2,0,0);
+
+
+for (x=0;x<=320;x+=60){
+
+//kdrawrectfill(buffer,x,0,20,200,0);
+
+   }
+
+for (y=0;y<200;y+=60){
+
+//kdrawrectfill(buffer,0,y,320,20,0);
+
+   }
+
+//kdrawtransbitmap(buffer2,buffer,100,100,60,60,0);
+
+
   /* draw the background */
    memcpy(VGA,buffer,64000);
 
