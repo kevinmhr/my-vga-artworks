@@ -129,15 +129,15 @@ void load_bmp(char *file,BITMAP *b)
  *    Draws a bitmap.                                                     *
  **************************************************************************/
 
-void copy_bitmap(BITMAP *bmp,char *buffer,int x,int y)
-{
+void copy_bitmap(BITMAP *bmp)
+{   int x=0;int y=0;
   int j;
   word screen_offset = (y<<8)+(y<<6)+x;
   word bitmap_offset = 0;
 
   for(j=0;j<bmp->height;j++)
   {
-    memcpy(&buffer[screen_offset],&bmp->data[bitmap_offset],bmp->width);
+    memcpy(&buffer2[screen_offset],&bmp->data[bitmap_offset],bmp->width);
 
     bitmap_offset+=bmp->width;
     screen_offset+=SCREEN_WIDTH;
@@ -202,7 +202,7 @@ buffer[x+(y*320)]=col;
 }
 
 
-void kdrawtransbitmap(char *buffer2,char* buffer,int posx,int posy,int w,int h,int colc){
+void kdrawtransbitmap(char* buffer,int posx,int posy,int w,int h,int colc){
 int x,y;
 int col;
 for (y=0;y<=h;y++){
@@ -226,15 +226,20 @@ void draw_transparent_bitmap(BITMAP *bmp,int x,int y)
   int i,j;
   word screen_offset = (y<<6)+(y<<8);
   word bitmap_offset = 0;
+  word bitmap_temp_offset = 0;
   byte data;
 
   for(j=0;j<bmp->height;j++)
   {
+
     for(i=0;i<bmp->width;i++,bitmap_offset++)
     {
+
       data = bmp->data[bitmap_offset];
       if (data) buffer[screen_offset+x+i] = data;
+
     }
+
     screen_offset+=SCREEN_WIDTH;
   }
 }
@@ -289,22 +294,23 @@ void main()
   set_mode(VGA_256_COLOR_MODE);       /* set the video mode. */
 
 
-copy_bitmap(&bmp,buffer2,0,0);
 
 
 
+//   memset(buffer2,0,64000);
 
   memset(buffer,0,64000);
 
 
        col2=1;
 while (k==1){
+
 ti++;
-if (ti>100){ col2+=1; ti=0; }
+
 t=0;
 for (i=0;i<256;i++){
   t+=0.05;
-  col[i]=((cos(t))+10);
+  col[i]=((cos(t)));
 }
 
 u=u1;
@@ -334,17 +340,19 @@ f+=1;
  u1+=2;
  f1+=1;
 
-copy_bitmap(&bmp2,buffer2,0,0);
+copy_bitmap(&bmp2);
 kdrawrectfill(buffer2,50,50,40,40,0);
 
-kdrawtransbitmap(buffer2,buffer,0,0,320,200,0);
-copy_bitmap(&bmp,buffer2,0,0);
+kdrawtransbitmap(buffer,0,0,320,200,0);
 
 
-kdrawtransbitmap(buffer2,buffer,100,100,50,59,0);
+copy_bitmap(&bmp);
+
+
+
+kdrawtransbitmap(buffer,100,100,50,59,0);
 kputpixel(buffer,150,10,f1+o+l);
 
-//draw_transparent_bitmap(&bmp2,0,0);
 
 
 for (x=0;x<=320;x+=60){
