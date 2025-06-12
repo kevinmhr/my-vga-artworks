@@ -102,7 +102,6 @@ void load_bmp(char *file,BITMAP *b)
     printf("%s is not a bitmap file.\n",file);
     exit(1);
   }
-
   /* read in the width and height of the image, and the
      number of colors used; ignore the rest */
   fskip(fp,16);
@@ -127,6 +126,7 @@ void load_bmp(char *file,BITMAP *b)
 
   /* Ignore the palette information for now.
      See palette.c for code to read the palette info. */
+
   fskip(fp,num_colors*4);
 
   /* read the bitmap */
@@ -137,41 +137,22 @@ void load_bmp(char *file,BITMAP *b)
   fclose(fp);
 }
 
-/**************************************************************************
- *  draw_bitmap                                                           *
- *    Draws a bitmap.                                                     *
- **************************************************************************/
-
 void copy_bitmap(BITMAP *bmp)
-{   int x=0;int y=0;
+{
   int j;
-  word screen_offset = (y<<8)+(y<<6)+x;
+  int xoffset=0;
   word bitmap_offset = 0;
-
-  for(j=0;j<bmp->height;j++)
+  word screen_offset=0;
+  for(j=0;j<bmp->height;j++,screen_offset+=SCREEN_WIDTH)
   {
     memcpy(&buffer2[screen_offset],&bmp->data[bitmap_offset],bmp->width);
 
     bitmap_offset+=bmp->width;
-    screen_offset+=SCREEN_WIDTH;
+
   }
 }
 
 
-void draw_bitmap(BITMAP *bmp,int x,int y)
-{
-  int j;
-  word screen_offset = (y<<8)+(y<<6)+x;
-  word bitmap_offset = 0;
-
-  for(j=0;j<bmp->height;j++)
-  {
-    memcpy(&buffer[screen_offset],&bmp->data[bitmap_offset],bmp->width);
-
-    bitmap_offset+=bmp->width;
-    screen_offset+=SCREEN_WIDTH;
-  }
-}
 
 
 void kdrawrectfill(char *buffer,int x,int y,int w,int h,int col){
@@ -182,12 +163,6 @@ kputpixel(buffer,i,j,col);
 }}                       }
 
 
-
-
-/**************************************************************************
- *  draw_transparent_bitmap                                               *
- *    Draws a transparent bitmap.                                         *
- **************************************************************************/
 int kgetpixelpage(char *buffer,int x,int y){
 int col;
 
@@ -215,14 +190,14 @@ buffer[x+(y*320)]=col;
 }
 
 
-void kdrawtransbitmap(char* buffer,int posx,int posy,int w,int h,int colc){
+void kdrawtransbitmap(char* buffer,int desx,int desy,int posx,int posy,int w,int h,int colc){
 int x,y;
 int col;
 for (y=0;y<=h;y++){
 
 for (x=0;x<=w;x++){
 
-col=buffer2[x+y*(320)];
+col=buffer2[(x+desx)+((y+desy)*320)];
 if (col)
 buffer[x+posx+((y+posy)*320)]=col+colc;
 }
@@ -234,33 +209,7 @@ buffer[x+posx+((y+posy)*320)]=col+colc;
 
 
 }
-void draw_transparent_bitmap(BITMAP *bmp,int x,int y)
-{
-  int i,j;
-  word screen_offset = (y<<6)+(y<<8);
-  word bitmap_offset = 0;
-  word bitmap_temp_offset = 0;
-  byte data;
 
-  for(j=0;j<bmp->height;j++)
-  {
-
-    for(i=0;i<bmp->width;i++,bitmap_offset++)
-    {
-
-      data = bmp->data[bitmap_offset];
-      if (data) buffer[screen_offset+x+i] = data;
-
-    }
-
-    screen_offset+=SCREEN_WIDTH;
-  }
-}
-
-/**************************************************************************
- *  wait                                                                  *
- *    Wait for a specified number of clock ticks (18hz).                  *
- **************************************************************************/
 
 void wait(int ticks)
 {
@@ -325,7 +274,7 @@ void main()
 
   buffer=(char*)malloc(64000U);
   buffer2=(char*)malloc(64000U);
-      load_bmp("plane.bmp",&plane);
+   load_bmp("plane.bmp",&plane);
 
    load_bmp("rocket.bmp",&bmp);
 
@@ -370,14 +319,14 @@ plasma(1,0);
 copy_bitmap(&bmp2);
 kdrawrectfill(buffer2,50,50,40,40,0);
 
-kdrawtransbitmap(buffer,0,0,320,200,0);
+kdrawtransbitmap(buffer,0,0,0,0,320,200,0);
 
 
 copy_bitmap(&bmp);
 
 
 
-kdrawtransbitmap(buffer,100,100,50,59,0);
+kdrawtransbitmap(buffer,0,0,100,100,50,59,0);
 kputpixel(buffer,150,10,f1+o+l);
 
 
@@ -445,7 +394,7 @@ kdrawrectfill(buffer,0,190,320,20,0);
 //kdrawrectfill(buffer,playerx,playery,20,20,5);
 //copy_bitmap(&bmp);
 
-kdrawtransbitmap(buffer,playerx,playery,35,30,200);
+kdrawtransbitmap(buffer,0,0,playerx,playery,35,30,200);
 	     if (plus<0){plus=20000;}
 	  if (playerx>300){playerx=300;}
 	  if (playerx<10){playerx=10;}
