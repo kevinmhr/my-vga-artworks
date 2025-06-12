@@ -50,6 +50,8 @@ int sclv=0,sclh=0;
 double playerx=100;
 double playery=170;
 double accx=0,accy=0;
+int bulletx,bullety;
+int bullettrig=0;
 /**************************************************************************
  *  fskip                                                                 *
  *     Skips bytes in a file.                                             *
@@ -86,7 +88,7 @@ void load_bmp(char *file,BITMAP *b)
   FILE *fp;
   long index;
   word num_colors;
-  int x;
+  int x,y;
 
   /* open the file */
   if ((fp = fopen(file,"rb")) == NULL)
@@ -118,6 +120,7 @@ void load_bmp(char *file,BITMAP *b)
 
   /* try to allocate memory */
   if ((b->data = (byte *) malloc((word)(b->width*b->height))) == NULL)
+
   {
     fclose(fp);
     printf("Error allocating memory for file %s.\n",file);
@@ -130,6 +133,7 @@ void load_bmp(char *file,BITMAP *b)
   fskip(fp,num_colors*4);
 
   /* read the bitmap */
+
   for(index=(b->height-1)*b->width;index>=0;index-=b->width)
     for(x=0;x<b->width;x++)
       b->data[(word)index+x]=(byte)fgetc(fp);
@@ -263,17 +267,19 @@ f+=1;
 int stk=1;
 void main()
 {
+
   double t;
   int i,x,y,x1,y1;
   double k;
   int ti=0;
  // BITMAP bmp;
+
   BITMAP bmp;
    BITMAP bmp2;
     BITMAP plane;
-
-  buffer=(char*)malloc(64000U);
+    buffer=(char*)malloc(64000U);
   buffer2=(char*)malloc(64000U);
+
    load_bmp("plane.bmp",&plane);
 
    load_bmp("rocket.bmp",&bmp);
@@ -325,7 +331,6 @@ kdrawtransbitmap(buffer,0,0,0,0,320,200,0);
 copy_bitmap(&bmp);
 
 
-
 kdrawtransbitmap(buffer,0,0,100,100,50,59,0);
 kputpixel(buffer,150,10,f1+o+l);
 
@@ -369,6 +374,7 @@ d2=0.05;
 while (stk==2){
  int k;
  int i=-10;
+
  int v=-1;
  int sc;
  sclv-=1;
@@ -396,34 +402,52 @@ kdrawrectfill(buffer,0,190,320,20,0);
 
 kdrawtransbitmap(buffer,0,0,playerx,playery,35,30,200);
 	     if (plus<0){plus=20000;}
-	  if (playerx>300){playerx=300;}
+	  if (playerx>280){playerx=280;}
 	  if (playerx<10){playerx=10;}
 	  if (playery>170){playery=170;}
 	  if (playery<10){playery=10;}
-	 if(accx>0){   accx-=0.007;  }
-	 if(accx<0){   accx+=0.007;  }
-	 if(accy>0){   accy-=0.007;  }
-	 if(accy<0){   accy+=0.007;  }
+	 if(accx>0){   accx-=0.005;  }
+	 if(accx<0){   accx+=0.005;  }
+	 if(accy>0){   accy-=0.005;  }
+	 if(accy<0){   accy+=0.005;  }
 
 	  playerx+=accx;
 	  playery+=accy;
 
-	  if (accx>2){accx=2;}
-	  if (accy>2){accy=2;}
-	  if (accx<-2){accx=-2;}
-	  if (accy<-2){accy=-2;}
+	  if (accx>1){accx=1;}
+	  if (accy>1){accy=1;}
+	  if (accx<-1){accx=-1;}
+	  if (accy<-1){accy=-1;}
+       ti++;  if (ti>4){sound(-1);ti=0;}
+    if (bullettrig==1){ti++;     sound(5000); if (ti>4){sound(-1);ti=0;}
+
+      kdrawrectfill(buffer,bulletx,bullety,3,3,62);
+    bullety-=(playery)/30;
+
+
+
+    }
+    if (bullety<10){
+    bullettrig=0;
+
+    }
+    if (bullettrig==0){
+    bulletx=playerx+18;
+    bullety=playery;
+    }
     if (kbhit()) {
        sc=getch();
+      if (sc==27){stk=0;}
       switch(sc) {
-		case 0x48 :   accy-=0.1;
+		case 0x48 :   accy-=0.2;
 		break;
-		case 0x4b:    accx-=0.1;
+		case 0x4b:    accx-=0.2;
 		break;
-		case 0x50:    accy+=0.1;
+		case 0x50:    accy+=0.2;
 		break;
-		case 0x4d:    accx+=0.1;
+		case 0x4d:    accx+=0.2;
 		break;
-	       case 0x52:   stk++;
+	       case 32:    bullettrig=1;
 		break;
 
 		  }   }
