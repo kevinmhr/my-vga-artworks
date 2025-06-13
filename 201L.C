@@ -1,4 +1,5 @@
 
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <dos.h>
@@ -25,9 +26,22 @@ word *my_clock=(word *)0x0000046C;    /* this points to the 18.2hz system
 					 clock. */
 char *buffer;
 char *buffer2;
-
+int plusent=0;
+int plus2=0;
+char plusodd=0;
 char map[20000];
+typedef struct tagENTITY              /* the structure for a bitmap. */
+{
+double posxacc[1000];
+double posyacc[1000];
 
+double posx[1000];
+double posy[1000];
+int dirx[1000];
+int diry[1000];
+
+} ENT;
+ENT cre;
 typedef struct tagBITMAP              /* the structure for a bitmap. */
 {
   word width;
@@ -43,7 +57,7 @@ int sclv=0,sclh=0;
     double d2=0.04;
    double col[256];
   double col2=0;
-
+ double tet=0;
  byte u,f,o,l;
  byte u1=0,f1=0,o1=0,l1=0;
 
@@ -267,7 +281,7 @@ f+=1;
 int stk=1;
 void main()
 {
-
+  int sprcol=0;
   double t;
   int i,x,y,x1,y1;
   double k;
@@ -280,14 +294,28 @@ void main()
     buffer=(char*)malloc(64000U);
   buffer2=(char*)malloc(64000U);
 
-   load_bmp("plane.bmp",&plane);
+      load_bmp("plane.bmp",&plane);
 
    load_bmp("rocket.bmp",&bmp);
 
    load_bmp("map.bmp",&bmp2);
-  u=0;      k=0;  o=0;
+	t=0;
+  for (i=0;i<1000;i++){
+
+  cre.dirx[plusent]=1;
+    cre.diry[plusent]=1;
+  cre.posxacc[i]=0;
+ cre.posx[i]=-320;
+
+ cre.posy[i]=-200;
+	       }
+  u=0;   t=0;   k=0;  o=0;
+
  for (i=0;i<20000;i++){
  o+=10;
+ t+=abs(sin(k)*3)+(cos(i)*2);
+ if (t>50){map[i]=3; t=0;     }
+
  u+=abs(sin(k)*3)+abs(sin(i)*2);; k+=abs(sin(i+k)*3)-abs(sin(i+o)*2);
  if (u>1){map[i]=1; u=0;    }
   if (k>5){map[i]=2;  k=0;   }
@@ -357,7 +385,7 @@ for (y=0;y<200;y+=60){
 
    if (kbhit())
 
-{stk++;copy_bitmap(&plane);
+{stk++;
  getch();  }
 
 
@@ -371,34 +399,101 @@ for (y=0;y<200;y+=60){
  }
 d2=0.05;
 
+gh:
 while (stk==2){
+
  int k;
  int i=-10;
-
+ double collisionx,collisiony;
+  int colx,colx2;
  int v=-1;
  int sc;
+ double tet2=0;
  sclv-=1;
-  if(sclv<=0){sclv=10;plus-=32;   }
+
+
+
+
+
+
+
+			     if (plus==20000){ }
+
+
+	  for (i=0;i<1000;i++){
+
+
+  }
+		  cre.posxacc[plusent]=sin(tet);
+  if(sclv<=0){sclv=10;plus-=32; plus2++; if (plus2>500){plus2=0; sprcol++;}
+     }
  kdrawrectfill(buffer,0,0,320,240,0);
 
 
  plasma(2,0);
+
  for (k=0;k<=649;k++){
+
  i++; if (i>31){i=0;v+=10;}
 // if (v>200){v=0;}
 
 if (map[k+plus]==0){
-kdrawrectfill(buffer,i*10,v-sclv,5,5,200);  }
+kdrawrectfill(buffer,i*10,v-sclv,1,1,20);  }
 
-if (map[k+plus]==2){
+if (map[k+plus]==8){
 kdrawrectfill(buffer,i*10,v-sclv,8,8,4);  }
+
+//kdrawrectfill(buffer,i*10,v-sclv,8,8,4);  }
 
 
      }
+ v=-20-sclv;
+
+		   tet+=0.01;
+ for (k=0;k<=560;k++){
+ i++; if (i>31){i=0;v+=10;}
+
+ tet2+=0.0005;
+if (map[k+plus]==3){
+
+     plusent++; if (plusent>=1000){plusent=0;}
+
+	cre.posx[plusent]=(sin((tet))*100)+(sin((tet+tet2))*100);
+	    //	cre.posy[plusent]=(sin((tet))*50)+(sin((tet+tet2))*100);
+	 cre.posy[plusent]=0;
+	    copy_bitmap(&bmp);
+
+kdrawtransbitmap(buffer,10,0,cre.posx[plusent]+(i*10),cre.posy[plusent]+v,50,58,sprcol);
+
+for (x=-5;x<5;x++){
+colx2=kgetpixelpage(buffer,cre.posx[plusent]+(i*10)+23+x,cre.posy[plusent]+v+20);
+
+//kputpixel(buffer,cre.posx[plusent]+(i*10)+23,cre.posy[plusent]+v-sclv+20,65);
+
+
+colx=kgetpixelpage(buffer,bulletx,bullety);
+if (colx==colx2&&bullettrig==1){map[k+plus]=0;bullettrig=0; colx=0;colx2=2;goto gh;}
+}
+
+
+
+
+
+
+
+
+//kdrawrectfill(buffer2,cre.posx[plusent]+(i*10),cre.posy[plusent]+v-sclv,50,50,32);
+
+   }
+
+
+
+}
 
 kdrawrectfill(buffer,0,190,320,20,0);
 //kdrawrectfill(buffer,playerx,playery,20,20,5);
-//copy_bitmap(&bmp);
+
+	   copy_bitmap(&plane);
 
 kdrawtransbitmap(buffer,0,0,playerx,playery,35,30,200);
 	     if (plus<0){plus=20000;}
@@ -406,10 +501,10 @@ kdrawtransbitmap(buffer,0,0,playerx,playery,35,30,200);
 	  if (playerx<10){playerx=10;}
 	  if (playery>170){playery=170;}
 	  if (playery<10){playery=10;}
-	 if(accx>0){   accx-=0.005;  }
-	 if(accx<0){   accx+=0.005;  }
-	 if(accy>0){   accy-=0.005;  }
-	 if(accy<0){   accy+=0.005;  }
+	 if(accx>0){   accx-=0.006;  }
+	 if(accx<0){   accx+=0.006;  }
+	 if(accy>0){   accy-=0.006;  }
+	 if(accy<0){   accy+=0.006;  }
 
 	  playerx+=accx;
 	  playery+=accy;
@@ -419,7 +514,7 @@ kdrawtransbitmap(buffer,0,0,playerx,playery,35,30,200);
 	  if (accx<-1){accx=-1;}
 	  if (accy<-1){accy=-1;}
        ti++;  if (ti>4){sound(-1);ti=0;}
-    if (bullettrig==1){ti++;     sound(5000); if (ti>4){sound(-1);ti=0;}
+    if (bullettrig==1){ti++;     sound(4000); if (ti>4){sound(-1);ti=0;}
 
       kdrawrectfill(buffer,bulletx,bullety,3,3,62);
     bullety-=(playery)/30;
@@ -439,13 +534,13 @@ kdrawtransbitmap(buffer,0,0,playerx,playery,35,30,200);
        sc=getch();
       if (sc==27){stk=0;}
       switch(sc) {
-		case 0x48 :   accy-=0.2;
+		case 0x48 :   accy-=0.4;
 		break;
-		case 0x4b:    accx-=0.2;
+		case 0x4b:    accx-=0.4;
 		break;
-		case 0x50:    accy+=0.2;
+		case 0x50:    accy+=0.4;
 		break;
-		case 0x4d:    accx+=0.2;
+		case 0x4d:    accx+=0.4;
 		break;
 	       case 32:    bullettrig=1;
 		break;
