@@ -24,6 +24,7 @@ byte *VGA=(byte *)0xA0000000L;        /* this points to video memory. */
 word *my_clock=(word *)0x0000046C;    /* this points to the 18.2hz system
   int stk=1;
 					 clock. */
+
 char *buffer;
 char *buffer2;
 int plusent=0;
@@ -55,7 +56,7 @@ typedef struct tagBITMAP              /* the structure for a bitmap. */
 void kputpixel(char *buffer,int x,int y,int col);
 int kgetpixelpage(char *buffer,int x,int y);
 int kgetpixelbmp(BITMAP *bmp,int x,int y);
-int plus=20000;
+int plus=19000;
 int sclv=0,sclh=0;
     double d2=0.04;
    double col[256];
@@ -277,7 +278,7 @@ mapfill(int u,int t,int k,int o){
 int i;
   u=0;   t=0;   k=0;  o=0;
 
- for (i=0;i<20000;i++){
+ for (i=0;i<19000;i++){
  o+=10;
  t+=abs(sin(k)*3)+(cos(i)*2);
  if (t>50){map[i]=3; t=0;     }
@@ -299,6 +300,7 @@ void main()
   int i,x,y,x1,y1;
   double k;
   int ti=0;
+  int si=0;
  // BITMAP bmp;
 
     buffer=(char*)malloc(64000U);
@@ -309,6 +311,9 @@ void main()
 
    load_bmp("map.bmp",&bmp2);
 	t=0;
+
+init:
+//sound(-1);
   for (i=0;i<1000;i++){
 
   cre.dirx[plusent]=1;
@@ -337,11 +342,14 @@ for (i=0;i<256;i++){
   col[i]=((cos(t)));
 }
 
+si=100;
 
        col2=1;
-while (stk==1){
 
-ti++;
+while (stk==1){
+sound(-1);
+ti++; if (si<120){  sound(si*ti*2);  }
+if (ti>1){ti=0;si++;if (si>=120){si=120; } }
 
 plasma(1,0);
 
@@ -349,7 +357,7 @@ plasma(1,0);
 kdrawtransbitmap(&bmp2,0,0,0,0,320,200,0);
 
 
-kdrawtransbitmap(&bmp,0,0,100,100,50,59,0);
+kdrawtransbitmap(&bmp,0,9,100,100,50,59,0);
 kputpixel(buffer,150,10,f1+o+l);
 
 
@@ -440,7 +448,7 @@ colx=kgetpixelpage(buffer2,bulletx,bullety);
 if (colx==77&&bullettrig==1){map[k+plus]=0;bullettrig=0; colx=0;colx2=2; sound(2000); goto gh;}
 
 colx=kgetpixelpage(buffer2,playerx+19,playery);
-if (colx==77){plus=20000;sprcol=0;  sound(100);mapfill(0,0,0,0); }
+if (colx==77){plus=19000;sprcol=0;  sound(100);mapfill(0,0,0,0); stk=1;goto init;}
 
   }
 
@@ -466,7 +474,8 @@ kdrawrectfill(buffer2,cre.posx[plusent]+(i*10),cre.posy[plusent]+v-sclv,30,30,78
 colx=kgetpixelpage(buffer2,bulletx,bullety);
 if (colx==78&&bullettrig==1){map[k+plus]=0;bullettrig=0; colx=0;colx2=2; sound(2000); goto gh;}
 colx=kgetpixelpage(buffer2,playerx+18,playery-18);
-if (colx==78){plus=20000;sprcol=0;  sound(100);mapfill(0,0,0,0); }
+if (colx==78){plus=19000;sprcol=0;  sound(100);mapfill(0,0,0,0);
+stk=1; goto init;  }
 
 
 
