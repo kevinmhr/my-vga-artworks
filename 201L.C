@@ -18,7 +18,7 @@
 typedef unsigned char  byte;
 typedef unsigned short word;
 typedef unsigned long  dword;
-
+  FILE *fp;
 
 byte *VGA=(byte *)0xA0000000L;        /* this points to video memory. */
 word *my_clock=(word *)0x0000046C;    /* this points to the 18.2hz system
@@ -45,7 +45,7 @@ ENT cre;
 typedef struct tagBITMAP              /* the structure for a bitmap. */
 {
   word width;
-  word height;
+ word height;
   byte *data;
 } BITMAP;
   BITMAP bmp;
@@ -102,7 +102,7 @@ void set_mode(byte mode)
 
 void load_bmp(char *file,BITMAP *b)
 {
-  FILE *fp;
+
   long index;
   word num_colors;
   int x,y;
@@ -139,7 +139,7 @@ void load_bmp(char *file,BITMAP *b)
 
 
   /* try to allocate memory */
-  if ((b->data = (byte *) malloc((word)(b->width*b->height))) == NULL)
+  if ((b->data =(byte*)malloc((word)(64000U))) == NULL)
 
   {
     fclose(fp);
@@ -154,29 +154,15 @@ void load_bmp(char *file,BITMAP *b)
 
   /* read the bitmap */
 
-  for(index=(b->height-1)*b->width;index>=0;index-=b->width)
+  for(index=320*b->height;index>=0;index-=320)
     for(x=0;x<b->width;x++)
-      b->data[(word)index+x]=(byte)fgetc(fp);
+   b->data[index+x]=(byte)fgetc(fp);
 
 
 
   fclose(fp);
 }
 
-void copy_bitmap(BITMAP *bmp)
-{
-  int j;
-  int xoffset=0;
-  word bitmap_offset = 0;
-  word screen_offset=0;
-  for(j=0;j<bmp->height;j++,screen_offset+=SCREEN_WIDTH)
-  {
-    memcpy(&buffer2[screen_offset],&bmp->data[bitmap_offset],bmp->width);
-
-    bitmap_offset+=bmp->width;
-
-  }
-}
 
 
 
@@ -216,14 +202,14 @@ buffer[x+(y*320)]=col;
 }
 
 
-void kdrawtransbitmap(char* buffer,int desx,int desy,int posx,int posy,int w,int h,int colc){
+void kdrawtransbitmap(BITMAP *b,int desx,int desy,int posx,int posy,int w,int h,int colc){
 int x,y;
 int col;
 for (y=0;y<=h;y++){
 
 for (x=0;x<=w;x++){
 
-col=buffer2[(x+desx)+((y+desy)*320)];
+col=b->data[(x+desx)+((y+desy)*320)];
 if (col)
 buffer[x+posx+((y+posy)*320)]=col+colc;
 }
@@ -359,16 +345,11 @@ ti++;
 
 plasma(1,0);
 
-copy_bitmap(&bmp2);
-kdrawrectfill(buffer2,50,50,40,40,0);
 
-kdrawtransbitmap(buffer,0,0,0,0,320,200,0);
+kdrawtransbitmap(&bmp2,0,0,0,0,320,200,0);
 
 
-copy_bitmap(&bmp);
-
-
-kdrawtransbitmap(buffer,0,0,100,100,50,59,0);
+kdrawtransbitmap(&bmp,0,0,100,100,50,59,0);
 kputpixel(buffer,150,10,f1+o+l);
 
 
@@ -488,9 +469,8 @@ colx=kgetpixelpage(buffer2,playerx+18,playery-18);
 if (colx==78){plus=20000;sprcol=0;  sound(100);mapfill(0,0,0,0); }
 
 
-copy_bitmap(&bmp);
 
-kdrawtransbitmap(buffer,10,9,cre.posx[plusent]+(i*10),cre.posy[plusent]+v,50,50,sprcol);
+kdrawtransbitmap(&bmp,10,9,cre.posx[plusent]+(i*10),cre.posy[plusent]+v,50,50,sprcol);
 
 
 
@@ -510,12 +490,11 @@ kdrawtransbitmap(buffer,10,9,cre.posx[plusent]+(i*10),cre.posy[plusent]+v,50,50,
 
 }
 
-copy_bitmap(&bmp);
 
 kdrawrectfill(buffer,0,190,320,20,0);
 
-kdrawtransbitmap(buffer,63,18,playerx,playery,35,35,10);
-//kdrawrectfill(buffer2,playerx,playery,35,35,0);
+kdrawtransbitmap(&bmp,63,18,playerx,playery,35,35,10);
+kdrawrectfill(buffer2,playerx,playery,35,35,0);
 
 	     if (plus<0){plus=20000;}
 	  if (playerx>280){playerx=280;}
