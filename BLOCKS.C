@@ -26,7 +26,7 @@ word *my_clock=(word *)0x0000046C;    /* this points to the 18.2hz system
 					 clock. */
 
 char *buffer;
-//char *buffer2;
+char *buffer2;
 int plusent=0;
 char shapetype=1;
 int plus2=0;
@@ -303,6 +303,27 @@ buffer[x+posx+((y+posy)*320)]=col+colc;
 }
 
 
+void kblittranspage(char *b,int desx,int desy,int posx,int posy,int w,int h,int colc){
+int x,y;
+int col;
+for (y=0;y<=h;y++){
+
+for (x=0;x<=w;x++){
+
+col=b[(x+desx)+((y+desy)*320)];
+if (col)
+buffer[x+posx+((y+posy)*320)]=col+colc;
+}
+
+}
+
+
+
+
+
+}
+
+
 void wait(int ticks)
 {
   word start;
@@ -426,15 +447,15 @@ void main()
  // BITMAP bmp;
   int xpos;int ypos;
     buffer=(char*)malloc(64000U);
-//  buffer2=(char*)malloc(64000U);
+ buffer2=(char*)malloc(64000U);
 
 
   // load_bmp("rocket.bmp",&bmp);
 
  //  load_bmp("map.bmp",&bmp2);
-	t=0;
+t=0;
 
-init:
+
 //sound(-1);
   for (i=0;i<1000;i++){
 
@@ -478,6 +499,8 @@ for (i=0;i<256;i++){
   plus=0;
        col2=1;
  memset(buffer,0,64000);
+ memset(buffer2,0,64000);
+
 dragshapes();
 while (stk==1){
 si++;
@@ -487,10 +510,10 @@ sound(-1);
 
 f+=1;
 
-u2=(sin(f2)*0.04);
-l2=(cos(o2)*0.04);
-f2+=sin(1)*0.01;
-o2+=sin(1)*0.01;
+u2=(sin(f2)*0.03);
+l2=(cos(o2)*0.03);
+f2+=sin(1)*0.003;
+o2+=sin(1)*0.003;
 
 xpos=1;
 ypos=1;
@@ -498,7 +521,7 @@ ypos=1;
 //xpos=(sin(l2)*2)+(cos(l2)*2);
 //ypos=-(sin(l2)*2)+(cos(l2)*2);
 
-for (y=10;y<190;y+=2){
+for (y=10;y<180;y+=2){
 
 
 //kdrawrectfill(buffer,x,0,20,200,0);
@@ -511,15 +534,18 @@ for (y=10;y<190;y+=2){
 l3=y+((sin(y*((l2)))*50))+((cos(y*((u2)))*50));
 
 
-for (x=10;x<310;x+=2){
+for (x=30;x<290;x+=2){
 o3=x+((cos(x*((u2)))*50))+((sin(x*((l2)))*50));
 
 ti=((int)y*200&x*200);
+k=(l3+o3&ti)|(int)30;
 
-k=(l3+o3&ti)&(int)200;
 
 //if (o>6){o=4;}
 //if (l>6){l=4;}
+kputpixel(buffer2,x,y,k+10);
+k=(o3+l3&ti)&(int)100;
+
 kputpixel(buffer,x,y,k);
 
 //kdrawrectfill(buffer,0,y,320,20,0);
@@ -531,8 +557,7 @@ kputpixel(buffer,x,y,k);
      }
 
 
-
-
+kdrawrectfill(buffer,100,20,110,150,0);
 // if (si<120){  sound(si*ti*2);  }
 //if (ti>1){ti=0;si++;if (si>=120){si=120; } }
 //if (ti>100){ti=0; }
@@ -544,14 +569,18 @@ for (k=0;k<165;k++){
 i++; if (i>10){vertical+=10;i=0;}
 
 if (map2[k]==0){
-kdrawrectfill(buffer,(i*10)+100,vertical+20,8,8,3);
+kdrawrectfill(buffer,(i*10)+100,vertical+20,8,8,200);
+
 		    }
 if (map2[k]==2){
-kdrawrectfill(buffer,(i*10)+100,vertical+20,8,8,9);
+kblittranspage(buffer2,30,35,(i*10)+100,vertical+20,8,8,1);
+
+//kdrawrectfill(buffer,(i*10)+100,vertical+20,9,9,2);
 		    }
 
 if (map[k-plus]==1){
-kdrawrectfill(buffer,(i*10)+100,vertical+20,8,8,1);
+//kdrawrectfill(buffer,(i*10)+100,vertical+20,9,9,1);
+kblittranspage(buffer2,45,25,(i*10)+100,vertical+20,8,8,14);
 		    }
 
 
@@ -563,8 +592,12 @@ if (map2[k+1]==2){kbr=0; shpt=0; }
 if (map2[k-1]==2){kbl=0; shpt=0; }
 if (bgmap[k+11]==4){kbr=0; shpt=0; }
 if (bgmap[k-10]==5){kbl=0;shpt=0;  }
-if (map2[k+11]==2) {  spd=0;
+if (map2[k+11]==2) { if (plus<10){ for (k=0;k<185;k++){map2[k]=0;map[k]=0; plus=0; }
+  }
 
+
+
+ spd=0;
 for (k=0;k<175;k++){
 
  if (map[k-plus]==1){map2[k]=2;}
@@ -583,7 +616,7 @@ rec:si++; shapetype+=abs(sin(accx*100+si)*5); if (shapetype>11){shapetype=1; got
 }
 }
  su++; if (su>1000){so--;su=0;}
- if (si>70+so-spd){si=0;plus+=11;horbloc+=11;} if (plus>139){ spd=0;  horbloc=0;
+ if (si>60+so-spd){si=0;plus+=11;horbloc+=11;} if (plus>139){ spd=0;  horbloc=0;
 for (k=0;k<185;k++){
 
 
@@ -719,7 +752,7 @@ gh:
     if (kbhit()) {
    sc=getch();
       if (sc==27){stk=0;} }
-	memcpy(VGA,buffer,64000);
+//	memcpy(VGA,buffer,64000);
 
 
 
