@@ -486,6 +486,7 @@ void main()
   int vertical;
   int ti=0;
   int si=0;
+  int yi=0;
  // BITMAP bmp;
   int xpos;int ypos;
     buffer=(char*)malloc(64000U);
@@ -537,15 +538,38 @@ for (i=0;i<256;i++){
   col[i]=((cos(t))+10);
 }
 
+init:
+stk=1;
+while (stk==1){
 
+
+
+ memset(buffer,0,64000);
+
+blitnumtex(score,120,120,4);
+   memcpy(VGA,buffer,64000);
+
+ if (kbhit()){
+ for (k=0;k<185;k++){
+ map2[k]=0;map[k]=0;score=0;
+spd=0; num1=0;num2=0;num3=0;num4=0; plus=0;
+}
+stk++; getch();
+
+
+}
+
+
+
+	     }
   plus=0;
        col2=1;
  memset(buffer2,0,64000);
 
 dragshapes();
-while (stk==1){
+while (stk==2){
  memset(buffer,0,64000);
-
+     yi+=1;   if (yi>100){yi=0;}
 si+=1;
 sound(-1);
 
@@ -574,22 +598,21 @@ for (y=10;y<180;y+=2){
 //l+=1;
 
 //o=((int)((sin(y))*l1)|(int)((cos(y))*l1));;
-l3=y+((sin(y*((l2)))*50))+((cos(y*((u2)))*50));
-
+l3=y+((sin(y*((l2)))*10+num3))+((cos(y*((u2)))*10+num3));
 
 for (x=30;x<290;x+=2){
-o3=x+((cos(x*((u2)))*50))+((sin(x*((l2)))*50));
+o3=x+((cos(x*((u2)))*10+num3))+((sin(x*((l2)))*10+num3));
 
-ti=((int)y*200&x*200);
-k=(l3+o3|ti)&(int)25;
+ti=0;
+
 
 
 //if (o>6){o=4;}
 //if (l>6){l=4;}
-kputpixel(buffer2,x,y,k+10);
-k=(o3+l3&ti)&(int)100;
+kputpixel(buffer2,x,y,((l3|o3+ti)&(int)20)+10);
+k=(o3+l3)&(int)500;
 
-kputpixel(buffer,x,y,k);
+kputpixel(buffer,x,y,k+num3*10);
 
 //kdrawrectfill(buffer,0,y,320,20,0);
 
@@ -635,10 +658,9 @@ if (map2[k+1]==2){kbr=0; shpt=0; }
 if (map2[k-1]==2){kbl=0; shpt=0; }
 if (bgmap[k+11]==4){kbr=0; shpt=0; }
 if (bgmap[k-10]==5){kbl=0;shpt=0;  }
-if (map2[k+11]==2) { score+=3;if (plus<10){ for (k=0;k<185;k++){map2[k]=0;map[k]=0;score=0;
- num1=0;num2=0;num3=0;num4=0; plus=0; }
+if (map2[k+11]==2) { score+=3;if (plus<10){ goto init; }
 
-  }
+  
 
 
 
@@ -652,7 +674,7 @@ for (k=0;k<175;k++){
 
  plus=0;
     //srand(100);
-rec:si++; shapetype+=abs(sin(accx*1000+si)*5); if (shapetype>11){shapetype=1; goto rec;}dragshapes();
+rec:yi++; shapetype+=abs(sin(accx*1000+yi)*5); if (shapetype>11){shapetype=1; goto rec;}dragshapes();
 
 }
 }
@@ -672,7 +694,7 @@ for (k=0;k<185;k++){
 }
 plus=0;
 
-reca:si++; shapetype+=abs(sin(accx*1000+si)*5); if (shapetype>11){shapetype=1; goto reca;}   dragshapes();
+reca:yi++; shapetype+=abs(sin(accx*1000+yi)*5); if (shapetype>11){shapetype=1; goto reca;}   dragshapes();
 
 }
 
