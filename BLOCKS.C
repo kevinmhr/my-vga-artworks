@@ -552,7 +552,7 @@ blitnumtex(score,120,120,4);
  if (kbhit()){
  for (k=0;k<185;k++){
  map2[k]=0;map[k]=0;score=0;
-spd=0; num1=0;num2=0;num3=0;num4=0; plus=0;
+so=0;  num1=0;num2=0;num3=0;num4=0; plus=0;
 }
 stk++; getch();
 
@@ -598,21 +598,21 @@ for (y=10;y<180;y+=2){
 //l+=1;
 
 //o=((int)((sin(y))*l1)|(int)((cos(y))*l1));;
-l3=y+((sin(y*((l2)))*10+num3))+((cos(y*((u2)))*10+num3));
+l3=y+((sin(y*((l2)))*10*(num3+1)))+((cos(y*((u2)))*10*(num3+1)));
 
 for (x=30;x<290;x+=2){
-o3=x+((cos(x*((u2)))*10+num3))+((sin(x*((l2)))*10+num3));
+o3=x+((cos(x*((u2)))*10*(num3+1)))+((sin(x*((l2)))*10*(num3+1)));
 
-ti=0;
+ti=(x|o3);
 
 
 
 //if (o>6){o=4;}
 //if (l>6){l=4;}
-kputpixel(buffer2,x,y,((l3|o3+ti)&(int)20)+10);
-k=(o3+l3)&(int)500;
+kputpixel(buffer2,x,y,((l3|o3)&(int)20)+10);
+k=(o3+l3|ti)&(100+num2*100);
 
-kputpixel(buffer,x,y,k+num3*10);
+kputpixel(buffer,x,y,k);
 
 //kdrawrectfill(buffer,0,y,320,20,0);
 
@@ -674,7 +674,7 @@ for (k=0;k<175;k++){
 
  plus=0;
     //srand(100);
-rec:yi++; shapetype+=abs(sin(accx*1000+yi)*5); if (shapetype>11){shapetype=1; goto rec;}dragshapes();
+rec:yi++; shapetype+=abs(sin(accx+yi)*5); if (shapetype>11){shapetype=1; goto rec;}dragshapes();
 
 }
 }
@@ -694,7 +694,7 @@ for (k=0;k<185;k++){
 }
 plus=0;
 
-reca:yi++; shapetype+=abs(sin(accx*1000+yi)*5); if (shapetype>11){shapetype=1; goto reca;}   dragshapes();
+reca:yi++; shapetype+=abs(sin(accx+yi)*5); if (shapetype>11){shapetype=1; goto reca;}   dragshapes();
 
 }
 
