@@ -28,9 +28,12 @@ word *my_clock=(word *)0x0000046C;    /* this points to the 18.2hz system
 char *buffer;
 char *buffer2;
 int plusent=0;
+int score=0;;
 char shapetype=1;
 int plus2=0;
 int horbloc=0;
+int num1,num2,num3,num4;
+int hits;
 char spd=0;
 char sum=0;
 char kbr=1;
@@ -58,7 +61,7 @@ typedef struct tagBITMAP              /* the structure for a bitmap. */
  word height;
   byte *data;
 } BITMAP;
-//  BITMAP bmp;
+  BITMAP font;
 //   BITMAP bmp2;
 char shape11[]={  0,0,0,0,0,0,0,0,0,0,0,
 	       0,0,0,0,0,0,0,0,0,0,0,
@@ -165,6 +168,45 @@ void fskip(FILE *fp, int num_bytes)
  *  set_mode                                                              *
  *     Sets the video mode.                                               *
  **************************************************************************/
+void blitnumtex(int hits,int textplacex,int textplacey,int digit){
+      int coly;
+      int d;
+      int col;
+      int numdig=4;
+	int x=0;
+      int y=0;
+     int i=0;
+      int j=0;
+    int fontsize=8;
+       double  integ[10];
+
+      if (score>=9){score=0;num2++;};
+
+      if (num2>9){num2=0;num3++;};
+      if (num3>9){num3=0;num4++;};
+      if (num4>9){num4=1;};
+
+      integ[1]=(hits)*6.9+180;
+
+      integ[2]=((num2))*6.9+180;
+      integ[3]=((num3))*6.9+180;
+      integ[4]=((num4))*6.9+180;
+
+     for (j=0;j<fontsize*(fontsize+fontsize/2);j++){
+      x++; if (x>fontsize){x=0;y++;}
+      coly=y;
+
+	for (d=1;d<digit+1;d++){
+   col=kgetpixelbmp(&font,(integ[d])+x,y+2);
+
+       if (col==255){
+      col=col;
+     kputpixel(buffer,((i*fontsize)+((x-d*6))+textplacex+40),textplacey+coly,9);
+    }
+    }        }
+}
+
+
 
 void set_mode(byte mode)
 {
@@ -450,7 +492,7 @@ void main()
  buffer2=(char*)malloc(64000U);
 
 
-  // load_bmp("rocket.bmp",&bmp);
+   load_bmp("fonts.bmp",&font);
 
  //  load_bmp("map.bmp",&bmp2);
 t=0;
@@ -498,12 +540,13 @@ for (i=0;i<256;i++){
 
   plus=0;
        col2=1;
- memset(buffer,0,64000);
  memset(buffer2,0,64000);
 
 dragshapes();
 while (stk==1){
-si++;
+ memset(buffer,0,64000);
+
+si+=1;
 sound(-1);
 
 
@@ -592,7 +635,9 @@ if (map2[k+1]==2){kbr=0; shpt=0; }
 if (map2[k-1]==2){kbl=0; shpt=0; }
 if (bgmap[k+11]==4){kbr=0; shpt=0; }
 if (bgmap[k-10]==5){kbl=0;shpt=0;  }
-if (map2[k+11]==2) { if (plus<10){ for (k=0;k<185;k++){map2[k]=0;map[k]=0; plus=0; }
+if (map2[k+11]==2) { score+=3;if (plus<10){ for (k=0;k<185;k++){map2[k]=0;map[k]=0;score=0;
+ num1=0;num2=0;num3=0;num4=0; plus=0; }
+
   }
 
 
@@ -607,7 +652,7 @@ for (k=0;k<175;k++){
 
  plus=0;
     //srand(100);
-rec:si++; shapetype+=abs(sin(accx*100+si)*5); if (shapetype>11){shapetype=1; goto rec;}dragshapes();
+rec:si++; shapetype+=abs(sin(accx*1000+si)*5); if (shapetype>11){shapetype=1; goto rec;}dragshapes();
 
 }
 }
@@ -616,7 +661,7 @@ rec:si++; shapetype+=abs(sin(accx*100+si)*5); if (shapetype>11){shapetype=1; got
 }
 }
  su++; if (su>1000){so--;su=0;}
- if (si>60+so-spd){si=0;plus+=11;horbloc+=11;} if (plus>139){ spd=0;  horbloc=0;
+ if (si>60+so-spd){si=0;plus+=11;horbloc+=11;} if (plus>139){ spd=0;  horbloc=0;   score+=3;
 for (k=0;k<185;k++){
 
 
@@ -627,7 +672,7 @@ for (k=0;k<185;k++){
 }
 plus=0;
 
-reca:si++; shapetype+=abs(sin(accx*100+si)*5); if (shapetype>11){shapetype=1; goto reca;}   dragshapes();
+reca:si++; shapetype+=abs(sin(accx*1000+si)*5); if (shapetype>11){shapetype=1; goto reca;}   dragshapes();
 
 }
 
@@ -661,7 +706,7 @@ if (sum>10){sum=0; for(i=0;i<12;i++){  map2[y+i]=0;  }  for (k=y-11;k>0;k-=11){ 
 //if (u>320){u=0;}
 //u=0;
 //f=0;
-
+blitnumtex(score,120,180,4);
 
 
 
@@ -678,15 +723,15 @@ if (sum>10){sum=0; for(i=0;i<12;i++){  map2[y+i]=0;  }  for (k=y-11;k>0;k-=11){ 
 sc=getch();
      if (sc==27){stk++;}
 	 switch(sc) {
-		case 0x48 :   accy-=0.4;  if (shapetype>1&&shapetype<4){  shapetype+=shpt; if (shapetype>3){shapetype=2;}  dragshapes(); }
+		case 0x48 :   accy-=0.9;  if (shapetype>1&&shapetype<4){  shapetype+=shpt; if (shapetype>3){shapetype=2;}  dragshapes(); }
 		   if (shapetype>3&&shapetype<6){  shapetype+=shpt; if (shapetype>5){shapetype=4;}  dragshapes(); }
 		   if (shapetype>5&&shapetype<14){  shapetype+=shpt; if (shapetype>13){shapetype=6;}  dragshapes(); }
 		break;
-		case 0x4b:    accx-=0.4;   plus-=kbl;
+		case 0x4b:    accx-=0.9;   plus-=kbl;
 		break;
-		case 0x50:    accy+=0.4;   spd=67;
+		case 0x50:    accy+=0.9;   spd=67;
 		break;
-		case 0x4d:    accx+=0.4;  plus+=kbr;
+		case 0x4d:    accx+=0.9;  plus+=kbr;
 		break;
 	       case 32:    bullettrig=1;
 		break;
@@ -733,7 +778,7 @@ gh:
        ti++;  if (ti>2){sound(-1);ti=0;}
     if (bullettrig==1){ti++;     sound(400); if (ti>2){sound(-1);ti=0;}
 
-      kdrawrectfill(buffer,bulletx,bullety,3,3,62);
+ //     kdrawrectfill(buffer,bulletx,bullety,3,3,62);
     bullety-=(playery)/20;
 
 
