@@ -709,7 +709,7 @@ sum=0;
 for (x=0;x<11;x++){
 
 if (map2[y+x]==2){  sum++;
-if (sum>10){sum=0; for(i=0;i<12;i++){  map2[y+i]=0;  }  for (k=y-11;k>0;k-=11){  for (x=0;x<11;x++){map2[k+x+11]=map2[k+x]; }  }
+if (sum>10){sum=0; for(i=0;i<12;i++){  map2[y+i]=0;  }  for (k=y-11;k>0;k-=11){  for (x=0;x<11;x++){map2[k+x+11]=map2[k+x];y=y+11; }  }
 			  }
 
 
