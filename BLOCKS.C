@@ -610,7 +610,7 @@ ti=(x|o3);
 //if (o>6){o=4;}
 //if (l>6){l=4;}
 kputpixel(buffer2,x,y,((l3|o3)&(int)20)+10);
-k=(o3+l3|ti)&(100+num2*100);
+k=(o3+l3|ti)&(100+num3*100);
 
 kputpixel(buffer,x,y,k);
 
@@ -650,17 +650,21 @@ kblittranspage(buffer2,45,25,(i*10)+100,vertical+20,8,8,14);
 		    }
 
 
-for (x=11;x>0;x--){
-for (y=5;y>0;y--){
 
 if (map[k-plus]==1) {
 if (map2[k+1]==2){kbr=0; shpt=0; }
 if (map2[k-1]==2){kbl=0; shpt=0; }
 if (bgmap[k+11]==4){kbr=0; shpt=0; }
-if (bgmap[k-10]==5){kbl=0;shpt=0;  }
+if (bgmap[k-10]==5){kbl=0;  }
+
+if (shapetype==2){if (bgmap[k+12]==4|bgmap[k+13]==4){  shpt=0; }
+
+  }
+
+
 if (map2[k+11]==2) { score+=3;if (plus<10){ goto init; }
 
-  
+
 
 
 
@@ -677,11 +681,11 @@ for (k=0;k<175;k++){
 rec:yi++; shapetype+=abs(sin(accx+yi)*5); if (shapetype>11){shapetype=1; goto rec;}dragshapes();
 
 }
-}
-}
 
 }
 }
+
+
  su++; if (su>1000){so--;su=0;}
  if (si>60+so-spd){si=0;plus+=11;horbloc+=11;} if (plus>139){ spd=0;  horbloc=0;   score+=3;
 for (k=0;k<185;k++){
