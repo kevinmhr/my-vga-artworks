@@ -24,7 +24,8 @@ byte *VGA=(byte *)0xA0000000L;        /* this points to video memory. */
 word *my_clock=(word *)0x0000046C;    /* this points to the 18.2hz system
   int stk=1;
 					 clock. */
-
+int num2=0,num3=0,num4=0,num1=0;
+int score=0;
 char *buffer;
 char *buffer2;
 int plusent=0;
@@ -51,7 +52,6 @@ typedef struct tagBITMAP              /* the structure for a bitmap. */
 } BITMAP;
   BITMAP bmp;
    BITMAP bmp2;
-
 
 void kputpixel(char *buffer,int x,int y,int col);
 int kgetpixelpage(char *buffer,int x,int y);
@@ -86,6 +86,8 @@ void fskip(FILE *fp, int num_bytes)
  *  set_mode                                                              *
  *     Sets the video mode.                                               *
  **************************************************************************/
+
+
 
 void set_mode(byte mode)
 {
@@ -279,13 +281,17 @@ int i;
   u=0;   t=0;   k=0;  o=0;
 
  for (i=0;i<19000;i++){
- o+=10;
- t+=abs(sin(k)*3)+(cos(i)*2);
- if (t>50){map[i]=3; t=0;     }
+ o+=abs(sin(k+o)*4);;        if (o>1000){o=0;}
+ t+=abs(sin(k+t+o)*4);
+ ;
 
- u+=abs(sin(k)*3)+abs(sin(i)*2);; k+=abs(sin(i+k)*3)-abs(sin(i+o)*2);
- if (u>1){map[i]=1; u=0;    }
-  if (k>5){map[i]=2;  k=0;   }
+  if (i>1000){  if (t>300){map[i]=3; t=0;     } };
+
+
+ u+=abs(sin(k)*3)+abs(sin(i)*2); k+=abs(sin(k*200))*2+abs((cos(o*200)*2));
+ if (u>1){map[i+1000]=1;   }
+  if (k>50){map[i]=2;  k=0;   }
+  if (u>40){map[i+1000]=4;  u=0;    }
 
 
 
@@ -438,14 +444,17 @@ while (stk==2){
 
 if (map[k+plus]==0){
 kdrawrectfill(buffer,i*10,v-sclv,1,1,20);  }
+if (map[k+plus]==4){
+kdrawrectfill(buffer,i*10,v*2-sclv*2,1,1,1);  }
+
 
 if (map[k+plus]==2){
-kdrawrectfill(buffer,i*10,v-sclv,5,5,5);
+kdrawrectfill(buffer,i*10,v-sclv,5,5,8);
 kdrawrectfill(buffer2,(i*10)-2,v-sclv,8,8,77);
 kputpixel(buffer,playerx+19,playery,45);
 colx=kgetpixelpage(buffer2,bulletx,bullety);
 
-if (colx==77&&bullettrig==1){map[k+plus]=0;bullettrig=0; colx=0;colx2=2; sound(2000); goto gh;}
+if (colx==77&&bullettrig==1){map[k+plus]=0;bullettrig=0; score+=1; colx=0;colx2=2; sound(2000); goto gh;}
 
 colx=kgetpixelpage(buffer2,playerx+19,playery);
 if (colx==77){plus=19000;sprcol=0;  sound(100);mapfill(0,0,0,0); stk=1;goto init;}
@@ -472,7 +481,7 @@ if (map[k+plus]==3){
 	 cre.posy[plusent]=0;
 kdrawrectfill(buffer2,cre.posx[plusent]+(i*10),cre.posy[plusent]+v-sclv,30,30,78);
 colx=kgetpixelpage(buffer2,bulletx,bullety);
-if (colx==78&&bullettrig==1){map[k+plus]=0;bullettrig=0; colx=0;colx2=2; sound(2000); goto gh;}
+if (colx==78&&bullettrig==1){score+=1; map[k+plus]=0;bullettrig=0; colx=0;colx2=2; sound(2000); goto gh;}
 colx=kgetpixelpage(buffer2,playerx+18,playery-18);
 if (colx==78){plus=19000;sprcol=0;  sound(100);mapfill(0,0,0,0);
 stk=1; goto init;  }
@@ -498,7 +507,6 @@ kdrawtransbitmap(&bmp,10,9,cre.posx[plusent]+(i*10),cre.posy[plusent]+v,50,50,sp
 
 
 }
-
 
 kdrawrectfill(buffer,0,190,320,20,0);
 
