@@ -1,4 +1,4 @@
-
+//SoftPower A numerical puzzle game by keyvan mehrbakhsh .
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -592,14 +592,24 @@ for (i=0;i<256;i++){
 }
 
 init:
+plus=2;
 scou=0;
 stk=1;
+ki=0;
 while (stk==1){
 
 
 
  memset(buffer,0,64000);
-
+kdrawtransbitmap(&font,116,10,100,100,7,10,7);
+kdrawtransbitmap(&font,90,10,110,100,7,10,7);
+kdrawtransbitmap(&font,32,10,120,100,7,10,7);
+kdrawtransbitmap(&font,123,10,130,100,7,10,7);
+kdrawtransbitmap(&font,97,10,140+20,100,7,10,7);
+kdrawtransbitmap(&font,90,10,150+20,100,7,10,7);
+kdrawtransbitmap(&font,142,10,160+20,100,7,10,7);
+kdrawtransbitmap(&font,26,10,170+20,100,7,10,7);
+kdrawtransbitmap(&font,112,10,180+20,100,5,10,7);
 blitnumtex(score,120,120,4);
    memcpy(VGA,buffer,64000);
 if (scou==1){si++;}
@@ -728,7 +738,9 @@ singlenum(map3[k-plus],(i*10)+60,vertical,map[k-plus]+10);
 
 if (map[k-plus]>0) {
 
-if (map2[k+11]>0) {      if (plus<18){goto init;  }
+if (map2[k+11]>0) {
+if (plus<18){goto init;  }
+
 
 reshape();
 
@@ -749,8 +761,8 @@ if (map[k-plus]==1) {map2[k]=map3[k-plus];  }
 
 
  spd=0;
-
- plus=0;
+ki+=0.1;
+ plus=2;
     //srand(100);
 dragshapes();
 
@@ -793,8 +805,8 @@ for (k=0;k<220;k++){
 
 
 }
-
-plus=0;
+ki+=0.1;
+plus=2;
  dragshapes();
 
 }
