@@ -40,9 +40,9 @@ char sum=0;
 char kbr=1;
 char kbl=1;
 char plusodd=0;
-unsigned char map[200];
-unsigned char map3[200];
-char map2[200];
+unsigned char map[222];
+unsigned char map3[222];
+char map2[222];
 char bgmap[222];
 char shpt=1;
 typedef struct tagENTITY              /* the structure for a bitmap. */
@@ -172,6 +172,7 @@ void fskip(FILE *fp, int num_bytes)
  **************************************************************************/
 void blitnumtex(int hits,int textplacex,int textplacey,int digit){
       int coly;
+      int scou=0;
       int d;
       int col;
       int numdig=4;
@@ -476,10 +477,6 @@ void dragshapes(){
 int k;
 int x,y,i,j;
 
- for (k=0;k<20;k++){
- x++; if (x>20){y++;x=0;}
-
- map[x]=0;
 //  shapetype=1;
 
 
@@ -513,25 +510,27 @@ int x,y,i,j;
       if (shapetype==13){
  map[(i+j)-9]=shape48[((i)+j)]; }
 
-   }}
+   }
+  // }
  }                }
 void reshape(){
 int i,j;
+
 if (shapetype==1){
      for (j=0;j<5;j++){
-     yf: ki+=0.1;      shape11[j+33]=1; 	   shape21[j+33]=abs(sin(ki)*1000);  if (shape21[j+33]>9||shape21[j+33]<1){shape21[j+33]=0; goto yf;}
+     yf: ki+=0.1;      shape11[j+33]=1; 	   shape21[j+33]=abs(sin(ki)*100);  if (shape21[j+33]>9||shape21[j+33]<1){shape21[j+33]=0; goto yf;}
 
     }             }
 if (shapetype==1){
      for (j=11;j<44;j+=11){
-     yf2: ki+=0.1;      shape11[j+1+11]=1; 	   shape21[j+1+11]=abs(sin(ki)*1000);  if (shape21[j+1+11]>9||shape21[j+1+11]<1){shape21[j+1+11]=0; goto yf2;}
+     yf2: ki+=0.1;      shape11[j+1+11]=1; 	   shape21[j+1+11]=abs(sin(ki)*100);  if (shape21[j+1+11]>9||shape21[j+1+11]<1){shape21[j+1+11]=0; goto yf2;}
     }             }
 		 }
 
 void main()
 {
 
-
+  int scou=0;
   int sprcol=0;
   double t;
   int i,x,y,x1,y1;
@@ -593,7 +592,7 @@ for (i=0;i<256;i++){
 }
 
 init:
-
+scou=0;
 stk=1;
 while (stk==1){
 
@@ -603,14 +602,26 @@ while (stk==1){
 
 blitnumtex(score,120,120,4);
    memcpy(VGA,buffer,64000);
+if (scou==1){si++;}
+if (si>1000){si=0;
+ for (k=0;k<222;k++){
 
- if (kbhit()){
- for (k=0;k<185;k++){
- map2[k]=0;map[k]=0;score=0;
+map[k]=0;score=0;  map2[k]=0;  map3[k]=0;
 so=0; shapetype=1; num1=0;num2=0;num3=0;num4=0; plus+=11;
 
 }
+
+
+
+
 stk++; getch();
+
+
+
+ }
+
+ if (kbhit()){
+scou=1;
 
 
 }
@@ -625,6 +636,7 @@ stk++; getch();
 dragshapes();
 //plus=33;
 while (stk==2){
+ ki+=0.1;   if (ki>100000){ki=0;}
  memset(buffer,0,64000);
      yi+=1;   if (yi>100){yi=0;}
 si+=1;
@@ -680,7 +692,9 @@ kputpixel(buffer,x,y,k);
      }
 
 
-kdrawrectfill(buffer,100,20,110,150,0);
+kdrawrectfill(buffer,100,30,110,140,0);
+//kdrawrectfill(buffer,100,0,110,30,1);
+
 // if (si<120){  sound(si*ti*2);  }
 //if (ti>1){ti=0;si++;if (si>=120){si=120; } }
 //if (ti>100){ti=0; }
@@ -688,33 +702,38 @@ kdrawrectfill(buffer,100,20,110,150,0);
     vertical=0;
 kbr=1;kbl=1;
 shpt=1;
-for (k=0;k<165;k++){
+for (k=0;k<187;k++){
 i++; if (i>10){vertical+=10;i=0;}
 
+if (k>32){
 if (map2[k]==0){
-kdrawrectfill(buffer,(i*10)+100,vertical+20,8,8,200);
+kdrawrectfill(buffer,(i*10)+100,vertical,8,8,200);
 
-		    }
+		    } }
+
+
 if (map2[k]>0){
 //kblittranspage(buffer2,30,35,(i*10)+100,vertical+20,8,8,1);
-singlenum(map2[k],(i*10)+60,vertical+20,map2[k]);
+singlenum(map2[k],(i*10)+60,vertical,map2[k]);
 //kdrawrectfill(buffer,(i*10)+100,vertical+20,9,9,2);
 		    }
-if (plus>-40){
+
 if (map[k-plus]>0){
 //kdrawrectfill(buffer,(i*10)+100,vertical+20,9,9,1);
 //kblittranspage(buffer2,45,25,(i*10)+100,vertical+20,8,8,14);
-singlenum(map3[k-plus],(i*10)+60,vertical+20,map[k-plus]+10);
+singlenum(map3[k-plus],(i*10)+60,vertical,map[k-plus]+10);
 
-		    }
+
 }
 
 if (map[k-plus]>0) {
 
-if (map2[k+11]>0) {      if (plus<-30){goto init;  }
+if (map2[k+11]>0) {      if (plus<18){goto init;  }
+
 reshape();
 
- for (k=0;k<175;k++){
+ for (k=0;k<220
+ ;k++){
 
 if (map[k-plus]==1) {map2[k]=map3[k-plus];  }
 
@@ -731,7 +750,7 @@ if (map[k-plus]==1) {map2[k]=map3[k-plus];  }
 
  spd=0;
 
- plus=-43;
+ plus=0;
     //srand(100);
 dragshapes();
 
@@ -745,18 +764,14 @@ if (map[k-plus]==1) {
 
 
 
-
 if (map2[k+1]>0){kbr=0; shpt=0; }
 if (map2[k-1]>0){kbl=0; shpt=0; }
+
 if (bgmap[k+11]==4){kbr=0; shpt=0; }
-if (bgmap[k+11-11]==4){kbr=0; shpt=0; }
+if (bgmap[k]==4){kbr=0; shpt=0; }
 
 if (bgmap[k-10]==5){kbl=0;  }
 
-if (plus<=-33){if (bgmap[k-11+11]==5){kbl=0;  }
-	      }
-if (plus<=-24){if (bgmap[k+12]==4){kbr=0; shpt=0;  }
-	      }
 
 if (shapetype==2){if (bgmap[k+12]==4|bgmap[k+13]==4){  shpt=0; }
 
@@ -768,12 +783,9 @@ if (shapetype==2){if (bgmap[k+12]==4|bgmap[k+13]==4){  shpt=0; }
 
  su++; if (su>1000){so--;su=0;}
 
- if (si>60+so-spd){si=0;plus+=11;    horbloc+=11;} if (plus>128){ spd=0;    score+=3;  horbloc=0;
-     for (j=0;j<5;j++){
-yf1: ki+=0.1;	   shape11[j+33]=1; 	   shape21[j+33]=abs(sin(ki)*100);  if (shape21[j+33]>9||shape21[j+33]<1){shape21[j+33]=0; goto yf1;}
-    }
+ if (si>60+so-spd){si=0;plus+=11;    horbloc+=11;} if (plus>149){ spd=0;    score+=3;  horbloc=0;
 reshape();
-for (k=0;k<185;k++){
+for (k=0;k<220;k++){
 
 
  if (map[k-plus]==1){map2[k-11]=map3[k-plus];;}
@@ -782,13 +794,13 @@ for (k=0;k<185;k++){
 
 }
 
-plus=-43;
+plus=0;
  dragshapes();
 
 }
 
 
-for (y=0;y<165;y+=11){
+for (y=0;y<220;y+=11){
 int cn[11];
 sum=0;
 for (x=0;x<11;x++){
