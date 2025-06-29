@@ -700,18 +700,18 @@ if (map2[k]>0){
 singlenum(map2[k],(i*10)+60,vertical+20,map2[k]);
 //kdrawrectfill(buffer,(i*10)+100,vertical+20,9,9,2);
 		    }
-
+if (plus>-40){
 if (map[k-plus]>0){
 //kdrawrectfill(buffer,(i*10)+100,vertical+20,9,9,1);
 //kblittranspage(buffer2,45,25,(i*10)+100,vertical+20,8,8,14);
 singlenum(map3[k-plus],(i*10)+60,vertical+20,map[k-plus]+10);
 
 		    }
-
+}
 
 if (map[k-plus]>0) {
 
-if (map2[k+11]>0) {      if (plus<-22){goto init;  }
+if (map2[k+11]>0) {      if (plus<-30){goto init;  }
 reshape();
 
  for (k=0;k<175;k++){
@@ -731,7 +731,7 @@ if (map[k-plus]==1) {map2[k]=map3[k-plus];  }
 
  spd=0;
 
- plus=-33;
+ plus=-43;
     //srand(100);
 dragshapes();
 
@@ -749,11 +749,13 @@ if (map[k-plus]==1) {
 if (map2[k+1]>0){kbr=0; shpt=0; }
 if (map2[k-1]>0){kbl=0; shpt=0; }
 if (bgmap[k+11]==4){kbr=0; shpt=0; }
+if (bgmap[k+11-11]==4){kbr=0; shpt=0; }
+
 if (bgmap[k-10]==5){kbl=0;  }
 
 if (plus<=-33){if (bgmap[k-11+11]==5){kbl=0;  }
 	      }
-if (plus<=-22){if (bgmap[k+12]==4){kbr=0; shpt=0;  }
+if (plus<=-24){if (bgmap[k+12]==4){kbr=0; shpt=0;  }
 	      }
 
 if (shapetype==2){if (bgmap[k+12]==4|bgmap[k+13]==4){  shpt=0; }
@@ -779,7 +781,8 @@ for (k=0;k<185;k++){
 
 
 }
-plus=-33;
+
+plus=-43;
  dragshapes();
 
 }
@@ -839,11 +842,11 @@ sc=getch();
 	    //	   if (shapetype>3&&shapetype<6){  shapetype+=shpt; if (shapetype>5){shapetype=4;}  dragshapes(); }
 	     //	   if (shapetype>5&&shapetype<14){  shapetype+=shpt; if (shapetype>13){shapetype=6;}  dragshapes(); }
 		break;
-		case 0x4b:    accx-=0.9;   plus-=kbl; horbloc-=11;
+		case 0x4b:    accx-=0.9; if (plus>-35){  plus-=kbl; horbloc-=11;}
 		break;
 		case 0x50:    accy+=0.9;   spd=67;
 		break;
-		case 0x4d:    accx+=0.9;  plus+=kbr; horbloc+=11;
+		case 0x4d:    accx+=0.9; if (plus>-35){ plus+=kbr; horbloc+=11;}
 		break;
 	       case 32:    bullettrig=1;
 		break;
