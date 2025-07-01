@@ -518,12 +518,12 @@ int i,j;
 
 if (shapetype==1){
      for (j=0;j<5;j++){
-     yf: ki+=0.1;      shape11[j+33]=1; 	   shape21[j+33]=abs(sin(ki)*100);  if (shape21[j+33]>9||shape21[j+33]<1){shape21[j+33]=0; goto yf;}
+     yf: ki+=0.1;      shape11[j+33]=1; 	   shape21[j+33]=((sin(ki)*1000))+su;  if (shape21[j+33]>9||shape21[j+33]<1){shape21[j+33]=0; goto yf;}
 
     }             }
 if (shapetype==1){
      for (j=11;j<44;j+=11){
-     yf2: ki+=0.1;      shape11[j+1+11]=1; 	   shape21[j+1+11]=abs(sin(ki)*100);  if (shape21[j+1+11]>9||shape21[j+1+11]<1){shape21[j+1+11]=0; goto yf2;}
+     yf2: ki+=0.1;      shape11[j+1+11]=1; 	   shape21[j+1+11]=((sin(ki)*1000))+su;  if (shape21[j+1+11]>9||shape21[j+1+11]<1){shape21[j+1+11]=0; goto yf2;}
     }             }
 		 }
 
