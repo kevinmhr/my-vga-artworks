@@ -34,11 +34,11 @@ char plusodd=0;
 char map[20000];
 typedef struct tagENTITY              /* the structure for a bitmap. */
 {
-double posxacc[1000];
-double posyacc[1000];
+int posxacc[1000];
+int posyacc[1000];
 
-double posx[1000];
-double posy[1000];
+int posx[1000];
+int posy[1000];
 int dirx[1000];
 int diry[1000];
 
@@ -282,15 +282,15 @@ int i;
 
  for (i=0;i<19000;i++){
  o+=abs(sin(k+o)*4);;        if (o>1000){o=0;}
- t+=abs(sin(k+t+o)*4);
+ t+=abs(sin(k+t+o)*4);       if (k>50){k=0;}
  ;
 
-  if (i>1000){  if (t>300){map[i]=3; t=0;     } };
+  if (i>200){  if (t>300){map[i]=3; t=0;     } };
 
 
- u+=abs(sin(k)*3)+abs(sin(i)*2); k+=abs(sin(k*200))*2+abs((cos(o*200)*2));
+ u+=abs(sin(k)*3)+abs(sin(i)*2); k+=abs(sin(k*200))*2+abs((cos(o)*2));
  if (u>1){map[i+1000]=1;   }
-  if (k>50){map[i]=2;  k=0;   }
+  if (k>50){map[i]=2;     }
   if (u>40){map[i+1000]=4;  u=0;    }
 
 
@@ -421,36 +421,33 @@ while (stk==2){
 
 
 
-			     if (plus==20000){ }
 
-
-	  for (i=0;i<1000;i++){
-
-
-  }
-		  cre.posxacc[plusent]=sin(tet);
-  if(sclv<=0){sclv=10;plus-=32; plus2++; if (plus2>100){plus2=0; sprcol++;}
+		 // cre.posxacc[plusent]=sin(tet);
+// si++; if (si>50){si=0;
+  if(sclv<=0){sclv=10;plus-=32;
+  //plus2++; if (plus2>100){plus2=0; sprcol++;}
      }
+     //              }
  kdrawrectfill(buffer,0,0,320,240,0);
  kdrawrectfill(buffer2,0,0,320,200,0);
 
 
- plasma(5,0);
+if (plus<9000&&plus>8000){ plasma(5,0); }
 
- for (k=0;k<=649;k++){
+ for (k=0;k<=1000;k++){
 
  i++; if (i>31){i=0;v+=10;}
 // if (v>200){v=0;}
 
 if (map[k+plus]==0){
-kdrawrectfill(buffer,i*10,v-sclv,1,1,20);  }
+kdrawrectfill(buffer,i*10,(v)-(sclv)+50,1,1,20);  }
 if (map[k+plus]==4){
-kdrawrectfill(buffer,i*10,v*2-sclv*2,1,1,1);  }
+kdrawrectfill(buffer,i*10,(v*2)-(sclv*2),2,2,1);  }
 
 
 if (map[k+plus]==2){
-kdrawrectfill(buffer,i*10,v-sclv,5,5,8);
-kdrawrectfill(buffer2,(i*10)-2,v-sclv,8,8,77);
+kdrawrectfill(buffer,i*10,(v*4)-(sclv*4),5,5,8);
+kdrawrectfill(buffer2,(i*10)-2,(v*4)-(sclv*4),8,8,77);
 kputpixel(buffer,playerx+19,playery,45);
 colx=kgetpixelpage(buffer2,bulletx,bullety);
 
@@ -474,12 +471,13 @@ if (colx==77){plus=19000;sprcol=0;  sound(100);mapfill(0,0,0,0); stk=1;goto init
  tet2+=0.0005;
 if (map[k+plus]==3){
 
-     plusent++; if (plusent>=1000){plusent=0;}
+     plusent=(plus)/20;
+     if (plusent>=1000){plusent=0;}
 
 	cre.posx[plusent]=(sin((tet))*100)+(sin((tet+tet2))*100);
 	    //	cre.posy[plusent]=(sin((tet))*50)+(sin((tet+tet2))*100);
 	 cre.posy[plusent]=0;
-kdrawrectfill(buffer2,cre.posx[plusent]+(i*10),cre.posy[plusent]+v-sclv,30,30,78);
+kdrawrectfill(buffer2,cre.posx[plusent]+(i*10),cre.posy[plusent]+(v),30,30,78);
 colx=kgetpixelpage(buffer2,bulletx,bullety);
 if (colx==78&&bullettrig==1){score+=1; map[k+plus]=0;bullettrig=0; colx=0;colx2=2; sound(2000); goto gh;}
 colx=kgetpixelpage(buffer2,playerx+18,playery-18);
@@ -488,7 +486,7 @@ stk=1; goto init;  }
 
 
 
-kdrawtransbitmap(&bmp,10,9,cre.posx[plusent]+(i*10),cre.posy[plusent]+v,50,50,sprcol);
+kdrawtransbitmap(&bmp,10,9,cre.posx[plusent]+(i*10),cre.posy[plusent]+(v),50,50,sprcol);
 
 
 
@@ -513,7 +511,7 @@ kdrawrectfill(buffer,0,190,320,20,0);
 kdrawtransbitmap(&bmp,63,18,playerx,playery,35,35,10);
 kdrawrectfill(buffer2,playerx,playery,35,35,0);
 
-	     if (plus<0){plus=20000;}
+	     if (plus<0){plus=20000;mapfill(0,0,0,0);}
 	  if (playerx>280){playerx=280;}
 	  if (playerx<10){playerx=10;}
 	  if (playery>170){playery=170;}
@@ -530,8 +528,8 @@ kdrawrectfill(buffer2,playerx,playery,35,35,0);
 	  if (accy>1){accy=1;}
 	  if (accx<-1){accx=-1;}
 	  if (accy<-1){accy=-1;}
-       ti++;  if (ti>2){sound(-1);ti=0;}
-    if (bullettrig==1){ti++;     sound(400); if (ti>2){sound(-1);ti=0;}
+       ti++;  if (ti>5){sound(-1);ti=0;}
+    if (bullettrig==1){ti++;     sound(400); if (ti>5){sound(-1);ti=0;}
 
       kdrawrectfill(buffer,bulletx,bullety,3,3,62);
     bullety-=(playery)/20;
