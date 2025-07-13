@@ -33,7 +33,9 @@ int mineanim=0;
 int plus2=0;
 char plusodd=0;
 char map[20000];
+
 typedef struct tagENTITY              /* the structure for a bitmap. */
+
 {
 int posxacc[1000];
 int posyacc[1000];
@@ -45,6 +47,7 @@ int diry[1000];
 
 } ENT;
 ENT cre;
+ENT bullet;
 typedef struct tagBITMAP              /* the structure for a bitmap. */
 {
   word width;
@@ -286,7 +289,7 @@ int i;
  t+=abs(sin(k+t+o)*4);       if (k>50){k=0;}
  ;
 
-  if (i>200){  if (t>300){map[i]=3; t=0;     } };
+  if (i>200){  if (t>600){map[i]=3; t=0;     } };
 
 
  u+=abs(sin(k)*3)+abs(sin(i)*2); k+=abs(sin(k*200))*2+abs((cos(o)*2));
@@ -323,7 +326,10 @@ void main()
 init:
 //sound(-1);
   for (i=0;i<1000;i++){
-
+bullet.posx[plusent]=330;
+  bullet.posy[plusent]=210;
+  bullet.diry[plusent]=2;
+  bullet.dirx[plusent]=2;
   cre.dirx[plusent]=1;
     cre.diry[plusent]=1;
   cre.posxacc[i]=0;
@@ -331,6 +337,7 @@ init:
 
  cre.posy[i]=-200;
 	       }
+
 
 mapfill(0,0,0,0);
  /* open the file */
@@ -365,7 +372,7 @@ plasma(1,0);
 kdrawtransbitmap(&bmp2,0,0,0,0,320,200,0);
 
 
-kdrawtransbitmap(&bmp,0,9,100,100,50,59,0);
+kdrawtransbitmap(&bmp,0,9,100,100,50,55,0);
 kputpixel(buffer,150,10,f1+o+l);
 
 
@@ -384,6 +391,18 @@ for (y=0;y<200;y+=60){
 
 //kdrawtransbitmap(buffer2,buffer,100,100,60,60,0);
    memcpy(VGA,buffer,64000);
+  for (i=0;i<1000;i++){
+bullet.posx[plusent]=-1;
+  bullet.posy[plusent]=210;
+  bullet.diry[plusent]=2;
+  bullet.dirx[plusent]=2;
+  cre.dirx[plusent]=1;
+    cre.diry[plusent]=1;
+  cre.posxacc[i]=0;
+ cre.posx[i]=-320;
+
+ cre.posy[i]=-200;
+	       }
 
 
   /* draw the background */
@@ -429,7 +448,8 @@ while (stk==2){
 		 // cre.posxacc[plusent]=sin(tet);
  si++; if (si>0
  ){si=0;
- sclv-=1; if(sclv<=0){sclv=10;   if (mineanim>=36){mineanim=0;} mineanim+=9;
+ sclv-=1; if(sclv<=0){sclv=10
+ ;   if (mineanim>=36){mineanim=0;} mineanim+=9;
   plus-=32;
      plus2++; if (plus2>300){plus2=0; sprcol+=50;}
 
@@ -487,24 +507,57 @@ if (colx==77){plus=19000;sprcol=0;  sound(100);mapfill(0,0,0,0); stk=1;goto init
  i++; if (i>31){i=0;v+=10;}
 
  tet2+=0.0005;
-if (map[k+plus]==3){
 
-     plusent=(plus)/20;
-     if (plusent>=1000){plusent=0;}
+if (map[k+plus]==3|map[k+plus]==10){
+
+     plusent=((k+plus)/20);
+    // if (plusent>=1000){plusent=0;}
 
 	cre.posx[plusent]=(sin((tet))*100)+(sin((tet+tet2))*100);
 	    //	cre.posy[plusent]=(sin((tet))*50)+(sin((tet+tet2))*100);
 	 cre.posy[plusent]=0;
-kdrawrectfill(buffer2,cre.posx[plusent]+(i*10),cre.posy[plusent]+(v),30,30,78);
+  if(map[k+plus]!=10){
+   kdrawrectfill(buffer2,cre.posx[plusent]+(i*10),cre.posy[plusent]+(v),30,30,78);
+
 colx=kgetpixelpage(buffer2,bulletx,bullety);
-if (colx==78&&bullettrig==1){score+=1; map[k+plus]=0;bullettrig=0; colx=0;colx2=2; sound(2000); goto gh;}
+if (colx==78&&bullettrig==1){score+=1; map[k+plus]=10;bullettrig=0; colx=0;colx2=2; sound(2000); goto gh;}
 colx=kgetpixelpage(buffer2,playerx+18,playery-18);
 if (colx==78){plus=19000;sprcol=0;  sound(100);mapfill(0,0,0,0);
+stk=1; goto init;  }
+kdrawtransbitmap(&bmp,10,9,cre.posx[plusent]+(i*10),cre.posy[plusent]+v,50,50,sprcol);
+		      }
+
+
+if (v==10){
+bullet.diry[plusent]=2;
+
+bullet.dirx[plusent]=1;
+if (cre.posx[plusent]+(i*10)+20>playerx){
+  bullet.dirx[plusent]=-1;
+}
+
+bullet.posx[plusent]=cre.posx[plusent]+(i*10)+20;
+bullet.posy[plusent]=v;
+}
+ if (bullet.posy[plusent]<200&bullet.posx[plusent]<320&bullet.posx[plusent]>0&
+
+ bullet.posy[plusent]>0){
+ kdrawrectfill(buffer,bullet.posx[plusent],bullet.posy[plusent],3,3,70
+ );
+ kdrawrectfill(buffer2,bullet.posx[plusent]-8,bullet.posy[plusent]-8,15,15,89);
+
+
+			   }
+
+bullet.posx[plusent]=bullet.posx[plusent]+bullet.dirx[plusent];
+bullet.posy[plusent]=bullet.posy[plusent]+bullet.diry[plusent];
+
+  colx=kgetpixelpage(buffer2,playerx+18,playery+18);
+if (colx==89){plus=19000;sprcol=0;  sound(100);mapfill(0,0,0,0);
 stk=1; goto init;  }
 
 
 
-kdrawtransbitmap(&bmp,10,9,cre.posx[plusent]+(i*10),cre.posy[plusent]+(v),50,50,sprcol);
 
 
 
@@ -518,8 +571,9 @@ kdrawtransbitmap(&bmp,10,9,cre.posx[plusent]+(i*10),cre.posy[plusent]+(v),50,50,
 
 
 
-   }
 
+
+		   }
 
 
 
