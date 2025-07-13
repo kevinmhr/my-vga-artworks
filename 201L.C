@@ -61,7 +61,7 @@ void kputpixel(char *buffer,int x,int y,int col);
 int kgetpixelpage(char *buffer,int x,int y);
 int kgetpixelbmp(BITMAP *bmp,int x,int y);
 int plus=19000;
-int sclv=0,sclh=0;
+double sclv=0,sclh=0;
     double d2=0.04;
    double col[256];
   double col2=0;
@@ -286,15 +286,15 @@ int i;
 
  for (i=0;i<19000;i++){
  o+=abs(sin(k+o)*4);;        if (o>1000){o=0;}
- t+=abs(sin(k+t+o)*4);       if (k>50){k=0;}
+ t+=abs(sin(k+t+o)*4);       if (k>60){k=0;}
  ;
 
-  if (i>200){  if (t>600){map[i]=3; t=0;     } };
+  if (i>200){  if (t>1000){map[i]=3; t=0;     } };
 
 
  u+=abs(sin(k)*3)+abs(sin(i)*2); k+=abs(sin(k*200))*2+abs((cos(o)*2));
  if (u>1){map[i+1000]=1;   }
-  if (k>50){map[i]=2;     }
+  if (k>60){map[i]=2;     }
   if (u>40){map[i+1000]=4;  u=0;    }
 
 
@@ -446,14 +446,20 @@ while (stk==2){
 
 
 		 // cre.posxacc[plusent]=sin(tet);
- si++; if (si>0
- ){si=0;
- sclv-=1; if(sclv<=0){sclv=10
+ si++; if (si>2
+
+ ){si=0;      }
+  sclv-=1;
+ if(sclv<=0
+
+
+ ){sclv=10
+
  ;   if (mineanim>=36){mineanim=0;} mineanim+=9;
   plus-=32;
      plus2++; if (plus2>300){plus2=0; sprcol+=50;}
 
-   } }
+   } 
 
 
   //		  }
@@ -513,7 +519,7 @@ if (map[k+plus]==3|map[k+plus]==10){
      plusent=((k+plus)/20);
     // if (plusent>=1000){plusent=0;}
 
-	cre.posx[plusent]=(sin((tet))*100)+(sin((tet+tet2))*100);
+	cre.posx[plusent]=(sin((tet/10))*100)+(sin((tet+tet2/10))*100);
 	    //	cre.posy[plusent]=(sin((tet))*50)+(sin((tet+tet2))*100);
 	 cre.posy[plusent]=0;
   if(map[k+plus]!=10){
@@ -525,11 +531,9 @@ colx=kgetpixelpage(buffer2,playerx+18,playery-18);
 if (colx==78){plus=19000;sprcol=0;  sound(100);mapfill(0,0,0,0);
 stk=1; goto init;  }
 kdrawtransbitmap(&bmp,10,9,cre.posx[plusent]+(i*10),cre.posy[plusent]+v,50,50,sprcol);
-		      }
-
-
-if (v==10){
 bullet.diry[plusent]=2;
+if (v==10&&cre.posx[plusent]+(i*10)>20&&cre.posx[plusent]+(i*10)<300){
+
 
 bullet.dirx[plusent]=1;
 if (cre.posx[plusent]+(i*10)+20>playerx){
@@ -539,7 +543,14 @@ if (cre.posx[plusent]+(i*10)+20>playerx){
 bullet.posx[plusent]=cre.posx[plusent]+(i*10)+20;
 bullet.posy[plusent]=v;
 }
- if (bullet.posy[plusent]<200&bullet.posx[plusent]<320&bullet.posx[plusent]>0&
+
+
+
+
+		      }
+
+
+ if (bullet.posy[plusent]<200&&bullet.posx[plusent]<320&&bullet.posx[plusent]>0&&
 
  bullet.posy[plusent]>0){
  kdrawrectfill(buffer,bullet.posx[plusent],bullet.posy[plusent],3,3,70
@@ -551,7 +562,7 @@ bullet.posy[plusent]=v;
 
 bullet.posx[plusent]=bullet.posx[plusent]+bullet.dirx[plusent];
 bullet.posy[plusent]=bullet.posy[plusent]+bullet.diry[plusent];
-
+if (bullet.posy[plusent]>200){bullet.posy[plusent]=200;}
   colx=kgetpixelpage(buffer2,playerx+18,playery+18);
 if (colx==89){plus=19000;sprcol=0;  sound(100);mapfill(0,0,0,0);
 stk=1; goto init;  }
