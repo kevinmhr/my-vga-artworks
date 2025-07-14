@@ -178,7 +178,9 @@ void kdrawrectfill(char *buffer,int x,int y,int w,int h,int col){
 int i,j;
 for (i=x;i<x+w;i++){
 for (j=y;j<y+h;j++){
-kputpixel(buffer,i,j,col);
+if (j>0){
+kputpixel(buffer,i,j,col);    }
+
 }}                       }
 
 
@@ -516,7 +518,7 @@ if (map[k+plus]==3|map[k+plus]==10){
     // if (plusent>=100){plusent=0;}
 	 cre.posy[plusent]=0;
   if(map[k+plus]!=10){
-   kdrawrectfill(buffer2,cre.posx[plusent]+(i*10),cre.posy[plusent]+v,30,30,78);
+   kdrawrectfill(buffer2,cre.posx[plusent]+(i*10)+10,cre.posy[plusent]+v,30,50,78);
 
 colx=kgetpixelpage(buffer2,bulletx,bullety);
 if (colx==78&&bullettrig==1){score+=1; map[k+plus]=10;bullettrig=0; colx=0;colx2=2; sound(2000); goto gh;}
@@ -552,12 +554,13 @@ bullet.posy[plusent]=v;
  kdrawrectfill(buffer2,bullet.posx[plusent]-8,bullet.posy[plusent]-8,15,15,89);
 
 
+
 			   }
 
 bullet.posx[plusent]=bullet.posx[plusent]+bullet.dirx[plusent];
 bullet.posy[plusent]=bullet.posy[plusent]+bullet.diry[plusent];
 if (bullet.posy[plusent]>200){bullet.posy[plusent]=200;}
-  colx=kgetpixelpage(buffer2,playerx+18,playery+18);
+  colx=kgetpixelpage(buffer2,playerx+18,playery+16);
 if (colx==89){plus=19000;sprcol=0;  sound(100);mapfill(0,0,0,0);
 stk=1; goto init;  }
 
