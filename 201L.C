@@ -37,13 +37,13 @@ char map[20000];
 typedef struct tagENTITY              /* the structure for a bitmap. */
 
 {
-int posxacc[1000];
-int posyacc[1000];
+int posxacc[100];
+int posyacc[100];
 
-int posx[1000];
-int posy[1000];
-int dirx[1000];
-int diry[1000];
+int posx[100];
+int posy[100];
+int dirx[100];
+int diry[100];
 
 } ENT;
 ENT cre;
@@ -212,14 +212,16 @@ buffer[x+(y*320)]=col;
 void kdrawtransbitmap(BITMAP *b,int desx,int desy,int posx,int posy,int w,int h,int colc){
 int x,y;
 int col;
+
 for (y=0;y<=h;y++){
 
 for (x=0;x<=w;x++){
 
 col=b->data[(x+desx)+((y+desy)*320)];
 if (col)
-buffer[x+posx+((y+posy)*320)]=col+colc;
-}
+if (y+posy>0){
+buffer[x+posx+(((y+posy))*320)]=col+colc;  }
+	      }
 
 }
 
@@ -284,19 +286,20 @@ mapfill(int u,int t,int k,int o){
 int i;
   u=0;   t=0;   k=0;  o=0;
 
- for (i=0;i<19000;i++){
+ for (i=0;i<20000;i++){
  o+=abs(sin(k+o)*4);;        if (o>1000){o=0;}
  t+=abs(sin(k+t+o)*4);       if (k>60){k=0;}
  ;
 
-  if (i>200){  if (t>1000){map[i]=3; t=0;     } };
 
 
  u+=abs(sin(k)*3)+abs(sin(i)*2); k+=abs(sin(k*200))*2+abs((cos(o)*2));
- if (u>1){map[i+1000]=1;   }
+   if (i>1000&&i<18000){
+ if (u>1){map[i]=1;   }
   if (k>60){map[i]=2;     }
-  if (u>40){map[i+1000]=4;  u=0;    }
+  if (u>40){map[i]=4;  u=0;    }
 
+  if (t>1000){map[i]=3; t=0;     } };
 
 
 
@@ -324,18 +327,20 @@ void main()
 	t=0;
 
 init:
-//sound(-1);
-  for (i=0;i<1000;i++){
-bullet.posx[plusent]=330;
-  bullet.posy[plusent]=210;
-  bullet.diry[plusent]=2;
-  bullet.dirx[plusent]=2;
-  cre.dirx[plusent]=1;
-    cre.diry[plusent]=1;
+
+
+sound(1);
+  for (i=0;i<100;i++){
+bullet.posx[i]=330;
+  bullet.posy[i]=210;
+  bullet.diry[i]=2;
+  bullet.dirx[i]=2;
+  cre.dirx[i]=1;
+    cre.diry[i]=1;
   cre.posxacc[i]=0;
  cre.posx[i]=-320;
 
- cre.posy[i]=-200;
+ cre.posy[i]=-50;
 	       }
 
 
@@ -368,7 +373,6 @@ if (ti>1){ti=0;si++;if (si>=120){si=120; } }
 
 plasma(1,0);
 
-
 kdrawtransbitmap(&bmp2,0,0,0,0,320,200,0);
 
 
@@ -391,19 +395,6 @@ for (y=0;y<200;y+=60){
 
 //kdrawtransbitmap(buffer2,buffer,100,100,60,60,0);
    memcpy(VGA,buffer,64000);
-  for (i=0;i<1000;i++){
-bullet.posx[plusent]=-1;
-  bullet.posy[plusent]=210;
-  bullet.diry[plusent]=2;
-  bullet.dirx[plusent]=2;
-  cre.dirx[plusent]=1;
-    cre.diry[plusent]=1;
-  cre.posxacc[i]=0;
- cre.posx[i]=-320;
-
- cre.posy[i]=-200;
-	       }
-
 
   /* draw the background */
 
@@ -459,7 +450,7 @@ while (stk==2){
   plus-=32;
      plus2++; if (plus2>300){plus2=0; sprcol+=50;}
 
-   } 
+   }
 
 
   //		  }
@@ -506,30 +497,33 @@ if (colx==77){plus=19000;sprcol=0;  sound(100);mapfill(0,0,0,0); stk=1;goto init
 
 
 }
- v=-20-sclv;
+ v=-50-sclv;
 
-		   tet+=0.01;
- for (k=0;k<=560;k++){
+   tet+=0.01;
+ for (k=0;k<=570;k++){
  i++; if (i>31){i=0;v+=10;}
+
+
 
  tet2+=0.0005;
 
 if (map[k+plus]==3|map[k+plus]==10){
+      plusent=((k+plus)/200);
 
-     plusent=((k+plus)/20);
-    // if (plusent>=1000){plusent=0;}
 
 	cre.posx[plusent]=(sin((tet/10))*100)+(sin((tet+tet2/10))*100);
-	    //	cre.posy[plusent]=(sin((tet))*50)+(sin((tet+tet2))*100);
+
+    // if (plusent>=100){plusent=0;}
 	 cre.posy[plusent]=0;
   if(map[k+plus]!=10){
-   kdrawrectfill(buffer2,cre.posx[plusent]+(i*10),cre.posy[plusent]+(v),30,30,78);
+   kdrawrectfill(buffer2,cre.posx[plusent]+(i*10),cre.posy[plusent]+v,30,30,78);
 
 colx=kgetpixelpage(buffer2,bulletx,bullety);
 if (colx==78&&bullettrig==1){score+=1; map[k+plus]=10;bullettrig=0; colx=0;colx2=2; sound(2000); goto gh;}
 colx=kgetpixelpage(buffer2,playerx+18,playery-18);
 if (colx==78){plus=19000;sprcol=0;  sound(100);mapfill(0,0,0,0);
 stk=1; goto init;  }
+
 kdrawtransbitmap(&bmp,10,9,cre.posx[plusent]+(i*10),cre.posy[plusent]+v,50,50,sprcol);
 bullet.diry[plusent]=2;
 if (v==10&&cre.posx[plusent]+(i*10)>20&&cre.posx[plusent]+(i*10)<300){
@@ -594,7 +588,7 @@ kdrawrectfill(buffer,0,190,320,20,0);
 kdrawtransbitmap(&bmp,63,18,playerx,playery,35,30,10);
 kdrawrectfill(buffer2,playerx,playery,35,30,0);
 
-	     if (plus<0){plus=20000;mapfill(0,0,0,0);}
+	     if (plus<0){plus=19000;mapfill(0,0,0,0);}
 	  if (playerx>280){playerx=280;}
 	  if (playerx<10){playerx=10;}
 	  if (playery>170){playery=170;}
