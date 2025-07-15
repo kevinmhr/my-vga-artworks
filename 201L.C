@@ -424,7 +424,7 @@ while (stk==2){
  int i=-10;
  double collisionx,collisiony;
   int colx,colx2;
- int v=0;
+ int v;
  int sc;
  double tet2=0;
 
@@ -456,34 +456,19 @@ while (stk==2){
 
 
   //		  }
-
-
-if (plus<9000&&plus>8000){ plasma(5,0); }
-
+v=-sclv;
  for (k=0;k<670;k++){
 
  i++; if (i>31){i=0;v+=10;}
-// if (v>200){v=0;}
-
-if (map[k+plus]==0
-){
-kdrawrectfill(buffer,i*10,(v)-(sclv),2,2,20);  }
-}
- for (k=0;k<=670;k++){
-
- i++; if (i>31){i=0;v+=10;}
-
-
-if (map[k+plus]==4){
-kdrawrectfill(buffer,i*10,(v*2)-(sclv*2),2,2,1);  }
-
 
 if (map[k+plus]==2){
-kdrawrectfill(buffer,i*10,(v*3)-(sclv*3)+2,9,9,8);
+kdrawrectfill(buffer,i*10,(v*3)+2,9,9,8);
 
-kdrawtransbitmap(&bmp,56+mineanim,49,(i*10),(v*3)-(sclv*3),8,10,sprcol+10);
+kdrawtransbitmap(&bmp,56+mineanim,49,(i*10),(v*3),8,10,sprcol+10);
 
-kdrawrectfill(buffer2,(i*10)-2,(v*3)-(sclv*3),12,12,77);
+kdrawrectfill(buffer2,(i*10),(v*3),12,12,77);
+//kdrawrectfill(buffer,(i*10),(v*3),8,8,77);
+
 kputpixel(buffer,playerx+19,playery,45);
 colx=kgetpixelpage(buffer2,bulletx,bullety);
 
@@ -493,6 +478,28 @@ colx=kgetpixelpage(buffer2,playerx+19,playery);
 if (colx==77){plus=19000;sprcol=0;  sound(100);mapfill(0,0,0,0); stk=1;goto init;}
 
   }
+}
+
+if (plus<9000&&plus>8000){ plasma(5,0); }
+v=-sclv;
+ for (k=0;k<670;k++){
+
+ i++; if (i>31){i=0;v+=10;}
+// if (v>200){v=0;}
+
+if (map[k+plus]==0
+){
+kdrawrectfill(buffer,i*10,v,2,2,20);  }
+}
+ for (k=0;k<=670;k++){
+
+ i++; if (i>31){i=0;v+=10;}
+
+
+if (map[k+plus]==4){
+kdrawrectfill(buffer,i*10,(v*2),2,2,1);  }
+
+
 
 //kdrawrectfill(buffer,i*10,v-sclv,8,8,4);  }
 
@@ -518,7 +525,7 @@ if (map[k+plus]==3|map[k+plus]==10){
     // if (plusent>=100){plusent=0;}
 	 cre.posy[plusent]=0;
   if(map[k+plus]!=10){
-   kdrawrectfill(buffer2,cre.posx[plusent]+(i*10)+10,cre.posy[plusent]+v,30,50,78);
+   kdrawrectfill(buffer2,cre.posx[plusent]+(i*10)+10,cre.posy[plusent]+v+2,30,40,78);
 
 colx=kgetpixelpage(buffer2,bulletx,bullety);
 if (colx==78&&bullettrig==1){score+=1; map[k+plus]=10;bullettrig=0; colx=0;colx2=2; sound(2000); goto gh;}
@@ -551,8 +558,8 @@ bullet.posy[plusent]=v;
  bullet.posy[plusent]>0){
  kdrawrectfill(buffer,bullet.posx[plusent],bullet.posy[plusent],3,3,70
  );
- kdrawrectfill(buffer2,bullet.posx[plusent]-8,bullet.posy[plusent]-8,15,15,89);
-
+ kdrawrectfill(buffer2,bullet.posx[plusent]-5,bullet.posy[plusent]-5,10,10,89);
+ 
 
 
 			   }
@@ -560,7 +567,7 @@ bullet.posy[plusent]=v;
 bullet.posx[plusent]=bullet.posx[plusent]+bullet.dirx[plusent];
 bullet.posy[plusent]=bullet.posy[plusent]+bullet.diry[plusent];
 if (bullet.posy[plusent]>200){bullet.posy[plusent]=200;}
-  colx=kgetpixelpage(buffer2,playerx+18,playery+16);
+  colx=kgetpixelpage(buffer2,playerx+18,playery+18);
 if (colx==89){plus=19000;sprcol=0;  sound(100);mapfill(0,0,0,0);
 stk=1; goto init;  }
 
@@ -594,7 +601,7 @@ kdrawrectfill(buffer2,playerx,playery,35,30,0);
 	     if (plus<0){plus=19000;mapfill(0,0,0,0);}
 	  if (playerx>280){playerx=280;}
 	  if (playerx<10){playerx=10;}
-	  if (playery>170){playery=170;}
+	  if (playery>165){playery=165;}
 	  if (playery<10){playery=10;}
 	 if(accx>0){   accx-=0.006;  }
 	 if(accx<0){   accx+=0.006;  }
