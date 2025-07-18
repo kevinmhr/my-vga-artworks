@@ -28,7 +28,10 @@ int num2=0,num3=0,num4=0,num1=0;
 int score=0;
 char *buffer;
 char *buffer2;
+char goolanim=50;
 int plusent=0;
+int level=0;
+
 int mineanim=0;
 int plus2=0;
 char plusodd=0;
@@ -307,7 +310,29 @@ int i;
 
  }        }
 
+void initpos(){
+  int i;
+  for (i=0;i<100;i++){
+bullet.posx[i]=-30;
+  bullet.posy[i]=-50;
+  bullet.diry[i]=2;
+  bullet.dirx[i]=2;
+  cre.dirx[i]=1;
+    cre.diry[i]=1;
+  cre.posxacc[i]=0;
+ cre.posx[i]=-30;
 
+
+ cre.posy[i]=-50;
+	       }
+
+
+
+
+
+
+
+}
 void main()
 {
   int sprcol=0;
@@ -316,7 +341,8 @@ void main()
   double k;
   int ti=0;
   int si=0;
-
+level=1;
+plus=2000;
  // BITMAP bmp;
 
     buffer=(char*)malloc(64000U);
@@ -332,20 +358,7 @@ init:
 
 
 sound(1);
-  for (i=0;i<100;i++){
-bullet.posx[i]=-30;
-  bullet.posy[i]=-50;
-  bullet.diry[i]=2;
-  bullet.dirx[i]=2;
-  cre.dirx[i]=1;
-    cre.diry[i]=1;
-  cre.posxacc[i]=0;
- cre.posx[i]=-30;
-
-
- cre.posy[i]=-50;
-	       }
-
+initpos();
 
 mapfill(0,0,0,0);
  /* open the file */
@@ -442,7 +455,7 @@ while (stk==2){
 		 // cre.posxacc[plusent]=sin(tet);
  si++; if (si>2
 
- ){si=0;      }
+ ){si=0;  sound(-1);    }
   sclv-=1;
  if(sclv<=0
 
@@ -524,27 +537,28 @@ kdrawrectfill(buffer,i*10,(v*2),2,2,1);  }
 
    ;
 if (map[k+plus]==3|map[k+plus]==10){
+	if (playerx<cre.posx[plusent]+(i*10)){
+	goolanim=-60; }
+	if (playerx>120&playerx<190){
+
+     goolanim=-5; }
+	if (playerx>cre.posx[plusent]+(i*10)){
+
+    goolanim=40; }
 
        plusent=((k+plus)/200);
 	 cre.posy[plusent]=v;
        cre.posx[plusent]+=((sin((tet+tet2)/50)*1.1));
-
-     if(bullet.posy[plusent]<1|bullet.posy[plusent]>200){bullet.posy[plusent]=cre.posy[plusent];
-	bullet.posx[plusent]=cre.posx[plusent]+(i*10);
-	 bullet.dirx[plusent]=1;
-	if (cre.posx[plusent]+(i*10)+20>playerx){
-       bullet.dirx[plusent]=-1;
-       }
-
-
-	 }
-
       //	if (plusent>100){plusent=0;}
   //if (plusent>1){	cre.posx[plusent-1]+=((sin((-tet2-tet)/100))*3);}
 
 
   if(map[k+plus]!=10){
-   kdrawrectfill(buffer2,cre.posx[plusent]+(i*10)+10,cre.posy[plusent]+2,30,40,78);
+if (level==0){   kdrawrectfill(buffer2,cre.posx[plusent]+(i*10)+10,cre.posy[plusent]+2,30,40,78);}
+if (level==1){      kdrawrectfill(buffer2,cre.posx[plusent]+(i*10)-20,cre.posy[plusent]-30,45,50,78);
+	     }
+
+
 
 colx=kgetpixelpage(buffer2,bulletx,bullety);
 if (colx==78&&bullettrig==1){score+=1; map[k+plus]=10;bullettrig=0; colx=0;colx2=2; sound(2000); goto gh;}
@@ -552,7 +566,9 @@ colx=kgetpixelpage(buffer2,playerx+18,playery-18);
 if (colx==78){plus=19000;sprcol=0;  sound(100);mapfill(0,0,0,0);
 stk=1; goto init;  }
 
-kdrawtransbitmap(&bmp,10,9,cre.posx[plusent]+(i*10),cre.posy[plusent],50,50,sprcol);
+if (level==0){  kdrawtransbitmap(&bmp,18,11,cre.posx[plusent]+(i*10),cre.posy[plusent],30,47,sprcol);}
+
+if (level==1){  kdrawtransbitmap(&bmp,60+goolanim,66,cre.posx[plusent]+(i*10)-30,cre.posy[plusent]-40,50,73,sprcol);}
 bullet.diry[plusent]=2;
 if (playery-cre.posy[plusent]==150&&cre.posx[plusent]+(i*10)>20&&cre.posx[plusent]+(i*10)<200){
 
@@ -565,6 +581,21 @@ if (cre.posx[plusent]+(i*10)+20>playerx){
 bullet.posx[plusent]=cre.posx[plusent]+(i*10)+20;
 bullet.posy[plusent]=cre.posy[plusent];
 }
+
+     if(bullet.posy[plusent]<1|bullet.posy[plusent]>200){bullet.posy[plusent]=cre.posy[plusent];
+	bullet.posx[plusent]=cre.posx[plusent]+(i*10);
+	 bullet.dirx[plusent]=1;
+	if (cre.posx[plusent]+(i*10)+20>playerx){
+       bullet.dirx[plusent]=-1;
+
+
+
+
+       }
+
+
+	 }
+
 
 
 
@@ -616,7 +647,7 @@ kdrawrectfill(buffer,0,190,320,20,0);
 kdrawtransbitmap(&bmp,63,18,playerx,playery,35,30,10);
 kdrawrectfill(buffer2,playerx,playery,35,30,0);
 
-	     if (plus<0){plus=19000;mapfill(0,0,0,0);}
+	     if (plus<0){plus=19000; level+=1; if (level>1){level=0;} mapfill(0,0,0,0);initpos();}
 	  if (playerx>280){playerx=280;}
 	  if (playerx<10){playerx=10;}
 	  if (playery>165){playery=165;}
@@ -633,8 +664,8 @@ kdrawrectfill(buffer2,playerx,playery,35,30,0);
 	  if (accy>1){accy=1;}
 	  if (accx<-1){accx=-1;}
 	  if (accy<-1){accy=-1;}
-       ti++;  if (ti>5){sound(-1);ti=0;}
-    if (bullettrig==1){ti++;     sound(400); if (ti>5){sound(-1);ti=0;}
+
+    if (bullettrig==1){ti++;     sound(400);
 
       kdrawrectfill(buffer,bulletx,bullety,3,3,62);
     bullety-=(playery)/20;
@@ -642,6 +673,8 @@ kdrawrectfill(buffer2,playerx,playery,35,30,0);
 
 
     }
+    // if (ti>5){sound(-1);ti=0;}
+
     if (bullety<0){
     bullettrig=0;
 
