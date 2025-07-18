@@ -341,8 +341,6 @@ void main()
   double k;
   int ti=0;
   int si=0;
-level=1;
-plus=2000;
  // BITMAP bmp;
 
     buffer=(char*)malloc(64000U);
