@@ -355,7 +355,7 @@ void main()
 init:
 
 
-sound(1);
+
 initpos();
 
 mapfill(0,0,0,0);
@@ -381,7 +381,7 @@ si=100;
        col2=1;
 
 while (stk==1){
-sound(-1);
+nosound();
 ti++; if (si<120){  sound(si*ti*2);  }
 if (ti>1){ti=0;si++;if (si>=120){si=120; } }
 
@@ -451,9 +451,11 @@ while (stk==2){
 
 
 		 // cre.posxacc[plusent]=sin(tet);
- si++; if (si>2
 
- ){si=0;  sound(-1);    }
+
+ si++; if (si>3
+
+ ){si=0;  nosound();    }
   sclv-=1;
  if(sclv<=0
 
@@ -688,7 +690,7 @@ kdrawrectfill(buffer2,playerx,playery,35,30,0);
     }
     if (kbhit()) {
        sc=getch();
-      if (sc==27){stk=0;}
+      if (sc==27){ stk=0; }
       switch(sc) {
 		case 0x48 :   accy-=0.4;
 		break;
@@ -711,7 +713,7 @@ kdrawrectfill(buffer2,playerx,playery,35,30,0);
 
 
 while (stk==0){
-
+ nosound();
  return;       }
 
 
