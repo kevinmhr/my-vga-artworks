@@ -8,11 +8,14 @@
 BITMAP* surface;
 BITMAP* pic;
 BITMAP *coliface;
+BITMAP *bgspr;
 
+//MIDI *eff;
 
 int k=1,z=1;
 int col=11;
-
+char hitball;
+int count=1000;
 double ballx[10],bally[10];
 char collidedwithplayer=0;
 int g=1;
@@ -51,7 +54,7 @@ i+=20;
 if (i>280){i=0; j+=20;}
 
 if (map[k]==1){
-   rectfill(surface,i,j,i+20,j+20,4);
+   blit(bgspr,surface,0,0,i,j,20,20);
       rectfill(coliface,i,j,i+20,j+20,1);
 
 
@@ -77,12 +80,17 @@ if (map[k]==1){
 
 int balls(){
 
+
                                                         acc2-=0.00001;
 
                                   if (acc>0.3){acc=0.3;}
 
 
-                   if (acc2<0.01){acc2=0.01;}
+                   if (acc2<0.00){acc2=0.00;}
+
+           //    play_looped_midi(eff,0,12);
+
+
 
             for (int k=0;k<MAX_BALLS;k++){
                     rectfill(coliface,ballx[k]-3,bally[k]-3,ballx[k]+3,bally[k]+3,k+100);
@@ -116,7 +124,7 @@ circlefill(surface,ballx[k],bally[k],3,k);
                                   //         if (x==0){  playerydir=-playerydir;}
                                    //        if (y==0){  playerxdir=-playerxdir;}
 
-
+                           hitball=k;
                                            if (x>1){
 
 
@@ -140,6 +148,7 @@ circlefill(surface,ballx[k],bally[k],3,k);
                                             }
 
 
+               count=30;
 
        /*       if (collisioncol==43){
                  if (trig==0){
@@ -154,12 +163,13 @@ circlefill(surface,ballx[k],bally[k],3,k);
 
 
 
-
+        
 
                                                    
                                         //           if (x==0){ballxdir[k]=-ballxdir[k];}
 
                                         //           if (y==0){ballydir[k]=-ballydir[k];}
+
                  if (acc>0.1){
                  ballacc[k]=acc2;
 
@@ -269,7 +279,7 @@ circlefill(surface,ballx[k],bally[k],3,k);
 
 
 
-                   ballacc[k]-=0.0000002;
+                   ballacc[k]-=0.000005;
                   if (ballacc[k]<0){ballacc[k]=0;
                   ballxdir[k]=0;
                   ballydir[k]=0;
@@ -285,12 +295,12 @@ circlefill(surface,ballx[k],bally[k],3,k);
 
 
 
-
            acc-=0.0005;
           if (acc<=0){acc=0;trig=0;}
 
 
-           
+
+  
 
 
 
@@ -316,7 +326,8 @@ int balltoballcol(){
                ballydir[u]=1;
 
                ballangy[k]=-1;
-
+                 hitball=k+u;
+                 count=30;
 
                  }
 
@@ -336,7 +347,8 @@ int balltoballcol(){
         
                 ballangy[k]=1;
 
-
+                 hitball=k+u;
+                  count=0;
                   }
               
                   
@@ -358,7 +370,8 @@ int balltoballcol(){
 
                ballangx[k]=-1;
 
-
+                    hitball=k+u;
+                 count=30;
 
                }
 
@@ -383,7 +396,8 @@ int balltoballcol(){
 
 
                ballangx[k]=1;
-            
+                    hitball=k+u;
+                 count=30;
                   }
 
 
@@ -552,11 +566,27 @@ int main(){
 
 pic=load_bitmap("map1.bmp",0);
 surface=create_bitmap(320,240);
+bgspr=create_bitmap(60,60);
+
 
 coliface=create_bitmap(320,240);
+//eff=load_midi("midtst.mid");
+clear_to_color(bgspr,25);
+char x1=3,y1=3;
+for (int i=0;i<400;i++){
+x1+=2; if (x1>17){x1=3;y1+=2;}
+//y1+=1;
+if (y1>17){y1=3;}
+
+
+putpixel(bgspr,x1,y1,21);
 
 
 
+
+
+
+}
 
 	int k=1;
 //	char txt_buffer1[64],txt_buffer2[64];
@@ -577,6 +607,8 @@ accy=0.02;
    
 	while(k==1)
 	{
+
+
             clear_to_color(coliface,0);
             clear_to_color(surface,0);
 
@@ -586,8 +618,14 @@ accy=0.02;
 
          //          rectfill(surface,0,0,320,240,5);
       //                             blit(coliface,screen,0,0,0,0,320,240);
+                        count--;
+                      if (count<0){nosound();}
+                       if (count==29){
+                       sound(hitball*100);
 
-
+                      // play_midi(eff,0);midi_seek(hitball+20);
+                       }
+                      
       if (trig==0){
 
      if (key[KEY_LEFT]){ accy+=0.001; g++; ang+=0.01;
