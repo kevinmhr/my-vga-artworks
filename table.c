@@ -17,13 +17,13 @@ int col=11;
 char hitball;
 int count=1000;
 double ballx[10],bally[10];
-char collidedwithplayer=0;
+
 int g=1;
 char collisioncol;
 char showline=1;
 double playerxmove,playerymove;
 double ballxmove[10],ballymove[10];
-char trig2=0;
+
 char playerxdir=1,playerydir=1;
 char ballxdir[10],ballydir[10];
 double linex,liney,ballxline,ballyline;
@@ -177,7 +177,13 @@ circlefill(surface,ballx[k],bally[k],3,k);
 
                  if (trig==0){
                  if (acc<0.1){ ballacc[k]=ballacc[k]-0.01;
-                     if (ballacc[k]<0.01){ballacc[k]=0.01;}  }
+                     if (ballacc[k]<0.01){ballacc[k]=0.01;
+                     if (playerx<40){playerx+=1; ballx[k]+=1; }
+                          if (playerx>260){playerx-=1; ballx[k]-=1; }
+
+
+
+                     }  }
       
 
                  }
@@ -216,7 +222,7 @@ circlefill(surface,ballx[k],bally[k],3,k);
 
              collisioncol=getpixel(coliface,ballx[k]+6,bally[k]);
 
-               if (collisioncol==1){    ballxdir[k]=1;
+               if (collisioncol==1){    ballxdir[k]=1;           ballacc[k]-=0.001;
                                          if(  ballxmove[k]*ballxdir[k]>0){   ballxdir[k]=-1;
                                                                  }
             
@@ -224,7 +230,7 @@ circlefill(surface,ballx[k],bally[k],3,k);
                                     }
                  
              collisioncol=getpixel(coliface,ballx[k]-6,bally[k]);
-             if (collisioncol==1){    ballxdir[k]=-1;
+             if (collisioncol==1){    ballxdir[k]=-1;      ballacc[k]-=0.001;
 
 
            if(  ballxmove[k]*ballxdir[k]<0){   ballxdir[k]=1;
@@ -237,7 +243,7 @@ circlefill(surface,ballx[k],bally[k],3,k);
             collisioncol=getpixel(coliface,ballx[k],bally[k]+6);
            //      putpixel(surface,ballx[k],bally[k]+6,255);
 
-            if (collisioncol==1){    ballydir[k]=1;
+            if (collisioncol==1){    ballydir[k]=1;    ballacc[k]-=0.001;
 
 
              if(  ballymove[k]*ballydir[k]>0){   ballydir[k]=-1;
@@ -250,7 +256,7 @@ circlefill(surface,ballx[k],bally[k],3,k);
 
    
                        collisioncol=getpixel(coliface,ballx[k],bally[k]-6);
-                 if (collisioncol==1){    ballydir[k]=-1;
+                 if (collisioncol==1){    ballydir[k]=-1;     ballacc[k]-=0.001;
 
                         if(  ballymove[k]*ballydir[k]<0){   ballydir[k]=1;
                                                                  }
@@ -637,7 +643,7 @@ accy=0.02;
                      }
      }
      if (key[KEY_UP]){  accx+=0.001; if (trig==0){
-     trig=1; trig2=1;
+     trig=1;
      acc=1;  acc2=0.04; }    }
      
      if (key[KEY_DOWN]){  accx-=0.001;   }
