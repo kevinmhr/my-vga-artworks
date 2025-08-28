@@ -223,6 +223,7 @@ circlefill(surface,ballx[k],bally[k],3,k);
              collisioncol=getpixel(coliface,ballx[k]+6,bally[k]);
 
                if (collisioncol==1){    ballxdir[k]=1;           ballacc[k]-=0.001;
+                        if (ballacc[k]<0.01){ballacc[k]=0.01;   }
                                          if(  ballxmove[k]*ballxdir[k]>0){   ballxdir[k]=-1;
                                                                  }
             
@@ -231,7 +232,7 @@ circlefill(surface,ballx[k],bally[k],3,k);
                  
              collisioncol=getpixel(coliface,ballx[k]-6,bally[k]);
              if (collisioncol==1){    ballxdir[k]=-1;      ballacc[k]-=0.001;
-
+                                                            if (ballacc[k]<0.01){ballacc[k]=0.01;   }
 
            if(  ballxmove[k]*ballxdir[k]<0){   ballxdir[k]=1;
                                                                  }
@@ -244,7 +245,7 @@ circlefill(surface,ballx[k],bally[k],3,k);
            //      putpixel(surface,ballx[k],bally[k]+6,255);
 
             if (collisioncol==1){    ballydir[k]=1;    ballacc[k]-=0.001;
-
+                                              if (ballacc[k]<0.01){ballacc[k]=0.01;   }
 
              if(  ballymove[k]*ballydir[k]>0){   ballydir[k]=-1;
                                                                  }
@@ -257,7 +258,7 @@ circlefill(surface,ballx[k],bally[k],3,k);
    
                        collisioncol=getpixel(coliface,ballx[k],bally[k]-6);
                  if (collisioncol==1){    ballydir[k]=-1;     ballacc[k]-=0.001;
-
+                                                      if (ballacc[k]<0.01){ballacc[k]=0.01;   }
                         if(  ballymove[k]*ballydir[k]<0){   ballydir[k]=1;
                                                                  }
             
