@@ -317,11 +317,10 @@ int balltoballcol(){
             double feedback=1;
 
       //    if (trig==0)   { rectfill(coliface,playerx-6,playery-6,playerx+6,playery+6,43);}
-
          for (int k=0;k<MAX_BALLS;k++){
 
+             collisioncol=getpixel(coliface,ballx[k],bally[k]+6);
 
-             collisioncol=getpixel(coliface,ballx[k],bally[k]+5);
              if (collisioncol>100){
 
                       int u=collisioncol-100;
@@ -330,16 +329,17 @@ int balltoballcol(){
             //   ballacc[k]=ballacc[k]/2;
                ballacc[u]=ballacc[k]*feedback;
                ballangy[u]=1;
+               if (ballx[k]<ballx[u]){  ballangx[u]=(ballx[u]-ballx[k])/10;    }
+               if (ballx[k]>ballx[u]){  ballangx[u]=-(ballx[k]-ballx[u])/10;    }
                ballydir[u]=1;
-
+                ballxdir[u]=1;
                ballangy[k]=-1;
                  hitball=k+u;
-                 count=30;
+              //   count=30;
 
                  }
 
-
-             collisioncol=getpixel(coliface,ballx[k],bally[k]-5);
+             collisioncol=getpixel(coliface,ballx[k],bally[k]-6);
 
               if (collisioncol>100){
 
@@ -350,8 +350,11 @@ int balltoballcol(){
                ballacc[u]=ballacc[k]*feedback;
 
                ballangy[u]=-1;
+               if (ballx[k]<ballx[u]){  ballangx[u]=(ballx[u]-ballx[k])/10;    }
+               if (ballx[k]>ballx[u]){  ballangx[u]=-(ballx[k]-ballx[u])/10;    }
                ballydir[u]=1;
-        
+                ballxdir[u]=1;
+
                 ballangy[k]=1;
 
                  hitball=k+u;
@@ -359,7 +362,6 @@ int balltoballcol(){
                   }
               
                   
-
 
 
                                       collisioncol=getpixel(coliface,ballx[k]+5,bally[k]);
@@ -373,6 +375,9 @@ int balltoballcol(){
                ballacc[u]=ballacc[k]*feedback;
               
                ballangx[u]=1;
+               if (bally[k]<bally[u]){  ballangy[u]=(bally[u]-bally[k])/10;    }
+               if (bally[k]>bally[u]){  ballangy[u]=-(bally[k]-bally[u])/10;    }
+               ballydir[u]=1;
                 ballxdir[u]=1;
 
                ballangx[k]=-1;
@@ -399,6 +404,9 @@ int balltoballcol(){
                ballacc[u]=ballacc[k]*feedback;
 
                ballangx[u]=-1;
+               if (bally[k]<bally[u]){  ballangy[u]=(bally[u]-bally[k])/10;    }
+               if (bally[k]>bally[u]){  ballangy[u]=-(bally[k]-bally[u])/10;    }
+               ballydir[u]=1;
                 ballxdir[u]=1;
 
 
@@ -408,6 +416,7 @@ int balltoballcol(){
                   }
 
 
+                 }
 
 
 
@@ -417,7 +426,6 @@ int balltoballcol(){
 
 
 
-                        }
                      
 
 
@@ -645,7 +653,7 @@ accy=0.02;
      }
      if (key[KEY_UP]){  accx+=0.001; if (trig==0){
      trig=1;
-     acc=1;  acc2=0.04; }    }
+     acc=1;  acc2=0.06; }    }
      
      if (key[KEY_DOWN]){  accx-=0.001;   }
                        board();
