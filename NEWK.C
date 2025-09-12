@@ -1,3 +1,6 @@
+//so far a jetpack shooter game yet to be ....
+//coded by keyvan mehrbakhsh 2025..
+//enjoy..
 
 
 #include <stdio.h>
@@ -45,13 +48,13 @@ char map[20000];
 typedef struct tagENTITY              /* the structure for a bitmap. */
 
 {
-int posxacc[200];
-int posyacc[200];
+int posxacc[50];
+int posyacc[50];
 
-double posx[200];
-double posy[200];
-int dirx[200];
-int diry[200];
+double posx[50];
+double posy[50];
+int dirx[50];
+int diry[50];
 
 } ENT;
 ENT plane;
@@ -326,6 +329,9 @@ l++;
 
   };
 
+     if (i<1006||i>18000){
+	  map[i]=59;
+		   }
 
 
  }
@@ -335,7 +341,7 @@ l++;
 
 void initpos(){
   int i;
-  for (i=0;i<100;i++){
+  for (i=0;i<50;i++){
 bullet.posx[i]=-30;
   bullet.posy[i]=-50;
   bullet.diry[i]=2;
@@ -475,9 +481,9 @@ while (stk==2){
 
 
 
-timer2=250000;
+timer2=350000;
 
-tt+=0.1;
+//tt+=0.01;
 timer1+=1;
 if (timer1>=timer2){
 timer1=0;
@@ -487,7 +493,7 @@ timer1=0;
 tt=0;
 
 
-kputpixel(buffer,(int)timer1,0,4);
+//kputpixel(buffer,(int)timer1,0,4);
 
 
 
@@ -503,7 +509,7 @@ kputpixel(buffer,(int)timer1,0,4);
   //		  }
 
 
- i=0;
+ i=-1;
 
 //if (plus<9000&&plus>8000){ plasma(5,0); }
 v=0;
@@ -514,7 +520,7 @@ v=0;
 
 
 
-  sclv-=1 ;
+  sclv-=0.1 ;
   if(sclv<1
 
 
@@ -561,11 +567,17 @@ kdrawrectfill(buffer,((v+(sclv))*2),i*10,2,2,1);  }
 
 
 // if (v>200){v=0;}
+if (map[k+plus]==59
+){
+kdrawrectfill(buffer,v+(sclv),i*10,3,3,9);
+}
+
+
 
 
 if (map[k+plus]==0
 ){
-kdrawrectfill(buffer,v+(sclv),i*10,2,2,20);  }
+kdrawrectfill(buffer,v+(sclv),i*10,1,1,20);  }
 
 }
 
@@ -623,15 +635,17 @@ i++;   if (i>20){i=0;v+=10;}
 
 	       if ((v+sclv)<320){
 
-		if (map[k+plus]==31){
-		       if (((v)*4)<0){plane.posy[i]=0;   }
+		if (map[k+plus]==31){  tet-=0.24;
+			 if (tet<0){tet=0;}
+		       if (((v)*2)<0){plane.posy[i]=0;   }
 
-		   if (((v+sclv)*4)<250){
-		     if (((v+sclv)*4)>50){  tet+=0.1;
-		   if (i*10<playery){
+		   if (((v+sclv)*3)<250){
+		     if (((v+sclv)*3)>50){     tet+=0.3;  	 if (tet>1.5){tet=1.5;}
+
+		   if (i*10<100){
 		   plane.posy[i]+=tet;   }
 
-			   if (i*10>playery){
+			   if (i*10>100){
 
 
 		   plane.posy[i]-=tet;   }
@@ -639,14 +653,12 @@ i++;   if (i>20){i=0;v+=10;}
 
 
 		    }    }
-			 if (tet>0.8){tet=0.8;}
-			 tet-=0.04;
-			 if (tet<0){tet=0;}
-	   if ((v+sclv)*4>0){
+
+	   if ((v+sclv)*3>0){
 
 
-	       kdrawtransbitmap(&bmp,170,35,(v+sclv)*4,plane.posy[i]+(i*10),30,15,0);
-	       kdrawrectfill(buffer2,((v+sclv)*4)-2,plane.posy[i]+(i*10)-2,32,18,84);
+	       kdrawtransbitmap(&bmp,170,35,(v+sclv)*3,plane.posy[i]+(i*10),30,15,0);
+	       kdrawrectfill(buffer2,((v+sclv)*3)-2,plane.posy[i]+(i*10)-2,32,18,84);
 
 	  colx=kgetpixelpage(buffer2,bulletx,bullety);
 
