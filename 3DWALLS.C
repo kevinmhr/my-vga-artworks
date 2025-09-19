@@ -572,8 +572,10 @@ tt=0;
 timer1=0;
 while (stk==2){
  double walllenght=0;
- double walllenght2=0;
+ double wallheight1;
+ double wallheight2;
 
+  double zclip;
  double k;
  double rayx1,rayy1;
  int i=-10;
@@ -581,12 +583,13 @@ while (stk==2){
  double collisionx,collisiony;
   int colx,colx2;
  double v;
+ double vt;
 
  int sc;
  double tet2=0;
  double xoffset;
-
-
+ double fov;
+ double cor=100;
 
 //tt+=0.01;
   memset(buffer,0,64000);
@@ -615,6 +618,8 @@ tt=0;
   plus2++; if (plus2>1000){plus2=0; sprcol+=50;}
    }
 */
+ kdrawrectfill(buffer,0,100,320,100,8);
+
  i=0;
  v=0;
  for (k=0;k<400;k++){
@@ -627,7 +632,6 @@ i++;   if (i>22){i=0;v+=5; }
   if (map[k]==0){
 	     kdrawrectfill(buffer,i*5,v,5,5,4);
 	     kdrawrectfill(buffer2,i*5,v,5,5,4);
-	     kdrawrectfill(buffer2,i*5,v,5,1,1);
 
 
   }
@@ -641,34 +645,52 @@ i++;   if (i>22){i=0;v+=5; }
 }
 	 accy=0; accx=0;
 
+   zclip=1.5;
+     v=0; k=0;  vt=0;
+//       tt++; if (tt>2){tt=0;}
 
-     v=0;
-     for (k=0;k<320;k+=1){   // z++; if (z>4){z=0;}
+ fov=0.0005;
 
-   for (v=0;v<60;v+=1){
+      for (k=0;k<320;k+=2
+      ){
+	   rayx=playerx;
+     rayy=playery;
 
-    walllenght=v;
+   for (v=0;v<80;v+=1){
 
- z=((k*0.0032)+(ang));
 
-rayx=(((sin(z)+cos(z))));
-rayy=(((-sin(z)+cos(z))));
+       // z++; if (z>4){z=0;}
+ // if (v>0){v=0;vt++;}
+ //     if (v>50){v=0;}
 
-kdrawrectfill(buffer,playerx+(rayx*v),playery+(rayy*v),2,2,4);
-col2=kgetpixelpage(buffer2,playerx+(rayx*v),playery+(rayy*v));
 
+   xoffset=k;
+
+
+     z=(((k*fov)
+     ))+ang;
+
+rayx+=((((sin(z)+cos(z)))));
+rayy+=((((-sin(z)+cos(z)))));
+if (rayx>3){  if (rayy>3){
+if (rayx<150){  if (rayy<150){
+    walllenght=v+sin(k/100)*3;
+kdrawrectfill(buffer,(rayx),(rayy),2,2,4);
+col2=kgetpixelpage(buffer2,(rayx),(rayy));
+wallheight1=20+walllenght;
+wallheight2=150-walllenght*2;
 if (col2!=0){
 
-kvline(buffer,320-k,50+((walllenght))/1.6,100-((walllenght)*1.6),3);
+kvline(buffer,320-xoffset,wallheight1,wallheight2,3);
 
 
-v=60;
+    v=80;
 
-		 }
+		 }          }}}}
 
 					     }
+}
 
-   }
    if (kbhit()) {
        sc=getch();
       if (sc==27){ stk=0; }
@@ -691,10 +713,10 @@ v=60;
 	}	  }
 
 
-		   playerx+=(sin(ang+0.6
-		   )+cos(ang+0.6))
+		   playerx+=(sin(ang+0.1
+		   )+cos(ang+0.1))
 		   *accy;
-		   playery+=(-sin(ang+0.6)+cos(ang+0.6))
+		   playery+=(-sin(ang+0.1)+cos(ang+0.1))
 		   *accy;
 
 	   //		  if (playerx>280){playerx=280;}
