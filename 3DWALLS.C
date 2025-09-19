@@ -1,4 +1,4 @@
-//so far a jetpack shooter game yet to be ....
+//raycaster....
 //coded by keyvan mehrbakhsh 2025..
 //enjoy..
 
@@ -31,7 +31,6 @@ word *my_clock=(word *)0x0000046C;    /* this points to the 18.2hz system
 int num2=0,num3=0,num4=0,num1=0;
 int score=0;
 char jpfire=0;
-double walllenght=0;
 char duckanim=0;
 char *buffer;
 char *buffer2;
@@ -70,6 +69,7 @@ typedef struct tagBITMAP              /* the structure for a bitmap. */
 } BITMAP;
   BITMAP bmp;
    BITMAP bmp2;
+    BITMAP font1;
 
 void kputpixel(char *buffer,int x,int y,int col);
 int kgetpixelpage(char *buffer,int x,int y);
@@ -117,6 +117,8 @@ void set_mode(byte mode)
   regs.h.al = mode;
   int86(VIDEO_INT, &regs, &regs);
 }
+
+
 
 /**************************************************************************
  *  load_bmp                                                              *
@@ -184,7 +186,7 @@ void load_bmp(char *file,BITMAP *b)
 
 
   fclose(fp);
-}	
+}
 
 
 
@@ -262,6 +264,111 @@ buffer[((x+posx))+(((y+posy))*320)]=col+colc;  }    }
 
 
 }
+
+void blittext(int textplacex,int textplacey,char* tex,int fontsize,int textlenght,int ink){
+
+int col;
+int coly;
+int integ=0;
+//enemii.y=0;
+//enemii.x=0;
+//char* tex=" this is a game of ball and other things";
+int o=0;
+int i,j;
+int k=1;
+
+int warpy;
+
+
+
+for (i=0;i<textlenght;i++){
+//    warpy+=0.001;
+
+
+//integ=*(fontsize);
+
+
+/*
+if (fontsize>10){
+slow2++;
+rectfill(surface,(i*(fontsize))+textplacex,textplacey,(i*(fontsize))+textplacex+fontsize,textplacey+fontsize+4,slow2);
+
+masked_blit(font1,surface,1+(double)((integ)*(13.182)),75,(i*(fontsize))+textplacex,textplacey,fontsize,fontsize+4);
+    if (inv==1){   masked_blit(font1,surface,(double)((integ)*(13.18)),53,(i*(fontsize))+textplacex,textplacey,fontsize,fontsize+3);
+
+   }
+    }
+
+if (fontsize==8){
+masked_blit(font1,surface,(integ)*(7),0,(i*(fontsize))+textplacex,textplacey,fontsize,fontsize);
+    }
+
+ */
+    int  warp=1;
+      int integ=(((int)tex[i]))-90;
+
+     int x=0;
+     int y=0;
+     int y1;
+     for (j=0;j<fontsize*(fontsize+fontsize/2);j++){
+
+
+
+
+      x++; if (x>fontsize){x=0;y++;}
+
+    coly=y;
+
+     if (warp=1){      coly=y*sin(warpy/10)*2; }
+   if (fontsize>=10){
+
+   col=kgetpixelbmp(&font1,1+(double)((integ)*(13.182))+x,y+74);
+
+
+       if (col==255){
+
+
+      col=col;
+
+     kputpixel(buffer,(i*fontsize)+x+textplacex,textplacey+(coly),col);     }
+
+		 }
+
+
+   y1=y;
+   if ((integ*7)<x){y1=y+20;}
+  if (fontsize<=10){
+   col=kgetpixelbmp(&font1,(integ*7)+x-2,y1+5);
+   if (col==255){
+   kputpixel(buffer,(i*fontsize)+x+textplacex,textplacey+y,ink);
+
+               }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+              }  }
+
+ }
+
+
+
+
+ }
 
 
 void wait(int ticks)
@@ -378,6 +485,7 @@ void main()
 
 
    load_bmp("rocket2.bmp",&bmp);
+     load_bmp("font1.bmp",&font1);
 
    load_bmp("map.bmp",&bmp2);
 	t=0;
@@ -386,7 +494,7 @@ init:
 
 
 
-initpos();
+//initpos();
 
 mapfill(0,0,0,0);
  /* open the file */
@@ -463,16 +571,20 @@ gh:
 tt=0;
 timer1=0;
 while (stk==2){
+ double walllenght=0;
+ double walllenght2=0;
+
  double k;
  double rayx1,rayy1;
  int i=-10;
+ int secx=0,secy=0;
  double collisionx,collisiony;
   int colx,colx2;
  double v;
 
  int sc;
  double tet2=0;
-
+ double xoffset;
 
 
 
@@ -515,6 +627,7 @@ i++;   if (i>22){i=0;v+=5; }
   if (map[k]==0){
 	     kdrawrectfill(buffer,i*5,v,5,5,4);
 	     kdrawrectfill(buffer2,i*5,v,5,5,4);
+	     kdrawrectfill(buffer2,i*5,v,5,1,1);
 
 
   }
@@ -529,60 +642,33 @@ i++;   if (i>22){i=0;v+=5; }
 	 accy=0; accx=0;
 
 
-
-//i=50;
-//walllenght++;
-
-
      v=0;
+     for (k=0;k<320;k+=1){   // z++; if (z>4){z=0;}
 
-     tet=320;
+   for (v=0;v<60;v+=1){
 
- for (k=0;k<160;k+=1){   // z++; if (z>4){z=0;}
+    walllenght=v;
 
+ z=((k*0.0032)+(ang));
 
-   tet-=2;
-     if (tet<0){tet=0; }
+rayx=(((sin(z)+cos(z))));
+rayy=(((-sin(z)+cos(z))));
 
+kdrawrectfill(buffer,playerx+(rayx*v),playery+(rayy*v),2,2,4);
+col2=kgetpixelpage(buffer2,playerx+(rayx*v),playery+(rayy*v));
 
+if (col2!=0){
 
-		  walllenght=0;
-
-
-   for (v=0;v<50;v+=1
-
-   ){
-    walllenght+=1.1;
- z=(k/150)+(ang);
-rayx=playerx+(((sin(z)+cos(z)))*v);
-
-rayy=playery+(((-sin(z)+cos(z)))*v);
+kvline(buffer,320-k,50+((walllenght))/1.6,100-((walllenght)*1.6),3);
 
 
+v=60;
 
-
-col2=kgetpixelpage(buffer2,rayx,rayy);
-if (col2==4){
-
-tet+=0.1;
-kvline(buffer,tet,50+walllenght,100-(walllenght)*2,3);
-//kvline(buffer,tet,50+walllenght/2,100-(walllenght),4);
-
-
-v=50;
-//walllenght=0;
-//kdrawrectfill(buffer,tet,100-(i),1,i*2,4);
-
-//rayx1=playerx;
-//rayy1=playery;
-
-
-
- }     kdrawrectfill(buffer,rayx,rayy,2,2,4);
 		 }
 
 					     }
 
+   }
    if (kbhit()) {
        sc=getch();
       if (sc==27){ stk=0; }
@@ -616,6 +702,7 @@ v=50;
 	//  if (playery>165){playery=165;}
 	//  if (playery<10){playery=10;}
 
+   blittext(50,170,"find yourself around 0222",8,40,1);
 
 
 //kdrawrectfill(buffer,0,190,320,20,0);
@@ -625,7 +712,7 @@ v=50;
 kdrawrectfill(buffer,playerx,playery,2,2,1);
 	memcpy(VGA,buffer,64000);
 
-	     if (plus>19000){plus=0; level+=1; if (level>1){level=0;} mapfill(0,0,0,0);initpos();}
+//	     if (plus>19000){plus=0; level+=1; if (level>1){level=0;} mapfill(0,0,0,0);initpos();}
   //	 if(accx>0){   accx-=0.004;  }
   //	 if(accx<0){   accx+=0.004;  }
   //	 if(accy>0){   accy-=0.004;  }
