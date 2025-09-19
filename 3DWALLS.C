@@ -33,7 +33,6 @@ int score=0;
 char jpfire=0;
 char duckanim=0;
 char *buffer;
-char *buffer2;
 double z=0;
 char bt=0;
 char goolanim=50;
@@ -206,7 +205,7 @@ kputpixel(buffer,i,j,col);    }  }   }
 void kvline(char *buffer,int i,int y,int h,int col){
 int j;
 
-for (j=y;j<y+h;j++){
+for (j=y;j<y+h;j+=2){
 if (j>0){
 if (j<200){
 if (i<320){
@@ -481,7 +480,6 @@ void main()
  // BITMAP bmp;
 
     buffer=(char*)malloc(64000U);
-  buffer2=(char*)malloc(64000U);
 
 
    load_bmp("rocket2.bmp",&bmp);
@@ -593,7 +591,6 @@ while (stk==2){
 
 //tt+=0.01;
   memset(buffer,0,64000);
-    memset(buffer2,0,64000);
 
 tt=0;
 
@@ -619,30 +616,6 @@ tt=0;
    }
 */
  kdrawrectfill(buffer,0,100,320,100,8);
-
- i=0;
- v=0;
- for (k=0;k<400;k++){
-
-i++;   if (i>22){i=0;v+=5; }
-
-
-
-
-  if (map[k]==0){
-	     kdrawrectfill(buffer,i*5,v,5,5,4);
-	     kdrawrectfill(buffer2,i*5,v,5,5,4);
-
-
-  }
-
-
-
-
-
-
-
-}
 	 accy=0; accx=0;
 
    zclip=1.5;
@@ -670,17 +643,16 @@ i++;   if (i>22){i=0;v+=5; }
      z=(((k*fov)
      ))+ang;
 
-rayx+=((((sin(z)+cos(z)))));
-rayy+=((((-sin(z)+cos(z)))));
+rayx=playerx+(((sin(z)+cos(z))))*v;
+rayy=playery+(((cos(z)-sin(z))))*v;
 if (rayx>3){  if (rayy>3){
 if (rayx<150){  if (rayy<150){
     walllenght=v+sin(k/100)*3;
-kdrawrectfill(buffer,(rayx),(rayy),2,2,4);
-col2=kgetpixelpage(buffer2,(rayx),(rayy));
+kdrawrectfill(buffer,(rayx)+5,(rayy),2,2,4);
 wallheight1=20+walllenght;
 wallheight2=150-walllenght*2;
-if (col2!=0){
-
+//if (col2!=0){
+if (map[abs(rayx/5)+abs(rayy/5)*23]==0){
 kvline(buffer,320-xoffset,wallheight1,wallheight2,3);
 
 
@@ -690,6 +662,30 @@ kvline(buffer,320-xoffset,wallheight1,wallheight2,3);
 
 					     }
 }
+
+ i=0;
+ v=0;
+ for (k=0;k<400;k++){
+
+i++;   if (i>22){i=0;v+=5; }
+
+
+
+
+  if (map[k]==0){
+	     kdrawrectfill(buffer,i*5,v,5,5,4);
+
+
+  }
+
+
+
+
+
+
+
+}
+
 
    if (kbhit()) {
        sc=getch();
@@ -713,10 +709,10 @@ kvline(buffer,320-xoffset,wallheight1,wallheight2,3);
 	}	  }
 
 
-		   playerx+=(sin(ang+0.1
-		   )+cos(ang+0.1))
+		   playerx+=(sin(ang+0.05
+		   )+cos(ang+0.05))
 		   *accy;
-		   playery+=(-sin(ang+0.1)+cos(ang+0.1))
+		   playery+=(-sin(ang+0.05)+cos(ang+0.05))
 		   *accy;
 
 	   //		  if (playerx>280){playerx=280;}
@@ -731,7 +727,7 @@ kvline(buffer,320-xoffset,wallheight1,wallheight2,3);
 
 //kdrawtransbitmap(&bmp,63,16,playerx,playery,35,30,0);
 
-kdrawrectfill(buffer,playerx,playery,2,2,1);
+kdrawrectfill(buffer,playerx+5,playery,2,2,1);
 	memcpy(VGA,buffer,64000);
 
 //	     if (plus>19000){plus=0; level+=1; if (level>1){level=0;} mapfill(0,0,0,0);initpos();}
