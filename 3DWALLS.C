@@ -38,7 +38,7 @@ char bt=0;
 char goolanim=50;
 int plusent=0;
 int level=0;
-
+char collock=1;
 int mineanim=0;
 int plus2=0;
 char plusodd=0;
@@ -303,7 +303,6 @@ masked_blit(font1,surface,(integ)*(7),0,(i*(fontsize))+textplacex,textplacey,fon
     }
 
  */
-    int  warp=1;
       int integ=(((int)tex[i]))-90;
 
      int x=0;
@@ -318,7 +317,6 @@ masked_blit(font1,surface,(integ)*(7),0,(i*(fontsize))+textplacex,textplacey,fon
 
     coly=y;
 
-     if (warp=1){      coly=y*sin(warpy/10)*2; }
    if (fontsize>=10){
 
    col=kgetpixelbmp(&font1,1+(double)((integ)*(13.182))+x,y+74);
@@ -615,14 +613,14 @@ tt=0;
   plus2++; if (plus2>1000){plus2=0; sprcol+=50;}
    }
 */
- kdrawrectfill(buffer,0,100,320,100,8);
+ kdrawrectfill(buffer,0,60,320,140,8);
 	 accy=0; accx=0;
 
    zclip=1.5;
      v=0; k=0;  vt=0;
 //       tt++; if (tt>2){tt=0;}
 
- fov=0.0005;
+ fov=0.0015;
 
       for (k=0;k<320;k+=2
       ){
@@ -652,9 +650,23 @@ kdrawrectfill(buffer,(rayx)+5,(rayy),2,2,4);
 wallheight1=20+walllenght;
 wallheight2=150-walllenght*2;
 //if (col2!=0){
-if (map[abs(rayx/5)+abs(rayy/5)*23]==0){
-kvline(buffer,320-xoffset,wallheight1,wallheight2,3);
 
+
+
+if (map[abs(rayx/5)+abs(rayy/5)*23]==0){
+//kvline(buffer,320-xoffset,wallheight1,wallheight2,3);
+
+x=0;
+for (y=wallheight1;y<wallheight2;y++){
+if (walllenght!=0){
+x+=(walllenght+((wallheight2/(wallheight1)))/(walllenght*20));}
+if (x>wallheight2*2){x=0;}
+col2=kgetpixelbmp(&bmp,k+ang*1000,x);
+buffer[(320-xoffset)+(y*320)]=col2;
+
+buffer[(320-xoffset+1)+(y*320)]=col2+1;
+
+}
 
     v=80;
 
@@ -707,13 +719,18 @@ i++;   if (i>22){i=0;v+=5; }
 		break;
 
 	}	  }
+		  collock=1;
+		 if (map[abs(((playerx+1)/5))+((abs(playery/5))*23)]==0){ collock=0;  playerx-=1;     }
+		 if (map[abs(((playerx-1)/5))+((abs(playery/5))*23)]==0){ collock=0;  playerx+=1;     }
+		 if (map[abs(((playerx)/5))+((abs((playery+1)/5))*23)]==0){ collock=0;  playery-=1;     }
+		 if (map[abs(((playerx)/5))+((abs((playery-1)/5))*23)]==0){ collock=0;  playery+=1;     }
 
+		   playerx+=(sin(ang+0.3
+		   )+cos(ang+0.3))
+		   *accy*collock;
+		   playery+=(-sin(ang+0.3)+cos(ang+0.3))
+		   *accy*collock;
 
-		   playerx+=(sin(ang+0.05
-		   )+cos(ang+0.05))
-		   *accy;
-		   playery+=(-sin(ang+0.05)+cos(ang+0.05))
-		   *accy;
 
 	   //		  if (playerx>280){playerx=280;}
 	//  if (playerx<10){playerx=10;}
