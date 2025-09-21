@@ -613,7 +613,7 @@ tt=0;
   plus2++; if (plus2>1000){plus2=0; sprcol+=50;}
    }
 */
- kdrawrectfill(buffer,0,60,320,140,8);
+ kdrawrectfill(buffer,0,100,320,100,8);
 	 accy=0; accx=0;
 
    zclip=1.5;
@@ -638,17 +638,18 @@ tt=0;
    xoffset=k;
 
 
-     z=(((k*fov)
-     ))+ang;
+     z=((((k*fov)
+     ))+ang);
 
 rayx=playerx+(((sin(z)+cos(z))))*v;
 rayy=playery+(((cos(z)-sin(z))))*v;
 if (rayx>3){  if (rayy>3){
 if (rayx<150){  if (rayy<150){
-    walllenght=v+sin(k/100)*3;
+    walllenght=v*2;//+sin(k/100)*3;
 kdrawrectfill(buffer,(rayx)+5,(rayy),2,2,4);
-wallheight1=20+walllenght;
-wallheight2=150-walllenght*2;
+wallheight1=walllenght;
+wallheight2=200-walllenght
+;
 //if (col2!=0){
 
 
@@ -656,12 +657,13 @@ wallheight2=150-walllenght*2;
 if (map[abs(rayx/5)+abs(rayy/5)*23]==0){
 //kvline(buffer,320-xoffset,wallheight1,wallheight2,3);
 
-x=0;
+x=walllenght;
 for (y=wallheight1;y<wallheight2;y++){
 if (walllenght!=0){
-x+=(walllenght+((wallheight2/(wallheight1)))/(walllenght*20));}
-if (x>wallheight2*2){x=0;}
-col2=kgetpixelbmp(&bmp,k+ang*1000,x);
+x+=walllenght/2
+;}
+if (x>wallheight2){x=0;}
+col2=kgetpixelbmp(&bmp,k+ang*300,x);
 buffer[(320-xoffset)+(y*320)]=col2;
 
 buffer[(320-xoffset+1)+(y*320)]=col2+1;
