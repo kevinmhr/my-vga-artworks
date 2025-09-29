@@ -665,9 +665,7 @@ tt=0;
 
  rayz[1]=0;
 
-	vs=(int)(k)/(double)(320-1)*0.2
-
-	;
+	vs=(ang)+(int)(k)/(double)(320-1)*0.5;
 
 
        // z++; if (z>4){z=0;}
@@ -683,15 +681,14 @@ tt=0;
 while (rayz[1]<100&&hit==0){
 //
 
-
-
 rayz[1]+=1;
 
 
 
 
-  checkx=(playerx+((sin(z+vs))*rayz[1]))*0.2;
-  checky=(playery+((cos(z+vs))*rayz[1]))*0.2;
+
+  checkx=(((playerx)+((sin(vs)))*rayz[1]))*0.2;
+  checky=(((playery)+((cos(vs)))*rayz[1]))*0.2;
 
 kdrawrectfill(buffer,(checkx*5)+5,(checky*5),2,2,4);
 
@@ -703,10 +700,10 @@ kdrawrectfill(buffer,(checkx*5)+5,(checky*5),2,2,4);
 
  if (map[((int)(checkx))+(((int)(checky))*21)]==0){
 					    hit=1;
-       walllenght=(rayz[1])
-       ;
-	wallheight1=walllenght;
-      wallheight2=200-walllenght;
+	  walllenght=(200/(rayz[1]*(cos(vs-ang))))*10;
+
+	wallheight1=100-walllenght;
+      wallheight2=80+walllenght;
 
       }
 
@@ -716,7 +713,6 @@ kdrawrectfill(buffer,(checkx*5)+5,(checky*5),2,2,4);
 
 
 xoffset=k;
-
 
 if (rayx>3){  if (rayy>3){
 if (rayx<150){  if (rayy<150){
@@ -808,17 +804,17 @@ i++;   if (i>20){i=0;v+=5; }
 	}	  }
 		  collock=1;
 
-		   playerx+=((sin(ang-0.68
-		   )+cos(ang-0.68))
+		   playerx+=((sin(ang-0.5
+		   )+cos(ang-0.5))
 		   *(accy)*collock);
-		   playery+=((-sin(ang-0.68)+
-		   cos(ang-0.68))
+		   playery+=((-sin(ang-0.5)+
+		   cos(ang-0.5))
 		   *(accy)*collock);
 
-		 if (map[(abs(playerx/5)+2)+(abs)(playery/5)*21]==0){ collock=0;  playerx-=1;     }
-			 if (map[(abs(playerx/5)-2)+(abs)(playery/5)*21]==0){ collock=0;  playerx+=1;     }
-			 if (map[(abs(playerx/5))+(abs)((playery/5)+2)*21]==0){ collock=0;  playery-=1;     }
-			 if (map[(abs(playerx/5))+(abs)((playery/5)-2)*21]==0){ collock=0;  playery+=1;     }
+		 if (map[(abs(playerx/5)+1)+(abs)(playery/5)*21]==0){ collock=0;  playerx-=1;     }
+			 if (map[(abs(playerx/5)-1)+(abs)(playery/5)*21]==0){ collock=0;  playerx+=1;     }
+			 if (map[(abs(playerx/5))+(abs)((playery/5)+1)*21]==0){ collock=0;  playery-=1;     }
+			 if (map[(abs(playerx/5))+(abs)((playery/5)-1)*21]==0){ collock=0;  playery+=1;     }
 
 
 	   //		  if (playerx>280){playerx=280;}
