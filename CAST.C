@@ -1,4 +1,4 @@
-//raycaster....
+ //raycaster....
 //coded by keyvan mehrbakhsh 2025..
 //enjoy..
 
@@ -214,7 +214,7 @@ kputpixel(buffer,i,j,col);    }  }   }
 void kvline(char *buffer,int i,int y,int h,int col){
 int j;
 
-for (j=y;j<y+h;j+=2){
+for (j=y;j<y+h;j+=1){
 if (j>0){
 if (j<200){
 if (i<320){
@@ -603,6 +603,7 @@ int  k;
  double sidedistx,sidedisty;
  double fov;
  double cor=100;
+int halfx,halfy;
 double vs;
 //tt+=0.01;
   memset(buffer,0,64000);
@@ -668,20 +669,11 @@ tt=0;
 	vs=(ang)+(int)(k)/(double)(320-1)*0.5;
 
 
-       // z++; if (z>4){z=0;}
+
+while (rayz[1]<120&&hit==0){
 //
 
-
-
-
-  checkx=playerx;
-  checky=playery;
-
-
-while (rayz[1]<100&&hit==0){
-//
-
-rayz[1]+=1;
+rayz[1]+=0.3;
 
 
 
@@ -690,13 +682,10 @@ rayz[1]+=1;
   checkx=(((playerx)+((sin(vs)))*rayz[1]))*0.2;
   checky=(((playery)+((cos(vs)))*rayz[1]))*0.2;
 
-kdrawrectfill(buffer,(checkx*5)+5,(checky*5),2,2,4);
-
 
 
 
       //	  if (rayz[1]>80){rayz[1]=0;hit=0;}
-
 
  if (map[((int)(checkx))+(((int)(checky))*21)]==0){
 					    hit=1;
@@ -705,10 +694,7 @@ kdrawrectfill(buffer,(checkx*5)+5,(checky*5),2,2,4);
 	wallheight1=100-walllenght;
       wallheight2=80+walllenght;
 
-      }
-
-
-      }
+     }}
 
 
 
@@ -724,29 +710,22 @@ if (rayx<150){  if (rayy<150){
 
 
 //kvline(buffer,320-xoffset,wallheight1,wallheight2,3);
-    deltay=0;   deltax=0;   col2=1;
+    deltay=0;   deltax=0;
 
-for (y=wallheight1+deltay;y<wallheight2-deltay;y++){
 
 //if (x>wallheight2){x=0;}
 //col2=kgetpixelbmp(&bmp,k+ang*300,x);
   if ((320-xoffset-1)>320){  hit=1;}
  if ((320-xoffset-1)<1){   hit=1;}
 
- if ((y)<200){
- if ((y)>1){
-buffer[(320-xoffset-1)+(y*320)]=col2;
-buffer[(320-xoffset-2)+(y*320)]=col2;
+kvline(buffer,320-xoffset,wallheight1,wallheight2-wallheight1,col2);
+kvline(buffer,320-xoffset-1,wallheight1,wallheight2-wallheight1,col2);
 
 
 
 
 
 
- } else {hit=1;}
- } else {hit=1;}
-
- }
  }
  }
 
@@ -760,15 +739,15 @@ buffer[(320-xoffset-2)+(y*320)]=col2;
 
  i=0;
  v=0;
- for (k=0;k<400;k++){
+ for (k=0;k<335;k++){
 
-i++;   if (i>20){i=0;v+=5; }
+i++;   if (i>20){i=0;v+=3; }
 
 
 
 
   if (map[k]==0){
-	     kdrawrectfill(buffer,i*5,v,5,5,4);
+	     kdrawrectfill(buffer,i*3,v,3,3,4);
 
 
   }
@@ -780,6 +759,46 @@ i++;   if (i>20){i=0;v+=5; }
 
 
 }
+
+
+    for (k=0;k<320;k+=32
+
+
+
+      ){
+	hit=0;
+
+ rayz[1]=0;
+
+	vs=(ang)+(int)(k)/(double)(320-1)*0.5;
+
+
+
+while (rayz[1]<120&&hit==0){
+//
+
+rayz[1]+=2
+;
+
+ checkx=(((playerx)+((sin(vs)))*rayz[1]))*0.2;
+  checky=(((playery)+((cos(vs)))*rayz[1]))*0.2;
+
+      kdrawrectfill(buffer,(checkx*3)+5,(checky*3),1,1,4);
+
+       if (map[((int)(checkx))+(((int)(checky))*21)]==0){
+					    hit=1;
+      }
+
+
+}
+}
+
+
+
+
+
+
+kdrawrectfill(buffer,(playerx/5)*3+4.5,(playery/5)*3-1,2,2,1);
 
 
    if (kbhit()) {
@@ -829,7 +848,6 @@ i++;   if (i>20){i=0;v+=5; }
 
 //kdrawtransbitmap(&bmp,63,16,playerx,playery,35,30,0);
 
-kdrawrectfill(buffer,(playerx)+5,playery,2,2,1);
 	memcpy(VGA,buffer,64000);
 
 //	     if (plus>19000){plus=0; level+=1; if (level>1){level=0;} mapfill(0,0,0,0);initpos();}
