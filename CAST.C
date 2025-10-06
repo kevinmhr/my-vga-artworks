@@ -44,7 +44,7 @@ char jpfire=0;
  double v;
  double vt;
  double playerang=0;
-
+ double playerdirx,playerdiry;
 double vs[320];
 char duckanim=0;
 char *buffer;
@@ -96,8 +96,8 @@ int kgetpixelbmp(BITMAP *bmp,int x,int y);
 int plus=0;
 char sclv=0,sclh=0;
     char kt=0;
-double sintab[1920];
-double costab[1920];
+double sintab[2920];
+double costab[2920];
     double d2=0.04;
    char col[320];
 
@@ -233,6 +233,18 @@ if (j>0){
 if (j<200){
 if (i<320){
 kputpixel(buffer,i,j,col);    }     }
+
+}}                       }
+
+
+void khline(char *buffer,int x,int y,int w,int col){
+int i;
+
+for (i=x;i<x+w;i+=1){
+if (i>0){
+if (i<320){
+if (x<320){
+kputpixel(buffer,i-1,y,col);    }     }
 
 }}                       }
 
@@ -602,9 +614,8 @@ gh:
 tt=0;
 timer1=0;
 v=0;
-for (i=0;i<1920;i+=1){
-v+=0.02
-;
+for (i=0;i<2920;i+=1){
+v+=0.02;
 sintab[i]=sin(v);
 costab[i]=cos(v);
 
@@ -617,12 +628,12 @@ costab[i]=cos(v);
 		     col[k]=v;           }
 	  for (k=0;k<320;k+=1){
 
-		vs[k]=((int)(k)/(double)(320-1)*0.5)*100;
+		vs[k]=(k/(double)(320-1)*0.7);
 
 
       }
 
-ang=3;
+ang=0.5;
 while (stk==2){
  double walllenght=0;
  double wallheight1;
@@ -633,11 +644,18 @@ int  k;
  char hit=0;
  double tet2=0;
  double xoffset;
- double playerdirx,playerdiry;
+
  double fov;
 double raydirx,raydiry;
 char side=0;
-  memset(buffer,0,64000);
+//  memset(buffer,0,40000);
+//  kdrawrectfill(buffer,0,100,320,100,8);
+  for (i=0;i<100;i++){
+  khline(buffer,0,i,320,(16+(i/6)));
+
+  khline(buffer,0,i+100,320,(197));
+
+  }
 
 tt=0;
 
@@ -654,7 +672,7 @@ tt=0;
 
        col1=16;
        col2=0;
-if (ang<0){ang=3.14*100;}
+//if (ang<0){ang=3.14*100;}
     for (k=0;k<320;k+=2
 
 
@@ -663,14 +681,18 @@ if (ang<0){ang=3.14*100;}
 	hit=0;
 
 
-	xoffset=k;
+
  checkx=(int)playerx;
  checky=(int)playery;
-	   rayx=sintab[((((int)(ang))+(int)vs[k]))];
-	   rayy=costab[((((int)(ang))+(int)vs[k]))];
-		  playerdirx=sintab[(int)(ang+25)];
+   //	   rayx=sintab[((((int)(ang*100))+(int)(vs[k])))];
+   //	   rayy=costab[((((int)(ang*100))+(int)(vs[k])))];
+	    rayx=sin((ang)+vs[k]);
+	    rayy=cos((ang)+vs[k]);
 
-		  playerdiry=costab[(int)(ang+25)];
+	       //	  playerdirx=sintab[(int)(ang+25)];
+
+	      //	  playerdiry=costab[(int)(ang+25)];
+
 
 		       raydirx=rayx;
 		       raydiry=rayy;
@@ -716,7 +738,7 @@ while (hit==0){
 	 kdrawrectfill(buffer,(checkx*3)+5,(checky*3),1,1,4);
 
 
-		  if( sidedistx<=sidedisty)
+		  if( sidedistx<sidedisty)
 		   {sidedistx+=deltadistx;
 		   checkx+= stepx;
 		   side=0;
@@ -733,24 +755,22 @@ while (hit==0){
 
  if (map[(int)(checkx)+((int)(checky)*21)]==0){ hit=1;
 
-	  if (side==0){  	  walllenght=((sidedistx-deltadistx)*cos(-0.5+vs[k]/50));
+	  if (side==0){  	  walllenght=((sidedistx-deltadistx)*cos(-0.5+vs[k]));
        }
 
-		  if (side==1){ 	  walllenght=((sidedisty-deltadisty)*cos(-0.5+vs[k]/50));
+		  if (side==1){ 	  walllenght=((sidedisty-deltadisty)*cos(-0.5+vs[k]));
        }
 
 
 	wallheight1=(80-(100/(walllenght)*2));
        wallheight2=(100+(100/(walllenght)*2));
-							  }
+
+
+}
 
 
 
 
-
-
-  if ((320-xoffset-1)>320){  hit=1;}
- if ((320-xoffset-1)<1){   hit=1;}
 
 }
 col2=0;
@@ -759,13 +779,17 @@ col2=0;
 if (side==0){color=16;}
 
 if (side==1){color=0;}
+
 						  col1=4;
-kvline(buffer,k,wallheight1,wallheight2-wallheight1,checkx+col1+color);
+				      //	  if (walllenght>20){col1=4+50;}
+
+kvline(buffer,(k),wallheight1,wallheight2-wallheight1,checkx+col1+color);
+kvline(buffer,(k+1),wallheight1,wallheight2-wallheight1,checkx+col1+color);
 
 }
 
 
-if (playery>75){section=45;plus=315;}
+if (playery>16){section=45;plus=315;}
 else{plus=0;section=0;}
 
  i=0;
@@ -807,13 +831,13 @@ i++;   if (i>20){i=0;v+=3; }
 		case 0x48 :     accy=1;
 
 		break;
-		case 0x4b:             ang-=5;   playerang-=0.01;
+		case 0x4b:             ang-=0.05;   playerang-=0.01;
 
 		break;
 		case 0x50:       accy=-1;
 
 		break;
-		case 0x4d:              ang+=5;   playerang+=0.01;
+		case 0x4d:              ang+=0.05;   playerang+=0.01;
 
 		break;
 	       case 32:
@@ -823,6 +847,10 @@ i++;   if (i>20){i=0;v+=3; }
 		  collock=1;
 		    if (playerang>0.0314){playerang=0;}
 		    if (playerang<0){playerang=0.0314;}
+		    playerdirx=sin((ang)+0.35);
+
+		    playerdiry=cos((ang)+0.35);
+
 		   playerx+=playerdirx*(accy)*collock*0.5;
 		   playery+=playerdiry*(accy)*collock*0.5;
 
