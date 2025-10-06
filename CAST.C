@@ -56,6 +56,7 @@ char nextsec=0;
 char bt=0;
 char goolanim=50;
 int plusent=0;
+char color,col1,col2;
 int level=0;
 char collock=1;
 int mineanim=0;
@@ -98,8 +99,8 @@ char sclv=0,sclh=0;
 double sintab[1920];
 double costab[1920];
     double d2=0.04;
-   double col[256];
-  double col2=0;
+   char col[320];
+
  int tet=0;
  byte u,f,o,l;
  byte u1=0,f1=0,o1=0,l1=0;
@@ -610,6 +611,10 @@ costab[i]=cos(v);
 
 
 }
+		   v=16;
+		  for (k=0;k<320;k+=1){
+		     v++;if (v>30){v=16;}
+		     col[k]=v;           }
 	  for (k=0;k<320;k+=1){
 
 		vs[k]=((int)(k)/(double)(320-1)*0.5)*100;
@@ -622,26 +627,16 @@ while (stk==2){
  double walllenght=0;
  double wallheight1;
  double wallheight2;
-  double zclip;
 int  k;
  int i=-10;
- int secx=0,secy=0;
- double collisionx,collisiony;
-  int colx,colx2;
- double rayz[320];
  int sc;
  char hit=0;
  double tet2=0;
  double xoffset;
  double playerdirx,playerdiry;
  double fov;
- double cor=100;
-double oldrayx;
 double raydirx,raydiry;
 char side=0;
-int halfx,halfy;
-
-//tt+=0.01;
   memset(buffer,0,64000);
 
 tt=0;
@@ -657,8 +652,8 @@ tt=0;
  fov=0.0035;
       z=0;    v=0;
 
-      rayz[1]=0;
-
+       col1=16;
+       col2=0;
 if (ang<0){ang=3.14*100;}
     for (k=0;k<320;k+=2
 
@@ -667,11 +662,10 @@ if (ang<0){ang=3.14*100;}
       ){
 	hit=0;
 
- rayz[1]=0;
+
 	xoffset=k;
  checkx=(int)playerx;
  checky=(int)playery;
-
 	   rayx=sintab[((((int)(ang))+(int)vs[k]))];
 	   rayy=costab[((((int)(ang))+(int)vs[k]))];
 		  playerdirx=sintab[(int)(ang+25)];
@@ -689,7 +683,6 @@ if (ang<0){ang=3.14*100;}
 
 
 
-
 	     if (raydirx<0){   stepx=-1;
 
 
@@ -704,7 +697,7 @@ if (ang<0){ang=3.14*100;}
 	     sidedisty=(playery-checky)*deltadisty;}
 
 
-		else{   stepy=1;   	   playerdiry=costab[(int)(ang)];
+		else{   stepy=1;
 
 	     sidedisty=(checky+1 -playery)*deltadisty;}
 
@@ -715,77 +708,60 @@ if (ang<0){ang=3.14*100;}
 
 
 
+
+
 while (hit==0){
 //
+
 	 kdrawrectfill(buffer,(checkx*3)+5,(checky*3),1,1,4);
 
 
-		  if( sidedistx<sidedisty)
+		  if( sidedistx<=sidedisty)
 		   {sidedistx+=deltadistx;
 		   checkx+= stepx;
 		   side=0;
+
 		   }
 		   else
 		   { sidedisty+= deltadisty;
 		   checky+= stepy;
 		   side =1;
+
+
 		   }
 
 
  if (map[(int)(checkx)+((int)(checky)*21)]==0){ hit=1;
 
-	  if (side==0){ 	  walllenght=((sidedistx-deltadistx));
+	  if (side==0){  	  walllenght=((sidedistx-deltadistx)*cos(-0.5+vs[k]/50));
        }
 
-		  if (side==1){ 	  walllenght=((sidedisty-deltadisty));
+		  if (side==1){ 	  walllenght=((sidedisty-deltadisty)*cos(-0.5+vs[k]/50));
        }
 
 
-	wallheight1=(80-(200/(walllenght)));
-       wallheight2=(100+(200/(walllenght)));
+	wallheight1=(80-(100/(walllenght)*2));
+       wallheight2=(100+(100/(walllenght)*2));
 							  }
-  col2=1;
- if (checkx>1){
-// if((int)checkx/5==(int)(checkx/5-0.2)){col2=3;}  }
-}
 
 
 
 
 
-//col2=kgetpixelpage(buffer2,rayx,rayy);
-//if (col2==4){
 
-
-
-//kvline(buffer,320-xoffset,wallheight1,wallheight2,3);
-
-    deltay=0;   deltax=0;
-
-
-//if (x>wallheight2){x=0;}
-//col2=kgetpixelbmp(&bmp,k+ang*300,x);
-   if (rayz[1]>300){hit=1;}
   if ((320-xoffset-1)>320){  hit=1;}
  if ((320-xoffset-1)<1){   hit=1;}
 
 }
-kvline(buffer,k,wallheight1,wallheight2-wallheight1,col2);
-
-//kvline(buffer,320-xoffset-1,wallheight1,wallheight2-wallheight1,col2);
-//kvline(buffer,320-xoffset-2,wallheight1,wallheight2-wallheight1,col2);
-//kvline(buffer,320-xoffset-3,wallheight1,wallheight2-wallheight1,col2);
+col2=0;
 
 
+if (side==0){color=16;}
 
+if (side==1){color=0;}
+						  col1=4;
+kvline(buffer,k,wallheight1,wallheight2-wallheight1,checkx+col1+color);
 
-
-
-  //	       if (v>100){v=0;}
-
-
-
-  //					     }
 }
 
 
@@ -831,13 +807,13 @@ i++;   if (i>20){i=0;v+=3; }
 		case 0x48 :     accy=1;
 
 		break;
-		case 0x4b:             ang-=5;   playerang-=0.05;
+		case 0x4b:             ang-=5;   playerang-=0.01;
 
 		break;
 		case 0x50:       accy=-1;
 
 		break;
-		case 0x4d:              ang+=5;   playerang+=0.05;
+		case 0x4d:              ang+=5;   playerang+=0.01;
 
 		break;
 	       case 32:
@@ -845,10 +821,10 @@ i++;   if (i>20){i=0;v+=3; }
 
 	}	  }
 		  collock=1;
-
-
-		   playerx+=playerdirx*(accy)*collock;
-		   playery+=playerdiry*(accy)*collock;
+		    if (playerang>0.0314){playerang=0;}
+		    if (playerang<0){playerang=0.0314;}
+		   playerx+=playerdirx*(accy)*collock*0.5;
+		   playery+=playerdiry*(accy)*collock*0.5;
 
 			 if (map[(abs(playerx)+1)+abs(playery)*21]==0){ collock=0;  playerx-=1;     }
 			 if (map[(abs(playerx)-1)+abs(playery)*21]==0){ collock=0;  playerx+=1;     }
