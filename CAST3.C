@@ -707,8 +707,6 @@ tt=0;
 
 		       deltadisty=sqrt(1+(raydirx*raydirx)/(raydiry*raydiry));
 
-
-
 	     if (raydirx<0){   stepx=-1;
 
 
@@ -777,7 +775,7 @@ while (hit==0){
 
 			    col2=(int)((wallx*100));
 
-	wallheight1=(80-(100/(walllenght)));
+	wallheight1=(100-(100/(walllenght)));
 
        wallheight2=(100+(100/(walllenght)));
 
@@ -802,8 +800,8 @@ if (side==1){color=0;
 				      //	  if (walllenght>20){col1=4+50;}
 
 		texdist=0;
-		walllenght2=wallheight1*0.05;
-	       texstepy=1/(1/walllenght)*0.3;
+
+	      texstepy=(1/(1/(walllenght)))*0.5;
 
 	      //	texdist=80+(int)(wallheight1+walllenght2*2)*((i-90)/walllenght2)/2;
 
@@ -817,7 +815,7 @@ if (side==1){color=0;
 //kvline(buffer,(k+1),wallheight1,wallheight2-wallheight1,checkx+col1+color);
     if (i<200){        if (i>0){
 
-	    texdist+=texstepy+(walllenght2);
+	    texdist+=texstepy;
 //  kputpixel(buffer,k,i,checkx+col1);
 //     kputpixel(buffer,k+1,i,checkx+col1+color);
 	     if (side==1){
