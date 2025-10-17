@@ -81,7 +81,7 @@ if (map[k]==1){
 int balls(){
 
 
-                                                        acc2-=0.00005;
+                                                        acc2-=0.00001;
 
                                   if (acc>0.3){acc=0.3;}
                                   if (acc<0.0001){acc2=0;}
@@ -96,6 +96,7 @@ int balls(){
       if (trig==0){
         playerxmove=((sin(ang)+cos(ang)));
          playerymove=((sin(ang)-cos(ang)));
+
          }
             for (int k=0;k<MAX_BALLS;k++){
 
@@ -103,192 +104,78 @@ int balls(){
 
                      //    rectfill(surface,ballx[k]-3,bally[k]-3,ballx[k]+3,bally[k]+3,k+100);
 
-
-
                           ballacc[k]-=0.0001;
                            if (ballacc[k]<0.0){ballacc[k]=0.0;}
+for (int x=3;x>0;x--){
+circle(surface,ballx[k],bally[k],x,(k+2)*(x+2));   }
 
-circlefill(surface,ballx[k],bally[k],3,k);
-
-
-                    collisioncol=getpixel(coliface,playerx+5,playery);
+                    collisioncol=getpixel(coliface,playerx+6,playery);
                               if (collisioncol==k+100){
-                                           ballxdir[k]=1;
-                              ballydir[k]=1;
-                 
-                              hitball=k;
-                                playerxmove=-0.5;
-                                if (playery<bally[k]){   ballangy[k]=1;    }
-                                if (playery>bally[k]){   ballangy[k]=-1;    }
-                          
+                                ballxdir[k]=1;
+                                ballydir[k]=1;
                                 ballangx[k]=1;
-
-                           ballacc[k]=acc2;
-                   acc-=0.004;
-
-
-
+                                playerxmove=-0.5;
+                                ballacc[k]=acc2;
+                                   ballangy[k]=0;
+                                 if (bally[k]>playery){  ballangy[k]=(bally[k]-playery)/5;    }
+                                 if (bally[k]<playery){  ballangy[k]=-(playery-bally[k])/5;    }
+      
+                                acc-=0.0001;
 
                           }
-                            collisioncol=getpixel(coliface,playerx-5,playery);
+                            collisioncol=getpixel(coliface,playerx-6,playery);
                                  if (collisioncol==k+100){
-                                             ballxdir[k]=1;
-                              ballydir[k]=1;
-                 
-
-                                     playerxmove=0.5;
-                           hitball=k;
-                                      if (playery<bally[k]){   ballangy[k]=1;    }
-                                      if (playery>bally[k]){   ballangy[k]=-1;    }
-                        
-
-                                    ballangx[k]=-1;
-
-                               ballacc[k]=acc2;
-                   acc-=0.003;
+                                   ballxdir[k]=1;
+                                   ballydir[k]=1;
+                      
+                                   ballangx[k]=-1;
+                                   playerxmove=0.5;
+                                  ballacc[k]=acc2;
+                                acc-=0.0001;
+                                 ballangy[k]=0;
+                                 if (bally[k]>playery){  ballangy[k]=(bally[k]-playery)/5;    }
+                                 if (bally[k]<playery){  ballangy[k]=-(playery-bally[k])/5;    }
+      
 
 
+                                                }
 
 
-                          }
-
-
-                              collisioncol=getpixel(coliface,playerx,playery+5);
+                   
+                              collisioncol=getpixel(coliface,playerx,playery+6);
                                    if (collisioncol==k+100){
-                                                ballxdir[k]=1;
-                              ballydir[k]=1;
-                 
-                                         playerymove=-0.5;
-                        
-                                       hitball=k;
-                                         if (playerx<ballx[k]){   ballangx[k]=1;    }
-                                      if (playerx>ballx[k]){   ballangx[k]=-1;    }
-                          
-                                     ballangy[k]=1;
-
-                                            ballacc[k]=acc2;
-                   acc-=0.003;
+                                   ballxdir[k]=1;
+                                   ballydir[k]=1;
+                      
+                                   ballangy[k]=1;
+                                   playerymove=-0.5;
+                                   ballacc[k]=acc2;
+                                acc-=0.0001;
+                                 ballangx[k]=0;
+                                 if (ballx[k]>playerx){  ballangx[k]=(ballx[k]-playerx)/5;    }
+                                 if (ballx[k]<playerx){  ballangx[k]=-(playerx-ballx[k])/5;    }
+      
 
 
+              }
 
-
-                         }
-
-                                collisioncol=getpixel(coliface,playerx,playery-5);
+                                collisioncol=getpixel(coliface,playerx,playery-6);
                                       if (collisioncol==k+100){
-                                             ballxdir[k]=1;
-                              ballydir[k]=1;
-                 
-                                       playerymove=0.5;
-
-
-
-                           hitball=k;
-                                      if (playerx<ballx[k]){   ballangx[k]=1;    }
-                                      if (playerx>ballx[k]){   ballangx[k]=-1;    }
-                          
-                                               ballangy[k]=-1;
+                                   ballxdir[k]=1;
+                                   ballydir[k]=1;
+                      
+                                   ballangy[k]=-1;
+                                   playerymove=0.5;
                            
-
-                                      ballacc[k]=acc2;
-                   acc-=0.003;
-
-
-
-                        }
-
-
-                     /*
-                     if (collisioncol==k+100){
-     
+                                    ballacc[k]=acc2;
+                                acc-=0.0001;
+                                 ballangx[k]=0;
+                                 if (ballx[k]>playerx){  ballangx[k]=(ballx[k]-playerx)/5;    }
+                                 if (ballx[k]<playerx){  ballangx[k]=-(playerx-ballx[k])/5;    }
+      
 
 
-                  //      double tempacc=acc;
-
-                                  //         if (x==0){  playerydir=-playerydir;}
-                                   //        if (y==0){  playerxdir=-playerxdir;}
-
-
-
-                              ballxdir[k]=1;
-                              ballydir[k]=1;
-                           hitball=k;
-
-
-
-
-
-                                            playerxmove=-x*0.1;
-                                                playerymove=-y*0.1;
-                                        
-                                           if (x>1){
-
-                                            ballangx[k]=1;
-
-
-                                            }
-
-                                                if (x<1){
-
-
-                                              ballangx[k]=-1; 
-                                            }
-                                                 if (y>1){
-
-                                              ballangy[k]=1;
-                                            }
-                                              if (y<1){
-
-
-
-                                            ballangy[k]=-1;
-                                            }
-
-
-                                      //        ballacc[k]-=0.0001;
-             //     if (ballacc[k]<0.0){ballacc[k]=0.0;}
-
-               count=30;
-
-
-
-
-
-        
-
-                                                   
-                                        //           if (x==0){ballxdir[k]=-ballxdir[k];}
-
-                                        //           if (y==0){ballydir[k]=-ballydir[k];}
-
-
-
-                            // ballacc[k]-=ballacc[k]*0.05;
-
-                     //   if (trig==1){    ballacc[k]-=ballacc[k]*0.5;}
-                     ballacc[k]=acc2;
-                   acc-=0.001;
-
-
-
-
-                       if (ballacc[k]<0.01){ballacc[k]=0.04;}
-
-                 }
-
-                 }
-
-
-
-                 }*/
-
-
-
-
-
-
-
-
+                                     }
 
 
 
@@ -552,7 +439,8 @@ int player(){
                    if (acc>0){showline=0;}
 
 
-circlefill(surface,playerx,playery,3,1);
+circlefill(surface,playerx,playery,3,26);
+circlefill(surface,playerx,playery,1,255);
 
 
 
@@ -748,17 +636,17 @@ accy=0.02;
                       
       if (trig==0){
 
-     if (key[KEY_LEFT]){ accy+=0.001; g++; ang+=0.01;
+     if (key[KEY_LEFT]){ accy+=0.001; g++; ang+=0.005;
 
      }
-     if (key[KEY_RIGHT]){ accy-=0.001; g--; ang-=0.01;
+     if (key[KEY_RIGHT]){ accy-=0.001; g--; ang-=0.005;
 
 
                      }
      }
      if (key[KEY_UP]){  accx+=0.001; if (trig==0){
      trig=1;
-     acc=1;  acc2=0.3; }    }
+     acc=1;  acc2=0.2; }    }
      
      if (key[KEY_DOWN]){  accx-=0.001;   }
                        board();
