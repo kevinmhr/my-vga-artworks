@@ -124,12 +124,15 @@ putpixel(surface,ballx[k],bally[k],25);
               
                     collisioncol=getpixel(coliface,playerx+5,playery+y-4);
                               if (collisioncol==k+100){
+
+                               playerxmove=-0.5;
+                            
                                 ballxdir[k]=1;
                                 ballydir[k]=1;
                                 ballangx[k]=0;
                                 playerydir=1;
                                 playerxdir=1;
-                             //   playerxmove=-0.5;
+
                                    ballacc[k]=acc-0.0001;
 
                                 ballangy[k]=0;
@@ -148,7 +151,7 @@ putpixel(surface,ballx[k],bally[k],25);
                                 playerydir=1;
                                 playerxdir=1;
                                   ballangx[k]=0;
-                             //      playerxmove=0.5;
+                                   playerxmove=0.5;
                                      ballacc[k]=acc-0.0001;
                               //  acc-=0.0001;
                                     ballangy[k]=0;
@@ -173,7 +176,7 @@ putpixel(surface,ballx[k],bally[k],25);
                                     playerydir=1;
                                           playerxdir=1;
                           
-                                 //  playerymove=-0.5;
+                                   playerymove=-0.5;
 
                                       ballacc[k]=acc-0.0001;
 
@@ -195,7 +198,7 @@ putpixel(surface,ballx[k],bally[k],25);
                                    playerydir=1;
                                    playerxdir=1;
                                    ballacc[k]=acc-0.0001;
-                                //   playerymove=0.5;
+                                   playerymove=0.5;
                                    ballangx[k]=0;
 
                                         ballangy[k]=(bally[k]-playery)/10;
@@ -211,10 +214,8 @@ putpixel(surface,ballx[k],bally[k],25);
 
 
                                  if (collided==1){
-                                 if (ballx[k]>playerx){  playerxmove=-0.5;   }
-                                if (ballx[k]<playerx){  playerxmove=0.5;   }
-                                if (bally[k]>playery){  playerymove=-0.5;   }
-                                if (bally[k]<playery){  playerymove=0.5;   }
+
+
 
                                     if (acc*1.5<ballacc[k]){
                                     trig=1;
