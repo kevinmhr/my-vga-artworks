@@ -102,8 +102,8 @@ char sclv=0,sclh=0;
  byte u,f,o,l;
  byte u1=0,f1=0,o1=0,l1=0;
 double ang=0;
-double sintab[2040];
-double costab[2040];
+double sintab[1900];
+double costab[1900];
 double playerx=3;
 double playery=2;
 
@@ -603,8 +603,8 @@ gh:
 tt=0;
 
 v=0;
-for (i=0;i<1940;i+=1){
-v+=0.01;
+for (i=0;i<1540;i+=1){
+v+=0.005;
 sintab[i]=sin(v);
 costab[i]=cos(v);
 
@@ -617,8 +617,8 @@ costab[i]=cos(v);
 		     col[k]=v;           }
 	  for (k=0;k<320;k+=1){
 
-		hl[k]=(((k)/(double)(320)));
-		hl2[k]=hl[k]*100;
+		hl[k]=(((k)/(double)(320-1)));
+		hl2[k]=hl[k]*200;
 
       }
 
@@ -757,8 +757,11 @@ while (hit==0){
 
 
 
- if (map[abs(checkx)+(abs(checky)*21)]==0){hit=1;
+ if (map[(checkx)+((checky*21))]==0){hit=1;
+
+
      }  }
+       texstepy=walllenght*0.5;
 
 	  if (side==0){
 
@@ -803,7 +806,7 @@ if (side==1){color=0;
 
 		texdist=0;
 
-	      texstepy=(1/(1/(walllenght)))*0.5;
+	 //
 
 	      //	texdist=80+(int)(wallheight1+walllenght2*2)*((i-90)/walllenght2)/2;
 
@@ -912,26 +915,26 @@ for (k=0;k<320;k+=2
 
 
 
-		       deltadistx=sqrt(1+(raydiry*raydiry)/(raydirx*raydirx));
+		    //   deltadistx=sqrt(1+(raydiry*raydiry)/(raydirx*raydirx));
 
-		       deltadisty=sqrt(1+(raydirx*raydirx)/(raydiry*raydiry));
+		    //   deltadisty=sqrt(1+(raydirx*raydirx)/(raydiry*raydiry));
 
 
-	     if (raydirx<0){   stepx=-1;
+	     if (raydirx<0){   stepx=-1;      deltadistx=-(1/raydirx);
 
 
 	     sidedistx=(playerx-checkx)*deltadistx;}
 
-	      else {   stepx=1;
+	      else {   stepx=1;     	       deltadistx=(1/raydirx);
 	     sidedistx=(checkx+1 -playerx)*deltadistx;}
 
 
-		if (raydiry<0){   stepy=-1;
+		if (raydiry<0){   stepy=-1;       deltadisty=-(1/raydiry);
 
 	     sidedisty=(playery-checky)*deltadisty;}
 
 
-		else{   stepy=1;
+		else{   stepy=1;             deltadisty=(1/raydiry);
 
 	     sidedisty=(checky+1 -playery)*deltadisty;}
 
@@ -992,7 +995,7 @@ while (hit==0){
 
 		texdist=0;
 
-	      texstepy=((1/(1/walllenght)))*0.7;
+	      texstepy=walllenght*0.5;
 
  if (map[(int)(checkx)+((int)(checky)*21)]==5){
   for (i=wallheight1;i<wallheight2;i++){
@@ -1106,13 +1109,13 @@ i++;   if (i>20){i=0;v+=3; }
 		case 0x48 :     accy=1;
 
 		break;
-		case 0x4b:             ang-=0.05;
+		case 0x4b:             ang-=0.1;
 
 		break;
 		case 0x50:       accy=-1;
 
 		break;
-		case 0x4d:              ang+=0.05;
+		case 0x4d:              ang+=0.1;
 
 		break;
 	       case 32:
@@ -1120,9 +1123,9 @@ i++;   if (i>20){i=0;v+=3; }
 
 	}	  }
 		  collock=1;
-		    playerdirx=sin((ang)+0.5);
+		    playerdirx=sintab[(ang*100)+100];
 
-		    playerdiry=cos((ang)+0.5);
+		    playerdiry=costab[(ang*100)+100];
 
 		   playerx+=playerdirx*(accy)*collock*0.5;
 		   playery+=playerdiry*(accy)*collock*0.5;
