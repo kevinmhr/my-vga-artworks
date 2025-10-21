@@ -624,7 +624,7 @@ costab[i]=cos(v);
 
 ang=1;
 while (stk==2){
- double walllenght=0;
+  double walllenght=0;
  double wallheight1;
  double wallheight2;
 double walllenght2;
@@ -642,6 +642,8 @@ int  k;
  double fov;
 double raydirx,raydiry;
 char side=0;
+
+
 //  memset(buffer,0,40000);
 //  kdrawrectfill(buffer,0,100,320,100,8);
   for (i=0;i<100;i++){
@@ -693,27 +695,26 @@ for (k=0;k<320;k+=2
 
 
 
-		       deltadistx=sqrt(1+(raydiry*raydiry)/(raydirx*raydirx));
-
-		       deltadisty=sqrt(1+(raydirx*raydirx)/(raydiry*raydiry));
 
 
 
 	     if (raydirx<0){   stepx=-1;
-
+		      deltadistx=-(1/raydirx);
 
 	     sidedistx=(playerx-checkx)*deltadistx;}
 
-	      else {   stepx=1;
+	      else {   stepx=1;    deltadistx=(1/raydirx);
+
 	     sidedistx=(checkx+1-playerx)*deltadistx;}
 
 
 		if (raydiry<0){   stepy=-1;
-
+				  deltadisty=-(1/raydiry);
 	     sidedisty=(playery-checky)*deltadisty;}
 
 
-		else{   stepy=1;
+		else{   stepy=1;          deltadisty=(1/raydiry);
+
 
 	     sidedisty=(checky+1-playery)*deltadisty;}
 
@@ -757,7 +758,7 @@ while (hit==0){
 
 
  if (map[abs(checkx)+(abs(checky)*21)]==0){hit=1;
-
+     }  }
 
 	  if (side==0){
 
@@ -776,18 +777,18 @@ while (hit==0){
 
 			    col2=(int)((wallx*80));
 
+
+
+
+
+
+
+
+
+
 	wallheight1=(100-((120/(walllenght))));
 
        wallheight2=(100+((120/(walllenght))));
-
-}
-
-
-
-
-
-}
-
 
 
 if (side==0){color=16;
@@ -958,7 +959,7 @@ while (hit==0){
 
 
  if (map[(int)(checkx)+((int)(checky)*21)]!=2){hit=1;
-
+   }}
 
 	  if (side==0){
 
@@ -981,13 +982,13 @@ while (hit==0){
 
        wallheight2=(100+(70/(walllenght)));
 
-}
 
 
 
 
 
-}
+
+
 
 		texdist=0;
 
@@ -1105,13 +1106,13 @@ i++;   if (i>20){i=0;v+=3; }
 		case 0x48 :     accy=1;
 
 		break;
-		case 0x4b:             ang-=0.07;
+		case 0x4b:             ang-=0.05;
 
 		break;
 		case 0x50:       accy=-1;
 
 		break;
-		case 0x4d:              ang+=0.07;
+		case 0x4d:              ang+=0.05;
 
 		break;
 	       case 32:
@@ -1147,49 +1148,13 @@ i++;   if (i>20){i=0;v+=3; }
 
 	memcpy(VGA,buffer,64000);
 
-//	     if (plus>19000){plus=0; level+=1; if (level>1){level=0;} mapfill(0,0,0,0);initpos();}
-  //	 if(accx>0){   accx-=0.004;  }
-  //	 if(accx<0){   accx+=0.004;  }
-  //	 if(accy>0){   accy-=0.004;  }
-   //	 if(accy<0){   accy+=0.004;  }
-
-     //	  playerx+=accx;
-     //	  playery+=accy;
-
-      //	  if (accx>1){accx=1;}
-      //	  if (accy>1){accy=1;}
-    //	  if (accx<-1){accx=-1;}
-     //	  if (accy<-1){accy=-1;}
-
-    if (bullettrig==1){ti++;   sound(800);
-
-   //   kdrawrectfill(buffer,bulletx,bullety,3,3,70);
-    bulletx+=10;
-
-
-
-    }
-      bt++;if (bt>1){bt=0;
-     nosound();             }
-    // if (ti>5){sound(-1);ti=0;}
-
-    if (bulletx>320){
-    bullettrig=0;
-
-    }
-    if (bullettrig==0){
-    bulletx=playerx+30;
-    bullety=playery+7;
-    }
-
-
-
+ nosound();
 
 }
 
 
 while (stk==0){
- nosound();
+
  return;       }
 
 
