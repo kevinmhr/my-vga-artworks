@@ -7,8 +7,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <dos.h>
-#include <mem.h>
-#include <conio.h>
+//#include <mem.h>
+//#include <conio.h>
 
 #include <math.h>
 #define VIDEO_INT           0x10      /* the BIOS video interrupt. */
@@ -36,6 +36,10 @@ int score=0;
 char jpfire=0;
   double sidedistx,sidedisty,deltadistx,deltadisty;
    double raydirx,raydiry;
+   int rotatedir;
+   int movedir;
+   double accel;
+   double rotateforce;
    double rayx,rayy;
  double rayx=30,rayy=30;
 int checkx,checky;
@@ -48,7 +52,7 @@ int hl2[320];
 char duckanim=0;
 char *buffer;
 
-
+double textw;
 double z=0;
  char section=0;
 char nextsec=0;
@@ -59,6 +63,7 @@ char color,col1,col2;
 int level=0;
 char collock=1;
 int mineanim=0;
+
 int plus2=0;
 char plusodd=0;
 char map[1200];
@@ -101,6 +106,7 @@ char sclv=0,sclh=0;
  int tet=0;
  byte u,f,o,l;
  byte u1=0,f1=0,o1=0,l1=0;
+
 double ang=0;
 double sintab[1900];
 double costab[1900];
@@ -555,7 +561,7 @@ nosound();
 ti++; if (si<120){  sound(si*ti*2);  }
 if (ti>1){ti=0;si++;if (si>=120){si=120; } }
 
-plasma(1,0);
+//plasma(1,0);
 
 //kdrawtransbitmap(&bmp2,0,0,0,0,320,200,0);
 
@@ -710,13 +716,15 @@ for (k=0;k<320;k+=2
 
 		if (raydiry<0){   stepy=-1;
 				  deltadisty=-(1/raydiry);
-	     sidedisty=(playery-checky)*deltadisty;}
+	     sidedisty=(playery-checky)*deltadisty;
+	     }
 
 
 		else{   stepy=1;          deltadisty=(1/raydiry);
 
 
-	     sidedisty=(checky+1-playery)*deltadisty;}
+	     sidedisty=(checky+1-playery)*deltadisty;
+	     }
 
 
 
@@ -996,15 +1004,15 @@ while (hit==0){
 		texdist=0;
 
 	      texstepy=walllenght*0.5;
-
  if (map[(int)(checkx)+((int)(checky)*21)]==5){
+
   for (i=wallheight1;i<wallheight2;i++){
 
     if (i<200){        if (i>0){
 
 	    texdist+=texstepy;
-
-     col1=kgetpixelbmp(&bmp2,col2+100,40+(int)texdist);
+	    textw+=col2;
+     col1=kgetpixelbmp(&bmp2,100+col2,40+(int)texdist);
 
       if (col1!=0){
      kputpixel(buffer,k,i,col1+1);
@@ -1101,21 +1109,29 @@ i++;   if (i>20){i=0;v+=3; }
 
 //  kdrawrectfill(buffer,(playerx*3)-57,(playery*3),2,2,1);
 
+ang+=rotateforce*rotatedir;
+		if (accel>0.25){accel=0.25;}
+	accel-=0.005;
+		if (accel<0){accel=0;}
+
+	if (rotateforce>0.05){rotateforce=0.05;}
+		rotateforce-=0.005;
+	if (rotateforce<=0){rotateforce=0;}
 
    if (kbhit()) {
        sc=getch();
       if (sc==27){ stk=0; }
       switch(sc) {
-		case 0x48 :     accy=1;
+		case 0x48 :     accy+=0.1;  movedir=1;
 
 		break;
-		case 0x4b:             ang-=0.1;
+		case 0x4b:             rotateforce+=0.02; rotatedir=-1;
 
 		break;
-		case 0x50:       accy=-1;
+		case 0x50:       accy+=0.1;    movedir=-1;
 
 		break;
-		case 0x4d:              ang+=0.1;
+		case 0x4d:              rotateforce+=0.02;  rotatedir=+1;
 
 		break;
 	       case 32:
@@ -1126,9 +1142,9 @@ i++;   if (i>20){i=0;v+=3; }
 		    playerdirx=sintab[(ang*100)+100];
 
 		    playerdiry=costab[(ang*100)+100];
-
-		   playerx+=playerdirx*(accy)*collock*0.5;
-		   playery+=playerdiry*(accy)*collock*0.5;
+		   accel+=accy;
+		   playerx+=playerdirx*(accel*movedir)*collock*0.5;
+		   playery+=playerdiry*(accel*movedir)*collock*0.5;
 
 			 if (map[(abs(playerx)+1)+abs(playery)*21]==0){ collock=0;  playerx-=1;     }
 			 if (map[(abs(playerx)-1)+abs(playery)*21]==0){ collock=0;  playerx+=1;     }
