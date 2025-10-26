@@ -45,7 +45,17 @@ float trans,accy=0,accx=0,ang,acc,acc2,ballacc[MAX_BALLS],ballangx[MAX_BALLS],ba
 int sc;
 int board(){
 
+
+
+
+
+
+
+
 int i=-20,j=0;
+
+
+
 
 
 for (int k=0;k<150;k++){
@@ -66,9 +76,6 @@ if (map[k]==1){
 
 
 }
-
-
-
 
 
 
@@ -514,15 +521,20 @@ line(surface,playerx,playery,playerx+linex,playery+liney,3);}
            collisioncol=getpixel(coliface,playerx+6,playery);
                   putpixel(surface,playerx+6,playery,255);
 
-           if (collisioncol==1){    playerxmove=-0.5;  acc-=0.01;
-                                            }
+           if (collisioncol==1){
+
+                playerxmove=-playerxmove;     playerx-=1;
+
+
+           acc-=0.001;
+                      }
                   putpixel(surface,playerx-6,playery,255);
 
 
                     collisioncol=getpixel(coliface,playerx-6,playery);
-           if (collisioncol==1){ playerxmove=0.5; acc-=0.01;
-
-
+           if (collisioncol==1){ playerxmove=-playerxmove; acc-=0.001;
+                 
+                                                       playerx+=1;
 
 
           }
@@ -535,7 +547,7 @@ line(surface,playerx,playery,playerx+linex,playery+liney,3);}
            collisioncol=getpixel(coliface,playerx,playery+6);
                   putpixel(surface,playerx,playery+6,255);
 
-                if (collisioncol==1){ playerymove=-0.5;  acc-=0.01;
+                if (collisioncol==1){ playerymove=-playerymove; playery-=1;  acc-=0.001;
 
 
                 }
@@ -543,7 +555,7 @@ line(surface,playerx,playery,playerx+linex,playery+liney,3);}
              collisioncol=getpixel(coliface,playerx,playery-6);
                   putpixel(surface,playerx,playery-6,255);
 
-               if (collisioncol==1){    playerymove=0.5; acc-=0.01;
+               if (collisioncol==1){    playerymove=-playerymove; playery+=1;acc-=0.001;
 
 
 
