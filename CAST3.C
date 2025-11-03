@@ -41,6 +41,7 @@ char jpfire=0;
    double accel;
    double rotateforce;
    double rayx,rayy;
+ double playermovx,playermovy;
  double rayx=30,rayy=30;
 int checkx,checky;
 char stepx,stepy;
@@ -61,7 +62,7 @@ char goolanim=50;
 int plusent=0;
 char color,col1,col2;
 int level=0;
-char collock=1;
+char collockx=1,collockx1=1,collocky=1,collocky1=1;
 int mineanim=0;
 
 int plus2=0;
@@ -462,6 +463,8 @@ int i;  int n;      int l=0;
  u+=abs(sin(k)*3)+abs(sin(i)*2); k+=abs((cos(o*10)*50))+abs(sin(o*10))*50;
 
       if (t==20){map[i]=0;map[i-10]=2; }
+
+
 	   if (t==1){map[i]=0;}
        if (n>15+o){n=0;o+=14;}
 
@@ -469,6 +472,8 @@ int i;  int n;      int l=0;
    if (n==o){map[i]=0;}
 
    if (n==15+o){map[i]=0;}
+      if (n==12+o){map[i-1]=3;map[i+1]=3;}
+
    if (t==15){if (n==10){map[i]=0;}}
 
 //  if (k>5){map[i]=2;  k=0;   }
@@ -739,9 +744,10 @@ z=0;
 while (hit==0){
 //
 
-	 if (checky>0&checky<200){
+       if (checkx<-20){hit=1;}
+	    if (checky<-20){hit=1;}
+
 	 kdrawrectfill(buffer,(checkx*3)+5,(checky*3),1,1,4);
-		       }
 
 		  if( sidedistx<sidedisty)
 		   {sidedistx+=deltadistx;
@@ -769,12 +775,12 @@ while (hit==0){
 
 
      }  }
-       texstepy=walllenght*0.5;
+
 
 	  if (side==0){
 
 		  walllenght=((double)(sidedistx-deltadistx)*cos(-0.5+hl[k]));
-		 wallx=playery+(raydiry*walllenght);
+		 wallx=playery+(raydiry*(sidedistx-deltadistx));
 	   }
 
 
@@ -782,12 +788,11 @@ while (hit==0){
 
 
 			  walllenght=((double)(sidedisty-deltadisty)*cos(-0.5+hl[k]));
-			 wallx=playerx+(raydirx*walllenght);
+			 wallx=playerx+(raydirx*(sidedisty-deltadisty));
 
        }
 
-			    col2=(int)((wallx*80));
-
+			    col2=(int)((wallx*100));
 
 
 
@@ -800,8 +805,10 @@ while (hit==0){
 	wallheight1=(100-((120/(walllenght))));
 
        wallheight2=(100+((120/(walllenght))));
+//	if (wallheight1<10){wallheight1=10;}
+ //	if (wallheight2>180){wallheight2=180;}
 
-
+       texstepy=walllenght*0.5;
 if (side==0){color=16;
 
  }
@@ -812,7 +819,7 @@ if (side==1){color=0;
 						  col1=4;
 				      //	  if (walllenght>20){col1=4+50;}
 
-		texdist=0;
+		texdist=+200;
 
 	 //
 
@@ -826,72 +833,39 @@ if (side==1){color=0;
 
 
 	    for (i=wallheight1;i<wallheight2;i++){
-
-    if (i<200){        if (i>0){
-
 	    texdist+=texstepy;
+    if (i<199){        if (i>1){
+
+
+
 
 
 
 		     if (side==1){
 
-	  kputpixel(buffer,k,i,checkx);
+	 // kputpixel(buffer,k,i,checkx);
 
 
 
-
-
-
-			  if (checkx!=4
-			  ){
+			  if (checkx==4){
 		  kputpixel(buffer,k+1,i,checkx);
 
-		  }
+		  }       }
 
 	   }
 
-	if (side==0){
 
+	if (checkx!=4){
      col1=kgetpixelbmp(&bmp,col2+40,texdist+10);
+
 
      kputpixel(buffer,k,i,col1);
 
       kputpixel(buffer,k+1,i,col1);
 
 
-   //
-
-					      }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
 }
-
 
 }
 
@@ -975,7 +949,7 @@ while (hit==0){
 	  if (side==0){
 
 		  walllenght=((sidedistx-deltadistx)*(cos(-0.5+hl[k])));
-		 wallx=playery+(raydiry*walllenght);
+		 wallx=playery+(raydiry*(sidedistx-deltadistx));
 	   }
 
 
@@ -983,16 +957,14 @@ while (hit==0){
 
 
 			  walllenght=((sidedisty-deltadisty)*(cos(-0.5+hl[k])));
-			 wallx=playerx+(raydirx*walllenght);
+			 wallx=playerx+(raydirx*(sidedisty-deltadisty));
 
        }
 
 			    col2=(int)((wallx*100));
 
 	wallheight1=(100-(70/(walllenght)));
-
-       wallheight2=(100+(70/(walllenght)));
-
+    wallheight2=(100+(70/(walllenght)));
 
 
 
@@ -1122,35 +1094,63 @@ ang+=rotateforce*rotatedir;
        sc=getch();
       if (sc==27){ stk=0; }
       switch(sc) {
-		case 0x48 :     accy+=0.1;  movedir=1;
+		case 0x48 :     accy+=0.3;  movedir=1;
 
 		break;
-		case 0x4b:             rotateforce+=0.02; rotatedir=-1;
+		case 0x4b:             rotateforce+=0.025
+
+		; rotatedir=-1;
 
 		break;
-		case 0x50:       accy+=0.1;    movedir=-1;
+		case 0x50:       accy+=0.3;    movedir=-1;
 
 		break;
-		case 0x4d:              rotateforce+=0.02;  rotatedir=+1;
+		case 0x4d:              rotateforce+=0.025;  rotatedir=+1;
 
 		break;
 	       case 32:
 		break;
 
 	}	  }
-		  collock=1;
+
+
+
 		    playerdirx=sintab[(ang*100)+100];
 
 		    playerdiry=costab[(ang*100)+100];
 		   accel+=accy;
-		   playerx+=playerdirx*(accel*movedir)*collock*0.5;
-		   playery+=playerdiry*(accel*movedir)*collock*0.5;
+			collockx=1;
+			collocky=1;
+			collocky1=1;
+			collockx1=1;
 
-			 if (map[(abs(playerx)+1)+abs(playery)*21]==0){ collock=0;  playerx-=1;     }
-			 if (map[(abs(playerx)-1)+abs(playery)*21]==0){ collock=0;  playerx+=1;     }
-			 if (map[abs(playerx)+(abs(playery)+1)*21]==0){ collock=0;  playery-=1;     }
-			 if (map[abs(playerx)+(abs(playery)-1)*21]==0){ collock=0;  playery+=1
+			   playermovx=(playerdirx*(accel*movedir)*0.5);
+			   playermovy=(playerdiry*(accel*movedir)*0.5);
+			  	 if (map[((int)(playerx)+1)+(int)(playery)*21]==0){ collockx=0;     }
+
+			 if (map[((int)(playerx)-1)+(int)(playery)*21]==0){ collockx1=0;      }
+			 if (map[(int)(playerx)+(int)((playery)+1)*21]==0){ collocky=0;      }
+			 if (map[(int)(playerx)+(int)((playery)-1)*21]==0){ collocky1=0;
 			 ;     }
+
+
+
+
+			   if (playermovx>0){
+			   playerx+=playermovx*collockx;
+					     }
+			      if (playermovx<0){
+			   playerx+=playermovx*collockx1;
+			     }
+
+			       if (playermovy>0){
+			   playery+=playermovy*collocky;
+					     }
+			      if (playermovy<0){
+			   playery+=playermovy*collocky1;
+			     }
+
+
 
 
 	   //		  if (playerx>280){playerx=280;}
