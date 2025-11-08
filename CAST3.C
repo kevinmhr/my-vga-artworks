@@ -652,23 +652,9 @@ int  k;
  double fov;
 double raydirx,raydiry,sidedistx,sidedisty,deltadistx,deltadisty,rayx,rayy;
 char side=0;
+int z;
+int stepx,stepy;
 
-double stepx,stepy;
-
- // kdrawrectfill(buffer,0,0,320,200,8);
-  for (i=0;i<54;i++){
-   khline(buffer,0,i,320,31-(i>>2));
-
-  khline(buffer,0,i+49,320,20+((i>>2)+0.5));
-
-
-//  khline(buffer,0,i+100,320,(197));
-//    khline(buffer,0,i+180,320,(0));
-
-
-  }
-
-//kdrawrectfill(buffer,0,100,320,100,8);
 
 
 
@@ -804,12 +790,11 @@ while (hit==0){
 
 
 
-	wallheight1=(int)(100-(((100/walllenght))));
+	wallheight1=(int)(100-(((120/walllenght))));
 
-       wallheight2=(int)(100+(((100/walllenght))));
+       wallheight2=(int)(100+(((120/walllenght))));
 
-//	if (wallheight1<10){wallheight1=10;}
- //	if (wallheight2>180){wallheight2=180;}
+
 
        texstepy=walllenght*2;
 
@@ -819,7 +804,10 @@ while (hit==0){
 			  sky=0;
 	    wallhead=wallheight1;
 	    wallbuttom=wallheight2;
-	    for (i=-30;i<200;i+=1){
+	    z=0;
+	    for (i=wallheight1;i<200;i+=1){
+			 z=i-wallheight1;
+
 		      texdist+=texstepy;
 		     wallhead++;
 		     wallbuttom++;
@@ -840,35 +828,67 @@ while (hit==0){
 
 
 
-			  if (checkx==4){
 
 
-		  if (i<wallheight2&&i>wallheight1){
-		  kputpixel(buffer,k,i,checkx);
+ //      kputpixel(buffer,k+1,wallheight2,8);
+   //	buffer[k+(sky*320)]=8;
 
-			  if (i>100){
+ if (checkx==4){
+			if (z<35&&z>0){
+	    kputpixel(buffer,k,z,98-z>>2);
+			     kputpixel(buffer,k+1,z,100
+			     -z>>2);
 
-			  kputpixel(buffer,k+1,i,checkx+1);
+			      }
+
+
+				if (sky<wallheight1
+       ){
+
+
+		   kputpixel(buffer,k,sky,30+sky>>2);
+
+       kputpixel(buffer,k+1,sky,32+sky>>2);
+
+	     }
+
+
+					  if (i<wallheight2&&i>99){
+
+
+				  kputpixel(buffer,k,i,33+i>>3);
+
+
+
+
+			  kputpixel(buffer,k+1,i,30+i>>3);
+
 			  }
-				//  kputpixel(buffer,k+1,i,checkx);
 
-				     }
+			  if (i>wallheight1&&i<100){
+			       kputpixel(buffer,k,i,0);
+				    kputpixel(buffer,k+1,i,7);
+
+			  if (i>105){
+
+			  kputpixel(buffer,k,i,checkx+4
+			  );
+			  }
+			 //  kputpixel(buffer,k+1,i,checkx);
+
+
+		       }  }  
 
 	     if (wallbuttom<200){
        kputpixel(buffer,k,wallbuttom,8);
+ //
 	kputpixel(buffer,k+1,wallbuttom,8);
 	    }
 
 
 
+                                       }
 
-
-		  }       }
-
-
-
- //      kputpixel(buffer,k+1,wallheight2,8);
-   //	buffer[k+(sky*320)]=8;
 
 
 
@@ -889,12 +909,17 @@ while (hit==0){
 
 					 }
 
-		if (sky<wallheight1
-       ){
-	    //	kputpixel(buffer,k,sky,1);
+		if (sky<wallheight1){
+	       if (z<35){
+	    kputpixel(buffer,k,z,98-z>>2);
+			     kputpixel(buffer,k+1,z,100-z>>2);
 
-     //  kputpixel(buffer,k+1,sky,1);
-	     }
+		}
+
+       kputpixel(buffer,k,sky,30+sky>>2);
+
+       kputpixel(buffer,k+1,sky,32+sky>>2);
+		   }
 
 	      if (wallbuttom<200){
        kputpixel(buffer,k,wallbuttom,8);
@@ -906,7 +931,10 @@ while (hit==0){
 
 
 
-}}                          }
+}}
+
+
+	  }
 
 }
 	  }
@@ -916,7 +944,7 @@ while (hit==0){
 
 
 
-for (k=0;k<0;k+=2){
+for (k=0;k<320;k+=2){
 	hit=0;
 
 
@@ -1151,14 +1179,14 @@ i++;   if (i>20){i=0;v+=3; }
 
 		break;
 		case 0x4b:
-	 rotateforce+=0.05; rotatedir=-1;
+	 rotateforce+=0.03; rotatedir=-1;
 
 		break;
 		case 0x50:       accy+=0.3;    movedir=-1;
 
 		break;
 		case 0x4d:
-    rotateforce+=0.05; 	   rotatedir=+1;
+    rotateforce+=0.03; 	   rotatedir=+1;
 
 		break;
 	       case 32:
@@ -1172,7 +1200,7 @@ i++;   if (i>20){i=0;v+=3; }
 	//       ang+=rotateforce*rotatedir;
 
 
-	rotateforce-=0.002
+	rotateforce-=0.006
 	;
 	if (rotateforce<0){rotateforce=0;}
 		if (rotateforce>0.08){rotateforce=0.08;}
