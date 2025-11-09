@@ -34,6 +34,9 @@ word *my_clock=(word *)0x0000046C;    /* this points to the 18.2hz system
 int num2=0,num3=0,num4=0,num1=0;
 int score=0;
 char jpfire=0;
+     double sintab[1600];
+double costab[1600];
+
    char rotatedir;
    char movedir;
    double accel;
@@ -41,7 +44,7 @@ char jpfire=0;
  double playermovx,playermovy;
 
  double v;
- double hl[320];
+
  int viewang=0;
  double playerdirx,playerdiry;
 int hl2[320];
@@ -87,7 +90,7 @@ typedef struct tagBITMAP              /* the structure for a bitmap. */
    BITMAP bmp2;
     BITMAP font1;
 
-void kputpixel(char *buffer,int x,int y,int col);
+void kputpixel(char *buffer,int x,int y,unsigned char col);
 int kgetpixelpage(char *buffer,int x,int y);
 int kgetpixelbmp(BITMAP *bmp,int x,int y);
 int plus=0;
@@ -101,8 +104,7 @@ char sclv=0,sclh=0;
  byte u1=0,f1=0,o1=0,l1=0;
 
 double ang=0;
-double sintab[1900];
-double costab[1900];
+
 double playerx=3;
 double playery=2;
 
@@ -261,10 +263,11 @@ col=bp->data[x+(y*320)];
 return col;
 
 }
-void kputpixel(char *buffer,int x,int y,int col){
+void kputpixel(char *buffer,int x,int y,unsigned char col){
 
 if (y>=0&&y<=200&&x>=0&&x<=320) {
-buffer[x+(y*320)]=col;       }
+buffer[x+(y*320)]=col;
+   }
 
 }
 
@@ -515,7 +518,10 @@ void main()
   int ti=0;
   int si=0;
 
-    buffer=(char*)malloc(64000U);
+
+
+
+    buffer=(byte*)malloc(64000U);
 
 
    load_bmp("rocket2.bmp",&bmp);
@@ -610,8 +616,7 @@ v=0;
 for (i=0;i<1540;i+=1){
 v+=0.005;
 sintab[i]=sin(v);
-costab[i]=cos(v)
-;
+costab[i]=cos(v);
 
 
 
@@ -622,8 +627,8 @@ costab[i]=cos(v)
 		     col[k]=v;           }
 	  for (k=0;k<320;k+=1){
 
-		hl[k]=(((k)/(double)(320-1)));
-		hl2[k]=hl[k]*200;
+		hl2[k]=(((k)/(double)(320-1)))*180;
+	     //	hl2[k]=(hl[k]*200);
 
       }
 
@@ -768,7 +773,7 @@ while (hit==0){
 
 	  if (side==0){
 
-		  walllenght=(((sidedistx-deltadistx))*cos(-0.5+hl[k]));
+		  walllenght=(((sidedistx-deltadistx)))*sintab[hl2[k]+200];//*cos(-0.5+hl[k]));
 		 wallx=playery+(raydiry*(sidedistx-deltadistx));
 	   }
 
@@ -776,7 +781,7 @@ while (hit==0){
 		  if (side==1){
 
 
-			  walllenght=(((sidedisty-deltadisty))*cos(-0.5+hl[k]));
+			  walllenght=(((sidedisty-deltadisty)))*sintab[hl2[k]+200];//*cos(-0.5+hl[k]));
 			 wallx=playerx+(raydirx*(sidedisty-deltadisty));
 
        }
@@ -834,21 +839,21 @@ while (hit==0){
    //	buffer[k+(sky*320)]=8;
 
  if (checkx==4){
-			if (z<35&&z>0){
-	    kputpixel(buffer,k,z,98-z>>2);
-			     kputpixel(buffer,k+1,z,100
-			     -z>>2);
-
-			      }
 
 
 				if (sky<wallheight1
        ){
 
+			   if (z<35&&z>0){
+		     kputpixel(buffer,k,z,98-z>>2);
+			     kputpixel(buffer,k+1,z,100-z>>2);
+
+			      }
 
 		   kputpixel(buffer,k,sky,30+sky>>2);
 
        kputpixel(buffer,k+1,sky,32+sky>>2);
+
 
 	     }
 
@@ -877,7 +882,7 @@ while (hit==0){
 			 //  kputpixel(buffer,k+1,i,checkx);
 
 
-		       }  }  
+		       }  }
 
 	     if (wallbuttom<200){
        kputpixel(buffer,k,wallbuttom,8);
@@ -887,7 +892,7 @@ while (hit==0){
 
 
 
-                                       }
+				       }
 
 
 
@@ -898,7 +903,7 @@ while (hit==0){
 		 if (checkx!=4){
 
 	    if (wallhead<wallheight2){
-      //	 col1=kgetpixelbmp(&bmp,col2+40,texdist+10);
+	// col1=kgetpixelbmp(&bmp,col2+40,texdist+10);
 	col1=(int)col2&(int)(texdist)|checkx+30;
 
      kputpixel(buffer,k,wallhead,col1);
@@ -1025,16 +1030,16 @@ while (hit==0){
    }}
 
 	  if (side==0){
+			  walllenght=(((sidedistx-deltadistx)))*sintab[hl2[k]+200];//*cos(-0.5+hl[k]));
 
-		  walllenght=((sidedistx-deltadistx))*((cos(-0.5+hl[k])));
 		 wallx=playery+(raydiry*(sidedistx-deltadistx));
 	   }
 
 
 		  if (side==1){
+				  walllenght=(((sidedisty-deltadisty)))*sintab[hl2[k]+200];//*cos(-0.5+hl[k]));
 
 
-			  walllenght=((sidedisty-deltadisty))*((cos(-0.5+hl[k])));
 			 wallx=playerx+(raydirx*(sidedisty-deltadisty));
 
        }
@@ -1263,9 +1268,8 @@ i++;   if (i>20){i=0;v+=3; }
 //kdrawrectfill(buffer,0,190,320,20,0);
 
 //kdrawtransbitmap(&bmp,63,16,playerx,playery,35,30,0);
-
-
 	memcpy(VGA,buffer,64000);
+
 
  nosound();
 
