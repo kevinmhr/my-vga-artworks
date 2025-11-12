@@ -36,8 +36,10 @@ word *my_clock=(word *)0x0000046C;    /* this points to the 18.2hz system
 int num2=0,num3=0,num4=0,num1=0;
 int score=0;
 char jpfire=0;
-int  sintab[2600];
-int costab[2600];
+int  sintab[2500];
+int costab[2500];
+int  sintab2[2500];
+int costab2[2500];
 
    char rotatedir;
    char movedir;
@@ -50,6 +52,7 @@ int costab[2600];
  int viewang=0;
  double playerdirx,playerdiry;
 int hl2[320];
+
 char duckanim=0;
 char *buffer;
 double textw;
@@ -59,7 +62,8 @@ char nextsec=0;
 char bt=0;
 char color,col1,col2;
 int level=0;
-char collockx=1,collockx1=1,collocky=1,collocky1=1;
+
+ char collockx=1,collockx1=1,collocky=1,collocky1=1;
 int mineanim=0;
 
 int plus2=0;
@@ -622,6 +626,9 @@ sintab[i]=(int)(sin(v)*128);
 
 costab[i]=(int)(cos(v)*128);
 
+sintab2[i]=(int)(128/sin(v));
+
+costab2[i]=(int)(128/cos(v));
 
 
 }
@@ -631,8 +638,9 @@ costab[i]=(int)(cos(v)*128);
 		     col[k]=v;           }
 	  for (k=0;k<320;k+=2){
 
-		hl2[k]=(((k)/(double)(320-1)))*200;
-	     //	hl2[k]=(hl[k]*200);
+		hl2[k]=(((k)/(double)(320-1)))*180;
+	       //	hl[k]=(hl2[k])
+
 
       }
 
@@ -659,11 +667,11 @@ int  k;
   double texstepy;
   int k2=0;
  double fov;
-double raydirx,raydiry,sidedistx,sidedisty,deltadistx,deltadisty,rayx,rayy;
+double raydirx,deltadistx,deltadisty,raydiry,sidedistx,sidedisty,rayx,rayy;
+//int deltadistx,deltadisty;
 char side=0;
 int z;
 int stepx,stepy;
-
 
 
 
@@ -708,31 +716,40 @@ for (k=0;k<320;k+=2
 
 
 
+
 	     if (raydirx<0){   stepx=-1;
-		      deltadistx=-(1/raydirx);
-	     sidedistx=(playerx-checkx)*deltadistx;
+	     //	      deltadistx=-(1/raydirx);
+				      deltadistx=-sintab2[(int)(ang+hl2[k])];
+
+	     sidedistx=((playerx-checkx)*deltadistx);
 	     }
 		if (raydirx>0){
 		stepx=1;
-		 deltadistx=(1/raydirx);
+	 //	 deltadistx=(1/raydirx);
+					      deltadistx=sintab2[(int)(ang+hl2[k])];
 
-	     sidedistx=(checkx+1-playerx)*deltadistx;
+	     sidedistx=((checkx+1-playerx)*deltadistx);
 
 	     }
 
 
 		if (raydiry<0){   stepy=-1;
-			      deltadisty=-(1/raydiry);
-	     sidedisty=(playery-checky)*deltadisty;
+		//	      deltadisty=-(1/raydiry);
+			deltadisty=-costab2[(int)(ang+hl2[k])];
+
+	     sidedisty=((playery-checky)*deltadisty);
 
 	     }
 
 		if (raydiry>0){
 		  stepy=1;
-		   deltadisty=(1/raydiry);
+	       //	  deltadisty=(1/raydiry);
+		   deltadisty=costab2[(int)(ang+hl2[k])];
 
 
-	     sidedisty=(checky+1-playery)*deltadisty;}
+	     sidedisty=((checky+1-playery)*deltadisty);
+	     }
+
 
 
 
@@ -782,18 +799,18 @@ while (hit==0){
 
 
 
-	  if (side==0){
 
-		  walllenght=(((sidedistx-deltadistx)))*sintab[hl2[k]+150];//*cos(-0.5+hl[k]));
-		 wallx=playery+(raydiry*(sidedistx-deltadistx));
+	  if (side==0){
+		  walllenght=(((sidedistx-deltadistx)/10000)*(sintab[hl2[k]+150]));//*cos(-0.5+hl[k]));
+		 wallx=(playery+(raydiry*(sidedistx-deltadistx)/16400));
 	   }
 
 
 		  if (side==1){
 
 
-			  walllenght=(((sidedisty-deltadisty)))*sintab[hl2[k]+150];//*cos(-0.5+hl[k]));
-			 wallx=playerx+(raydirx*(sidedisty-deltadisty));
+			  walllenght=(((sidedisty-deltadisty)/10000)*(sintab[hl2[k]+150]));//*cos(-0.5+hl[k]));
+			 wallx=(playerx+(raydirx*(sidedisty-deltadisty)/16400));
 
        }
 
@@ -805,21 +822,31 @@ while (hit==0){
 
 
 
+	wallheight1=(100-(((int)(200/walllenght))));
 
-	wallheight1=(int)(100-(((120/walllenght))));
-
-       wallheight2=(int)(100+(((120/walllenght))));
-
+     //	if (wallheight1<1){wallheight1=1;}
 
 
-       texstepy=walllenght*2;
+
+       wallheight2=(100+(((int)(200/walllenght))));
+
+
+       //
+       //	if (wallheight2>200){wallheight2=200;}
+
+
+
+			   wallhead=(int)wallheight1;
+
+			    wallbuttom=(int)
+			    wallheight2;
+
+
 
 
 		texdist=0;
-
+                         texstepy=walllenght;
 			  sky=0;
-	    wallhead=wallheight1;
-	    wallbuttom=wallheight2;
 	    z=0;
 	    for (i=wallheight1;i<200;i+=1){
 			 z=i-wallheight1;
@@ -840,20 +867,25 @@ while (hit==0){
 
 		     if (side==1){
 
-	 // kputpixel(buffer,k,i,checkx);
+   //	  kputpixel(buffer,k,i,checkx);
 
 
 
 
 
- //      kputpixel(buffer,k+1,wallheight2,8);
+
+//       kputpixel(buffer,k+1,wallheight2,8);
    //	buffer[k+(sky*320)]=8;
 
  if (checkx==4){
+		     if (wallbuttom<200){
+       kputpixel(buffer,k,wallbuttom,8);
+
+	kputpixel(buffer,k+1,wallbuttom,8);
+	    }
 
 
-				if (sky<wallheight1
-       ){
+				if (sky<wallheight1){
 
 			   if (z<35&&z>0){
 		     kputpixel(buffer,k,z,98-z>>2);
@@ -885,21 +917,10 @@ while (hit==0){
 			       kputpixel(buffer,k,i,0);
 				    kputpixel(buffer,k+1,i,7);
 
-			  if (i>105){
-
-			  kputpixel(buffer,k,i,checkx+4
-			  );
-			  }
-			 //  kputpixel(buffer,k+1,i,checkx);
 
 
 		       }  }
 
-	     if (wallbuttom<200){
-       kputpixel(buffer,k,wallbuttom,8);
- //
-	kputpixel(buffer,k+1,wallbuttom,8);
-	    }
 
 
 
@@ -933,6 +954,7 @@ while (hit==0){
 		}
 
        kputpixel(buffer,k,sky,30+sky>>2);
+
 
        kputpixel(buffer,k+1,sky,32+sky>>2);
 		   }
@@ -1054,8 +1076,8 @@ while (hit==0){
 
 			    col2=(int)((wallx*100));
 
-	wallheight1=(int)(100-(70/(walllenght)));
-    wallheight2=(int)(100+(70/(walllenght)));
+	wallheight1=(int)(100-(70/walllenght));
+    wallheight2=(int)(100+(70/walllenght));
 
 
 
@@ -1219,16 +1241,16 @@ i++;   if (i>20){i=0;v+=3; }
 	 if (rotateforce>3){rotateforce=3;}
 
 
-	       ang+=rotateforce*rotatedir*3;
+	       ang+=rotateforce*rotatedir*4;
 
      //	ang+=rotateforce*rotatedir;
 		     accel+=accy;
-		    playerdirx=sintab[(ang)+100]/20;
+		    playerdirx=(int)(sintab[(ang)+100]);
 
-		    playerdiry=costab[(ang)+100]/20;
+		    playerdiry=(int)(costab[(ang)+100]);
 
-			   playermovx=(playerdirx*((movedir*accel))*0.5);
-			   playermovy=(playerdiry*((movedir*accel))*0.5);
+			   playermovx=((int)playerdirx*(int)movedir*accel)*0.02;
+			   playermovy=((int)playerdiry*(int)movedir*accel)*0.02;
 
 
 		      collockx=1;
