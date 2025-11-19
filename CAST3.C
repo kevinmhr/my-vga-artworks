@@ -31,7 +31,7 @@ word *my_clock=(word *)0x0000046C;    /* this points to the 18.2hz system
 
 
 					 clock. */
-
+char led;
   int stk=1;
 int num2=0,num3=0,num4=0,num1=0;
 int score=0;
@@ -55,6 +55,7 @@ int hl2[320];
 
 char duckanim=0;
 char *buffer;
+
 double textw;
 double z=0;
  char section=0;
@@ -491,7 +492,10 @@ int i;  int n;      int l=0;
    if (n==15+o){map[i]=0;}
       if (n==12+o){map[i-1]=3;map[i+1]=3;}
 
-   if (t==15){if (n==10){map[i]=0;}}
+   if (t==15){if (n==10){map[i]=0;       }   }
+   if (t==14){if (n==10){map[i]=0;       }    }
+   if (t==14){if (n==11){map[i]=0;       }    }
+      if (t==15){if (n==5){map[i]=0;       }    }
 
 //  if (k>5){map[i]=2;  k=0;   }
 
@@ -651,6 +655,7 @@ costab2[i]=(int)(128/cos(v));
 		  for (k=0;k<320;k+=1){
 		     v++;if (v>30){v=16;}
 		     col[k]=v;           }
+
 	  for (k=0;k<320;k+=2){
 
 		hl2[k]=(((k)/(double)(320-1)))*180;
@@ -689,7 +694,7 @@ char side=0;
 int z;
 int stepx,stepy;
 
-
+led++;
 	 accy=0; accx=0;
       dotcol=0;
     x1=(word)k;
@@ -708,6 +713,13 @@ int stepx,stepy;
 if (ang>1040){ang=0;}
 if (ang<0){ang=1040;}
 clear_buffer();
+
+	      collockx=1;
+			collocky=1;
+			collocky1=1;
+			collockx1=1;
+
+
 for (k=0;k<320;k+=2
 
 
@@ -743,6 +755,7 @@ for (k=0;k<320;k+=2
 				      deltadistx=-sintab2[(int)(ang+hl2[k])];
 
 	     sidedistx=((playerx-checkx)*deltadistx);
+
 	     }
 		if (raydirx>0){
 		stepx=1;
@@ -750,7 +763,6 @@ for (k=0;k<320;k+=2
 					      deltadistx=sintab2[(int)(ang+hl2[k])];
 
 	     sidedistx=((checkx+1-playerx)*deltadistx);
-
 	     }
 
 
@@ -811,11 +823,30 @@ while (hit==0){
 
 
  if (map[((int)(checkx))+(((int)(checky*21)))]==0){hit=1;
+		     if (raydiry<0){
+
+	     if (sidedisty<1){collocky=0;}
+	     }
 
 
 
+				if (raydiry>0){
+
+	     if (sidedisty<1){collocky1=0;}
+	     }
 
 
+	     if (raydirx<0){
+
+	     if (sidedistx<1){collockx=0;}
+	     }
+
+
+
+				if (raydirx>0){
+
+	     if (sidedistx<1){collockx1=0;}
+	     }
 
 
 
@@ -839,12 +870,12 @@ while (hit==0){
 
 			    col2=wallx*200;
 
-		wallheight1=(int)(100-(((int)(200/walllenght))));
+		wallheight1=(int)(100-(((int)(250/walllenght))));
 
 
 
 
-       wallheight2=(int)(100+(((int)(200/walllenght))));
+       wallheight2=(int)(100+(((int)(250/walllenght))));
 
 
 
@@ -882,7 +913,7 @@ while (hit==0){
 		 if (checkx==4){
 
 	       if (i>0&&i<200){
-		col1=(int)col2|(int)(texdist)|checkx+10;
+		col1=(int)col2&(int)(texdist)|checkx+10;
 		 dotcol=(byte)col1;
 
     asm push es
@@ -897,11 +928,12 @@ asm pop es
 		 if (checkx!=4){
 
 
-	col1=(int)col2&(int)(texdist)|checkx+30;
+     col1=(int)col2|(int)(texdist)|checkx+5;
 
 
 	       if (i>0&&i<200){
     dotcol=(byte)col1;
+
 
 asm push es
 asm les di,buffer
@@ -919,6 +951,21 @@ asm add di,1
 
 asm stosw
 asm pop es
+
+
+if (dotcol==55){
+  asm push es
+asm les di,buffer
+asm add di,y1
+
+asm mov al,[led]
+
+
+
+asm stosw
+asm pop es
+		}
+
 
 //     kputpixel(buffer,k,wallhead,col1);
 
@@ -1213,42 +1260,39 @@ i++;   if (i>20){i=0;v+=3; }
 
 		    playerdiry=(int)(costab[(ang)+100]);
 
-			   playermovx=((int)playerdirx*(int)movedir*accel)*0.02;
-			   playermovy=((int)playerdiry*(int)movedir*accel)*0.02;
+			   playermovx=((int)playerdirx*(int)movedir*accel);
+			   playermovy=((int)playerdiry*(int)movedir*accel);
 
 
-		      collockx=1;
-			collocky=1;
-			collocky1=1;
-			collockx1=1;
 			i=1;
 
 
 
-			 if (map[((int)(playerx)+i)+(int)(playery)*21]==0){ collockx=0;     }
+			 if (map[((int)(playerx)+i)+(int)(playery)*21]==0){ collockx=0;
+			   }
 
-			 if (map[((int)(playerx)-i)+(int)(playery)*21]==0){ collockx1=0;      }
+			 if (map[((int)(playerx)-i)+(int)(playery)*21]==0){ collockx1=0;
+			      }
 
 
-			 if (map[(int)(playerx)+(int)((playery)+i)*21]==0){ collocky=0;      }
+			 if (map[(int)(playerx)+(int)((playery)+i)*21]==0){ collocky=0;
+			     }
 			 if (map[(int)(playerx)+(int)((playery)-i)*21]==0){ collocky1=0;
+
 			 ;     }
 
-
-
-
 			   if (playermovx>0){
-			   playerx+=playermovx*collockx;
+			   playerx+=playermovx*collockx*0.02;
 					     }
 			      if (playermovx<0){
-			   playerx+=playermovx*collockx1;
+			   playerx+=playermovx*collockx1*0.02;
 			     }
 
 			       if (playermovy>0){
-			   playery+=playermovy*collocky;
+			   playery+=playermovy*collocky*0.02;
 					     }
 			      if (playermovy<0){
-			   playery+=playermovy*collocky1;
+			   playery+=playermovy*collocky1*0.02;
 			     }
 
 
