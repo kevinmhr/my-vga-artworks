@@ -823,32 +823,6 @@ while (hit==0){
 
 
  if (map[((int)(checkx))+(((int)(checky*21)))]==0){hit=1;
-		     if (raydiry<0){
-
-	     if (sidedisty<1){collocky=0;}
-	     }
-
-
-
-				if (raydiry>0){
-
-	     if (sidedisty<1){collocky1=0;}
-	     }
-
-
-	     if (raydirx<0){
-
-	     if (sidedistx<1){collockx=0;}
-	     }
-
-
-
-				if (raydirx>0){
-
-	     if (sidedistx<1){collockx1=0;}
-	     }
-
-
 
 
 
@@ -867,6 +841,8 @@ while (hit==0){
 			 wallx=(playerx+(raydirx*(sidedisty-deltadisty)/16400));
 
        }
+
+				if (walllenght<0.8){ walllenght=0.8;playerx-=playermovx*0.02; playery-=playermovy*0.02;}
 
 			    col2=wallx*200;
 
@@ -899,8 +875,8 @@ while (hit==0){
 
 
 
-
 	    for (i=wallheight1;i<wallheight2;i+=1){
+
 //			 z=i-wallheight1;
 
 		     y1=k+(i*320);
