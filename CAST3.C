@@ -32,7 +32,7 @@ word *my_clock=(word *)0x0000046C;    /* this points to the 18.2hz system
 
 					 clock. */
 char led;
-  int stk=1;
+int stk=1;
 int num2=0,num3=0,num4=0,num1=0;
 int score=0;
 char jpfire=0;
@@ -45,18 +45,18 @@ int x1,y1;
    char movedir;
    double accel;
    double rotateforce;
- double playermovx,playermovy;
+ int playermovx,playermovy;
 
  double v;
 
  int viewang=0;
- double playerdirx,playerdiry;
+ int playerdirx,playerdiry;
 int hl2[320];
 
-char duckanim=0;
+
 char *buffer;
 
-double textw;
+//double textw;
 double z=0;
  char section=0;
 char nextsec=0;
@@ -461,7 +461,7 @@ void clear_buffer(void)
 		mov ax,5
 		les di,buffer
 		db 66h
-	
+
 
 		mov cx,32500
 		cld
@@ -640,15 +640,16 @@ tt=0;
 v=0;
 for (i=0;i<2500;i+=1){
 v+=0.006;
-
+if (sin(v)!=0){
 sintab[i]=(int)(sin(v)*128);
-
-costab[i]=(int)(cos(v)*128);
-
 sintab2[i]=(int)(128/sin(v));
 
-costab2[i]=(int)(128/cos(v));
+	       }
+if (cos(v)!=0){
 
+costab[i]=(int)(cos(v)*128);
+costab2[i]=(int)(128/cos(v));
+}
 
 }
 		   v=16;
@@ -656,7 +657,7 @@ costab2[i]=(int)(128/cos(v));
 		     v++;if (v>30){v=16;}
 		     col[k]=v;           }
 
-	  for (k=0;k<320;k+=2){
+	  for (k=0;k<320;k+=1){
 
 		hl2[k]=(((k)/(double)(320-1)))*180;
 	       //	hl[k]=(hl2[k])
@@ -688,8 +689,8 @@ int  k;
   double texstepy;
   int k2=0;
  double fov;
-double raydirx,deltadistx,deltadisty,raydiry,sidedistx,sidedisty,rayx,rayy;
-//int deltadistx,deltadisty;
+double sidedistx,sidedisty;
+int deltadistx,deltadisty,rayx,rayy;
 char side=0;
 int z;
 int stepx,stepy;
@@ -710,8 +711,8 @@ led++;
 	v=0;
 
        col1=16;
-if (ang>1040){ang=0;}
-if (ang<0){ang=1040;}
+if (ang>1050){ang=1;}
+if (ang<1){ang=1050;}
 clear_buffer();
 
 	      collockx=1;
@@ -725,7 +726,7 @@ for (k=0;k<320;k+=2
 
 
 
-      ){   z+=5;
+      ){
 	hit=0;
 
 
@@ -738,8 +739,6 @@ for (k=0;k<320;k+=2
 
 
 
-		       raydirx=rayx;
-		       raydiry=rayy;
 
 
 		  //     deltadistx=sqrt(1+(raydiry*raydiry)/(raydirx*raydirx));
@@ -750,14 +749,14 @@ for (k=0;k<320;k+=2
 
 
 
-	     if (raydirx<0){   stepx=-1;
+	     if (rayx<0){   stepx=-1;
 	     //	      deltadistx=-(1/raydirx);
 				      deltadistx=-sintab2[(int)(ang+hl2[k])];
 
 	     sidedistx=((playerx-checkx)*deltadistx);
 
 	     }
-		if (raydirx>0){
+		if (rayx>0){
 		stepx=1;
 	 //	 deltadistx=(1/raydirx);
 					      deltadistx=sintab2[(int)(ang+hl2[k])];
@@ -766,7 +765,7 @@ for (k=0;k<320;k+=2
 	     }
 
 
-		if (raydiry<0){   stepy=-1;
+		if (rayy<0){   stepy=-1;
 		//	      deltadisty=-(1/raydiry);
 			deltadisty=-costab2[(int)(ang+hl2[k])];
 
@@ -774,7 +773,7 @@ for (k=0;k<320;k+=2
 
 	     }
 
-		if (raydiry>0){
+		if (rayy>0){
 		  stepy=1;
 	       //	  deltadisty=(1/raydiry);
 		   deltadisty=costab2[(int)(ang+hl2[k])];
@@ -782,8 +781,6 @@ for (k=0;k<320;k+=2
 
 	     sidedisty=((checky+1-playery)*deltadisty);
 	     }
-
-
 
 
 
@@ -829,7 +826,8 @@ while (hit==0){
 
 	  if (side==0){
 		  walllenght=(((sidedistx-deltadistx)/10000)*(sintab[hl2[k]+150]));//*cos(-0.5+hl[k]));
-		 wallx=(playery+(raydiry*(sidedistx-deltadistx)/16400));
+
+		 wallx=(playery+(rayy*(sidedistx-deltadistx)/16400));
 
 	   }
 
@@ -837,14 +835,15 @@ while (hit==0){
 		  if (side==1){
 
 
-			  walllenght=(((sidedisty-deltadisty)/10000)*(sintab[hl2[k]+150]));//*cos(-0.5+hl[k]));
-			 wallx=(playerx+(raydirx*(sidedisty-deltadisty)/16400));
+			  walllenght=(((sidedisty-(deltadisty))/10000)*(sintab[hl2[k]+150]));//*cos(-0.5+hl[k]));
+			 wallx=(playerx+(rayx*(sidedisty-deltadisty)/16400));
 
        }
 
-				if (walllenght<0.8
+				if (walllenght<0.8){
 
-				){ //playerx-=playermovx*0.02; playery-=playermovy*0.02;
+
+				 //playerx-=playermovx*0.02; playery-=playermovy*0.02;
 				if (playerdirx>0){collockx=0;}
 				if (playerdirx<0){collockx1=0;}
 				if (playerdiry>0){collocky=0;}
@@ -884,15 +883,10 @@ while (hit==0){
 
 	    for (i=wallheight1;i<wallheight2;i+=1){
 
-//			 z=i-wallheight1;
-
 		     y1=k+(i*320);
 
 
 		     texdist+=texstepy;
-       //		     wallhead++;
-	//	     wallbuttom++;
-	 //	     sky++;
 		 if (checkx==4){
 
 	       if (i>0&&i<200){
@@ -923,8 +917,6 @@ asm les di,buffer
 asm add di,y1
 asm mov al,[dotcol]
 asm stosw
-asm pop es
-asm push es
 asm les di,buffer
 asm add di,y1
 asm mov al,[dotcol]
@@ -976,163 +968,6 @@ asm pop es
 
 
 
-for (k=0;k<320;k+=2){
-	hit=0;
-
-
-
- checkx=(int)playerx;
- checky=(int)playery;
-	rayx=sintab[(int)(ang+hl2[k])];
-	   rayy=costab[(int)(ang+hl2[k])];
-
-	       //	  playerdirx=sintab[(int)(ang+25)];
-
-	      //	  playerdiry=costab[(int)(ang+25)];
-
-		       raydirx=rayx;
-		       raydiry=rayy;
-
-		    //   deltadistx=sqrt(1+(raydiry*raydiry)/(raydirx*raydirx));
-
-		    //   deltadisty=sqrt(1+(raydirx*raydirx)/(raydiry*raydiry));
-
-
-	     if (raydirx<0){   stepx=-1;      deltadistx=-(1/raydirx);
-
-
-	     sidedistx=(playerx-checkx)*deltadistx;}
-
-		 if (raydirx>0){   stepx=1;     	       deltadistx=(1/raydirx);
-	     sidedistx=(checkx+1 -playerx)*deltadistx;}
-
-
-		if (raydiry<0){   stepy=-1;       deltadisty=-(1/raydiry);
-
-	     sidedisty=(playery-checky)*deltadisty;}
-
-
-		   if (raydiry>0){   stepy=1;             deltadisty=(1/raydiry);
-
-	     sidedisty=(checky+1 -playery)*deltadisty;}
-
-
-
-
-
-while (hit==0){
-
-		  if( sidedistx<sidedisty)
-		   {sidedistx+=deltadistx;
-
-		   checkx+= stepx;
-			  side=0;
-
-		   }
-		   else
-		   { sidedisty+= deltadisty;
-		   checky+= stepy;
-		   side =1;
-
-
-		   }
-
-
-
- if (map[(int)(checkx)+((int)(checky)*21)]!=2){hit=1;
-
-
-
-
-
-
-
-
-
-
-
-   }}
-
-	  if (side==0){
-			  walllenght=(((sidedistx-deltadistx)))*sintab[hl2[k]+200];//*cos(-0.5+hl[k]));
-
-		 wallx=playery+(raydiry*(sidedistx-deltadistx));
-	   }
-
-
-		  if (side==1){
-				  walllenght=(((sidedisty-deltadisty)))*sintab[hl2[k]+200];//*cos(-0.5+hl[k]));
-
-
-			 wallx=playerx+(raydirx*(sidedisty-deltadisty));
-
-       }
-
-			    col2=(int)((wallx*100));
-
-	wallheight1=(int)(100-(70/walllenght));
-    wallheight2=(int)(100+(70/walllenght));
-
-
-
-
-
-
-
-
-		texdist=0;
-
-	      texstepy=walllenght*0.5;
- if (map[(int)(checkx)+((int)(checky)*21)]==5){
-
-  for (i=wallheight1;i<wallheight2;i++){
-
-    if (i<200){        if (i>0){
-
-	    texdist+=texstepy;
-	    textw+=col2;
-     col1=kgetpixelbmp(&bmp2,100+col2,40+(int)texdist);
-
-      if (col1!=0){
-
-     kputpixel(buffer,k,i,col1+1);
-
-      kputpixel(buffer,k+1,i,col1+1);
-		   }
-
-
-
-}
-
-
-
-
-}
-
-
-
-
-
-
-
-
-
-
-}
-
-
-
-
-
-
-}
-
-
-
-
-
-}
-
 
 
 
@@ -1174,6 +1009,7 @@ i++;   if (i>20){i=0;v+=3; }
 
 
   if (map[k+plus]==0){
+//
 	     kdrawrectfill(buffer,(i*3)+3,v+section,3,3,4);
 
 
@@ -1209,6 +1045,7 @@ i++;   if (i>20){i=0;v+=3; }
 
 		break;
 		case 0x4b:
+
 	 rotateforce+=2;
 	 rotatedir=-1;
 
@@ -1279,20 +1116,12 @@ i++;   if (i>20){i=0;v+=3; }
 			     }
 
 
+//
    blittext(50,150,"find yourself around   ",8,41,3);
- //    blittext(50,190,my_clock,8,20,3);
-
-
-	   //		  if (playerx>280){playerx=280;}
-	//  if (playerx<10){playerx=10;}
-	//  if (playery>165){playery=165;}
-	//  if (playery<10){playery=10;}
 
 
 
-//kdrawrectfill(buffer,0,190,320,20,0);
 
-//kdrawtransbitmap(&bmp,63,16,playerx,playery,35,30,0);
 	memcpy(VGA,buffer,64000);
 
 
