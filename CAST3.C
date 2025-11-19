@@ -842,7 +842,14 @@ while (hit==0){
 
        }
 
-				if (walllenght<0.8){ walllenght=0.8;playerx-=playermovx*0.02; playery-=playermovy*0.02;}
+				if (walllenght<0.8
+
+				){ //playerx-=playermovx*0.02; playery-=playermovy*0.02;
+				if (playerdirx>0){collockx=0;}
+				if (playerdirx<0){collockx1=0;}
+				if (playerdiry>0){collocky=0;}
+				if (playerdiry<0){collocky1=0;}
+				}
 
 			    col2=wallx*200;
 
@@ -955,8 +962,8 @@ asm pop es
 
 
 
-}}
-
+}
+ }
 
 	  }
 
@@ -1228,7 +1235,7 @@ i++;   if (i>20){i=0;v+=3; }
 	 if (rotateforce>3){rotateforce=3;}
 
 
-	       ang+=rotateforce*rotatedir*4;
+	       ang+=rotateforce*rotatedir*2;
 
      //	ang+=rotateforce*rotatedir;
 		     accel+=accy;
