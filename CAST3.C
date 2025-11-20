@@ -11,6 +11,11 @@
 #include <dos.h>
 #include <time.h>
 
+
+
+#include "kbd.c"
+
+
 #include <math.h>
 #define VIDEO_INT           0x10      /* the BIOS video interrupt. */
 #define SET_MODE            0x00      /* BIOS func to set the video mode. */
@@ -24,6 +29,8 @@
 typedef unsigned char  byte;
 typedef unsigned short word;
 typedef unsigned long  dword;
+
+
   FILE *fp;
 
 byte *VGA=(byte *)0xA0000000L;        /* this points to video memory. */
@@ -566,6 +573,7 @@ mapfill(0,0,0,0);
 
   set_mode(VGA_256_COLOR_MODE);       /* set the video mode. */
 
+SetKeyboard();
 
 
 
@@ -616,14 +624,22 @@ for (y=0;y<200;y+=60){
    memcpy(VGA,buffer,64000);
 
   /* draw the background */
+  for (i=0;i<255;i++){
+  if(KeyTable[i]){
+  stk++;
 
+  }                   }
 
+/*
    if (kbhit())
 
-{stk++;
- getch();  }
+{
 
+ getch();
 
+   }
+
+  */
 
 
 
@@ -1034,36 +1050,40 @@ i++;   if (i>20){i=0;v+=3; }
 	accel-=0.005;
 		if (accel<0){accel=0;}
 
-   if (kbhit()) {
 
-       sc=getch();
-      if (sc==27){ stk=0; }
-      switch(sc) {
-		case 0x48 :     accy+=0.04
-		;
-		;  movedir=1;
-
-		break;
-		case 0x4b:
-
+  if(KeyTable[K_LEFTARROW]){
 	 rotateforce+=2;
 	 rotatedir=-1;
 
-		break;
-		case 0x50:       accy+=0.04;    movedir=-1;
 
-		break;
-		case 0x4d:
-    rotateforce+=2; 	   rotatedir=+1;
+  }
+  if(KeyTable[K_RIGHTARROW]){
+  rotateforce+=2;
+	 rotatedir=1;
 
-		break;
-	       case 32:
-		break;
+  }
 
-	}	  }
+    if(KeyTable[K_DOWNARROW]){
+		 accy+=0.04;
+		  movedir=-1;
+
+
+
+  }
+
+    if(KeyTable[K_UPARROW]){
+		 accy+=0.04;
+		  movedir=1;
+
+
+  }
+
+    if(KeyTable[K_ESCAPE]){
+   stk=0;
+  }
 // sleep(500);
 
-				if (accel>0.045){accel=0.045;}
+				if (accel>0.015){accel=0.015;}
 
 		rotateforce-=0.3;
 
@@ -1072,7 +1092,7 @@ i++;   if (i>20){i=0;v+=3; }
 	 if (rotateforce>3){rotateforce=3;}
 
 
-	       ang+=rotateforce*rotatedir*2;
+	       ang+=rotateforce*rotatedir*1;
 
      //	ang+=rotateforce*rotatedir;
 		     accel+=accy;
