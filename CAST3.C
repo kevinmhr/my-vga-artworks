@@ -62,7 +62,6 @@ int hl2[320];
 
 
 char *buffer;
-
 //double textw;
 double z=0;
  char section=0;
@@ -465,16 +464,29 @@ void clear_buffer(void)
 {
 	asm {
 		push es
-		mov ax,5
+		mov al,20
+		mov ah,20
 		les di,buffer
+		add di,32000
 		db 66h
-
-
-		mov cx,32500
+		mov cx,16250
 		cld
 		db 66h
 		rep stosw
-		pop es }
+		pop es
+		push es
+		mov al,1
+		mov ah,7
+		les di,buffer
+		
+		mov cx,16250
+
+
+		rep stosw
+		pop es
+
+
+ }
 }
 
 mapfill(int u,int t,int k,int o){
@@ -624,11 +636,11 @@ for (y=0;y<200;y+=60){
    memcpy(VGA,buffer,64000);
 
   /* draw the background */
-  for (i=0;i<255;i++){
-  if(KeyTable[i]){
+
+  if(KeyTable[K_SPACE]){
   stk++;
 
-  }                   }
+  }
 
 /*
    if (kbhit())
@@ -688,6 +700,7 @@ while (stk==2){
   double walllenght=0;
  char sky;
  int wallhead,wallbuttom;
+ int texy;
  int wallheight1;
  int wallheight2;
 byte dotcol;
@@ -852,6 +865,7 @@ while (hit==0){
 
 
 			  walllenght=(((sidedisty-(deltadisty))/10000)*(sintab[hl2[k]+150]));//*cos(-0.5+hl[k]));
+
 			 wallx=(playerx+(rayx*(sidedisty-deltadisty)/16400));
 
        }
@@ -869,25 +883,26 @@ while (hit==0){
 			    col2=wallx*200;
 
 		wallheight1=(int)(100-(((int)(250/walllenght))));
+			   if (wallheight1<0){wallheight1=0;}
+			   wallhead=(int)wallheight1;
 
 
 
 
        wallheight2=(int)(100+(((int)(250/walllenght))));
+		    if (wallheight2>200){wallheight2=200;}
+		    wallbuttom=(int)wallheight2;
 
 
 
 
-			   wallhead=(int)wallheight1;
-
-			    wallbuttom=(int)wallheight2;
-
-
-
-
-			   texdist=0;
 
 				    texstepy=walllenght;
+
+
+			       texdist=(wallheight1-100)*walllenght;
+
+
 
 
 			  sky=0;
@@ -897,16 +912,23 @@ while (hit==0){
 
 
 
+
 	    for (i=wallheight1;i<wallheight2;i+=1){
+				    texdist+=texstepy;
 
-		     y1=k+(i*320);
+				   texy=(int)(texdist);
+				     y1=k+(i*320);
+			if (i>0&&i<200){
 
 
-		     texdist+=texstepy;
+
+
+
+
 		 if (checkx==4){
 
-	       if (i>0&&i<200){
-		col1=(int)col2&(int)(texdist)|checkx+10;
+
+		col1=(int)col2&(int)(texy)|checkx+10;
 		 dotcol=(byte)col1;
 
     asm push es
@@ -915,16 +937,15 @@ asm add di,y1
 asm mov al,[dotcol]
 asm stosw
 asm pop es
-	       }
+
 
     }
 		 if (checkx!=4){
 
 
-     col1=(int)col2|(int)(texdist)|checkx+5;
+     col1=(int)col2|(int)(texy)|checkx+5;
 
 
-	       if (i>0&&i<200){
     dotcol=(byte)col1;
 
 
@@ -941,6 +962,9 @@ asm add di,1
 
 
 asm stosw
+
+
+
 asm pop es
 
 
@@ -964,8 +988,8 @@ asm pop es
 
   //	kputpixel(buffer,k+1,wallhead,col1);
 
-					 }
 
+			        }
 
 
 
@@ -1052,12 +1076,14 @@ i++;   if (i>20){i=0;v+=3; }
 
 
   if(KeyTable[K_LEFTARROW]){
+
 	 rotateforce+=2;
 	 rotatedir=-1;
 
 
   }
   if(KeyTable[K_RIGHTARROW]){
+
   rotateforce+=2;
 	 rotatedir=1;
 
@@ -1092,7 +1118,7 @@ i++;   if (i>20){i=0;v+=3; }
 	 if (rotateforce>3){rotateforce=3;}
 
 
-	       ang+=rotateforce*rotatedir*1;
+	       ang+=rotateforce*rotatedir;
 
      //	ang+=rotateforce*rotatedir;
 		     accel+=accy;
@@ -1151,6 +1177,7 @@ i++;   if (i>20){i=0;v+=3; }
 
 
 while (stk==0){
+RestoreKeyboard();
 
  return;       }
 
