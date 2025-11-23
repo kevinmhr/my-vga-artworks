@@ -43,10 +43,10 @@ int stk=1;
 int num2=0,num3=0,num4=0,num1=0;
 int score=0;
 char jpfire=0;
-int  sintab[2500];
-int costab[2500];
-int  sintab2[2500];
-int costab2[2500];
+int  sintab[1000];
+int costab[1000];
+int  sintab2[1000];
+int costab2[1000];
 int x1,y1;
    char rotatedir;
    char movedir;
@@ -666,17 +666,17 @@ gh:
 tt=0;
 
 v=0;
-for (i=0;i<2500;i+=1){
-v+=0.006;
+for (i=0;i<1000;i+=1){
+v+=0.01;
 if (sin(v)!=0){
-sintab[i]=(int)(sin(v)*128);
-sintab2[i]=(int)(128/sin(v));
+sintab[i]=(int)(sin(v)*64);
+sintab2[i]=(int)(64/sin(v));
 
 	       }
 if (cos(v)!=0){
 
-costab[i]=(int)(cos(v)*128);
-costab2[i]=(int)(128/cos(v));
+costab[i]=(int)(cos(v)*64);
+costab2[i]=(int)(64/cos(v));
 }
 
 }
@@ -687,7 +687,7 @@ costab2[i]=(int)(128/cos(v));
 
 	  for (k=0;k<320;k+=1){
 
-		hl2[k]=(((k)/(double)(320-1)))*180;
+		hl2[k]=(((k)/(double)(320-1)))*150;
 	       //	hl[k]=(hl2[k])
 
 
@@ -740,8 +740,8 @@ led++;
 	v=0;
 
        col1=16;
-if (ang>1050){ang=1;}
-if (ang<1){ang=1050;}
+if (ang>630){ang=1;}
+if (ang<1){ang=630;}
 clear_buffer();
 
 	      collockx=1;
@@ -854,9 +854,9 @@ while (hit==0){
 
 
 	  if (side==0){
-		  walllenght=(((sidedistx-deltadistx)/10000)*(sintab[hl2[k]+150]));//*cos(-0.5+hl[k]));
+		  walllenght=(((sidedistx-deltadistx)/1500)*(sintab[hl2[k]+80]));//*cos(-0.5+hl[k]));
 
-		 wallx=(playery+(rayy*(sidedistx-deltadistx)/16400));
+		 wallx=(playery+(rayy*(sidedistx-deltadistx)/4000));
 
 	   }
 
@@ -864,13 +864,13 @@ while (hit==0){
 		  if (side==1){
 
 
-			  walllenght=(((sidedisty-(deltadisty))/10000)*(sintab[hl2[k]+150]));//*cos(-0.5+hl[k]));
+			  walllenght=(((sidedisty-(deltadisty))/1500)*(sintab[hl2[k]+80]));//*cos(-0.5+hl[k]));
 
-			 wallx=(playerx+(rayx*(sidedisty-deltadisty)/16400));
+			 wallx=(playerx+(rayx*(sidedisty-deltadisty)/4000));
 
        }
 
-				if (walllenght<0.8){
+				if (walllenght<0.6){
 
 
 				 //playerx-=playermovx*0.02; playery-=playermovy*0.02;
@@ -905,8 +905,6 @@ while (hit==0){
 
 
 
-			  sky=0;
-	    z=0;
 
 
 
@@ -941,7 +939,6 @@ asm pop es
 
     }
 		 if (checkx!=4){
-
 
      col1=(int)col2|(int)(texy)|checkx+5;
 
@@ -1076,15 +1073,14 @@ i++;   if (i>20){i=0;v+=3; }
 
 
   if(KeyTable[K_LEFTARROW]){
-
-	 rotateforce+=2;
+	 rotateforce+=1;
 	 rotatedir=-1;
 
 
   }
   if(KeyTable[K_RIGHTARROW]){
 
-  rotateforce+=2;
+  rotateforce+=1;
 	 rotatedir=1;
 
   }
@@ -1111,20 +1107,20 @@ i++;   if (i>20){i=0;v+=3; }
 
 				if (accel>0.015){accel=0.015;}
 
-		rotateforce-=0.3;
+		rotateforce-=0.2;
 
 	if (rotateforce<0){rotateforce=0;}
 
-	 if (rotateforce>3){rotateforce=3;}
+	 if (rotateforce>2){rotateforce=2;}
 
 
 	       ang+=rotateforce*rotatedir;
 
      //	ang+=rotateforce*rotatedir;
 		     accel+=accy;
-		    playerdirx=(int)(sintab[(ang)+100]);
+		    playerdirx=(int)(sintab[(ang)+73]);
 
-		    playerdiry=(int)(costab[(ang)+100]);
+		    playerdiry=(int)(costab[(ang)+73]);
 
 			   playermovx=((int)playerdirx*(int)movedir*accel);
 			   playermovy=((int)playerdiry*(int)movedir*accel);
