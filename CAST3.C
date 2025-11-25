@@ -686,9 +686,9 @@ costab2[i]=(int)(128/cos(v));
 		     v++;if (v>30){v=16;}
 		     col[k]=v;           }
 
-	  for (k=0;k<320;k+=1){
+	  for (k=0;k<320;k+=2){
 
-		hl2[k]=(((k)/(double)(320)))*100;
+		hl2[k]=(((k)/(160)))*70;
 	       //	hl[k]=(hl2[k])
 
 
@@ -825,13 +825,11 @@ for (k=0;k<320;k+=2
 
 while (hit==0){
    //
-
-    kdrawrectfill(buffer,(checkx*3)+5,(checky*3),1,1,4);
+		    kdrawrectfill(buffer,(checkx*3)+5,(checky*3),1,1,4);
 
 		  if( sidedistx<sidedisty)
 
 		   {sidedistx+=deltadistx;
-
 		   checkx+= stepx;
 
 			  side=0;
@@ -852,12 +850,10 @@ while (hit==0){
  if (map[((int)(checkx))+(((int)(checky*21)))]==0){hit=1;
 
 
-
-
 	  if (side==0){
-		  walllenght=(((sidedistx-deltadistx))*(sintab[hl2[k]+80]*0.0001));//*cos(-0.5+hl[k]));
+		  walllenght=(((sidedistx-deltadistx))*(sintab[hl2[k]+90]))*0.00008;//*cos(-0.5+hl[k]));
 
-		 wallx=(playery+(rayy*(sidedistx-deltadistx)/16500));
+		 wallx=(playery+(rayy*(sidedistx-deltadistx)/16400));
 
 	   }
 
@@ -865,11 +861,12 @@ while (hit==0){
 		  if (side==1){
 
 
-			  walllenght=(((sidedisty-(deltadisty)))*(sintab[hl2[k]+80]*0.0001));//*cos(-0.5+hl[k]));
+			  walllenght=(((sidedisty-(deltadisty)))*(sintab[hl2[k]+90])*0.00008);//*cos(-0.5+hl[k]));
 
-			 wallx=(playerx+(rayx*(sidedisty-deltadisty)/16500));
+			 wallx=(playerx+(rayx*(sidedisty-deltadisty)/16400));
 
        }
+
 
 				if (walllenght<0.6){
 
@@ -883,14 +880,14 @@ while (hit==0){
 
 			    col2=wallx*100;
 
-		wallheight1=(int)(100-(((int)(250/walllenght))));
+		wallheight1=(int)(100-(((int)(150/walllenght))));
 			   if (wallheight1<0){wallheight1=0;}
 			   wallhead=(int)wallheight1;
 
 
 
 
-       wallheight2=(int)(100+(((int)(250/walllenght))));
+       wallheight2=(int)(100+(((int)(150/walllenght))));
 		    if (wallheight2>200){wallheight2=200;}
 		    wallbuttom=(int)wallheight2;
 
@@ -1001,13 +998,13 @@ asm pop es
   //	kputpixel(buffer,k+1,wallhead,col1);
 
 
-				}
 
 
 
 
+}
 
- }
+	 }
 
 	  }
 
@@ -1094,7 +1091,7 @@ i++;   if (i>20){i=0;v+=3; }
 
 
 				   }
-		ang-=2;
+		ang-=3;
 
 
   }
@@ -1104,7 +1101,7 @@ i++;   if (i>20){i=0;v+=3; }
 
 
 				   }
-	       ang+=2;
+	       ang+=3;
 
   }
 
@@ -1146,8 +1143,8 @@ i++;   if (i>20){i=0;v+=3; }
 
 		    playerdiry=(int)(costab[(ang)+73]);
 
-			   playermovx=((int)playerdirx*(int)movedir*accel);
 			   playermovy=((int)playerdiry*(int)movedir*accel);
+			   playermovx=((int)playerdirx*(int)movedir*accel);
 
 
 			i=1;
