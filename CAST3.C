@@ -44,10 +44,10 @@ int stk=1;
 int num2=0,num3=0,num4=0,num1=0;
 int score=0;
 char jpfire=0;
-int  sintab[1000];
-int costab[1000];
-int  sintab2[1000];
-int costab2[1000];
+int  sintab[1100];
+int costab[1100];
+int  sintab2[1100];
+int costab2[1100];
 int x1,y1;
    char rotatedir;
    char movedir;
@@ -116,8 +116,7 @@ char sclv=0,sclh=0;
  int tet=0;
  byte u,f,o,l;
  byte u1=0,f1=0,o1=0,l1=0;
-
-int ang=0;
+ int ang=0;
 
 double playerx=3;
 double playery=2;
@@ -477,7 +476,7 @@ void clear_buffer(void)
 		pop es
 		push es
 		mov al,1
-		mov ah,7
+		mov ah,0
 		les di,buffer
 		
 		mov cx,16250
@@ -489,6 +488,7 @@ void clear_buffer(void)
 
  }
 }
+
 
 mapfill(int u,int t,int k,int o){
 int i;  int n;      int l=0;
@@ -688,7 +688,7 @@ costab2[i]=(int)(128/cos(v));
 
 	  for (k=0;k<320;k+=1){
 
-		hl2[k]=(((k)/(double)(320-1)))*100;
+		hl2[k]=(((k)/(double)(320)))*100;
 	       //	hl[k]=(hl2[k])
 
 
@@ -855,9 +855,9 @@ while (hit==0){
 
 
 	  if (side==0){
-		  walllenght=(((sidedistx-deltadistx)/10000)*(sintab[hl2[k]+80]));//*cos(-0.5+hl[k]));
+		  walllenght=(((sidedistx-deltadistx))*(sintab[hl2[k]+80]*0.0001));//*cos(-0.5+hl[k]));
 
-		 wallx=(playery+(rayy*(sidedistx-deltadistx)/16400));
+		 wallx=(playery+(rayy*(sidedistx-deltadistx)/16500));
 
 	   }
 
@@ -865,9 +865,9 @@ while (hit==0){
 		  if (side==1){
 
 
-			  walllenght=(((sidedisty-(deltadisty))/10000)*(sintab[hl2[k]+80]));//*cos(-0.5+hl[k]));
+			  walllenght=(((sidedisty-(deltadisty)))*(sintab[hl2[k]+80]*0.0001));//*cos(-0.5+hl[k]));
 
-			 wallx=(playerx+(rayx*(sidedisty-deltadisty)/16400));
+			 wallx=(playerx+(rayx*(sidedisty-deltadisty)/16500));
 
        }
 
@@ -916,8 +916,6 @@ while (hit==0){
 				    texdist+=texstepy;
 
 				   texy=(int)(texdist);
-				     y1=k+(i*320);
-			if (i>0&&i<200){
 
 
 
@@ -925,15 +923,21 @@ while (hit==0){
 
 
 		 if (checkx==4){
+				     y1=k+(i*320);
 
 
-		col1=(int)col2&(int)(texy)|checkx+10;
+		col1=(int)col2|(texy*5);
 		 dotcol=(byte)col1;
 
-    asm push es
+
+ asm push es
+
 asm les di,buffer
 asm add di,y1
+
 asm mov al,[dotcol]
+//asm shr al,4
+asm shr ah,3
 asm stosw
 asm pop es
 
@@ -942,8 +946,9 @@ asm pop es
 
 
 		 if (checkx!=4){
+				     y1=k+(i*320);
 
-     col1=(int)col2&(int)(texy)&(checkx+checky)*20;
+     col1=(int)col2&(texy)&(checkx+checky)*20;
 
 
     dotcol=(byte)col1;
@@ -952,8 +957,11 @@ asm pop es
 asm push es
 asm les di,buffer
 asm add di,y1
+
 asm mov al,[dotcol]
 asm stosw
+
+
 asm les di,buffer
 asm add di,y1
 asm mov al,[dotcol]
@@ -965,10 +973,14 @@ asm stosw
 
 
 
+
+
+
+
 asm pop es
 
 
-if (dotcol==55){
+if (dotcol==140){
   asm push es
 asm les di,buffer
 asm add di,y1
@@ -994,7 +1006,7 @@ asm pop es
 
 
 
-}
+
  }
 
 	  }
@@ -1074,21 +1086,35 @@ i++;   if (i>20){i=0;v+=3; }
 	accel-=0.005;
 		if (accel<0){accel=0;}
 
+			GlobalSec=0;
 
   if(KeyTable[K_LEFTARROW]){
-	 rotateforce+=1;
-	 rotatedir=-1;
+
+		       while (GlobalSec<1){
+
+
+				   }
+		ang-=2;
 
 
   }
   if(KeyTable[K_RIGHTARROW]){
 
-  rotateforce+=1;
-	 rotatedir=1;
+	       while (GlobalSec<1){
+
+
+				   }
+	       ang+=2;
 
   }
 
     if(KeyTable[K_DOWNARROW]){
+
+				       while (GlobalSec<1){
+
+
+				   }
+
 		 accy+=0.04;
 		  movedir=-1;
 
@@ -1097,6 +1123,12 @@ i++;   if (i>20){i=0;v+=3; }
   }
 
     if(KeyTable[K_UPARROW]){
+
+				       while (GlobalSec<1){
+
+
+				   }
+
 		 accy+=0.04;
 		  movedir=1;
 
@@ -1106,23 +1138,9 @@ i++;   if (i>20){i=0;v+=3; }
     if(KeyTable[K_ESCAPE]){
    stk=0;
   }
-// sleep(500);
-			GlobalSec=0;
-	       while (GlobalSec<1){
-
-
-				   }
-					 ang+=rotateforce*rotatedir*1.5;
 
 				if (accel>0.015){accel=0.015;}
 
-		rotateforce-=0.2;
-
-	if (rotateforce<0){rotateforce=0;}
-
-	 if (rotateforce>2){rotateforce=2;}
-
-     //	ang+=rotateforce*rotatedir;
 		     accel+=accy;
 		    playerdirx=(int)(sintab[(ang)+73]);
 
@@ -1171,7 +1189,6 @@ i++;   if (i>20){i=0;v+=3; }
 
 
 	memcpy(VGA,buffer,64000);
-
 
  nosound();
 
