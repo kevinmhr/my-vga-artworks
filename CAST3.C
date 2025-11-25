@@ -14,6 +14,7 @@
 
 
 #include "kbd.c"
+#include "TIMER.c"
 
 
 #include <math.h>
@@ -562,7 +563,7 @@ void main()
   int ti=0;
   int si=0;
 
-
+SetTimer();
 
 
     buffer=(byte*)malloc(64000U);
@@ -669,14 +670,14 @@ v=0;
 for (i=0;i<1000;i+=1){
 v+=0.01;
 if (sin(v)!=0){
-sintab[i]=(int)(sin(v)*64);
-sintab2[i]=(int)(64/sin(v));
+sintab[i]=(int)(sin(v)*128);
+sintab2[i]=(int)(128/sin(v));
 
 	       }
 if (cos(v)!=0){
 
-costab[i]=(int)(cos(v)*64);
-costab2[i]=(int)(64/cos(v));
+costab[i]=(int)(cos(v)*128);
+costab2[i]=(int)(128/cos(v));
 }
 
 }
@@ -687,7 +688,7 @@ costab2[i]=(int)(64/cos(v));
 
 	  for (k=0;k<320;k+=1){
 
-		hl2[k]=(((k)/(double)(320-1)))*150;
+		hl2[k]=(((k)/(double)(320-1)))*100;
 	       //	hl[k]=(hl2[k])
 
 
@@ -740,8 +741,8 @@ led++;
 	v=0;
 
        col1=16;
-if (ang>630){ang=1;}
-if (ang<1){ang=630;}
+if (ang>625){ang=0;}
+if (ang<0){ang=625;}
 clear_buffer();
 
 	      collockx=1;
@@ -854,9 +855,9 @@ while (hit==0){
 
 
 	  if (side==0){
-		  walllenght=(((sidedistx-deltadistx)/1500)*(sintab[hl2[k]+80]));//*cos(-0.5+hl[k]));
+		  walllenght=(((sidedistx-deltadistx)/10000)*(sintab[hl2[k]+80]));//*cos(-0.5+hl[k]));
 
-		 wallx=(playery+(rayy*(sidedistx-deltadistx)/4000));
+		 wallx=(playery+(rayy*(sidedistx-deltadistx)/16400));
 
 	   }
 
@@ -864,9 +865,9 @@ while (hit==0){
 		  if (side==1){
 
 
-			  walllenght=(((sidedisty-(deltadisty))/1500)*(sintab[hl2[k]+80]));//*cos(-0.5+hl[k]));
+			  walllenght=(((sidedisty-(deltadisty))/10000)*(sintab[hl2[k]+80]));//*cos(-0.5+hl[k]));
 
-			 wallx=(playerx+(rayx*(sidedisty-deltadisty)/4000));
+			 wallx=(playerx+(rayx*(sidedisty-deltadisty)/16400));
 
        }
 
@@ -880,7 +881,7 @@ while (hit==0){
 				if (playerdiry<0){collocky1=0;}
 				}
 
-			    col2=wallx*200;
+			    col2=wallx*100;
 
 		wallheight1=(int)(100-(((int)(250/walllenght))));
 			   if (wallheight1<0){wallheight1=0;}
@@ -938,9 +939,11 @@ asm pop es
 
 
     }
+
+
 		 if (checkx!=4){
 
-     col1=(int)col2|(int)(texy)|checkx+5;
+     col1=(int)col2&(int)(texy)&(checkx+checky)*20;
 
 
     dotcol=(byte)col1;
@@ -986,7 +989,7 @@ asm pop es
   //	kputpixel(buffer,k+1,wallhead,col1);
 
 
-			        }
+				}
 
 
 
@@ -1104,6 +1107,12 @@ i++;   if (i>20){i=0;v+=3; }
    stk=0;
   }
 // sleep(500);
+			GlobalSec=0;
+	       while (GlobalSec<1){
+
+
+				   }
+					 ang+=rotateforce*rotatedir*1.5;
 
 				if (accel>0.015){accel=0.015;}
 
@@ -1112,9 +1121,6 @@ i++;   if (i>20){i=0;v+=3; }
 	if (rotateforce<0){rotateforce=0;}
 
 	 if (rotateforce>2){rotateforce=2;}
-
-
-	       ang+=rotateforce*rotatedir;
 
      //	ang+=rotateforce*rotatedir;
 		     accel+=accy;
@@ -1144,17 +1150,17 @@ i++;   if (i>20){i=0;v+=3; }
 			 ;     }
 
 			   if (playermovx>0){
-			   playerx+=playermovx*collockx*0.02;
+			   playerx+=playermovx*collockx*0.03;
 					     }
 			      if (playermovx<0){
-			   playerx+=playermovx*collockx1*0.02;
+			   playerx+=playermovx*collockx1*0.03;
 			     }
 
 			       if (playermovy>0){
-			   playery+=playermovy*collocky*0.02;
+			   playery+=playermovy*collocky*0.03;
 					     }
 			      if (playermovy<0){
-			   playery+=playermovy*collocky1*0.02;
+			   playery+=playermovy*collocky1*0.03;
 			     }
 
 
