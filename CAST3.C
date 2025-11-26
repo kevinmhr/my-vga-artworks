@@ -565,7 +565,6 @@ void main()
   int ti=0;
   int si=0;
 
-SetTimer();
 
 
     buffer=(byte*)malloc(64000U);
@@ -579,7 +578,7 @@ SetTimer();
 
 init:
 
-
+SetTimer();
 
 //initpos();
 
@@ -703,7 +702,7 @@ costab2[i]=(int)(128/cos(v));
       }
 
 GlobalCounter=0;
-timing=0;
+GlobalSec=0;
 
 ang=1;
 while (stk==2){
@@ -1095,11 +1094,14 @@ i++;   if (i>20){i=0;v+=3; }
 
 		      //	GlobalSec=0;
 			     ticks=0;
-			     while (timing<GlobalCounter&&ticks<5){
-				  timing+=5;
-				  ticks++;
 
-				   }
+			     while (GlobalSec<GlobalCounter){
+				  GlobalSec+=4;
+				  ticks+=1;
+
+
+				       }
+
 
   if(KeyTable[K_LEFTARROW]){
 
