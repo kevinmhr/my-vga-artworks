@@ -48,6 +48,7 @@ int  sintab[1100];
 int costab[1100];
 int  sintab2[1100];
 int costab2[1100];
+int wallheight[2000];
 int x1,y1;
    char rotatedir;
    char movedir;
@@ -555,6 +556,7 @@ void initpos(){
 void main()
 {
 
+   int timing=0;
    double tt=0;
   int sprcol=0;
   double t=0;
@@ -667,6 +669,12 @@ gh:
 tt=0;
 
 v=0;
+k=0;
+for (i=0;i<2000;i++){
+k++;
+wallheight[i]=2000/k;
+
+}
 for (i=0;i<1000;i+=1){
 v+=0.01;
 if (sin(v)!=0){
@@ -694,7 +702,8 @@ costab2[i]=(int)(128/cos(v));
 
       }
 
-
+GlobalCounter=0;
+timing=0;
 
 ang=1;
 while (stk==2){
@@ -713,6 +722,7 @@ int  k;
  double wallx=0;
  int sc;
  char hit=0;
+ int ticks=0;
  char checkx=0,checky=0;
  double tet2=0;
  double xoffset;
@@ -1083,36 +1093,30 @@ i++;   if (i>20){i=0;v+=3; }
 	accel-=0.005;
 		if (accel<0){accel=0;}
 
-			GlobalSec=0;
+		      //	GlobalSec=0;
+			     ticks=0;
+			     while (timing<GlobalCounter){
+				  timing+=1;
+				  ticks++;
+
+				   }
 
   if(KeyTable[K_LEFTARROW]){
 
-		       while (GlobalSec<1){
-
-
-				   }
-		ang-=3;
+			ang-=1*ticks;
 
 
   }
   if(KeyTable[K_RIGHTARROW]){
 
-	       while (GlobalSec<1){
-
-
-				   }
-	       ang+=3;
+	       ang+=1*ticks;
 
   }
 
     if(KeyTable[K_DOWNARROW]){
 
-				       while (GlobalSec<1){
 
-
-				   }
-
-		 accy+=0.04;
+		 accy+=0.01*ticks;
 		  movedir=-1;
 
 
@@ -1121,12 +1125,8 @@ i++;   if (i>20){i=0;v+=3; }
 
     if(KeyTable[K_UPARROW]){
 
-				       while (GlobalSec<1){
 
-
-				   }
-
-		 accy+=0.04;
+		 accy+=0.01*ticks;
 		  movedir=1;
 
 
