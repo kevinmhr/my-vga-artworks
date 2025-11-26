@@ -1095,8 +1095,8 @@ i++;   if (i>20){i=0;v+=3; }
 
 		      //	GlobalSec=0;
 			     ticks=0;
-			     while (timing<GlobalCounter){
-				  timing+=1;
+			     while (timing<GlobalCounter&&ticks<5){
+				  timing+=5;
 				  ticks++;
 
 				   }

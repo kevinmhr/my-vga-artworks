@@ -25,7 +25,7 @@ void interrupt Timer(void) {
 	}
 
 	if (((tt++) % 5) == 0) {
- //		OldTimer();
+		OldTimer();
 	}
 	else {
 		outp(0x20, 0x20);
@@ -44,9 +44,9 @@ void SetTimer(void) {
 
 	b = 0x36; // 001100110
 	outp(0x43, b);
-	b = 0x3338; // 1193180 / 91 = 13112 = 0x3338
+	b = 1133; // 1193180 / 91 = 13112 = 0x3338
 	outp(0x40, b);
-	b = (0x21);
+	b = 1133>>8;
 	outp(0x40, b);
 
 	b = inp(0x21);
