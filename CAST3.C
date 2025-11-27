@@ -48,7 +48,6 @@ int  sintab[1100];
 int costab[1100];
 int  sintab2[1100];
 int costab2[1100];
-int wallheight[2000];
 int x1,y1;
    char rotatedir;
    char movedir;
@@ -668,12 +667,6 @@ gh:
 tt=0;
 
 v=0;
-k=0;
-for (i=0;i<2000;i++){
-k++;
-wallheight[i]=2000/k;
-
-}
 for (i=0;i<1000;i+=1){
 v+=0.01;
 if (sin(v)!=0){
@@ -856,11 +849,11 @@ while (hit==0){
 
 
 
- if (map[((int)(checkx))+(((int)(checky*21)))]==0){hit=1;
+ if (map[checkx+checky*21]==0){hit=1;
 
 
 	  if (side==0){
-		  walllenght=(((sidedistx-deltadistx))*(sintab[hl2[k]+90]))*0.00008;//*cos(-0.5+hl[k]));
+		  walllenght=(((sidedistx-deltadistx))/(sintab2[hl2[k]+90]));
 
 		 wallx=(playery+(rayy*(sidedistx-deltadistx)/16400));
 
@@ -870,14 +863,14 @@ while (hit==0){
 		  if (side==1){
 
 
-			  walllenght=(((sidedisty-(deltadisty)))*(sintab[hl2[k]+90])*0.00008);//*cos(-0.5+hl[k]));
+			  walllenght=(((sidedisty-deltadisty))/(sintab2[hl2[k]+90]));
 
 			 wallx=(playerx+(rayx*(sidedisty-deltadisty)/16400));
 
        }
 
 
-				if (walllenght<0.6){
+				if (walllenght<0.5){
 
 
 				 //playerx-=playermovx*0.02; playery-=playermovy*0.02;
@@ -889,16 +882,14 @@ while (hit==0){
 
 			    col2=wallx*100;
 
-		wallheight1=(int)(100-(((int)(150/walllenght))));
+		wallheight1=(100-((100/walllenght)));
 			   if (wallheight1<0){wallheight1=0;}
-			   wallhead=(int)wallheight1;
 
 
 
 
-       wallheight2=(int)(100+(((int)(150/walllenght))));
+       wallheight2=(100+((100/walllenght)));
 		    if (wallheight2>200){wallheight2=200;}
-		    wallbuttom=(int)wallheight2;
 
 
 
@@ -921,7 +912,7 @@ while (hit==0){
 	    for (i=wallheight1;i<wallheight2;i+=1){
 				    texdist+=texstepy;
 
-				   texy=(int)(texdist);
+				   texy=(texdist);
 
 
 
@@ -932,7 +923,7 @@ while (hit==0){
 				     y1=k+(i*320);
 
 
-		col1=(int)col2|(texy*5);
+		col1=col2|(texy*5);
 		 dotcol=(byte)col1;
 
 
@@ -954,7 +945,7 @@ asm pop es
 		 if (checkx!=4){
 				     y1=k+(i*320);
 
-     col1=(int)col2&(texy)&(checkx+checky)*20;
+     col1=col2&(texy)&(checkx+checky)*20;
 
 
     dotcol=(byte)col1;
@@ -1096,7 +1087,7 @@ i++;   if (i>20){i=0;v+=3; }
 			     ticks=0;
 
 			     while (GlobalSec<GlobalCounter){
-				  GlobalSec+=4;
+				  GlobalSec+=5;
 				  ticks+=1;
 
 
