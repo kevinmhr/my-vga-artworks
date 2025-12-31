@@ -44,9 +44,31 @@ word *my_clock=(word *)0x0000046C;    /* this points to the 18.2hz system
 
 
 					 clock. */
+   int playerx,playery;
+   int playerxtemp,playerytemp;
+   double v,u;
+   char changed=0;
+   char hdir=1;
+   char footx;
+   char stepstime=0;
+   char steps=0;
+   char hit=0;
+   char hitdur;
+  char si,ti;
+  int hitth=0;
+  int sprcol=0;
+  int i,j,x,y,x1,y1;
+  double t;
+  int k;
+  int sounddur;
+  char corx,cory;
+  char jump=0;
+  char lock=0;
+  char jumpth1=0;
+  char move=0;
+
 char opaquecol=60;
 char led;
-char stk=1;
 char pickupcol=0;
 int score=0;
 char jpfire=0;
@@ -111,7 +133,7 @@ char sclv=0,sclh=0;
     char kt=0;
    unsigned int col[320];
 
- byte u,f,o,l;
+ byte f,o,l;
  byte u1=0,f1=0,o1=0,l1=0;
  int ang=0;
 
@@ -251,7 +273,6 @@ kputpixel(buffer,i-1,y,col);    }     }
 
 
 
-
 int kgetpixelpage(char *buffer,int x,int y){
 int col;
 
@@ -276,7 +297,7 @@ int y1=x+(y*320);
 int color=col;
 
 if (y>=0&&y<=200&&x>=0&&x<=320) {
-asm push si
+//asm push si
 asm push es
 
 asm les di,buffer
@@ -290,7 +311,7 @@ asm mov ax,[color]
 
 asm stosw
 asm pop es
-asm pop si
+//asm pop si
 
 
 
@@ -635,30 +656,104 @@ void initpos(){
 
 
 }
+
+
+
+mapdrawing(){
+int i=0;
+int j=0;
+int k;
+int y1,x1;
+
+  //     u=0;f=0;l=0;o=0;
+	    for (k=0;k<612;k+=1){
+
+	    i+=10; if(i>330){
+	    i=0;j+=10;
+	    }
+
+
+
+
+
+	  if (mapbuffer[k]!=0){
+		       y1=0;
+					       if (mapbuffer[k]>=20){
+				    y1=10;}
+					       if (mapbuffer[k]>=30){
+				    y1=20;}
+					       if (mapbuffer[k]>=40){
+				    y1=30;}
+					       if (mapbuffer[k]>=50){
+				    y1=40;}
+					       if (mapbuffer[k]>=60){
+				    y1=50;}
+					       if (mapbuffer[k]>=70){
+				    y1=60;}
+
+
+
+	   x1=(mapbuffer[k]-(int)(mapbuffer[k]/10)*10);
+
+
+
+
+      for (x=0;x<10;x+=1){
+
+
+       for (y=0;y<10;y+=1){
+	opaquecol=26;
+
+
+
+	      if (mapbuffer[k]==DOOR&&lock==-1){
+	       opaquecol=70;
+	       sprcol=buffer2[((x+(x1*10))+((y+y1+1)*320))]+opaquecol;
+
+	      }
+	      if (mapbuffer[k]==LOCKSW&&lock==-1){
+	       opaquecol=70;
+	       sprcol=buffer2[((x+(x1*10))+((y+y1+1)*320))]+opaquecol;
+
+	      }
+		   if (mapbuffer[k]==PICKUP1&&lock==-1){
+	       opaquecol=70+pickupcol;
+	       sprcol=buffer2[((x+(x1*10))+((y+y1+1)*320))]+opaquecol;
+
+	      }
+
+
+	    //  sprcol=x+y*320;
+     sprcol=buffer2[((x+(x1*10))+(((y)+y1+1)*320))]+opaquecol;
+//     sprcol=mapbuffer[k];
+
+     if (j<200&&sprcol!=opaquecol){
+      //	  if (x>10){ sprcol=7;}
+	 // if (x<1){ sprcol=5;}
+
+		  if (x+sintab2[i]<12){sprcol=sprcol+1;}
+// sprcol=kgetpixelbmp(&bmp2,(x+35),(y+45))+2;
+kputpixel(buffer,x+i-20-corx,y+j-10-cory,sprcol);
+
+	  }
+
+
+	       }
+		     }
+
+
+ }
+
+
+}
+}
+
+
+
 void main()
 {
-   int playerx,playery;
-   int playerxtemp,playerytemp;
-   double v,u;
-   char changed=0;
-   char hdir=1;
-   char footx;
-   char stepstime=0;
-   char steps=0;
-   char hit=0;
-   char hitdur;
-  char si,ti;
-  int hitth=0;
-  int sprcol=0;
-  int i,j,x,y,x1,y1;
-  double t;
-  char k;
-  int sounddur;
-  char corx,cory;
-  char jump=0;
-  char lock=0;
-  char jumpth1=0;
-  char move=0;
+    char stk=1;
+
     buffer=(byte*)malloc(64000U);
       buffer2=(byte*)malloc(64000U);
 
@@ -669,7 +764,7 @@ void main()
 
 init:
 
-SetTimer();
+//SetTimer();
 
 //initpos();
 
@@ -835,104 +930,20 @@ int z;
 move=0;
 
 
-
+   /*
 			     ticks=0;
 //timing
 		      while (GlobalSec<GlobalCounter){
-				  GlobalSec+=7 ;
+				  GlobalSec+=10 ;
 				  ticks+=1;
 				       }
+     */
 
-
-
-
+	    ticks=2;
 
 clear_buffer(0,32000);
+mapdrawing();
 
-
-
-
- i=0;
- j=0;
-
-  //     u=0;f=0;l=0;o=0;
-	    for (k=0;k<612;k+=1){
-
-	    i+=10; if(i>330){
-	    i=0;j+=10;
-	    }
-
-
-
-
-
-	  if (mapbuffer[k]!=0){
-		       y1=0;
-					       if (mapbuffer[k]>=20){
-				    y1=10;}
-					       if (mapbuffer[k]>=30){
-				    y1=20;}
-					       if (mapbuffer[k]>=40){
-				    y1=30;}
-					       if (mapbuffer[k]>=50){
-				    y1=40;}
-					       if (mapbuffer[k]>=60){
-				    y1=50;}
-					       if (mapbuffer[k]>=70){
-				    y1=60;}
-
-
-
-	   x1=(mapbuffer[k]-(int)(mapbuffer[k]/10)*10);
-
-
-
-
-      for (x=0;x<10;x++){
-
-
-       for (y=0;y<10;y++){
-	opaquecol=26;
-
-
-	       sprcol=buffer2[((x+(x1*10))+(((y)+y1+1)*320))]+opaquecol;
-
-	      if (mapbuffer[k]==DOOR&&lock==-1){
-	       opaquecol=70;
-	       sprcol=buffer2[((x+(x1*10))+((y+y1+1)*320))]+opaquecol;
-
-	      }
-	      if (mapbuffer[k]==LOCKSW&&lock==-1){
-	       opaquecol=70;
-	       sprcol=buffer2[((x+(x1*10))+((y+y1+1)*320))]+opaquecol;
-
-	      }
-		   if (mapbuffer[k]==PICKUP1&&lock==-1){
-	       opaquecol=70+pickupcol;
-	       sprcol=buffer2[((x+(x1*10))+((y+y1+1)*320))]+opaquecol;
-
-	      }
-
-
-	    //  sprcol=x+y*320;
-
-     if (j<200&&sprcol!=opaquecol){
-      //	  if (x>10){ sprcol=7;}
-	 // if (x<1){ sprcol=5;}
-
-		  if (x+sintab2[i]<12){sprcol=sprcol+1;}
-// sprcol=kgetpixelbmp(&bmp2,(x+35),(y+45))+2;
-kputpixel(buffer,x+i-20-corx,y+j-10-cory,sprcol);
-
-	  }
-	       }
-		     }
-
-
- }
-
-
-}
 
  playerx=playerxtemp-20;
  playery=playerytemp-20;
@@ -943,7 +954,7 @@ for (x=-sintab3[y];x<12+sintab3[y];x++){
 	sprcol=7;
 	if (x+sintab3[y]<3||x-sintab3[y]>8||sintab3[y]<0){sprcol=1;}
 	if (y>7){
-        sprcol=1;
+	sprcol=1;
 	}
 	if (y<3){
 	sprcol=34;
@@ -1205,7 +1216,7 @@ if(KeyTable[K_LEFTARROW]){
 
 
 
- if(KeyTable[K_RIGHTARROW]&&ticks){
+ if(KeyTable[K_RIGHTARROW]){
 		       changed=0;
 		       if (ticks>0){
 		       stepstime+=ticks;
@@ -1217,14 +1228,16 @@ if(KeyTable[K_LEFTARROW]){
 		       if (collockx==1){
 		       playerxtemp+=ticks;
 
-		       if (playerxtemp>185){  playerxtemp=185;
-		       corx=corx+ticks;
+		       if (playerxtemp>180){  playerxtemp=180;
+		       corx+=ticks;
+
 			  }
 			  if(corx>10){corx=1;
 
 
 			  plus+=1;
-						  x=plus-1;
+
+			  x=plus-1;
 				      y=0;
 			  for (i=0;i<612;i++){
 
@@ -1334,8 +1347,11 @@ if(KeyTable[K_RIGHTARROW]==0){  steps=0;
 	kdrawrectfill(buffer,0,0,1,200,0);
 
 
+while (!(inportb(0x3DA)&0x08));
+while (inportb(0x3DA)&0x08);
 
-	memcpy(VGA,buffer,64000);
+ memcpy(VGA,buffer,64000);
+
  nosound();
 
 }
