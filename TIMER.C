@@ -15,15 +15,16 @@ int GlobalCounter = 0, GlobalSec = 0;
 //------------------------------------------------------------
 
 void interrupt Timer(void) {
-       static long t, tt;
+       static long t=0;
+       //tt=0;
 
 	GlobalCounter++;
-	  t+=1103;
-	if (t >= 65536) {
-	    t-=65536;
+	  t+=33;
+	if (t >= 1000000) {
+	    t=0;
+
 	    GlobalCounter=0;
 	    GlobalSec=0;
-	    //	GlobalSec+=1;
 			OldTimer();
 
 	}
@@ -46,7 +47,8 @@ void SetTimer(void) {
 	outp(0x43, b);
 	b = 1103; // 1193180 / 91 = 13112 = 0x3338
 	outp(0x40, b);
-	b = 1103>>8;
+	b = 1103>>11;
+
 	outp(0x40, b);
 
 	b = inp(0x21);

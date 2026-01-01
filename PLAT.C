@@ -526,11 +526,11 @@ pickupfill(int u){
 
 }
 
-void makeblocks(int charwidth,int charheight,int charoffsetx,int charoffsety,int textureposition,int bottom)
+void makeblocks(int charwidth,int charheight,int charoffsetx,int charoffsety,int textureposition,int top,int bottom)
 {
 int i,t,n;
 t=0;n=0;
- for (i=0;i<10000;i++){
+ for (i=0;i<15000;i++){
 //  map[i]=0;
 
  t++; if (t>319){t=0;n++;}
@@ -538,7 +538,8 @@ t=0;n=0;
 
 
 		       map[i]=textureposition+1;
-		     if (n>charoffsety) { map[i]=textureposition+11;       }
+	          if (top==1){
+	       if (n>charoffsety) { map[i]=textureposition+11;       }
 
 	       if (t==charoffsetx){map[i]=textureposition+10;}
 	       if (t==charoffsetx+charwidth){map[i]=textureposition+12;}
@@ -552,7 +553,7 @@ t=0;n=0;
 
 	       if (t==charoffsetx+charwidth){map[i]=textureposition+2;}
 			   }
-
+			   }
 	       if (bottom==1){
 		  if (n==charoffsety+charheight) {
 		       map[i]=textureposition+21;
@@ -582,6 +583,8 @@ int i;  int n;      int l=0;
 
  t++; if (t>319){t=0;n++;}
     //   if (o>20){o=0;}
+         if (n>0&&n<39&&t<320){   map[i]=BGTILE; }
+
       if (n==1){map[i-319]=2;}
        if (t==80&&n<15){map[i]=2;}
 	       if (t==80&&n>14&&n<20){map[i]=DOOR;}
@@ -589,8 +592,7 @@ int i;  int n;      int l=0;
 	   if (t==160&&n<15){map[i]=2;}
       //	  if (n==20){map[i]=2;}
 
-      if (t==319){map[i]=2;}
-	    if (n>0&&n<19&&t<80){   map[i]=BGTILE; }
+   //   if (t==319){map[i]=2;}
 
 	   if (t==1){map[i]=2;}
   //     if (n>15+o){n=0;o+=14;}
@@ -611,7 +613,7 @@ int i;  int n;      int l=0;
 		       if (t>65&&t<75&&n<5){map[i]=SPECWALL;}
 
        if (t>50&&t<70&&n==14){map[i]=1;}
-   if (n==19){map[i]=3;}
+   if (n==40){map[i]=3;}
 
 //   if (n==15+o){map[i]=0;}
 //      if (n==12+o){map[i-1]=3;map[i+1]=3;}
@@ -658,8 +660,7 @@ void initpos(){
 }
 
 
-
-mapdrawing(){
+tiledrawtrans(){
 int i=0;
 int j=0;
 int k;
@@ -676,7 +677,7 @@ int y1,x1;
 
 
 
-	  if (mapbuffer[k]!=0){
+	  if (mapbuffer[k]!=BGTILE){
 		       y1=0;
 					       if (mapbuffer[k]>=20){
 				    y1=10;}
@@ -693,8 +694,7 @@ int y1,x1;
 
 
 
-	   x1=(mapbuffer[k]-(int)(mapbuffer[k]/10)*10);
-
+	   x1=(char)(mapbuffer[k]-(int)(mapbuffer[k]/10)*10);
 
 
 
@@ -721,24 +721,78 @@ int y1,x1;
 	       sprcol=buffer2[((x+(x1*10))+((y+y1+1)*320))]+opaquecol;
 
 	      }
+		sprcol=buffer2[((x+(x1*10))+(((y)+y1+1)*320))]+opaquecol;
+
+     if (j<200&&(y+j-10-cory+5)>1&&sprcol!=26&&sprcol!=70&&sprcol!=70+pickupcol){
+
+		  if (x+sintab2[i]<12){sprcol=sprcol+3;}
 
 
-	    //  sprcol=x+y*320;
-     sprcol=buffer2[((x+(x1*10))+(((y)+y1+1)*320))]+opaquecol;
-//     sprcol=mapbuffer[k];
-
-     if (j<200&&sprcol!=opaquecol){
-      //	  if (x>10){ sprcol=7;}
-	 // if (x<1){ sprcol=5;}
-
-		  if (x+sintab2[i]<12){sprcol=sprcol+1;}
-// sprcol=kgetpixelbmp(&bmp2,(x+35),(y+45))+2;
-kputpixel(buffer,x+i-20-corx,y+j-10-cory,sprcol);
-
-	  }
+kputpixel(buffer,x+i-10-corx,y+j-10-cory+5,sprcol);
 
 
 	       }
+		     }
+
+ }
+ }
+ } }
+
+tiledrawsolid(){
+int i=0;
+int j=0;
+int k;
+int y1,x1;
+
+  //     u=0;f=0;l=0;o=0;
+	    for (k=0;k<612;k+=1){
+
+	    i+=10; if(i>330){
+	    i=0;j+=10;
+	    }
+
+
+
+
+
+	  if (mapbuffer[k]==BGTILE){
+		       y1=0;
+					       if (mapbuffer[k]>=20){
+				    y1=10;}
+					       if (mapbuffer[k]>=30){
+				    y1=20;}
+					       if (mapbuffer[k]>=40){
+				    y1=30;}
+					       if (mapbuffer[k]>=50){
+				    y1=40;}
+					       if (mapbuffer[k]>=60){
+				    y1=50;}
+					       if (mapbuffer[k]>=70){
+				    y1=60;}
+
+
+
+	   x1=(char)(mapbuffer[k]-(int)(mapbuffer[k]/10)*10);
+
+
+
+
+//      for (x=0;x<10;x+=1){
+
+
+       for (y=0;y<10;y+=1){
+	opaquecol=26;
+
+
+	    //  sprcol=x+y*320;
+//     sprcol=mapbuffer[k];
+     if (j<180){
+	if( ((i-corx-10)>0)&&(i-corx-10)<330&&(y+j-cory-10)>0){
+memcpy(buffer+(i-corx-10)+((y+j-cory-10)*320),buffer2+(x1*10)+(320*(y1+y)),10);
+			   }
+
+
+			   }
 		     }
 
 
@@ -753,7 +807,8 @@ kputpixel(buffer,x+i-20-corx,y+j-10-cory,sprcol);
 void main()
 {
     char stk=1;
-
+    int ticks=0;
+    int delay;
     buffer=(byte*)malloc(64000U);
       buffer2=(byte*)malloc(64000U);
 
@@ -764,13 +819,30 @@ void main()
 
 init:
 
-//SetTimer();
+SetTimer();
 
 //initpos();
 
 mapfill(0,0,0,0);
-makeblocks(2,4,23,15,23,1);
+makeblocks(2,4,1,18,23,1,1);
+makeblocks(2,3,1,13,20,1,1);
+makeblocks(2,3,1,8,20,1,1);
+makeblocks(2,3,45,26,23,1,1);
+makeblocks(2,3,100,26,23,1,1);
 
+
+makeblocks(300,0,0,30,12,0,0);
+makeblocks(300,0,70,19,12,0,0);
+
+for (x=0;x<5;x++){
+
+makeblocks(4,x,x*4+20,29-x,10,0,0);
+
+makeblocks(4,x,x*3+50,29-x,30,0,0);
+
+
+
+}
  /* open the file */
 
   set_mode(VGA_256_COLOR_MODE);       /* set the video mode. */
@@ -873,9 +945,11 @@ costab[i]=(int)(cos(v)*128);
 for (x=0;x<320;x++){
 for (y=0;y<200;y++){
 
-
+if(kgetpixelbmp(&bmp2,x,y)!=26){;
 buffer2[x+(y*320)]=kgetpixelbmp(&bmp2,x,y);
 
+
+				}
 
 }}
 playerxtemp=140;
@@ -883,6 +957,7 @@ playerytemp=50;
 
 GlobalCounter=0;
 GlobalSec=0;
+t=0;
 plus=0;
 ang=1; corx=0;cory=0;
 		  x=plus;
@@ -923,29 +998,35 @@ int  k;
  int j;
  int sc;
  char x1,y1,y2;
- int ticks=0;
+
   int k2=0;
 char side=0;
 int z;
 move=0;
 
 
-   /*
+
+
+
+   //	    ticks=2;
+
+
+
+clear_buffer(0,32000);
 			     ticks=0;
 //timing
 		      while (GlobalSec<GlobalCounter){
-				  GlobalSec+=10 ;
+				  GlobalSec+=7 ;
 				  ticks+=1;
 				       }
-     */
-
-	    ticks=2;
-
-clear_buffer(0,32000);
-mapdrawing();
+                           //       ticks=2;
 
 
- playerx=playerxtemp-20;
+tiledrawsolid();
+
+tiledrawtrans();
+
+ playerx=playerxtemp-10;
  playery=playerytemp-20;
 
 
@@ -1025,7 +1106,7 @@ for (y=0;y<2;y++){
 	     if(hdir==1&&changed==0){
 
 			 kputpixel(buffer,x+playerx+15,y+playery,sprcol);
-		  if (mapbuffer[(int)(((playerx+35+corx-ticks)/10))+(int)((((y+playery-5)/10)))*34]==LOCKSW){  sound(1000);
+		  if (mapbuffer[(int)(((playerx+25+corx-ticks)/10))+(int)((((y+playery-5)/10)))*34]==LOCKSW){  sound(1000);
  //		  map[plus+(int)(((playerx+x)/10)+2)+(int)((((y+playery)/10)))*320]==5;
 	     //	  map[plus+(int)(((playerx-corx-ticks)/10)+3)+(int)(((playery+y-5)/10))*320]=40;
 		  pickupfill(PICKUP1);
@@ -1135,7 +1216,7 @@ for (y=0;y<7;y++){
 	  mappos=(unsigned int)(((playerxtemp+corx)/10)-1)+(unsigned int)(((playerytemp+y+cory-ticks)/10))*34;
 
 
-	  if (mapbuffer[mappos]==PICKUP1&&changed==0){map[plus+(unsigned int)(((playerxtemp)/10)-1)+(unsigned int)(((playerytemp+y+cory-ticks)/10))*320]=0;
+	  if (mapbuffer[mappos]==PICKUP1&&changed==0){map[plus+(unsigned int)(((playerxtemp)/10)-1)+(unsigned int)(((playerytemp+y+cory-ticks)/10))*320]=BGTILE;
 		     sounddur++;
 	    if (sounddur<500){
 
@@ -1150,7 +1231,7 @@ for (y=0;y<7;y++){
 	  if (mapbuffer[mappos]==DOOR&&lock==-1){collockx=1;}
 	  mappos=(unsigned int)(((playerxtemp+corx)/10)+1)+(unsigned int)(((playerytemp+y+cory-ticks)/10))*34;
 
-	  if (mapbuffer[mappos]==PICKUP1&&changed==0){map[plus+(int)(((playerxtemp)/10)+1)+(int)(((playerytemp+y+cory-ticks)/10))*320]=0;
+	  if (mapbuffer[mappos]==PICKUP1&&changed==0){map[plus+(int)(((playerxtemp)/10)+1)+(int)(((playerytemp+y+cory-ticks)/10))*320]=BGTILE;
 	     sounddur++;
 	    if (sounddur<500){
 
@@ -1191,7 +1272,7 @@ if(KeyTable[K_LEFTARROW]){
 		 if (collockx1==1){
 		 playerxtemp-=ticks;
 			       stepstime+=ticks;
-		       if (stepstime>20){stepstime=0;
+		       if (stepstime>5){stepstime=0;
 
 		 steps+=1;    }
 		 if (steps>1){steps=0;}
@@ -1220,7 +1301,7 @@ if(KeyTable[K_LEFTARROW]){
 		       changed=0;
 		       if (ticks>0){
 		       stepstime+=ticks;
-		       if (stepstime>20){stepstime=0;
+		       if (stepstime>5){stepstime=0;
 		       steps+=1;                     }
 		       if (steps>1){steps=0;}
 				    }
@@ -1344,11 +1425,12 @@ if(KeyTable[K_RIGHTARROW]==0){  steps=0;
    blittext(50,190,"find yourself around",8,20,3);
 
     //	clear_buffer(7,1600);
-	kdrawrectfill(buffer,0,0,1,200,0);
+	kdrawrectfill(buffer,0,-5,10,200,0);
 
+	kdrawrectfill(buffer,0,170,320,10,0);
 
-while (!(inportb(0x3DA)&0x08));
-while (inportb(0x3DA)&0x08);
+ while (!(inportb(0x3DA)&0x08));
+// while (inportb(0x3DA)&0x08);
 
  memcpy(VGA,buffer,64000);
 
