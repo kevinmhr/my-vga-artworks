@@ -667,9 +667,9 @@ int k;
 int y1,x1;
 
   //     u=0;f=0;l=0;o=0;
-	    for (k=0;k<612;k+=1){
+	    for (k=0;k<700;k+=1){
 
-	    i+=10; if(i>330){
+	    i+=10; if(i>340){
 	    i=0;j+=10;
 	    }
 
@@ -745,9 +745,9 @@ int k;
 int y1,x1;
 
   //     u=0;f=0;l=0;o=0;
-	    for (k=0;k<612;k+=1){
+	    for (k=0;k<700;k+=1){
 
-	    i+=10; if(i>330){
+	    i+=10; if(i>340){
 	    i=0;j+=10;
 	    }
 
@@ -786,9 +786,11 @@ int y1,x1;
 
 	    //  sprcol=x+y*320;
 //     sprcol=mapbuffer[k];
-     if (j<180){
-	if( ((i-corx-10)>0)&&(i-corx-10)<330&&(y+j-cory-10)>0){
-memcpy(buffer+(i-corx-10)+((y+j-cory-10)*320),buffer2+(x1*10)+(320*(y1+y)),10);
+     if (j<200){
+	if( (((i-10)-corx)>0)&&(i-corx-10)<320&&(y+j-cory)>0){
+memcpy(buffer+((i-10)-corx)+((y+j-cory)*320),buffer2+(x1*10)+(320*(y1+y)),10);
+
+
 			   }
 
 
@@ -975,8 +977,8 @@ u+=0.5;
 sintab3[i]=sin(u-1)*5;
 
 }				      y=0;
-			  for (i=0;i<630;i++){
-			  x++; if (x>33+plus){x=plus;y+=320;}
+			  for (i=0;i<700;i++){
+			  x++; if (x>34+plus){x=plus;y+=320;}
 			  mapbuffer[i]=map[x+y];
 			  }
 
@@ -1027,7 +1029,7 @@ tiledrawsolid();
 tiledrawtrans();
 
  playerx=playerxtemp-10;
- playery=playerytemp-20;
+ playery=playerytemp-15;
 
 
 for (y=0;y<10;y++){
@@ -1106,7 +1108,7 @@ for (y=0;y<2;y++){
 	     if(hdir==1&&changed==0){
 
 			 kputpixel(buffer,x+playerx+15,y+playery,sprcol);
-		  if (mapbuffer[(int)(((playerx+25+corx-ticks)/10))+(int)((((y+playery-5)/10)))*34]==LOCKSW){  sound(1000);
+		  if (mapbuffer[(int)(((playerx+25+corx-ticks)/10))+(int)((((y+playery-5)/10)))*35]==LOCKSW){  sound(1000);
  //		  map[plus+(int)(((playerx+x)/10)+2)+(int)((((y+playery)/10)))*320]==5;
 	     //	  map[plus+(int)(((playerx-corx-ticks)/10)+3)+(int)(((playery+y-5)/10))*320]=40;
 		  pickupfill(PICKUP1);
@@ -1185,9 +1187,9 @@ for (y=0;y<7;y++){
 			    cory+=ticks; if (cory>10){cory=1;
 			      plus+=320;
 			  x=plus-1;	  y=0;
-			  for (i=0;i<612;i++){
+			  for (i=0;i<700;i++){
 			  mapbuffer[i]=2;
-			  x++; if (x>33+plus){x=plus;y+=320;}
+			  x++; if (x>34+plus){x=plus;y+=320;}
 			  mapbuffer[i]=map[x+y];
 
 
@@ -1208,12 +1210,12 @@ for (y=0;y<7;y++){
 	//collision detection
 	  //    ticks=(int)ticks;
 	  for (y=0;y<10;y++){
-	  mappos=(unsigned int)(((playerxtemp+corx)/10)-2)+(unsigned int)(((playerytemp+y+cory-ticks)/10))*34;
+	  mappos=(unsigned int)(((playerxtemp+corx)/10)-2)+(unsigned int)(((playerytemp+y+cory-ticks)/10))*35;
 //	  kputpixel(buffer,playerx-11,playery+y,4);
 	  if (mapbuffer[mappos]!=0&&mapbuffer[mappos]<60){collockx1=0; }
 
 	  if (mapbuffer[mappos]==DOOR&&lock==-1){collockx1=1;}
-	  mappos=(unsigned int)(((playerxtemp+corx)/10)-1)+(unsigned int)(((playerytemp+y+cory-ticks)/10))*34;
+	  mappos=(unsigned int)(((playerxtemp+corx)/10)-1)+(unsigned int)(((playerytemp+y+cory-ticks)/10))*35;
 
 
 	  if (mapbuffer[mappos]==PICKUP1&&changed==0){map[plus+(unsigned int)(((playerxtemp)/10)-1)+(unsigned int)(((playerytemp+y+cory-ticks)/10))*320]=BGTILE;
@@ -1226,10 +1228,10 @@ for (y=0;y<7;y++){
 
 	   changed=1;}
 
-	  mappos=(unsigned int)(((playerxtemp+corx-ticks)/10)+1)+(unsigned int)(((playerytemp+y+cory-ticks)/10))*34;
+	  mappos=(unsigned int)(((playerxtemp+corx-ticks)/10)+1)+(unsigned int)(((playerytemp+y+cory-ticks)/10))*35;
 	  if (mapbuffer[mappos]!=0&&mapbuffer[mappos]<60){collockx=0;}
 	  if (mapbuffer[mappos]==DOOR&&lock==-1){collockx=1;}
-	  mappos=(unsigned int)(((playerxtemp+corx)/10)+1)+(unsigned int)(((playerytemp+y+cory-ticks)/10))*34;
+	  mappos=(unsigned int)(((playerxtemp+corx)/10)+1)+(unsigned int)(((playerytemp+y+cory-ticks)/10))*35;
 
 	  if (mapbuffer[mappos]==PICKUP1&&changed==0){map[plus+(int)(((playerxtemp)/10)+1)+(int)(((playerytemp+y+cory-ticks)/10))*320]=BGTILE;
 	     sounddur++;
@@ -1240,7 +1242,7 @@ for (y=0;y<7;y++){
 	    changed=1; }
 	    }
 		  for (x=0;x<10;x++){
-	   mappos=(unsigned int)(((playerxtemp+x+corx)/10)-1)+(unsigned int)((((playerytemp+cory)/10)+1)*34);
+	   mappos=(unsigned int)(((playerxtemp+x+corx)/10)-1)+(unsigned int)((((playerytemp+cory)/10)+1)*35);
 
 	  if (mapbuffer[mappos]!=0&&mapbuffer[mappos]<60){collocky=0;
 
@@ -1248,7 +1250,7 @@ for (y=0;y<7;y++){
 
 		  if (mapbuffer[mappos]==DOOR){collocky=1;}
 
-	   mappos=( unsigned int)(((playerxtemp+x+corx)/10)-1)+(unsigned int)(((playerytemp+cory)/10)-2)*34;
+	   mappos=( unsigned int)(((playerxtemp+x+corx)/10)-1)+(unsigned int)(((playerytemp+cory)/10)-2)*35;
 	  if (mapbuffer[mappos]!=0&&mapbuffer[mappos]<60){collocky1=0;
 	  jumpth1=100;
 
@@ -1285,9 +1287,9 @@ if(KeyTable[K_LEFTARROW]){
 		      if(corx<1){corx=10;plus-=1;
 			  x=plus-1;
 				      y=0;
-			  for (i=0;i<612;i++){
+			  for (i=0;i<700;i++){
 
-			  x++; if (x>33+plus){x=plus;y+=320;}
+			  x++; if (x>34+plus){x=plus;y+=320;}
 			  mapbuffer[i]=map[x+y];
 			  }     }                 }
 
@@ -1320,9 +1322,9 @@ if(KeyTable[K_LEFTARROW]){
 
 			  x=plus-1;
 				      y=0;
-			  for (i=0;i<612;i++){
+			  for (i=0;i<700;i++){
 
-			  x++; if (x>33+plus){x=plus;y+=320;}
+			  x++; if (x>34+plus){x=plus;y+=320;}
 			  mapbuffer[i]=map[x+y];
 			  }
 
@@ -1377,14 +1379,14 @@ if(KeyTable[K_RIGHTARROW]==0){  steps=0;
        if (jumpth1<70&&collocky1!=0){
 
 	playerytemp-=collocky1*(int)(ticks*2);
-		       if (playerytemp<50){
+		       if (playerytemp<80){ playerytemp=80;
 		       cory-=ticks; if (cory<1){cory=10;
 			  plus-=320;
 				     x=plus-1;
 				      y=0;
-			  for (i=0;i<612;i++){
+			  for (i=0;i<700;i++){
 
-			  x++; if (x>33+plus){x=plus;y+=320;}
+			  x++; if (x>34+plus){x=plus;y+=320;}
 			  mapbuffer[i]=map[x+y];
 			  }
 
@@ -1419,6 +1421,7 @@ if(KeyTable[K_RIGHTARROW]==0){  steps=0;
 
 
 
+	kdrawrectfill(buffer,0,180,320,20,0);
 
 
 //
@@ -1427,7 +1430,6 @@ if(KeyTable[K_RIGHTARROW]==0){  steps=0;
     //	clear_buffer(7,1600);
 	kdrawrectfill(buffer,0,-5,10,200,0);
 
-	kdrawrectfill(buffer,0,170,320,10,0);
 
  while (!(inportb(0x3DA)&0x08));
 // while (inportb(0x3DA)&0x08);
