@@ -19,7 +19,7 @@ void interrupt Timer(void) {
        //tt=0;
 
 	GlobalCounter++;
-	  t+=33;
+	  t+=3333;
 	if (t >= 1000000) {
 	    t=0;
 
@@ -47,7 +47,7 @@ void SetTimer(void) {
 	outp(0x43, b);
 	b = 1103; // 1193180 / 91 = 13112 = 0x3338
 	outp(0x40, b);
-	b = 1103>>11;
+	b = 1103>>8;
 
 	outp(0x40, b);
 

@@ -517,9 +517,9 @@ pickupfill(int u){
  for (i=0;i<10000;i++){
 
  t++; if (t>319){t=0;n++;}
-       if (t>105&&t<115&&n==8){map[i]=u;}
+       if (t>105&&t<115&&n==18){map[i]=u;}
 
-       if (t>100&&t<120&&n==12){map[i]=u;}
+       if (t>100&&t<120&&n==22){map[i]=u;}
 
 
 		  }
@@ -583,37 +583,37 @@ int i;  int n;      int l=0;
 
  t++; if (t>319){t=0;n++;}
     //   if (o>20){o=0;}
-         if (n>0&&n<39&&t<320){   map[i]=BGTILE; }
+	 if (n>0&&n<50&&t<320){   map[i]=BGTILE; }
 
       if (n==1){map[i-319]=2;}
-       if (t==80&&n<15){map[i]=2;}
-	       if (t==80&&n>14&&n<20){map[i]=DOOR;}
+       if (t==80&&n<25){map[i]=2;}
+	       if (t==80&&n>24&&n<30){map[i]=DOOR;}
 
-	   if (t==160&&n<15){map[i]=2;}
+	   if (t==160&&n<25){map[i]=2;}
       //	  if (n==20){map[i]=2;}
 
    //   if (t==319){map[i]=2;}
 
 	   if (t==1){map[i]=2;}
   //     if (n>15+o){n=0;o+=14;}
-	 if (t==60&&n==5){map[i]=LOCKSW;}
+	 if (t==60&&n==15){map[i]=LOCKSW;}
 
 
-  if (t>105&&t<115&&n==10){map[i]=1;}
+  if (t>105&&t<115&&n==20){map[i]=1;}
 
 
 
-       if (t>100&&t<120&&n==14){map[i]=1;}
-       if (t>105&&t<115&&n==8){map[i]=PICKUP1;}
+       if (t>100&&t<120&&n==24){map[i]=1;}
+       if (t>105&&t<115&&n==18){map[i]=PICKUP1;}
 
-       if (t>100&&t<120&&n==12){map[i]=PICKUP1;}
+       if (t>100&&t<120&&n==22){map[i]=PICKUP1;}
 
 
-	       if (t>55&&t<65&&n==10){map[i]=1;}
-		       if (t>65&&t<75&&n<5){map[i]=SPECWALL;}
+	       if (t>55&&t<65&&n==20){map[i]=1;}
+		       if (t>65&&t<75&&n<15){map[i]=SPECWALL;}
 
-       if (t>50&&t<70&&n==14){map[i]=1;}
-   if (n==40){map[i]=3;}
+       if (t>50&&t<70&&n==24){map[i]=1;}
+   if (n==50){map[i]=3;}
 
 //   if (n==15+o){map[i]=0;}
 //      if (n==12+o){map[i-1]=3;map[i+1]=3;}
@@ -726,8 +726,7 @@ int y1,x1;
      if (j<200&&(y+j-10-cory+5)>1&&sprcol!=26&&sprcol!=70&&sprcol!=70+pickupcol){
 
 		  if (x+sintab2[i]<12){sprcol=sprcol+3;}
-
-
+//	memset(buffer+(x+i-10-corx)+((y+j-10-cory+5)*320),sprcol); }
 kputpixel(buffer,x+i-10-corx,y+j-10-cory+5,sprcol);
 
 
@@ -750,9 +749,6 @@ int y1,x1;
 	    i+=10; if(i>340){
 	    i=0;j+=10;
 	    }
-
-
-
 
 
 	  if (mapbuffer[k]==BGTILE){
@@ -826,21 +822,21 @@ SetTimer();
 //initpos();
 
 mapfill(0,0,0,0);
-makeblocks(2,4,1,18,23,1,1);
-makeblocks(2,3,1,13,20,1,1);
-makeblocks(2,3,1,8,20,1,1);
-makeblocks(2,3,45,26,23,1,1);
-makeblocks(2,3,100,26,23,1,1);
+makeblocks(2,4,1,28,23,1,1);
+makeblocks(2,3,1,23,20,1,1);
+makeblocks(2,3,1,18,20,1,1);
+makeblocks(2,3,45,36,23,1,1);
+makeblocks(2,3,100,36,23,1,1);
 
 
-makeblocks(300,0,0,30,12,0,0);
-makeblocks(300,0,70,19,12,0,0);
+makeblocks(300,0,0,40,12,0,0);
+makeblocks(300,0,70,29,12,0,0);
 
 for (x=0;x<5;x++){
 
-makeblocks(4,x,x*4+20,29-x,10,0,0);
+makeblocks(4,x,x*4+20,39-x,10,0,0);
 
-makeblocks(4,x,x*3+50,29-x,30,0,0);
+makeblocks(4,x,x*3+50,39-x,30,0,0);
 
 
 
@@ -1015,13 +1011,16 @@ move=0;
 
 
 clear_buffer(0,32000);
-			     ticks=0;
+
+//			     ticks=0;
 //timing
-		      while (GlobalSec<GlobalCounter){
+
+		    /*  while (GlobalSec<GlobalCounter){
 				  GlobalSec+=7 ;
 				  ticks+=1;
 				       }
-                           //       ticks=2;
+				   */
+				   ticks=2;
 
 
 tiledrawsolid();
@@ -1387,6 +1386,7 @@ if(KeyTable[K_RIGHTARROW]==0){  steps=0;
 			  for (i=0;i<700;i++){
 
 			  x++; if (x>34+plus){x=plus;y+=320;}
+
 			  mapbuffer[i]=map[x+y];
 			  }
 
@@ -1432,7 +1432,7 @@ if(KeyTable[K_RIGHTARROW]==0){  steps=0;
 
 
  while (!(inportb(0x3DA)&0x08));
-// while (inportb(0x3DA)&0x08);
+ while (inportb(0x3DA)&0x08);
 
  memcpy(VGA,buffer,64000);
 
