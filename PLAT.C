@@ -676,7 +676,7 @@ void initpos(){
 }
 void drawplayer(){
 
- playerx=playerxtemp-10;
+ playerx=playerxtemp-30;
  playery=playerytemp-15;
 
 
@@ -801,9 +801,9 @@ void playermove_colis(){
 	  if (mapbuffer[mappos]!=0&&mapbuffer[mappos]<60){collockx1=0; }
 	  if (mapbuffer[mappos]!=0&&mapbuffer[mappos]>=200){collockx1=0;}
 	  if (mapbuffer[mappos]>=200&&mapbuffer[mappos]<=250&&lock[mapbuffer[mappos]-200]==-1){collockx1=1;}
-		  mappos=(unsigned int)((collisionx[playerxtemp-corx-20]))+(unsigned int)((collisiony[playerytemp+cory]-y))*35;
+		  mappos=(unsigned int)((collisionx[playerxtemp-corx-15]))+(unsigned int)((collisiony[playerytemp+cory]-y))*35;
 
-	  if (mapbuffer[mappos]==PICKUP1&&changed==0){map[plus+(unsigned int)((collisionx[playerxtemp-corx-10]))+(unsigned int)((collisionx[playerytemp+cory]-y))*320]=BGTILE;
+	  if (mapbuffer[mappos]==PICKUP1&&changed==0){map[plus+(unsigned int)((collisionx[playerxtemp-corx-15]))+(unsigned int)((collisionx[playerytemp+cory]-y))*320]=BGTILE;
 	       sounddur++;
 	    if (sounddur<500){sound(sounddur*10);changed=1;} }
 
@@ -853,11 +853,11 @@ for (y=0;y<2;y++){
 
 	if(hdir==1&&changed==0){
 
-	kputpixel(buffer,x+playerx+15,y+playery,sprcol);
-	if (mapbuffer[(int)(((playerx+25+corx)/10))+(int)((((y+playery-5)/10)))*35]>=100&&mapbuffer[(int)(((playerx+250+corx)/10))+(int)((((y+playery-5)/10)))*35]<=300){  sound(1000);
+	kputpixel(buffer,x+playerx+10,y+playery,sprcol);
+	if (mapbuffer[(int)(((playerxtemp+15+corx)/10))+(int)((((y+playerytemp-5)/10)))*35]>=100&&mapbuffer[(int)(((playerx+250+corx)/10))+(int)((((y+playery-5)/10)))*35]<=300){  sound(1000);
 		  pickupfill(PICKUP1);
 		  changed=1;
-		   lock[mapbuffer[(int)(((playerx+25+corx)/10))+(int)((((y+playery-5)/10)))*35]-250]=-lock[mapbuffer[(int)(((playerx+25+corx)/10))+(int)((((y+playery-5)/10)))*35]-250];
+		   lock[mapbuffer[(int)(((playerxtemp+15+corx)/10))+(int)((((y+playerytemp-5)/10)))*35]-250]=-lock[mapbuffer[(int)(((playerxtemp+15+corx)/10))+(int)((((y+playerytemp-5)/10)))*35]-250];
 		   pickupcol++;
 
 
@@ -920,14 +920,16 @@ int y1,x1;
 
   //     u=0;f=0;l=0;o=0;
 	    k=0;
-	    for (l=0;l<20;l++){
+	       for (l=0;l<20;l++){
+
 	    for (m=0;m<35;m++){
+
       //	    i+=10; if(i>340){
       //	    i=0;j+=10;
       //	    }
 
-	       k++;
-	       i=(m*10)+15;
+            k++;
+	       i=(m*10);
 	       j=(l*10);
 
 
@@ -1027,7 +1029,7 @@ int y1,x1;
 	    for (l=0;l<20;l++){
 	    for (m=0;m<35;m++){
 	       k++;
-	       i=(m*10)+15;
+	       i=(m*10);
 	       j=(l*10);
 
 
