@@ -1,2 +1,1 @@
-I'm a nube in coding I just use this medium for my artistic expressions and researches .so these are little simple aproaches I came to so far.
-but its not rewardless I guess.
+Some of these are not bad they might have some potential for giving inspirations to some learners who want to be mislead right from the start.
