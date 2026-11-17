@@ -27,23 +27,27 @@ byte *VGA=(byte *)0xA0000000L;        /* this points to video memory. */
 word *my_clock=(word *)0x0000046C;    /* this points to the 18.2hz system
   int stk=1;
 					 clock. */
-int playerx,playery;
+double playerx,playery;
+
 int playerh=0;
 int raydir;
+double raydirf;
+
 char *buffer;
-
+char runcycle=0;
 char stk=1;
-int sintab[2501];
-int costab[2501];
-
-int deltasintab[2501];
-int deltacostab[2501];
+int sintab[2502];
+int costab[2502];
+int horzl[320];
+int deltasintab[2502];
+int deltacostab[2502];
 
 int costab2[1025];
 int wave=0;
 char map[400];
 //char maph[400];
-int playermovx,playermovy;
+double playermovx,playermovy;
+
 char colidx0,colidx1,colidy0,colidy1;
 char sc;
 typedef struct tagBITMAP              /* the structure for a bitmap. */
@@ -54,7 +58,7 @@ typedef struct tagBITMAP              /* the structure for a bitmap. */
 } BITMAP;
   BITMAP bmp;
 
-void kputpixel(char *buffer,int x,int y,int col);
+void kputpixel(char *buffer,int x,int y,char col);
 int kgetpixelpage(char *buffer,int x,int y);
 int kgetpixelbmp(BITMAP *bmp,int x,int y);
 
@@ -204,11 +208,43 @@ col=bp->data[x+(y*320)];
 return col;
 
 }
-void kputpixel(char *buffer,int x,int y,int col){
+void kputpixel(char *buffer,int x,int y,char col){
+//int y1=(y<<8)+(y<<6);
+if (x<=320){ if(x>=0){ if (y<=200){if (y>=0){
+//buffer[x+((y<<8)+(y<<6))]=col;
+asm {
 
-if (y<200){ if (x<=320){if (x>=0){if (y>0){
-buffer[x+(y*320)]=col; }     }           }
-	   }
+push bx
+push di
+push es
+
+les di,buffer
+mov ax,y
+mov bx,ax
+shl ax,8
+shl bx,6
+add ax,bx
+add di,ax
+add di,x
+mov al,col
+mov es:[di],al
+
+pop es
+pop di
+pop bx
+
+
+}
+
+
+
+
+
+
+
+}}}}
+
+
 }
 
 
@@ -285,11 +321,9 @@ ang=0;
 for (x=0;x<2500;x+=1){
 ang+=0.003;
 
-sintab[x]=(sin(ang))*256;
+sintab[x]=(sin(ang))*512;
 
-
-costab[x]=(cos(ang))*256;
-
+costab[x]=(cos(ang))*512;
 
 }
 
@@ -364,7 +398,8 @@ if (y3>lenght2){y4+=32 ; y1+=1; y3=y3+((y-y1>>6)-lenght2<<6);col+=12;}
 colory=col^y4+100;
 if (side==1){colory=col&y4+1;   }
 if (x>0&&x<320&&y>-100&&y<100){
-kputpixel(buffer,x,y+playerh+100,240+(colory&0x003a));}
+kputpixel(buffer,x,y+playerh+100,240+(colory&0x003a));
+}
 
 }
 
@@ -382,27 +417,25 @@ double flrx;
 double flry;
 double raydirf;
 
-int planex=-sintab[raydir+160]*0.66;
-int planey=costab[raydir+160]*0.66;
-int fraydirx0=costab[raydir+160]-planex;
-int fraydiry0=sintab[raydir+160]-planey;
-int fraydirx1=costab[raydir+160]+planex;
-int fraydiry1=sintab[raydir+160]+planey;
+int planex=-(costab[raydir+160])*0.50;
+int planey=(sintab[raydir+160])*0.50;
+int fraydirx0=(-sintab[raydir+160])-planex;
+int fraydiry0=(-costab[raydir+160])-planey;
+int fraydirx1=(-sintab[raydir+160])+planex;
+int fraydiry1=(-costab[raydir+160])+planey;
 double flrdist;
 
 for (y=100;y<200;y+=1){
 
 
-if (y!=100){
-flrdist=((160*0.5/0.66))/(y-100);
-	    }
+flrdist=100.0/(y-96);
 
-flrstpx=(flrdist*((fraydirx1)-(fraydirx0))/320);
-flrstpy=(flrdist*((fraydiry1)-(fraydiry0))/320);
+flrstpx=((flrdist)*((fraydirx1)-(fraydirx0))/320);
+flrstpy=((flrdist)*((fraydiry1)-(fraydiry0))/320);
 
 
-flrx=(playerx*5)+(flrdist)*(fraydirx0);
-flry=(playery*5)+(flrdist)*(fraydiry0);
+flrx=(-playerx*16)+(flrdist)*(fraydirx0);
+flry=(-playery*16)+(flrdist)*(fraydiry0);
 
 
 for (i=0;i<320;i+=1){
@@ -410,20 +443,22 @@ for (i=0;i<320;i+=1){
 flrx+=flrstpx;
 
 flry+=flrstpy;
-colx=(char)(flrx)>>7&0x0016;
-coly=(char)(flry)>>7&0x0020;
+if (flrx!=0){
+colx=(char)flrx>>7;
+coly=(char)(flry)>>7;
+kputpixel(buffer,i,(y),20+colx+coly*320);           }
 
-kputpixel(buffer,i,y,colx+coly);
+
+
+}
+
+}
 
 
 
 }
 
-}
 
-
-
-}
 
 void cast(){
 int col;
@@ -462,7 +497,10 @@ raydiry=costab[raydir+i];
 
 
 if (raydirx>0){
+
 deltarayx=deltasintab[raydir+i];
+vertlenghtx=(x1+1-playerx)*deltarayx;
+
 xstep=1;
 
 
@@ -471,23 +509,25 @@ if (raydirx<0){
 xstep=-1;
 
 deltarayx=-deltasintab[raydir+i];
+vertlenghtx=(playerx-x1)*deltarayx;
 
 }
 if (raydiry>0){
 ystep=1;
 
 deltarayy=deltacostab[raydir+i];
+vertlenghty=(y1+1-playery)*deltarayy;
+
 
 }
 if (raydiry<0){
 ystep=-1;
 
 deltarayy=-deltacostab[raydir+i];
+vertlenghty=(playery-y1)*deltarayy;
 
 }
 
-vertlenghtx=deltarayx;
-vertlenghty=deltarayy;
 hit=0;
 side=0;
 
@@ -558,11 +598,11 @@ void main()
   int tc=0;
   int vscrl;
   int pw,pc;
-
+  double k;
   int i,x,y;
 
     buffer=(char*)malloc(64000U);
-
+malloc(1000U);
 r=0;
 ang=0;
 
@@ -607,60 +647,83 @@ r=100;
 color=0;
 playerx=110;
 playery=110;
+
 makemap();
+	  for (k=0;k<320;k+=1){
+		horzl[k]=(k);
+      }
 
 
 while (stk==2){
 
-//  memset(buffer,0,32000);
+ // memset(buffer,0,32000);
 bg_half(0,20);
 
 x1=0;y1=0;
+//floorcast();
 cast();
 colidx0=1;
 colidx1=1;
 colidy0=1;
 colidy1=1;
 //    raydir+=0.01;
-	 if (raydir>2120){raydir=30;}
+	 if (raydir>2120 ){raydir=30;}
 	 if (raydir<30){raydir=2120;}
 
-			 if (map[((playerx+10)/8)+(playery/8)*21]==1){ colidx0=0;
-			   }
-
-			 if (map[((playerx+15)/8)+(playery/8)*21]==1){ colidx1=0;
-			      }
 
 
-			 if (map[(playerx/8)+((playery+12)/8)*21]==1){ colidy0=0;
-			     }
-			 if (map[(playerx/8)+((playery+15)/8)*21]==1){ colidy1=0;
-
-			 ;     }
+ //   playermovx=(sintab[raydir+160]/64);
+ //    playermovy=(costab[raydir+160]/64);
+     playermovx=sin((raydir+160)*0.003);
+     playermovy=cos((raydir+160)*0.003);
 
 
 colidx0=1;
 colidx1=1;
+
+
+			 if (map[((int)((playerx+9)/8))+(int)(playery/8)*21]!=0){ colidx0=0;
+			 if (playermovx<0){ colidx0=1; colidx1=0;     }}
+
+			 if (map[((int)((playerx-9)/8))+(int)(playery/8)*21]!=0){ colidx1=0;
+			 if (playermovx<0){ colidx0=0; colidx1=1;     }}
+
+
 colidy0=1;
 colidy1=1;
 
-     playermovx=sintab[raydir+160]/100;
-     playermovy=costab[raydir+160]/100;
-     if(KeyTable[K_LEFTARROW]){  raydir-=5;
+
+			 if (map[(int)(playerx/8)+(int)(((playery+9)/8))*21]!=0){ colidy0=0;
+			 if (playermovy<0){ colidy0=1; colidy1=0;     }
+
+
+			     }
+			 if (map[(int)(playerx/8)+(int)(((playery-9)/8))*21]!=0){ colidy1=0;
+			 if (playermovy<0){ colidy0=0; colidy1=1;     }
+
+			 ;     }
+
+
+     if(KeyTable[K_LEFTARROW]){  raydir-=7;
 
     }
-	if(KeyTable[K_RIGHTARROW]){ raydir+=5;
+	if(KeyTable[K_RIGHTARROW]){ raydir+=7;
 
     }
 	if(KeyTable[K_UPARROW]){
+
+
 	playerx+=playermovx*colidx0; playery+=playermovy*colidy0;
 
     }
+
 	if(KeyTable[K_DOWNARROW]){
+
+
 		playerx-=playermovx*colidx1; playery-=playermovy*colidy1;
 
-
     }
+
 
 	playerh-=1;
 	if (playerh<0){playerh=0;}
@@ -675,7 +738,8 @@ colidy1=1;
 
 
 
-	     if (stk==0){return;}
+	     if (stk==0){ free(&buffer);  return;}
+
  while (!(inportb(0x3DA)&0x08)){}
  while (inportb(0x3DA)&0x08){}
 
